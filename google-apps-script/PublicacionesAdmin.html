@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>OIA - Carga privada de publicaciones</title>
+    <style>
+      body { font-family: Arial, sans-serif; max-width: 900px; margin: 24px auto; padding: 0 16px; color: #1b1b1b; }
+      h1 { margin: 0 0 16px; }
+      p.help { margin-top: 0; color: #444; }
+      form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      label { font-weight: 600; font-size: 14px; margin-bottom: 4px; display: block; }
+      input, select, textarea { width: 100%; box-sizing: border-box; padding: 10px; border: 1px solid #bbb; border-radius: 8px; }
+      textarea { min-height: 96px; resize: vertical; }
+      .full { grid-column: 1 / -1; }
+      .actions { grid-column: 1 / -1; display: flex; gap: 10px; align-items: center; }
+      button { background: #0b6b5d; color: #fff; border: 0; border-radius: 8px; padding: 10px 14px; cursor: pointer; }
+      button:hover { opacity: 0.92; }
+      #msg { min-height: 24px; font-weight: 600; }
+      .ok { color: #0c6b2f; }
+      .err { color: #8a1f1f; }
+      @media (max-width: 760px) { form { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <h1>Carga privada - Observatorio de IA</h1>
+    <p class="help">Este panel es interno. Solo usuarios autorizados pueden acceder y guardar.</p>
+
+    <form id="f">
+      <div>
+        <label for="tipo">Tipo *</label>
+        <select id="tipo" required>
+          <option value="Revista">Revista</option>
+          <option value="Libro">Libro</option>
+          <option value="Capítulo de libro">Capítulo de libro</option>
+          <option value="Repositorio">Informe</option>
+          <option value="Evento">Evento</option>
+          <option value="Diario">Diario</option>
+        </select>
+      </div>
+      <div>
+        <label for="anio">Año</label>
+        <input id="anio" type="number" min="1900" max="2100" />
+      </div>
+
+      <div class="full">
+        <label for="titulo">Título *</label>
+        <input id="titulo" required />
+      </div>
+
+      <div class="full">
+        <label for="autores">Autor/es</label>
+        <input id="autores" />
+      </div>
+
+      <div>
+        <label for="revista_o_medio">Revista / medio</label>
+        <input id="revista_o_medio" />
+      </div>
+      <div>
+        <label for="doi">DOI</label>
+        <input id="doi" />
+      </div>
+
+      <div>
+        <label for="unidad">Unidad *</label>
+        <input id="unidad" value="OIA- Observatorio de Inteligencia Artificial" required />
+      </div>
+      <div>
+        <label for="indexacion">Indexación</label>
+        <input id="indexacion" />
+      </div>
+
+      <div>
+        <label for="editorial">Editorial</label>
+        <input id="editorial" />
+      </div>
+      <div>
+        <label for="isbn">ISBN</label>
+        <input id="isbn" />
+      </div>
+
+      <div>
+        <label for="tipo_publicacion">Tipo publicación</label>
+        <input id="tipo_publicacion" />
+      </div>
+      <div>
+        <label for="link">Link</label>
+        <input id="link" />
+      </div>
+
+      <div>
+        <label for="evento">Evento</label>
+        <input id="evento" />
+      </div>
+      <div>
+        <label for="lugar">Lugar</label>
+        <input id="lugar" />
+      </div>
+
+      <div>
+        <label for="fecha">Fecha (texto o YYYY-MM-DD)</label>
+        <input id="fecha" />
+      </div>
+      <div>
+        <label for="estado">Estado</label>
+        <select id="estado">
+          <option value="borrador">borrador (no visible en web)</option>
+          <option value="publicado">publicado (visible en web)</option>
+        </select>
+      </div>
+
+      <div class="full">
+        <label for="resumen">Resumen</label>
+        <textarea id="resumen"></textarea>
+      </div>
+
+      <div class="full">
+        <label for="repositorio">Repositorio</label>
+        <input id="repositorio" />
+      </div>
+
+      <div class="actions">
+        <button type="submit">Guardar publicación</button>
+        <span id="msg"></span>
+      </div>
+    </form>
+
+    <script>
+      (function () {
+        var form = document.getElementById("f");
+        var msg = document.getElementById("msg");
+
+        function get(id) {
+          return document.getElementById(id).value.trim();
+        }
+
+        function setMsg(text, ok) {
+          msg.textContent = text;
+          msg.className = ok ? "ok" : "err";
+        }
+
+        form.addEventListener("submit", function (ev) {
+          ev.preventDefault();
+          setMsg("Guardando...", true);
+
+          var payload = {
+            tipo: get("tipo"),
+            titulo: get("titulo"),
+            autores: get("autores"),
+            revista_o_medio: get("revista_o_medio"),
+            doi: get("doi"),
+            anio: get("anio"),
+            unidad: get("unidad"),
+            indexacion: get("indexacion"),
+            editorial: get("editorial"),
+            isbn: get("isbn"),
+            tipo_publicacion: get("tipo_publicacion"),
+            link: get("link"),
+            evento: get("evento"),
+            lugar: get("lugar"),
+            fecha: get("fecha"),
+            resumen: get("resumen"),
+            repositorio: get("repositorio"),
+            estado: get("estado")
+          };
+
+          fetch(window.location.pathname + "?action=add", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          })
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+              if (!data || !data.ok) throw new Error((data && data.error) || "error");
+              setMsg("Guardado correctamente.", true);
+              form.reset();
+              document.getElementById("unidad").value = "OIA- Observatorio de Inteligencia Artificial";
+              document.getElementById("estado").value = "borrador";
+            })
+            .catch(function (err) {
+              setMsg("No se pudo guardar (" + err.message + ")", false);
+            });
+        });
+      })();
+    </script>
+  </body>
+</html>

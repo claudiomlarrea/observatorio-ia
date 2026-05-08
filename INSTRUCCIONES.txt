@@ -1,0 +1,126 @@
+================================================================================
+  PUBLICACIONES AUTOMÁTICAS — Observatorio de IA (sitio en Documentos/Observatorio)
+================================================================================
+
+Qué hace este sistema
+----------------------
+• Ustedes siguen cargando datos en Streamlit como hasta ahora (Google Sheet
+  "Datos Consejo Investigación", pestaña "publicaciones_sheet").
+• Un pequeño programa en Google (Apps Script) LEE esa hoja y devuelve un JSON.
+• La página web muestra las publicaciones en tarjetas y botones para filtrar.
+
+IMPORTANTE: Solo se listan filas cuya columna "Unidad" sea del Observatorio,
+por ejemplo:  OIA- Observatorio de Inteligencia Artificial
+(así no se mezclan con otras unidades de la misma hoja).
+
+Si querés mostrar TODAS las filas de la hoja (no recomendado), abrí el archivo
+google-apps-script/PublicacionesWeb.gs y cambiá:
+  var SOLO_FILA_OBSERVATORIO = false;
+
+
+PASO 1 — Apps Script (una sola vez, o cuando cambies de cuenta)
+----------------------------------------------------------------
+1. Abrí en el navegador el Google Sheet "Datos Consejo Investigación".
+
+2. Menú: Extensiones → Apps Script.
+
+3. Si hay código por defecto (function myFunction...), borralo todo.
+
+4. Abrí en tu computadora el archivo:
+     Documentos/Observatorio/google-apps-script/PublicacionesWeb.gs
+   Copiá TODO el contenido y pegalo en el editor de Apps Script.
+
+5. Guardá el proyecto (ícono disquete o Ctrl+S / Cmd+S).
+
+6. Menú: Implementar → Nueva implementación.
+   - Tipo: Aplicación web
+   - Descripción: Publicaciones OIA (o el nombre que quieras)
+   - Ejecutar como: Yo
+   - Quién tiene acceso: Cualquier usuario
+
+7. Te pedirá autorizar permisos (lectura del documento). Aceptá.
+
+8. Copiá la URL que termina en .../exec  (NO uses la que termina en .../dev).
+
+
+PASO 2 — Conectar la página web
+-------------------------------
+1. Abrí con un editor de texto:
+     Documentos/Observatorio/js/publicaciones-config.js
+
+2. Entre comillas, pegá la URL /exec que copiaste:
+     APPS_SCRIPT_URL: "https://script.google.com/macros/s/....../exec"
+
+3. Guardá el archivo.
+
+4. Abrí index.html en el navegador (o publicá la carpeta en un hosting).
+   Si no ves nada, recargá con recarga forzada: Cmd+Shift+R (Mac) o Ctrl+Shift+R.
+
+
+Cómo actualizan los visitantes
+------------------------------
+• No hace falta tocar la web: cada vez que alguien abre la página, se piden
+  los datos actualizados a Google.
+• Los nuevos registros que guarden con Streamlit aparecen solos (tras unos
+  segundos y un refresco en el navegador).
+
+
+Columnas de la hoja (coinciden con lo que ya guarda Streamlit)
+---------------------------------------------------------------
+Orden A..Q aproximado:
+  A tipo   B título   C autores   D revista/medio   E DOI   F año   G unidad
+  H indexación   I editorial   J ISBN   K tipo publicación   L link
+  M evento   N lugar   O fecha   P resumen   Q repositorio
+
+Si agregan una fila de encabezados en la fila 1 con la palabra "tipo" en A,
+el script la omite automáticamente.
+
+
+Problemas frecuentes
+--------------------
+• "No se pudo conectar": la URL no es la de /exec, o falta autorizar Apps Script.
+• Lista vacía: revisá que en la columna Unidad diga OIA / Observatorio...
+• Desde archivo file:/// a veces el navegador bloquea peticiones: usá un servidor
+  local (por ejemplo: en Terminal, cd a la carpeta Observatorio y ejecutá
+  python3 -m http.server 8080  luego abrí http://localhost:8080 )
+
+
+Soporte técnico en la universidad
+---------------------------------
+Podés pedir al área de sistemas que suba la carpeta Observatorio a un hosting
+con HTTPS (por ejemplo sitio institucional); la URL de Apps Script no cambia.
+
+================================================================================
+
+NUEVO: panel privado de carga (whitelist por email)
+---------------------------------------------------
+Este proyecto ahora incluye:
+1) API pública para la landing (solo estado=publicado y unidad OIA).
+2) Panel privado de carga en Apps Script (solo emails autorizados).
+
+Archivos:
+- google-apps-script/PublicacionesWeb.gs
+- google-apps-script/PublicacionesAdmin.html
+
+Configuración actual del proyecto:
+- Spreadsheet ID (Observatorio): 18xXPRok4kVF81hkEDDlfDf8Vx-KI2HeywZNFSXkozwU
+- Pestaña de datos: Hoja 1
+
+Despliegue recomendado:
+1. En Apps Script, crear proyecto NUEVO vinculado a la hoja de publicaciones.
+2. Pegar PublicacionesWeb.gs y agregar el archivo HTML con nombre exacto:
+   PublicacionesAdmin
+3. Implementar dos veces:
+   A) Web app pública (para la landing)
+      - Ejecutar como: Yo
+      - Acceso: Cualquier usuario
+      - URL /exec -> pegar en js/publicaciones-config.js
+   B) Web app privada (para carga interna)
+      - Ejecutar como: Usuario que accede
+      - Acceso: Cualquier usuario con cuenta Google
+      - URL /exec privada -> abrir con ?action=admin
+
+Uso:
+- Panel privado: https://.../exec?action=admin
+- El formulario permite guardar en estado borrador/publicado.
+- Solo "publicado" aparece en la landing pública.
