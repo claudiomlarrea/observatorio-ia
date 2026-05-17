@@ -25,15 +25,12 @@
   </head>
   <body>
     <h1>Carga privada - Observatorio de IA</h1>
-    <p class="help">Completá los datos y guardá. La fila se agrega a la planilla al instante.</p>
+    <p class="help">
+      Completá los datos y guardá. Verás un instante la página de Google y volverás al
+      formulario con la confirmación.
+    </p>
 
-    <form
-      id="f"
-      method="post"
-      action="<?= apiUrl ?>"
-      target="obs-pub-save-frame"
-      accept-charset="UTF-8"
-    >
+    <form id="f" method="post" action="<?= apiUrl ?>" target="_top" accept-charset="UTF-8">
       <input type="hidden" name="action" value="add" />
       <input type="hidden" name="_panel" value="1" />
       <? if (adminKey) { ?>
@@ -143,13 +140,6 @@
         <span id="msg"></span>
       </div>
     </form>
-
-    <iframe
-      id="obs-pub-save-frame"
-      name="obs-pub-save-frame"
-      title="Guardado"
-      style="position:absolute;width:0;height:0;border:0;visibility:hidden"
-    ></iframe>
 
     <script>
       (function () {
