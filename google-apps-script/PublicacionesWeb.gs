@@ -77,7 +77,7 @@ function obtenerItemsPublicos_() {
     var o = rowAToObj_(values[i]);
     if (!o.titulo && !o.autores && !o.evento) continue;
     if (SOLO_FILA_OBSERVATORIO && !PATRON_UNIDAD_OIA.test(String(o.unidad || ""))) continue;
-    if (normalizar_(o.estado) !== ESTADO_PUBLICABLE) continue;
+    if (normalizar_(o.estado) === "borrador") continue;
     o.categoria = inferirCategoria_(o);
     out.push(o);
   }
