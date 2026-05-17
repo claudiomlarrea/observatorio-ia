@@ -54,14 +54,14 @@ function doPost(e) {
   var fromPanel = val_(payload._panel) === "1";
 
   if (!isAuthorized_(e)) {
-    if (fromPanel) return panelSaveResponse_(false, "No autorizado");
+    if (fromPanel) return panelSaveResponse_(false, "No autorizado", payload);
     return json_({ ok: false, error: "unauthorized" });
   }
 
   var row = payloadToRow_(payload);
 
   if (!row[0] || !row[1] || !row[6]) {
-    if (fromPanel) return panelSaveResponse_(false, "Completá tipo, título y unidad");
+    if (fromPanel) return panelSaveResponse_(false, "Completá tipo, título y unidad", payload);
     return json_({ ok: false, error: "required_fields", message: "tipo, titulo y unidad son obligatorios" });
   }
 
@@ -69,26 +69,26 @@ function doPost(e) {
     getSheet_().appendRow(row);
     SpreadsheetApp.flush();
   } catch (err) {
-    if (fromPanel) return panelSaveResponse_(false, String(err));
+    if (fromPanel) return panelSaveResponse_(false, String(err), payload);
     return json_({ ok: false, error: "save_failed", message: String(err) });
   }
 
-  if (fromPanel) return panelSaveResponse_(true, "Guardado correctamente");
+  if (fromPanel) return panelSaveResponse_(true, "Guardado correctamente", payload);
   return json_({ ok: true });
 }
 
-function panelSaveResponse_(ok, message) {
-  var flag = ok ? "1" : "0";
-  var msg = JSON.stringify(message || "");
-  return HtmlService.createHtmlOutput(
-    "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"utf-8\"><script>" +
-      "try{parent.postMessage({obsPubSave:'" +
-      flag +
-      "',msg:" +
-      msg +
-      "},'*');}catch(e){}" +
-      "</script></head><body></body></html>"
-  ).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+function panelAdminReturnUrl_(ok, message, payload) {
+  var url = ScriptApp.getService().getUrl() + "?action=admin";
+  var key = val_(payload && payload.key);
+  if (key) url += "&key=" + encodeURIComponent(key);
+  if (ok) return url + "&saved=1";
+  return url + "&saved=0&err=" + encodeURIComponent(String(message || "error"));
+}
+
+function panelSaveResponse_(ok, message, payload) {
+  return HtmlService.createHtmlOutput(contactRedirectHtml_(panelAdminReturnUrl_(ok, message, payload))).setXFrameOptionsMode(
+    HtmlService.XFrameOptionsMode.ALLOWALL
+  );
 }
 
 /** Llamado desde el panel HTML con google.script.run (no abre página en blanco). */
