@@ -62,6 +62,26 @@ function doPost(e) {
   return json_({ ok: true });
 }
 
+/** Llamado desde el panel HTML con google.script.run (no abre página en blanco). */
+function savePublicationAdmin_(payload) {
+  payload = payload || {};
+  if (!isAuthorizedForPayload_(payload)) {
+    throw new Error("No autorizado para guardar.");
+  }
+  var row = payloadToRow_(payload);
+  if (!row[0] || !row[1] || !row[6]) {
+    throw new Error("Completá tipo, título y unidad.");
+  }
+  getSheet_().appendRow(row);
+  return true;
+}
+
+function isAuthorizedForPayload_(p) {
+  var email = getEmail_();
+  if (email && AUTHORIZED_EMAILS.indexOf(email) >= 0) return true;
+  return val_(p.key) === ADMIN_ACCESS_KEY;
+}
+
 function renderAdmin_(e) {
   if (!isAuthorized_(e)) {
     return HtmlService.createHtmlOutput(
@@ -69,7 +89,6 @@ function renderAdmin_(e) {
     ).setTitle("OIA - Acceso denegado");
   }
   var t = HtmlService.createTemplateFromFile("PublicacionesAdmin");
-  t.apiUrl = ScriptApp.getService().getUrl();
   t.adminKey = adminKeyFromRequest_(e);
   return t.evaluate().setTitle("OIA - Carga privada");
 }
