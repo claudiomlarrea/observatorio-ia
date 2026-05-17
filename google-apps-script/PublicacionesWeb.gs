@@ -68,7 +68,10 @@ function renderAdmin_(e) {
       "<h3>Acceso denegado</h3><p>Tu email no está autorizado para cargar publicaciones.</p>"
     ).setTitle("OIA - Acceso denegado");
   }
-  return HtmlService.createHtmlOutputFromFile("PublicacionesAdmin").setTitle("OIA - Carga privada");
+  var t = HtmlService.createTemplateFromFile("PublicacionesAdmin");
+  t.apiUrl = ScriptApp.getService().getUrl();
+  t.adminKey = adminKeyFromRequest_(e);
+  return t.evaluate().setTitle("OIA - Carga privada");
 }
 
 function obtenerItemsPublicos_() {
@@ -418,7 +421,12 @@ function getEmail_() {
 function isAuthorized_(e) {
   var email = getEmail_();
   if (email && AUTHORIZED_EMAILS.indexOf(email) >= 0) return true;
-  return adminKeyFromRequest_(e) === ADMIN_ACCESS_KEY;
+  if (adminKeyFromRequest_(e) === ADMIN_ACCESS_KEY) return true;
+  if (e) {
+    var payload = mergePostParams_(e);
+    if (val_(payload.key) === ADMIN_ACCESS_KEY) return true;
+  }
+  return false;
 }
 
 function adminKeyFromRequest_(e) {

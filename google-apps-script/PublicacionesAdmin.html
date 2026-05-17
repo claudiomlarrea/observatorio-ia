@@ -128,6 +128,8 @@
 
     <script>
       (function () {
+        var API_URL = <?!= JSON.stringify(apiUrl) ?>;
+        var ADMIN_KEY = <?!= JSON.stringify(adminKey) ?>;
         var form = document.getElementById("f");
         var msg = document.getElementById("msg");
 
@@ -140,11 +142,18 @@
           msg.className = ok ? "ok" : "err";
         }
 
+        function postUrl() {
+          var url = API_URL + (API_URL.indexOf("?") >= 0 ? "&" : "?") + "action=add";
+          if (ADMIN_KEY) url += "&key=" + encodeURIComponent(ADMIN_KEY);
+          return url;
+        }
+
         form.addEventListener("submit", function (ev) {
           ev.preventDefault();
           setMsg("Guardando...", true);
 
           var payload = {
+            action: "add",
             tipo: get("tipo"),
             titulo: get("titulo"),
             autores: get("autores"),
@@ -164,13 +173,22 @@
             repositorio: get("repositorio"),
             estado: get("estado")
           };
+          if (ADMIN_KEY) payload.key = ADMIN_KEY;
 
-          fetch(window.location.pathname + "?action=add", {
+          fetch(postUrl(), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
           })
-            .then(function (r) { return r.json(); })
+            .then(function (r) {
+              return r.text().then(function (text) {
+                try {
+                  return JSON.parse(text);
+                } catch (_e) {
+                  throw new Error("respuesta no válida del servidor");
+                }
+              });
+            })
             .then(function (data) {
               if (!data || !data.ok) throw new Error((data && data.error) || "error");
               setMsg("Guardado correctamente.", true);
