@@ -561,6 +561,29 @@ header.section-head--bar h2 {
   color: var(--color-text-soft);
 }
 
+.activity-tile--encuesta {
+  border-top: 5px solid var(--color-green);
+  background: linear-gradient(
+    180deg,
+    rgba(var(--rgb-green), 0.1) 0%,
+    var(--color-surface) 45%
+  );
+}
+
+.activity-tile--encuesta h3 {
+  color: var(--color-green-dark);
+}
+
+.tile-actions {
+  margin-top: 1rem;
+}
+
+.btn-sm {
+  display: inline-block;
+  padding: 0.45rem 1rem;
+  font-size: 0.9rem;
+}
+
 .contact-layout {
   display: grid;
   gap: 2rem;
