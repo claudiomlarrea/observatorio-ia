@@ -963,6 +963,16 @@ form.simple-form small {
   color: var(--color-text);
 }
 
+.pub-msg--hint p {
+  margin: 0 0 0.5rem;
+}
+
+.pub-msg--hint p:last-child {
+  margin-bottom: 0;
+  color: var(--color-text-soft);
+  font-size: 0.95rem;
+}
+
 .pub-msg--loading {
   background: rgba(var(--rgb-inst), 0.06);
   color: var(--color-text-soft);

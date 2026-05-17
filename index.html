@@ -319,21 +319,49 @@
             <div class="card">
               <p class="text-lead-tight">
                 Para consultas, propuestas de colaboración o actividades de
-                extensión, escribinos por correo electrónico. Te responderemos a
-                la brevedad.
+                extensión, completá el formulario. Te responderemos al correo que
+                indiques.
               </p>
-              <p class="contact-email-cta">
-                <a
-                  class="btn btn-primary"
-                  href="mailto:observatorioia@uccuyo.edu.ar?subject=%5BObservatorio%20IA%5D%20Consulta"
-                  >Escribir a observatorioia@uccuyo.edu.ar</a
-                >
-              </p>
-              <p class="text-muted-small">
-                Se abrirá tu programa de correo (Gmail, Outlook, etc.) con
-                nuestro email ya cargado. Podés escribir el mensaje ahí y
-                enviarlo.
-              </p>
+              <div
+                id="contact-form-status"
+                class="form-status"
+                role="status"
+                aria-live="polite"
+                hidden
+              ></div>
+              <form class="simple-form" method="post" action="#">
+                <input type="text" name="_gotcha" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+                <div>
+                  <label for="nombre">Nombre</label>
+                  <input id="nombre" name="nombre" type="text" autocomplete="given-name" required />
+                </div>
+                <div>
+                  <label for="apellido">Apellido</label>
+                  <input id="apellido" name="apellido" type="text" autocomplete="family-name" required />
+                </div>
+                <div>
+                  <label for="email">Email</label>
+                  <input id="email" name="email" type="email" autocomplete="email" required />
+                </div>
+                <div>
+                  <label for="telefono">Teléfono <span class="label-optional">(opcional)</span></label>
+                  <input id="telefono" name="telefono" type="tel" autocomplete="tel" />
+                </div>
+                <div>
+                  <label for="mensaje">Mensaje</label>
+                  <textarea id="mensaje" name="mensaje" required placeholder="Motivo de la consulta…"></textarea>
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn-primary" type="submit">Enviar</button>
+                  <button class="btn btn-ghost" type="button" id="contact-mailto-btn">
+                    Escribir por correo
+                  </button>
+                </div>
+                <small>
+                  Al enviar verás un instante la página de Google y volverás acá.
+                  Si falla, usá «Escribir por correo».
+                </small>
+              </form>
             </div>
           </div>
         </div>
@@ -350,7 +378,7 @@
     </footer>
 
     <script src="js/publicaciones-config.js" defer></script>
-    <script src="js/publicaciones.js" defer></script>
+    <script src="js/publicaciones.js?v=2" defer></script>
     <script src="js/main.js" defer></script>
   </body>
 </html>

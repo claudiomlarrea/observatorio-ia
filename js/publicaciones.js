@@ -298,9 +298,27 @@
     el("pub-count").textContent = String(list.length);
 
     if (!list.length) {
-      grid.innerHTML =
-        "<div class=\"pub-msg\">No hay registros para mostrar en este filtro. En Google Sheets cargá filas con " +
-        "'Unidad' = <strong>OIA- Observatorio de Inteligencia Artificial</strong> para que entren aquí.</div>";
+      var filtro = filtrosDef.filter(function (f) {
+        return f.id === filtroActivo;
+      })[0];
+      var tituloFiltro = filtro ? filtro.label : "esta sección";
+      var cuerpo;
+      if (!items.length) {
+        cuerpo =
+          "<p><strong>Próximamente</strong></p>" +
+          "<p>Estamos incorporando las publicaciones del Observatorio de Inteligencia Artificial.</p>";
+      } else if (filtroActivo === "todas") {
+        cuerpo =
+          "<p>No hay publicaciones para mostrar en este momento.</p>" +
+          "<p>Volvé a consultar pronto.</p>";
+      } else {
+        cuerpo =
+          "<p>Todavía no hay publicaciones en <strong>" +
+          esc(tituloFiltro) +
+          "</strong>.</p>" +
+          "<p>Podés ver lo disponible en <strong>Ver todas</strong>.</p>";
+      }
+      grid.innerHTML = "<div class=\"pub-msg pub-msg--hint\">" + cuerpo + "</div>";
       return;
     }
 
