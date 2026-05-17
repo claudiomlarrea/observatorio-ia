@@ -10,6 +10,7 @@
 
 var SPREADSHEET_ID = "18xXPRok4kVF81hkEDDlfDf8Vx-KI2HeywZNFSXkozwU";
 var CONTACT_TO = "observatorioia@uccuyo.edu.ar";
+var CONTACT_COPY_TO = "investigacion@uccuyo.edu.ar";
 var HOJA_PUBLICACIONES = "Hoja 1";
 var SOLO_FILA_OBSERVATORIO = true;
 var PATRON_UNIDAD_OIA = /OIA|Observatorio de Inteligencia Artificial/i;
@@ -233,18 +234,45 @@ function handleContact_(p) {
     mensaje
   ].join("\n");
 
-  try {
-    MailApp.sendEmail({
-      to: CONTACT_TO,
-      subject: subject,
-      body: body,
-      replyTo: email,
-      name: (nombre + " " + apellido).trim()
-    });
+  if (sendContactEmail_(subject, body, email)) {
     return contactResponse_(p, true);
-  } catch (err) {
-    return contactResponse_(p, false, "send_failed", String(err));
   }
+  return contactResponse_(p, false, "send_failed");
+}
+
+function sendContactEmail_(subject, body, replyToEmail) {
+  var toList = [CONTACT_TO];
+  if (CONTACT_COPY_TO && CONTACT_COPY_TO !== CONTACT_TO) {
+    toList.push(CONTACT_COPY_TO);
+  }
+  var to = toList.join(",");
+
+  var attempts = [
+    function () {
+      GmailApp.sendEmail(to, subject, body, { replyTo: replyToEmail });
+    },
+    function () {
+      MailApp.sendEmail({
+        to: to,
+        subject: subject,
+        body: body,
+        replyTo: replyToEmail
+      });
+    },
+    function () {
+      MailApp.sendEmail(to, subject, body);
+    }
+  ];
+
+  for (var i = 0; i < attempts.length; i++) {
+    try {
+      attempts[i]();
+      return true;
+    } catch (err) {
+      Logger.log("sendContactEmail intento " + (i + 1) + ": " + err);
+    }
+  }
+  return false;
 }
 
 function contactResponse_(p, ok, errCode, errMsg) {
