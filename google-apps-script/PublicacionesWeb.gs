@@ -198,8 +198,15 @@ function mergePostParams_(e) {
   return out;
 }
 
+var CONTACT_REDIRECT_OK =
+  "https://claudiomlarrea.github.io/observatorio-ia/?enviado=1#contacto";
+var CONTACT_REDIRECT_ERR =
+  "https://claudiomlarrea.github.io/observatorio-ia/?enviado=0#contacto";
+
 function handleContact_(p) {
-  if (val_(p._gotcha)) return json_({ ok: true });
+  if (val_(p._gotcha)) {
+    return contactResponse_(p, true);
+  }
 
   var nombre = val_(p.nombre);
   var apellido = val_(p.apellido);
@@ -208,10 +215,10 @@ function handleContact_(p) {
   var mensaje = val_(p.mensaje);
 
   if (!nombre || !email || !mensaje) {
-    return json_({ ok: false, error: "required_fields" });
+    return contactResponse_(p, false, "required_fields");
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return json_({ ok: false, error: "invalid_email" });
+    return contactResponse_(p, false, "invalid_email");
   }
 
   var subject = "[Observatorio IA] Consulta desde la web";
@@ -234,10 +241,25 @@ function handleContact_(p) {
       replyTo: email,
       name: (nombre + " " + apellido).trim()
     });
-    return json_({ ok: true });
+    return contactResponse_(p, true);
   } catch (err) {
-    return json_({ ok: false, error: "send_failed", message: String(err) });
+    return contactResponse_(p, false, "send_failed", String(err));
   }
+}
+
+function contactResponse_(p, ok, errCode, errMsg) {
+  if (val_(p._redirect) === "1") {
+    var url = ok ? CONTACT_REDIRECT_OK : CONTACT_REDIRECT_ERR;
+    return HtmlService.createHtmlOutput(
+      "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"utf-8\">" +
+        "<meta http-equiv=\"refresh\" content=\"0;url=" +
+        url +
+        "\">" +
+        "</head><body><p>Redirigiendo…</p></body></html>"
+    ).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  }
+  if (ok) return json_({ ok: true });
+  return json_({ ok: false, error: errCode || "error", message: errMsg || "" });
 }
 
 function param_(e, key, def) {

@@ -41,76 +41,70 @@
         "ok",
         "Gracias. Recibimos tu mensaje y te responderemos a la brevedad."
       );
-      if (window.history.replaceState) {
-        params.delete("enviado");
-        var qs = params.toString();
-        var url =
-          window.location.pathname +
-          window.location.hash +
-          (qs ? "?" + qs : "");
-        window.history.replaceState({}, "", url);
-      }
+      cleanQueryParam("enviado");
+    } else if (params.get("enviado") === "0") {
+      setStatus(
+        "error",
+        "No se pudo enviar el mensaje desde la web. Usá «Escribir por correo» o intentá más tarde."
+      );
+      cleanQueryParam("enviado");
     }
+  }
+
+  function cleanQueryParam(name) {
+    if (!window.history.replaceState) return;
+    var params = new URLSearchParams(window.location.search);
+    params.delete(name);
+    var qs = params.toString();
+    var url =
+      window.location.pathname +
+      window.location.hash +
+      (qs ? "?" + qs : "");
+    window.history.replaceState({}, "", url);
+  }
+
+  function ensureHidden(name, value) {
+    var input = form.querySelector('input[name="' + name + '"]');
+    if (!input) {
+      input = document.createElement("input");
+      input.type = "hidden";
+      input.name = name;
+      form.appendChild(input);
+    }
+    input.value = value;
   }
 
   checkSentFromQuery();
 
+  if (endpoint) {
+    form.method = "POST";
+    form.action = endpoint;
+    form.setAttribute("accept-charset", "UTF-8");
+    ensureHidden("action", "contact");
+    ensureHidden("_redirect", "1");
+  }
+
   form.addEventListener("submit", function (ev) {
     if (!endpoint) {
+      ev.preventDefault();
+      mailtoFallback();
       return;
     }
-    ev.preventDefault();
 
-    if (!form.reportValidity()) return;
+    if (!form.reportValidity()) {
+      ev.preventDefault();
+      return;
+    }
 
-    var payload = {
-      action: "contact",
-      nombre: form.nombre.value.trim(),
-      apellido: form.apellido.value.trim(),
-      email: form.email.value.trim(),
-      telefono: form.telefono.value.trim(),
-      mensaje: form.mensaje.value.trim(),
-      _gotcha: form._gotcha ? form._gotcha.value : ""
-    };
+    ensureHidden("action", "contact");
+    ensureHidden("_redirect", "1");
 
     if (submitBtn) {
       submitBtn.disabled = true;
       submitBtn.textContent = "Enviando…";
     }
     setStatus("pending", "Enviando tu mensaje…");
-
-    fetch(endpoint, {
-      method: "POST",
-      mode: "cors",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(payload)
-    })
-      .then(function (res) {
-        return res.json();
-      })
-      .then(function (data) {
-        if (data && data.ok) {
-          form.reset();
-          setStatus(
-            "ok",
-            "Gracias. Recibimos tu mensaje y te responderemos a la brevedad."
-          );
-          return;
-        }
-        throw new Error((data && data.error) || "send_failed");
-      })
-      .catch(function () {
-        setStatus(
-          "error",
-          "No pudimos enviar el formulario en este momento. Probá de nuevo en unos minutos o usá el botón «Escribir por correo»."
-        );
-      })
-      .finally(function () {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.textContent = "Enviar";
-        }
-      });
+    /* Envío nativo POST → Apps Script → redirección al sitio */
   });
 
   var mailBtn = document.getElementById("contact-mailto-btn");

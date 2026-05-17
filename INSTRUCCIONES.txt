@@ -45,6 +45,13 @@ PASO 1 — Apps Script (una sola vez, o cuando cambies de cuenta)
    implementaciones → editar → Nueva versión (así el formulario de contacto
    de la web usa el código actualizado).
 
+   IMPORTANTE — formulario de contacto:
+   Si al enviar aparece error en la web, casi seguro falta la función doPost
+   en el script publicado. En el editor de Apps Script debe existir
+   "function doPost" en PublicacionesWeb.gs (junto con doGet). Sin doPost,
+   el correo NO sale. Después de pegar el .gs actualizado, creá SIEMPRE una
+   nueva versión de la implementación web.
+
 8. Copiá la URL que termina en .../exec  (NO uses la que termina en .../dev).
 
 
