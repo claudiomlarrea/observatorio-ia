@@ -38,7 +38,12 @@ PASO 1 — Apps Script (una sola vez, o cuando cambies de cuenta)
    - Ejecutar como: Yo
    - Quién tiene acceso: Cualquier usuario
 
-7. Te pedirá autorizar permisos (lectura del documento). Aceptá.
+7. Te pedirá autorizar permisos (lectura del documento y envío de correo para
+   el formulario de contacto). Aceptá.
+
+   Si ya tenías una implementación anterior, volvé a Implementar → Administrar
+   implementaciones → editar → Nueva versión (así el formulario de contacto
+   de la web usa el código actualizado).
 
 8. Copiá la URL que termina en .../exec  (NO uses la que termina en .../dev).
 

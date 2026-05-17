@@ -724,6 +724,50 @@ form.simple-form small {
   font-size: 0.8rem;
 }
 
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.card .btn-ghost {
+  color: var(--color-green-dark);
+  border: 1px solid rgba(var(--rgb-green), 0.35);
+  background: transparent;
+}
+
+.card .btn-ghost:hover {
+  background: rgba(var(--rgb-green), 0.08);
+  color: var(--color-green-dark);
+}
+
+.form-status {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.form-status--ok {
+  background: rgba(var(--rgb-green), 0.12);
+  color: var(--color-green-dark);
+  border: 1px solid rgba(var(--rgb-green), 0.25);
+}
+
+.form-status--error {
+  background: rgba(var(--rgb-inst), 0.08);
+  color: var(--color-institutional);
+  border: 1px solid rgba(var(--rgb-inst), 0.2);
+}
+
+.form-status--pending {
+  background: #f5f5f5;
+  color: var(--color-text-soft);
+  border: 1px solid #ddd;
+}
+
 .site-footer {
   padding: 2rem 1.25rem;
   background: linear-gradient(

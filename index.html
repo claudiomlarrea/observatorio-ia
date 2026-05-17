@@ -319,17 +319,17 @@
             <div class="card">
               <p class="text-lead-tight">
                 Para consultas, propuestas de colaboración o actividades de
-                extensión, completá el formulario. La primera vez que uses
-                FormSubmit, revisá tu correo para confirmar el dominio.
+                extensión, completá el formulario. Te responderemos al correo que
+                indiques.
               </p>
-              <form
-                class="simple-form"
-                method="post"
-                action="https://formsubmit.co/observatorioia@uccuyo.edu.ar"
-              >
-                <input type="hidden" name="_subject" value="[Observatorio IA] Consulta desde la web" />
-                <input type="hidden" name="_next" value="https://claudiomlarrea.github.io/observatorio-ia/#contacto" />
-                <input type="hidden" name="_captcha" value="false" />
+              <div
+                id="contact-form-status"
+                class="form-status"
+                role="status"
+                aria-live="polite"
+                hidden
+              ></div>
+              <form class="simple-form" method="post" action="#">
                 <input type="text" name="_gotcha" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
                 <div>
                   <label for="nombre">Nombre</label>
@@ -351,10 +351,15 @@
                   <label for="mensaje">Mensaje</label>
                   <textarea id="mensaje" name="mensaje" required placeholder="Motivo de la consulta…"></textarea>
                 </div>
-                <button class="btn btn-primary" type="submit">Enviar</button>
+                <div class="form-actions">
+                  <button class="btn btn-primary" type="submit">Enviar</button>
+                  <button class="btn btn-ghost" type="button" id="contact-mailto-btn">
+                    Escribir por correo
+                  </button>
+                </div>
                 <small>
-                  Los datos se utilizan para responder esta consulta. Ajustá este
-                  texto según política de privacidad de la universidad.
+                  Los datos se utilizan para responder esta consulta. Si el envío
+                  falla, usá «Escribir por correo».
                 </small>
               </form>
             </div>
@@ -374,6 +379,7 @@
 
     <script src="js/publicaciones-config.js" defer></script>
     <script src="js/publicaciones.js" defer></script>
+    <script src="js/contacto.js" defer></script>
     <script src="js/main.js" defer></script>
   </body>
 </html>

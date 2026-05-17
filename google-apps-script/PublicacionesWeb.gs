@@ -5,9 +5,11 @@
  * - GET  ?action=public (o sin action): JSON para la web pública.
  * - GET  ?action=admin: panel HTML de carga (solo emails autorizados).
  * - POST ?action=add: agrega publicación (solo emails autorizados).
+ * - POST ?action=contact: envía consulta del formulario web (público).
  */
 
 var SPREADSHEET_ID = "18xXPRok4kVF81hkEDDlfDf8Vx-KI2HeywZNFSXkozwU";
+var CONTACT_TO = "observatorioia@uccuyo.edu.ar";
 var HOJA_PUBLICACIONES = "Hoja 1";
 var SOLO_FILA_OBSERVATORIO = true;
 var PATRON_UNIDAD_OIA = /OIA|Observatorio de Inteligencia Artificial/i;
@@ -33,11 +35,16 @@ function doGet(e) {
 }
 
 function doPost(e) {
-  var action = param_(e, "action", "add");
+  var payload = mergePostParams_(e);
+  var action = val_(payload.action) || param_(e, "action", "add");
+
+  if (action === "contact") {
+    return handleContact_(payload);
+  }
+
   if (action !== "add") return json_({ ok: false, error: "invalid_action" });
   if (!isAuthorized_()) return json_({ ok: false, error: "unauthorized" });
 
-  var payload = parseBody_(e);
   var row = payloadToRow_(payload);
 
   if (!row[0] || !row[1] || !row[6]) {
@@ -174,6 +181,62 @@ function parseBody_(e) {
     return JSON.parse(raw);
   } catch (_err) {
     return {};
+  }
+}
+
+function mergePostParams_(e) {
+  var out = {};
+  var params = e && e.parameter ? e.parameter : {};
+  var k;
+  for (k in params) {
+    if (params.hasOwnProperty(k)) out[k] = params[k];
+  }
+  var body = parseBody_(e);
+  for (k in body) {
+    if (body.hasOwnProperty(k)) out[k] = body[k];
+  }
+  return out;
+}
+
+function handleContact_(p) {
+  if (val_(p._gotcha)) return json_({ ok: true });
+
+  var nombre = val_(p.nombre);
+  var apellido = val_(p.apellido);
+  var email = val_(p.email);
+  var telefono = val_(p.telefono);
+  var mensaje = val_(p.mensaje);
+
+  if (!nombre || !email || !mensaje) {
+    return json_({ ok: false, error: "required_fields" });
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return json_({ ok: false, error: "invalid_email" });
+  }
+
+  var subject = "[Observatorio IA] Consulta desde la web";
+  var body = [
+    "Consulta desde el formulario de contacto del sitio web.",
+    "",
+    "Nombre: " + nombre + (apellido ? " " + apellido : ""),
+    "Email: " + email,
+    "Teléfono: " + (telefono || "(no indicado)"),
+    "",
+    "Mensaje:",
+    mensaje
+  ].join("\n");
+
+  try {
+    MailApp.sendEmail({
+      to: CONTACT_TO,
+      subject: subject,
+      body: body,
+      replyTo: email,
+      name: (nombre + " " + apellido).trim()
+    });
+    return json_({ ok: true });
+  } catch (err) {
+    return json_({ ok: false, error: "send_failed", message: String(err) });
   }
 }
 
