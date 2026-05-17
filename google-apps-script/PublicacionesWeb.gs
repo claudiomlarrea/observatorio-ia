@@ -182,8 +182,23 @@ function parseBody_(e) {
   try {
     return JSON.parse(raw);
   } catch (_err) {
-    return {};
+    return parseUrlEncoded_(raw);
   }
+}
+
+function parseUrlEncoded_(raw) {
+  var out = {};
+  if (!raw || String(raw).indexOf("=") < 0) return out;
+  String(raw)
+    .split("&")
+    .forEach(function (pair) {
+      var i = pair.indexOf("=");
+      if (i < 0) return;
+      var k = decodeURIComponent(pair.slice(0, i).replace(/\+/g, " "));
+      var v = decodeURIComponent(pair.slice(i + 1).replace(/\+/g, " "));
+      out[k] = v;
+    });
+  return out;
 }
 
 function mergePostParams_(e) {
@@ -327,6 +342,23 @@ function sendContactEmailTo_(to, subject, body, replyToEmail) {
   return false;
 }
 
+/** Sale del marco de script.google.com y vuelve al sitio en GitHub Pages. */
+function contactRedirectHtml_(url) {
+  var safe = String(url)
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;");
+  return (
+    "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"utf-8\">" +
+    '<meta http-equiv="refresh" content="0;url=' +
+    safe +
+    '">' +
+    "<script>var u=" +
+    JSON.stringify(String(url)) +
+    ";try{window.top.location.replace(u);}catch(e){window.location.replace(u);}</script>" +
+    "</head><body><p>Volviendo al sitio del Observatorio…</p></body></html>"
+  );
+}
+
 function contactResponse_(p, ok, errCode, errMsg) {
   if (val_(p._iframe) === "1") {
     var flag = ok ? "1" : "0";
@@ -340,13 +372,9 @@ function contactResponse_(p, ok, errCode, errMsg) {
   }
   if (val_(p._redirect) === "1") {
     var url = ok ? CONTACT_REDIRECT_OK : CONTACT_REDIRECT_ERR;
-    return HtmlService.createHtmlOutput(
-      "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"utf-8\">" +
-        "<meta http-equiv=\"refresh\" content=\"0;url=" +
-        url +
-        "\">" +
-        "</head><body><p>Redirigiendo…</p></body></html>"
-    ).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+    return HtmlService.createHtmlOutput(contactRedirectHtml_(url)).setXFrameOptionsMode(
+      HtmlService.XFrameOptionsMode.ALLOWALL
+    );
   }
   if (ok) return json_({ ok: true });
   return json_({ ok: false, error: errCode || "error", message: errMsg || "" });
