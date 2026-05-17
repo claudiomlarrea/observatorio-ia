@@ -12,6 +12,7 @@ var SPREADSHEET_ID = "18xXPRok4kVF81hkEDDlfDf8Vx-KI2HeywZNFSXkozwU";
 var CONTACT_TO = "observatorioia@uccuyo.edu.ar";
 var CONTACT_COPY_TO = "investigacion@uccuyo.edu.ar";
 var HOJA_PUBLICACIONES = "Hoja 1";
+var HOJA_CONTACTOS = "Contactos web";
 var SOLO_FILA_OBSERVATORIO = true;
 var PATRON_UNIDAD_OIA = /OIA|Observatorio de Inteligencia Artificial/i;
 var ESTADO_PUBLICABLE = "publicado";
@@ -234,47 +235,96 @@ function handleContact_(p) {
     mensaje
   ].join("\n");
 
-  if (sendContactEmail_(subject, body, email)) {
+  var logged = logContactToSheet_(nombre, apellido, email, telefono, mensaje);
+  var mailed = sendContactEmail_(subject, body, email);
+
+  if (mailed || logged) {
     return contactResponse_(p, true);
   }
   return contactResponse_(p, false, "send_failed");
 }
 
-function sendContactEmail_(subject, body, replyToEmail) {
-  var toList = [CONTACT_TO];
-  if (CONTACT_COPY_TO && CONTACT_COPY_TO !== CONTACT_TO) {
-    toList.push(CONTACT_COPY_TO);
+function logContactToSheet_(nombre, apellido, email, telefono, mensaje) {
+  try {
+    var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+    var sh = ss.getSheetByName(HOJA_CONTACTOS);
+    if (!sh) {
+      sh = ss.insertSheet(HOJA_CONTACTOS);
+      sh.appendRow([
+        "Fecha",
+        "Nombre",
+        "Apellido",
+        "Email",
+        "Teléfono",
+        "Mensaje"
+      ]);
+    }
+    sh.appendRow([
+      new Date(),
+      nombre,
+      apellido || "",
+      email,
+      telefono || "",
+      mensaje
+    ]);
+    return true;
+  } catch (err) {
+    Logger.log("logContactToSheet_: " + err);
+    return false;
   }
-  var to = toList.join(",");
+}
 
-  var attempts = [
-    function () {
+function sendContactEmail_(subject, body, replyToEmail) {
+  var targets = [];
+  if (CONTACT_COPY_TO) targets.push(CONTACT_COPY_TO);
+  if (CONTACT_TO && targets.indexOf(CONTACT_TO) < 0) {
+    targets.push(CONTACT_TO);
+  }
+
+  var i;
+  for (i = 0; i < targets.length; i++) {
+    if (sendContactEmailTo_(targets[i], subject, body, replyToEmail)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function sendContactEmailTo_(to, subject, body, replyToEmail) {
+  var attempts = [];
+
+  attempts.push(function () {
+    GmailApp.sendEmail(to, subject, body);
+  });
+  if (replyToEmail) {
+    attempts.push(function () {
       GmailApp.sendEmail(to, subject, body, { replyTo: replyToEmail });
-    },
-    function () {
+    });
+  }
+  attempts.push(function () {
+    MailApp.sendEmail(to, subject, body);
+  });
+  if (replyToEmail) {
+    attempts.push(function () {
       MailApp.sendEmail({
         to: to,
         subject: subject,
         body: body,
         replyTo: replyToEmail
       });
-    },
-    function () {
-      MailApp.sendEmail(to, subject, body);
-    }
-  ];
+    });
+  }
 
-  var sent = false;
-  for (var i = 0; i < attempts.length; i++) {
+  var j;
+  for (j = 0; j < attempts.length; j++) {
     try {
-      attempts[i]();
-      sent = true;
-      break;
+      attempts[j]();
+      return true;
     } catch (err) {
-      Logger.log("sendContactEmail intento " + (i + 1) + ": " + err);
+      Logger.log("sendContactEmailTo " + to + " intento " + (j + 1) + ": " + err);
     }
   }
-  return sent;
+  return false;
 }
 
 function contactResponse_(p, ok, errCode, errMsg) {
@@ -350,4 +400,14 @@ function jsonOrJsonp_(obj, e) {
     );
   }
   return ContentService.createTextOutput(json).setMimeType(ContentService.MimeType.JSON);
+}
+
+/** Ejecutar desde el editor (▶) para probar envío de correo y ver el error en Ejecuciones. */
+function testContactEmail() {
+  var ok = sendContactEmail_(
+    "[Observatorio IA] Prueba manual",
+    "Si recibís este correo, el formulario web puede enviar mensajes.",
+    "test@example.com"
+  );
+  Logger.log("testContactEmail ok=" + ok);
 }

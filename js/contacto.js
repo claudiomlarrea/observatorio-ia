@@ -97,8 +97,8 @@
       temp.submit();
 
       window.setTimeout(function () {
-        finish(true);
-      }, 12000);
+        finish(false);
+      }, 20000);
     });
   }
 
@@ -123,13 +123,13 @@
         form.reset();
         setStatus(
           "ok",
-          "Gracias. Tu mensaje fue enviado. Te responderemos al correo que indicaste. Si no recibís respuesta en 48 h, usá «Escribir por correo»."
+          "Gracias. Recibimos tu mensaje y te responderemos al correo que indicaste."
         );
       })
       .catch(function () {
         setStatus(
           "error",
-          "No pudimos enviar el mensaje. Usá «Escribir por correo» para contactarnos directamente."
+          "No pudimos enviar el mensaje desde la web. Usá el botón «Escribir por correo» (abre tu correo con el texto listo) o escribinos a observatorioia@uccuyo.edu.ar."
         );
       })
       .finally(function () {
