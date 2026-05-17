@@ -17,7 +17,12 @@ var SOLO_FILA_OBSERVATORIO = true;
 var PATRON_UNIDAD_OIA = /OIA|Observatorio de Inteligencia Artificial/i;
 var ESTADO_PUBLICABLE = "publicado";
 
+var ADMIN_ACCESS_KEY = "OIA-Privado-2026";
+
 var AUTHORIZED_EMAILS = [
+  "claudio.larrea@hotmail.com",
+  "investigacion@uccuyo.edu.ar",
+  "observatorioia@uccuyo.edu.ar",
   "barias@uccuyo.edu.ar",
   "vincutec@uccuyo.edu.ar",
   "asistente.inv@uccuyo.edu.ar",
@@ -29,7 +34,7 @@ var AUTHORIZED_EMAILS = [
 function doGet(e) {
   var action = param_(e, "action", "public");
   if (action === "admin") {
-    return renderAdmin_();
+    return renderAdmin_(e);
   }
 
   var datos = obtenerItemsPublicos_();
@@ -45,7 +50,7 @@ function doPost(e) {
   }
 
   if (action !== "add") return json_({ ok: false, error: "invalid_action" });
-  if (!isAuthorized_()) return json_({ ok: false, error: "unauthorized" });
+  if (!isAuthorized_(e)) return json_({ ok: false, error: "unauthorized" });
 
   var row = payloadToRow_(payload);
 
@@ -57,8 +62,8 @@ function doPost(e) {
   return json_({ ok: true });
 }
 
-function renderAdmin_() {
-  if (!isAuthorized_()) {
+function renderAdmin_(e) {
+  if (!isAuthorized_(e)) {
     return HtmlService.createHtmlOutput(
       "<h3>Acceso denegado</h3><p>Tu email no está autorizado para cargar publicaciones.</p>"
     ).setTitle("OIA - Acceso denegado");
@@ -410,9 +415,15 @@ function getEmail_() {
   }
 }
 
-function isAuthorized_() {
+function isAuthorized_(e) {
   var email = getEmail_();
-  return email && AUTHORIZED_EMAILS.indexOf(email) >= 0;
+  if (email && AUTHORIZED_EMAILS.indexOf(email) >= 0) return true;
+  return adminKeyFromRequest_(e) === ADMIN_ACCESS_KEY;
+}
+
+function adminKeyFromRequest_(e) {
+  if (!e || !e.parameter) return "";
+  return val_(e.parameter.key);
 }
 
 function json_(obj) {
