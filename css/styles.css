@@ -812,6 +812,17 @@ form.simple-form small {
   margin-top: 0;
 }
 
+.contact-email-cta {
+  margin: 1.25rem 0 0.75rem;
+}
+
+.text-muted-small {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--color-text-soft);
+}
+
 .label-optional {
   font-weight: 400;
 }
