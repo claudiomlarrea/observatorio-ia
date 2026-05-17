@@ -6,6 +6,8 @@
   var submitBtn = form.querySelector('button[type="submit"]');
   var config = window.OBS_PUBLICACIONES || {};
   var endpoint = config.APPS_SCRIPT_URL;
+  var iframeName = "obs-contact-frame";
+  var submitPending = false;
 
   function setStatus(kind, message) {
     if (!statusEl) return;
@@ -34,36 +36,62 @@
       "mailto:observatorioia@uccuyo.edu.ar?subject=" + subject + "&body=" + body;
   }
 
-  function checkSentFromQuery() {
-    var params = new URLSearchParams(window.location.search);
-    if (params.get("enviado") === "1") {
+  function ensureHidden(name, value) {
+    var input = form.querySelector('input[name="' + name + '"]');
+    if (!input) {
+      input = document.createElement("input");
+      input.type = "hidden";
+      input.name = name;
+      form.appendChild(input);
+    }
+    input.value = value;
+  }
+
+  function ensureIframe() {
+    var frame = document.getElementById(iframeName);
+    if (frame) return frame;
+    frame = document.createElement("iframe");
+    frame.id = iframeName;
+    frame.name = iframeName;
+    frame.title = "Envío de consulta";
+    frame.setAttribute("aria-hidden", "true");
+    frame.style.cssText =
+      "position:absolute;width:0;height:0;border:0;visibility:hidden";
+    document.body.appendChild(frame);
+    return frame;
+  }
+
+  function resetSubmitUi() {
+    submitPending = false;
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Enviar";
+    }
+  }
+
+  window.addEventListener("message", function (ev) {
+    if (!submitPending) return;
+    if (!ev.data || ev.data.obsContact == null) return;
+    var fromGoogle =
+      typeof ev.origin === "string" &&
+      (ev.origin.indexOf("https://script.google.com") === 0 ||
+        ev.origin.indexOf("https://script.googleusercontent.com") === 0);
+    if (!fromGoogle) return;
+
+    resetSubmitUi();
+    if (String(ev.data.obsContact) === "1") {
+      form.reset();
       setStatus(
         "ok",
         "Gracias. Recibimos tu mensaje y te responderemos a la brevedad."
       );
-      cleanQueryParam("enviado");
-    } else if (params.get("enviado") === "0") {
+    } else {
       setStatus(
         "error",
-        "La página no pudo confirmar el envío. Si el mensaje ya llegó a observatorioia@uccuyo.edu.ar, podés ignorar este aviso. Si no llegó, usá «Escribir por correo» o intentá de nuevo."
+        "No pudimos enviar el mensaje. Probá «Escribir por correo» o intentá en unos minutos."
       );
-      cleanQueryParam("enviado");
     }
-  }
-
-  function cleanQueryParam(name) {
-    if (!window.history.replaceState) return;
-    var params = new URLSearchParams(window.location.search);
-    params.delete(name);
-    var qs = params.toString();
-    var url =
-      window.location.pathname +
-      window.location.hash +
-      (qs ? "?" + qs : "");
-    window.history.replaceState({}, "", url);
-  }
-
-  checkSentFromQuery();
+  });
 
   form.addEventListener("submit", function (ev) {
     ev.preventDefault();
@@ -75,54 +103,30 @@
       return;
     }
 
-    var payload = {
-      action: "contact",
-      nombre: form.nombre.value.trim(),
-      apellido: form.apellido.value.trim(),
-      email: form.email.value.trim(),
-      telefono: form.telefono.value.trim(),
-      mensaje: form.mensaje.value.trim(),
-      _gotcha: form._gotcha ? form._gotcha.value : ""
-    };
+    ensureIframe();
+    form.method = "POST";
+    form.action = endpoint;
+    form.target = iframeName;
+    ensureHidden("action", "contact");
+    ensureHidden("_iframe", "1");
 
+    submitPending = true;
     if (submitBtn) {
       submitBtn.disabled = true;
       submitBtn.textContent = "Enviando…";
     }
     setStatus("pending", "Enviando tu mensaje…");
 
-    fetch(endpoint, {
-      method: "POST",
-      mode: "cors",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(payload)
-    })
-      .then(function (res) {
-        return res.json();
-      })
-      .then(function (data) {
-        if (data && data.ok) {
-          form.reset();
-          setStatus(
-            "ok",
-            "Gracias. Recibimos tu mensaje y te responderemos a la brevedad."
-          );
-          return;
-        }
-        throw new Error((data && data.error) || "send_failed");
-      })
-      .catch(function () {
-        setStatus(
-          "error",
-          "No pudimos confirmar el envío desde la web. Si no llega el correo a observatorioia@uccuyo.edu.ar en unos minutos, usá «Escribir por correo»."
-        );
-      })
-      .finally(function () {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.textContent = "Enviar";
-        }
-      });
+    form.submit();
+
+    window.setTimeout(function () {
+      if (!submitPending) return;
+      resetSubmitUi();
+      setStatus(
+        "error",
+        "El envío tardó demasiado. Si no llega el correo a observatorioia@uccuyo.edu.ar, usá «Escribir por correo»."
+      );
+    }, 25000);
   });
 
   var mailBtn = document.getElementById("contact-mailto-btn");

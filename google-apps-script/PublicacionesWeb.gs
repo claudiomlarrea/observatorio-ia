@@ -278,6 +278,16 @@ function sendContactEmail_(subject, body, replyToEmail) {
 }
 
 function contactResponse_(p, ok, errCode, errMsg) {
+  if (val_(p._iframe) === "1") {
+    var flag = ok ? "1" : "0";
+    return HtmlService.createHtmlOutput(
+      "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"utf-8\"><script>" +
+        "try{parent.postMessage({obsContact:'" +
+        flag +
+        "'},'*');}catch(e){}" +
+        "</script></head><body></body></html>"
+    ).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  }
   if (val_(p._redirect) === "1") {
     var url = ok ? CONTACT_REDIRECT_OK : CONTACT_REDIRECT_ERR;
     return HtmlService.createHtmlOutput(
