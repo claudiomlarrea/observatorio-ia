@@ -163,22 +163,24 @@
           msg.className = ok ? "ok" : "err";
         }
 
-        function unlock() {
-          if (btn) btn.disabled = false;
-        }
-
-        window.addEventListener("message", function (ev) {
-          if (!ev.data || ev.data.obsPubSave == null) return;
-          unlock();
-          if (String(ev.data.obsPubSave) === "1") {
-            setMsg(ev.data.msg || "Guardado correctamente.", true);
-            form.reset();
-            document.getElementById("unidad").value = UNIDAD;
-            document.getElementById("estado").value = "borrador";
+        function checkSavedFromUrl() {
+          var p = new URLSearchParams(window.location.search);
+          if (p.get("saved") === "1") {
+            setMsg("Guardado correctamente.", true);
+            if (window.history && window.history.replaceState) {
+              var clean = window.location.pathname + "?action=admin";
+              var key = p.get("key");
+              if (key) clean += "&key=" + encodeURIComponent(key);
+              window.history.replaceState({}, "", clean);
+            }
             return;
           }
-          setMsg("No se pudo guardar: " + (ev.data.msg || "error"), false);
-        });
+          if (p.get("saved") === "0") {
+            setMsg("No se pudo guardar: " + (p.get("err") || "error"), false);
+          }
+        }
+
+        checkSavedFromUrl();
 
         form.addEventListener("submit", function (ev) {
           if (!form.reportValidity()) {
@@ -186,16 +188,7 @@
             return;
           }
           if (btn) btn.disabled = true;
-          setMsg("Guardando...", true);
-          window.setTimeout(function () {
-            if (btn && btn.disabled) {
-              unlock();
-              setMsg(
-                "Sin respuesta. Cerrá esta pestaña, volvé a abrir desde el sitio y probá de nuevo.",
-                false
-              );
-            }
-          }, 15000);
+          setMsg("Guardando…", true);
         });
       })();
     </script>
