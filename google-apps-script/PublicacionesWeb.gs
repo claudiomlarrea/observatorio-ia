@@ -64,16 +64,38 @@ function doPost(e) {
 
 /** Llamado desde el panel HTML con google.script.run (no abre página en blanco). */
 function savePublicationAdmin_(payload) {
-  payload = payload || {};
-  if (!isAuthorizedForPayload_(payload)) {
-    throw new Error("No autorizado para guardar.");
+  try {
+    payload = payload || {};
+    if (!isAuthorizedForPayload_(payload)) {
+      return {
+        ok: false,
+        message:
+          "No autorizado. Abrí el panel desde «Ingreso equipo · Cargar publicaciones» en el sitio."
+      };
+    }
+    var row = payloadToRow_(payload);
+    if (!row[0] || !row[1] || !row[6]) {
+      return { ok: false, message: "Completá tipo, título y unidad." };
+    }
+    getSheet_().appendRow(row);
+    SpreadsheetApp.flush();
+    return { ok: true, message: "Guardado" };
+  } catch (err) {
+    return { ok: false, message: String(err) };
   }
-  var row = payloadToRow_(payload);
-  if (!row[0] || !row[1] || !row[6]) {
-    throw new Error("Completá tipo, título y unidad.");
-  }
-  getSheet_().appendRow(row);
-  return true;
+}
+
+/** En el editor: elegí esta función y ▶ Ejecutar (autoriza permisos de la planilla). */
+function authorizeSavePanel() {
+  var r = savePublicationAdmin_({
+    key: ADMIN_ACCESS_KEY,
+    tipo: "Diario",
+    titulo: "Prueba permisos panel",
+    unidad: "OIA- Observatorio de Inteligencia Artificial",
+    estado: "borrador"
+  });
+  Logger.log(JSON.stringify(r));
+  return r;
 }
 
 function isAuthorizedForPayload_(p) {
@@ -90,7 +112,10 @@ function renderAdmin_(e) {
   }
   var t = HtmlService.createTemplateFromFile("PublicacionesAdmin");
   t.adminKey = adminKeyFromRequest_(e);
-  return t.evaluate().setTitle("OIA - Carga privada");
+  return t
+    .evaluate()
+    .setTitle("OIA - Carga privada")
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
 function obtenerItemsPublicos_() {

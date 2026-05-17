@@ -168,10 +168,40 @@
 
         form.addEventListener("submit", function (ev) {
           ev.preventDefault();
+          var btn = form.querySelector('button[type="submit"]');
+          if (btn) btn.disabled = true;
           setMsg("Guardando...", true);
 
+          var finished = false;
+          var timer = window.setTimeout(function () {
+            if (finished) return;
+            finished = true;
+            if (btn) btn.disabled = false;
+            setMsg(
+              "Tardó demasiado. En Apps Script ejecutá authorizeSavePanel (▶), luego Implementar → Nueva versión.",
+              false
+            );
+          }, 25000);
+
+          function done() {
+            if (finished) return;
+            finished = true;
+            window.clearTimeout(timer);
+            if (btn) btn.disabled = false;
+          }
+
           google.script.run
-            .withSuccessHandler(function () {
+            .withSuccessHandler(function (res) {
+              done();
+              if (!res || !res.ok) {
+                setMsg(
+                  "No se pudo guardar (" +
+                    (res && res.message ? res.message : "error") +
+                    ")",
+                  false
+                );
+                return;
+              }
               setMsg("Guardado correctamente.", true);
               form.reset();
               document.getElementById("unidad").value =
@@ -179,6 +209,7 @@
               document.getElementById("estado").value = "borrador";
             })
             .withFailureHandler(function (err) {
+              done();
               var text =
                 err && err.message ? err.message : String(err || "error");
               setMsg("No se pudo guardar (" + text + ")", false);
