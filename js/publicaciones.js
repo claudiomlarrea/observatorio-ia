@@ -45,6 +45,8 @@
 
   var items = [];
   var filtroActivo = "todas";
+  var PAGE_SIZE = 10;
+  var visibleLimit = PAGE_SIZE;
 
   function fetchJson(url) {
     return fetch(url, { method: "GET" }).then(function (r) {
@@ -156,6 +158,7 @@
     root.querySelectorAll(".pub-filter").forEach(function (btn) {
       btn.addEventListener("click", function () {
         filtroActivo = btn.getAttribute("data-filtro");
+        visibleLimit = PAGE_SIZE;
         dibujarFiltros();
         dibujarGrilla();
       });
@@ -192,78 +195,6 @@
     return String(c || "otros").replace(/[^a-z0-9_-]/gi, "");
   }
 
-  function tarjetaHTML(it, idx) {
-    var categoria = categoriaItem(it);
-    var badges =
-      '<span class="pub-chip pub-chip--' +
-      safeCatClass(categoria) +
-      '">' +
-      esc(textoChip(categoria)) +
-      "</span>";
-
-    var bloques = [];
-
-    bloques.push("<h3 class=\"pub-card-title\">" + esc(it.titulo || "Sin título") + "</h3>");
-
-    if (it.autores) bloques.push("<p class=\"pub-meta\"><strong>Autor/es:</strong> " + esc(it.autores) + "</p>");
-
-    if (it.revista_o_medio) {
-      var lab = /^diarios$/i.test(categoria || "") ? "Medio" : /^eventos$/i.test(categoria || "") ? "Contexto" : "Revista / medio";
-      bloques.push("<p class=\"pub-meta\"><strong>" + lab + ":</strong> " + esc(it.revista_o_medio) + "</p>");
-    }
-
-    if (it.editorial || it.isbn) {
-      bloques.push(
-        "<p class=\"pub-meta\"><strong>Editorial / ISBN:</strong> " +
-          esc([it.editorial, it.isbn].filter(Boolean).join(" · ")) +
-          "</p>"
-      );
-    }
-
-    if (it.doi) bloques.push("<p class=\"pub-meta\"><strong>DOI:</strong> " + esc(it.doi) + "</p>");
-    if (it.indexacion) bloques.push("<p class=\"pub-meta\"><strong>Indexación:</strong> " + esc(it.indexacion) + "</p>");
-    if (it.repositorio) bloques.push("<p class=\"pub-meta\"><strong>Repositorio:</strong> " + esc(it.repositorio) + "</p>");
-    if (it.evento)
-      bloques.push("<p class=\"pub-meta\"><strong>Evento:</strong> " + esc(it.evento) + "</p>");
-    if (it.lugar) bloques.push("<p class=\"pub-meta\"><strong>Lugar:</strong> " + esc(it.lugar) + "</p>");
-
-    var tiempo = "";
-    if (it.fecha) tiempo = esc(it.fecha);
-    else if (it.anio) tiempo = esc(it.anio);
-
-    var primaryHref = "";
-    if (it.link) primaryHref = safeHref(it.link);
-    else if (it.doi) primaryHref = doiToUrl(it.doi);
-    var btnLabel = /doi\.org/i.test(primaryHref) ? "Ver DOI / artículo" : "Abrir enlace";
-
-    var filaInferior =
-      '<div class="pub-card-foot">' +
-      (tiempo ? '<span class="pub-tag-año">' + tiempo + "</span>" : "") +
-      (primaryHref && primaryHref !== "#"
-        ? '<a class="pub-btn-more" href="' +
-          esc(primaryHref) +
-          "\" target=\"_blank\" rel=\"noopener noreferrer\">" +
-          esc(btnLabel) +
-          "</a>"
-        : "") +
-      "</div>";
-
-    if (it.resumen)
-      bloques.push("<blockquote class=\"pub-resumen\"><strong>Nota:</strong> " + esc(it.resumen) + "</blockquote>");
-
-    bloques.push(filaInferior);
-
-    return (
-      "<article class=\"pub-card\" style=\"--enter-delay:" +
-      idx * 0.04 +
-      "s\"><div class=\"pub-card-tags\">" +
-      badges +
-      "</div>" +
-      bloques.join("") +
-      "</article>"
-    );
-  }
-
   function textoChip(categoria) {
     var m = {
       revistas: "Revista",
@@ -289,6 +220,67 @@
     if (/^doi:/i.test(u)) return doiToUrl(u);
     if (/^10\.\d+/i.test(u)) return doiToUrl(u);
     return u || "#";
+  }
+
+  function metaLinea(it, categoria) {
+    var partes = [];
+    if (it.autores) partes.push(it.autores);
+    if (it.revista_o_medio) partes.push(it.revista_o_medio);
+    if (it.evento && categoria === "eventos") partes.push(it.evento);
+    if (it.lugar) partes.push(it.lugar);
+    if (it.editorial) partes.push(it.editorial);
+    return partes.join(" · ");
+  }
+
+  function enlaceItem(it) {
+    var href = "";
+    if (it.link) href = safeHref(it.link);
+    else if (it.doi) href = doiToUrl(it.doi);
+    var label = /doi\.org/i.test(href) ? "Ver DOI" : "Abrir enlace";
+    return { href: href, label: label };
+  }
+
+  function filaCompactaHTML(it) {
+    var categoria = categoriaItem(it);
+    var chip =
+      '<span class="pub-chip pub-chip--' +
+      safeCatClass(categoria) +
+      '">' +
+      esc(textoChip(categoria)) +
+      "</span>";
+    var meta = metaLinea(it, categoria);
+    var tiempo = it.fecha || it.anio || "";
+    var link = enlaceItem(it);
+    var linkHtml =
+      link.href && link.href !== "#"
+        ? '<a class="pub-btn-link" href="' +
+          esc(link.href) +
+          '" target="_blank" rel="noopener noreferrer">' +
+          esc(link.label) +
+          "</a>"
+        : '<span class="pub-row-nolink">Sin enlace</span>';
+
+    return (
+      '<article class="pub-row pub-row--' +
+      safeCatClass(categoria) +
+      '">' +
+      '<div class="pub-row-type">' +
+      chip +
+      "</div>" +
+      '<div class="pub-row-main">' +
+      '<h3 class="pub-row-title">' +
+      esc(it.titulo || "Sin título") +
+      "</h3>" +
+      (meta ? '<p class="pub-row-meta">' + esc(meta) + "</p>" : "") +
+      "</div>" +
+      '<div class="pub-row-year" aria-label="Año o fecha">' +
+      esc(tiempo || "—") +
+      "</div>" +
+      '<div class="pub-row-link">' +
+      linkHtml +
+      "</div>" +
+      "</article>"
+    );
   }
 
   function dibujarGrilla() {
@@ -322,7 +314,35 @@
       return;
     }
 
-    grid.innerHTML = list.map(tarjetaHTML).join("");
+    var shown = list.slice(0, visibleLimit);
+    var restantes = list.length - shown.length;
+
+    var html =
+      '<div class="pub-list" role="list">' +
+      '<div class="pub-list-head" aria-hidden="true">' +
+      "<span>Tipo</span><span>Título</span><span>Año</span><span>Enlace</span>" +
+      "</div>" +
+      shown.map(filaCompactaHTML).join("") +
+      "</div>";
+
+    if (restantes > 0) {
+      html +=
+        '<div class="pub-more-wrap">' +
+        '<button type="button" class="pub-more-btn" data-pub-more="1">Ver más (' +
+        restantes +
+        ")</button>" +
+        "</div>";
+    }
+
+    grid.innerHTML = html;
+
+    var moreBtn = grid.querySelector("[data-pub-more]");
+    if (moreBtn) {
+      moreBtn.addEventListener("click", function () {
+        visibleLimit += PAGE_SIZE;
+        dibujarGrilla();
+      });
+    }
   }
 
   if (document.readyState === "loading") {
