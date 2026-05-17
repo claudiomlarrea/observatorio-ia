@@ -63,48 +63,66 @@
     window.history.replaceState({}, "", url);
   }
 
-  function ensureHidden(name, value) {
-    var input = form.querySelector('input[name="' + name + '"]');
-    if (!input) {
-      input = document.createElement("input");
-      input.type = "hidden";
-      input.name = name;
-      form.appendChild(input);
-    }
-    input.value = value;
-  }
-
   checkSentFromQuery();
 
-  if (endpoint) {
-    form.method = "POST";
-    form.action = endpoint;
-    form.setAttribute("accept-charset", "UTF-8");
-    ensureHidden("action", "contact");
-    ensureHidden("_redirect", "1");
-  }
-
   form.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+
+    if (!form.reportValidity()) return;
+
     if (!endpoint) {
-      ev.preventDefault();
       mailtoFallback();
       return;
     }
 
-    if (!form.reportValidity()) {
-      ev.preventDefault();
-      return;
-    }
-
-    ensureHidden("action", "contact");
-    ensureHidden("_redirect", "1");
+    var payload = {
+      action: "contact",
+      nombre: form.nombre.value.trim(),
+      apellido: form.apellido.value.trim(),
+      email: form.email.value.trim(),
+      telefono: form.telefono.value.trim(),
+      mensaje: form.mensaje.value.trim(),
+      _gotcha: form._gotcha ? form._gotcha.value : ""
+    };
 
     if (submitBtn) {
       submitBtn.disabled = true;
       submitBtn.textContent = "Enviando…";
     }
     setStatus("pending", "Enviando tu mensaje…");
-    /* Envío nativo POST → Apps Script → redirección al sitio */
+
+    fetch(endpoint, {
+      method: "POST",
+      mode: "cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    })
+      .then(function (res) {
+        return res.json();
+      })
+      .then(function (data) {
+        if (data && data.ok) {
+          form.reset();
+          setStatus(
+            "ok",
+            "Gracias. Recibimos tu mensaje y te responderemos a la brevedad."
+          );
+          return;
+        }
+        throw new Error((data && data.error) || "send_failed");
+      })
+      .catch(function () {
+        setStatus(
+          "error",
+          "No pudimos confirmar el envío desde la web. Si no llega el correo a observatorioia@uccuyo.edu.ar en unos minutos, usá «Escribir por correo»."
+        );
+      })
+      .finally(function () {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Enviar";
+        }
+      });
   });
 
   var mailBtn = document.getElementById("contact-mailto-btn");
