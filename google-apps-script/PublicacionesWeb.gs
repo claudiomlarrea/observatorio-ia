@@ -264,15 +264,17 @@ function sendContactEmail_(subject, body, replyToEmail) {
     }
   ];
 
+  var sent = false;
   for (var i = 0; i < attempts.length; i++) {
     try {
       attempts[i]();
-      return true;
+      sent = true;
+      break;
     } catch (err) {
       Logger.log("sendContactEmail intento " + (i + 1) + ": " + err);
     }
   }
-  return false;
+  return sent;
 }
 
 function contactResponse_(p, ok, errCode, errMsg) {

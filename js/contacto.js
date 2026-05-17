@@ -45,7 +45,7 @@
     } else if (params.get("enviado") === "0") {
       setStatus(
         "error",
-        "No se pudo enviar el mensaje desde la web. Usá «Escribir por correo» o intentá más tarde."
+        "La página no pudo confirmar el envío. Si el mensaje ya llegó a observatorioia@uccuyo.edu.ar, podés ignorar este aviso. Si no llegó, usá «Escribir por correo» o intentá de nuevo."
       );
       cleanQueryParam("enviado");
     }
