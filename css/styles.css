@@ -561,27 +561,73 @@ header.section-head--bar h2 {
   color: var(--color-text-soft);
 }
 
-.activity-tile--encuesta {
-  border-top: 5px solid var(--color-green);
-  background: linear-gradient(
-    180deg,
-    rgba(var(--rgb-green), 0.1) 0%,
-    var(--color-surface) 45%
-  );
-}
-
-.activity-tile--encuesta h3 {
-  color: var(--color-green-dark);
-}
-
 .tile-actions {
   margin-top: 1rem;
 }
 
-.btn-sm {
+.section--tools {
+  background: linear-gradient(180deg, #f4f8f6 0%, #faf8f8 100%);
+}
+
+.tools-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 720px) {
+  .tools-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tool-card--featured {
+    grid-column: 1 / -1;
+    max-width: 42rem;
+  }
+}
+
+.tool-card {
+  padding: 1.5rem 1.65rem;
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  border: 1px solid rgba(var(--rgb-green), 0.22);
+  border-left: 5px solid var(--color-green);
+  box-shadow: 0 8px 28px rgba(4, 74, 48, 0.08);
+}
+
+.tool-card-badge {
   display: inline-block;
-  padding: 0.45rem 1rem;
-  font-size: 0.9rem;
+  margin: 0 0 0.65rem;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-green-dark);
+  background: rgba(var(--rgb-green), 0.12);
+  border-radius: 999px;
+}
+
+.tool-card h3 {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  color: var(--color-green-dark);
+}
+
+.tool-card-lead {
+  margin: 0 0 1rem;
+  color: var(--color-text-soft);
+  line-height: 1.55;
+}
+
+.tool-card-list {
+  margin: 0 0 1.25rem;
+  padding-left: 1.2rem;
+  color: var(--color-text);
+}
+
+.tool-card-list li + li {
+  margin-top: 0.35rem;
 }
 
 .contact-layout {
