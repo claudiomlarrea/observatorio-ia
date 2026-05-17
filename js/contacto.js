@@ -37,7 +37,7 @@
   function buildPayload() {
     return {
       action: "contact",
-      _iframe: "1",
+      _redirect: "1",
       nombre: form.nombre.value.trim(),
       apellido: form.apellido.value.trim(),
       email: form.email.value.trim(),
@@ -81,6 +81,7 @@
         if (done) return;
         done = true;
         window.removeEventListener("message", onMessage);
+        frame.removeEventListener("load", onFrameLoad);
         if (temp.parentNode) temp.parentNode.removeChild(temp);
         if (ok) resolve();
         else reject(new Error("send_failed"));
@@ -92,13 +93,24 @@
         else finish(false);
       }
 
+      function onFrameLoad() {
+        try {
+          var href = frame.contentWindow.location.href;
+          if (href.indexOf("enviado=1") !== -1) finish(true);
+          else if (href.indexOf("enviado=0") !== -1) finish(false);
+        } catch (_e) {
+          /* iframe aún en script.google.com (sandbox); esperar siguiente load */
+        }
+      }
+
       window.addEventListener("message", onMessage);
+      frame.addEventListener("load", onFrameLoad);
       document.body.appendChild(temp);
       temp.submit();
 
       window.setTimeout(function () {
         finish(false);
-      }, 20000);
+      }, 30000);
     });
   }
 
@@ -147,5 +159,20 @@
       if (!form.reportValidity()) return;
       mailtoFallback();
     });
+  }
+
+  var params = new URLSearchParams(window.location.search);
+  if (params.get("enviado") === "1") {
+    setStatus(
+      "ok",
+      "Gracias. Recibimos tu mensaje y te responderemos al correo que indicaste."
+    );
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState(
+        null,
+        "",
+        window.location.pathname + (window.location.hash || "")
+      );
+    }
   }
 })();
