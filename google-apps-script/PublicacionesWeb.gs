@@ -50,16 +50,45 @@ function doPost(e) {
   }
 
   if (action !== "add") return json_({ ok: false, error: "invalid_action" });
-  if (!isAuthorized_(e)) return json_({ ok: false, error: "unauthorized" });
+
+  var fromPanel = val_(payload._panel) === "1";
+
+  if (!isAuthorized_(e)) {
+    if (fromPanel) return panelSaveResponse_(false, "No autorizado");
+    return json_({ ok: false, error: "unauthorized" });
+  }
 
   var row = payloadToRow_(payload);
 
   if (!row[0] || !row[1] || !row[6]) {
+    if (fromPanel) return panelSaveResponse_(false, "Completá tipo, título y unidad");
     return json_({ ok: false, error: "required_fields", message: "tipo, titulo y unidad son obligatorios" });
   }
 
-  getSheet_().appendRow(row);
+  try {
+    getSheet_().appendRow(row);
+    SpreadsheetApp.flush();
+  } catch (err) {
+    if (fromPanel) return panelSaveResponse_(false, String(err));
+    return json_({ ok: false, error: "save_failed", message: String(err) });
+  }
+
+  if (fromPanel) return panelSaveResponse_(true, "Guardado correctamente");
   return json_({ ok: true });
+}
+
+function panelSaveResponse_(ok, message) {
+  var flag = ok ? "1" : "0";
+  var msg = JSON.stringify(message || "");
+  return HtmlService.createHtmlOutput(
+    "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"utf-8\"><script>" +
+      "try{parent.postMessage({obsPubSave:'" +
+      flag +
+      "',msg:" +
+      msg +
+      "},'*');}catch(e){}" +
+      "</script></head><body></body></html>"
+  ).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
 /** Llamado desde el panel HTML con google.script.run (no abre página en blanco). */
@@ -111,6 +140,7 @@ function renderAdmin_(e) {
     ).setTitle("OIA - Acceso denegado");
   }
   var t = HtmlService.createTemplateFromFile("PublicacionesAdmin");
+  t.apiUrl = ScriptApp.getService().getUrl();
   t.adminKey = adminKeyFromRequest_(e);
   return t
     .evaluate()
