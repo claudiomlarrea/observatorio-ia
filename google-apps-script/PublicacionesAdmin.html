@@ -20,6 +20,19 @@
       #msg { min-height: 24px; font-weight: 600; }
       .ok { color: #0c6b2f; }
       .err { color: #8a1f1f; }
+      .admin-toolbar { margin: 0 0 18px; }
+      .btn-sheet {
+        display: inline-block;
+        padding: 10px 14px;
+        border-radius: 8px;
+        border: 2px solid #0b6b5d;
+        color: #0b6b5d;
+        background: #fff;
+        font-weight: 600;
+        font-size: 14px;
+        text-decoration: none;
+      }
+      .btn-sheet:hover { background: #f0f7f6; }
       @media (max-width: 760px) { form { grid-template-columns: 1fr; } }
     </style>
   </head>
@@ -28,6 +41,15 @@
     <p class="help">
       Completá los datos y guardá. Verás un instante la página de Google y volverás al
       formulario con la confirmación.
+    </p>
+    <p class="admin-toolbar">
+      <a
+        class="btn-sheet"
+        href="https://docs.google.com/spreadsheets/d/18xXPRok4kVF81hkEDDlfDf8Vx-KI2HeywZNFSXkozwU/edit#gid=0"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Abrir plantilla en Google Sheets (equipo interno)</a
+      >
     </p>
 
     <form id="f" method="post" action="<?= apiUrl ?>" target="_top" accept-charset="UTF-8">
