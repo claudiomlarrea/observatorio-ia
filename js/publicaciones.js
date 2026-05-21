@@ -240,6 +240,26 @@
     return { href: href, label: label };
   }
 
+  function etiquetaUnidad(it) {
+    return String((it && it.unidad) || "").trim();
+  }
+
+  function celdaUnidadAnioHTML(it) {
+    var unidad = etiquetaUnidad(it);
+    var tiempo = (it && (it.fecha || it.anio)) || "";
+    var html = '<div class="pub-row-when" aria-label="Unidad académica y año o fecha">';
+    if (unidad) {
+      html +=
+        '<span class="pub-row-unidad" title="' +
+        esc(unidad) +
+        '">' +
+        esc(unidad) +
+        "</span>";
+    }
+    html += '<span class="pub-row-year">' + esc(tiempo || "—") + "</span></div>";
+    return html;
+  }
+
   function filaCompactaHTML(it) {
     var categoria = categoriaItem(it);
     var chip =
@@ -249,7 +269,6 @@
       esc(textoChip(categoria)) +
       "</span>";
     var meta = metaLinea(it, categoria);
-    var tiempo = it.fecha || it.anio || "";
     var link = enlaceItem(it);
     var linkHtml =
       link.href && link.href !== "#"
@@ -273,9 +292,7 @@
       "</h3>" +
       (meta ? '<p class="pub-row-meta">' + esc(meta) + "</p>" : "") +
       "</div>" +
-      '<div class="pub-row-year" aria-label="Año o fecha">' +
-      esc(tiempo || "—") +
-      "</div>" +
+      celdaUnidadAnioHTML(it) +
       '<div class="pub-row-link">' +
       linkHtml +
       "</div>" +
@@ -320,7 +337,7 @@
     var html =
       '<div class="pub-list" role="list">' +
       '<div class="pub-list-head" aria-hidden="true">' +
-      "<span>Tipo</span><span>Título</span><span>Año</span><span>Enlace</span>" +
+      "<span>Tipo</span><span>Título</span><span>Unidad · Año</span><span>Enlace</span>" +
       "</div>" +
       shown.map(filaCompactaHTML).join("") +
       "</div>";
