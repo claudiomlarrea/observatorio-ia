@@ -1,0 +1,13 @@
+URGENTE — Las publicaciones no se ven (0 en la web)
+=================================================
+
+Causa: el script en Google ocultaba filas sin columna "estado" (las trataba como borrador).
+
+Solución (3 minutos):
+1. Apps Script del OBSERVATORIO (el que ya usan ambos sitios).
+2. Abrí PublicacionesWeb.gs → borrá todo → pegá el archivo de ESTA carpeta.
+3. PublicacionesAdmin.html → pegá el de esta carpeta (si cambió).
+4. Implementar → Nueva implementación → Aplicación web (igual que antes).
+5. Esperá 1 minuto y recargá las dos webs con Cmd+Shift+R.
+
+No hace falta proyecto nuevo de Secretaría para volver a ver las publicaciones.

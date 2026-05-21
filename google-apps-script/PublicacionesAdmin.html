@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>OIA - Carga privada de publicaciones</title>
+    <title>Carga de Publicaciones</title>
     <style>
       body { font-family: Arial, sans-serif; max-width: 900px; margin: 24px auto; padding: 0 16px; color: #1b1b1b; }
       h1 { margin: 0 0 16px; }
@@ -37,7 +37,7 @@
     </style>
   </head>
   <body>
-    <h1>Carga privada - Observatorio de IA</h1>
+    <h1>Carga de Publicaciones</h1>
     <p class="help">
       Completá los datos y guardá. Verás un instante la página de Google y volverás al
       formulario con la confirmación.
@@ -96,12 +96,17 @@
 
       <div>
         <label for="unidad">Unidad *</label>
-        <input
-          id="unidad"
-          name="unidad"
-          value="OIA- Observatorio de Inteligencia Artificial"
-          required
-        />
+        <select id="unidad" name="unidad" required>
+          <option value="" disabled<? if (!defaultUnidad) { ?> selected<? } ?>>
+            Seleccionar unidad académica
+          </option>
+          <? for (var i = 0; i < unidades.length; i++) {
+               var u = unidades[i];
+               var sel = (defaultUnidad && u === defaultUnidad) ? " selected" : "";
+          ?>
+          <option value="<?= u ?>"<?= sel ?>><?= u ?></option>
+          <? } ?>
+        </select>
       </div>
       <div>
         <label for="indexacion">Indexación</label>
@@ -139,13 +144,10 @@
         <label for="fecha">Fecha (texto o YYYY-MM-DD)</label>
         <input id="fecha" name="fecha" />
       </div>
-      <div>
-        <label for="estado">Estado</label>
-        <select id="estado" name="estado">
-          <option value="borrador">borrador (no visible en web)</option>
-          <option value="publicado">publicado (visible en web)</option>
-        </select>
-      </div>
+      <input type="hidden" name="estado" value="publicado" />
+      <p class="help full" style="margin: 0">
+        Al guardar, la publicación queda <strong>publicada</strong> y visible en el sitio web.
+      </p>
 
       <div class="full">
         <label for="resumen">Resumen</label>
@@ -168,8 +170,6 @@
         var form = document.getElementById("f");
         var msg = document.getElementById("msg");
         var btn = document.getElementById("save-btn");
-        var UNIDAD = "OIA- Observatorio de Inteligencia Artificial";
-
         function setMsg(text, ok) {
           msg.textContent = text;
           msg.className = ok ? "ok" : "err";

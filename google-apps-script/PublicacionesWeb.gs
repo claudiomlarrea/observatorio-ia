@@ -21,6 +21,7 @@ var ADMIN_ACCESS_KEY = "OIA-Privado-2026";
 
 var AUTHORIZED_EMAILS = [
   "claudio.larrea@hotmail.com",
+  "claudio17larrea@gmail.com",
   "investigacion@uccuyo.edu.ar",
   "observatorioia@uccuyo.edu.ar",
   "barias@uccuyo.edu.ar",
@@ -30,6 +31,34 @@ var AUTHORIZED_EMAILS = [
   "laurapizarro92@gmail.com",
   "lpizarro@uccuyo.edu.ar"
 ];
+
+/** Misma lista que Consejo / Producción Científica (Streamlit) + unidades transversales. */
+var UNIDADES_ACADEMICAS = [
+  "FDCSSL- Facultad de Derecho y Ciencias Sociales Sede San Luis",
+  "FCMSL- Facultad de Ciencias Médicas Sede San Luis",
+  "FCVSL- Facultad de Ciencias Veterinarias Sede San Luis",
+  "FCEESL- Facultad de Ciencias Económicas y Empresariales Sede San Luis",
+  "FBOSCO- Facultad Don Bosco",
+  "FCEESJ- Facultad de Ciencias Económicas y Empresariales Sede San Juan",
+  "FFyHSJ- Facultad de Filosofía y Humanidades",
+  "ISDSM- Instituto Universitario Santa María",
+  "ECRyPSJ- Escuela Cultura Religiosa y Pastoral",
+  "FDCSSJ- Facultad de Derecho y Ciencias Sociales Sede San Juan",
+  "FCMSJ- Facultad de Ciencias Médicas San Juan",
+  "FEDSJ- Facultad de Educación",
+  "ESEGSJ- Escuela de Seguridad",
+  "FCQyTSJ- Facultad de Ciencias Químicas y Tecnológicas",
+  "ISB- Instituto San Buenaventura",
+  "Secretaría de Investigación",
+  "Unidad de Vinculación Tecnológica",
+  "OIA- Observatorio de Inteligencia Artificial",
+  "Vicerrectora de Formación",
+  "Departamento de Educación a Distancia"
+];
+
+function getUnidadesAcademicas_() {
+  return UNIDADES_ACADEMICAS.slice();
+}
 
 function doGet(e) {
   var action = param_(e, "action", "public");
@@ -142,9 +171,11 @@ function renderAdmin_(e) {
   var t = HtmlService.createTemplateFromFile("PublicacionesAdmin");
   t.apiUrl = ScriptApp.getService().getUrl();
   t.adminKey = adminKeyFromRequest_(e);
+  t.unidades = getUnidadesAcademicas_();
+  t.defaultUnidad = "OIA- Observatorio de Inteligencia Artificial";
   return t
     .evaluate()
-    .setTitle("OIA - Carga privada")
+    .setTitle("Carga de Publicaciones")
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
@@ -159,7 +190,7 @@ function obtenerItemsPublicos_() {
     var o = rowAToObj_(values[i]);
     if (!o.titulo && !o.autores && !o.evento) continue;
     if (SOLO_FILA_OBSERVATORIO && !PATRON_UNIDAD_OIA.test(String(o.unidad || ""))) continue;
-    if (normalizar_(o.estado) === "borrador") continue;
+    if (!esVisibleEnWeb_(o)) continue;
     o.categoria = inferirCategoria_(o);
     out.push(o);
   }
@@ -175,8 +206,14 @@ function getSheet_() {
   return sh;
 }
 
+function esVisibleEnWeb_(o) {
+  var est = normalizar_(o && o.estado);
+  if (est === "borrador") return false;
+  return true;
+}
+
 function payloadToRow_(p) {
-  var estado = normalizar_(p.estado) === ESTADO_PUBLICABLE ? ESTADO_PUBLICABLE : "borrador";
+  var estado = ESTADO_PUBLICABLE;
   return [
     val_(p.tipo),
     val_(p.titulo),
@@ -227,7 +264,7 @@ function rowAToObj_(row) {
     fecha: g(14),
     resumen: g(15),
     repositorio: g(16),
-    estado: g(17) || "borrador"
+    estado: g(17)
   };
 }
 
