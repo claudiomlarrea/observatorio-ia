@@ -1076,16 +1076,15 @@ form.simple-form small {
 }
 
 .pub-row-unidad {
-  font-size: 0.68rem;
+  display: block;
+  font-size: 0.7rem;
   font-weight: 700;
   line-height: 1.25;
-  color: var(--color-text-soft);
+  color: #5c4f54;
   text-align: right;
-  max-width: 100%;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  max-width: 12rem;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .pub-row-year {

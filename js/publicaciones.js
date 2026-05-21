@@ -250,7 +250,7 @@
     var html = '<div class="pub-row-when" aria-label="Unidad académica y año o fecha">';
     if (unidad) {
       html +=
-        '<span class="pub-row-unidad" title="' +
+        '<span class="pub-row-unidad" style="display:block;font-size:0.7rem;font-weight:700;color:#5c4f54;line-height:1.25;text-align:right;max-width:12rem;" title="' +
         esc(unidad) +
         '">' +
         esc(unidad) +
