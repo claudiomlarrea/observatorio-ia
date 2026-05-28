@@ -4,6 +4,7 @@
   var DEFAULT_PAGE_SIZE = Number(CFG.OPENALEX_PAGE_SIZE) || 15;
   var IA_CONCEPT_ID = String(CFG.OPENALEX_IA_CONCEPT_ID || "C154945302").trim();
   var MIN_YEAR_DEFAULT = 1950;
+  var MAX_PUBLICATION_DATE = new Date().toISOString().slice(0, 10);
   var SEARCH_DEBOUNCE_MS = 450;
 
   var items = [];
@@ -188,7 +189,7 @@
   }
 
   function filtroOpenAlex() {
-    var parts = ["concepts.id:" + IA_CONCEPT_ID];
+    var parts = ["concepts.id:" + IA_CONCEPT_ID, "to_publication_date:" + MAX_PUBLICATION_DATE];
     if (yearFilter !== "all") parts.push("publication_year:" + yearFilter);
     else parts.push("from_publication_date:" + MIN_YEAR_DEFAULT + "-01-01");
     var q = searchQuery.trim();
