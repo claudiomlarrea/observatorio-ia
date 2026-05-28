@@ -3,6 +3,7 @@
   var MAILTO = String(CFG.OPENALEX_MAILTO || "observatorioia@uccuyo.edu.ar").trim();
   var DEFAULT_PAGE_SIZE = Number(CFG.OPENALEX_PAGE_SIZE) || 15;
   var IA_CONCEPT_ID = String(CFG.OPENALEX_IA_CONCEPT_ID || "C154945302").trim();
+  var MIN_YEAR_DEFAULT = 1950;
   var SEARCH_DEBOUNCE_MS = 450;
 
   var items = [];
@@ -189,6 +190,7 @@
   function filtroOpenAlex() {
     var parts = ["concepts.id:" + IA_CONCEPT_ID];
     if (yearFilter !== "all") parts.push("publication_year:" + yearFilter);
+    else parts.push("from_publication_date:" + MIN_YEAR_DEFAULT + "-01-01");
     var q = searchQuery.trim();
     if (!q) return parts.join(",");
 
