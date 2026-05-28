@@ -292,18 +292,142 @@
             <h2 id="sec-pub">Publicaciones</h2>
           </header>
           <p class="pub-intro">
-            Producción visible del equipo: los datos llegan desde la misma hoja donde cargan en
-            Producción Científica. Solo aparecen registros marcados como
-            <strong>OIA · Observatorio de Inteligencia Artificial</strong>.
-            <span id="pub-count-wrap" hidden>
-              Mostrando <strong id="pub-count">0</strong> en esta vista (filtradas para el Observatorio).
-            </span>
+            Consultá la producción del Observatorio cargada por el equipo o explorá un índice
+            global de publicaciones académicas sobre inteligencia artificial.
           </p>
-          <div class="pub-app" id="pub-app">
+          <div class="pub-tabs" role="tablist" aria-label="Vistas de publicaciones">
+            <button
+              type="button"
+              class="pub-tab pub-tab--active"
+              role="tab"
+              id="pub-tab-registradas"
+              aria-selected="true"
+              aria-controls="pub-panel-registradas"
+              data-pub-tab="registradas"
+            >
+              Producción del Observatorio
+            </button>
+            <button
+              type="button"
+              class="pub-tab"
+              role="tab"
+              id="pub-tab-global-ia"
+              aria-selected="false"
+              aria-controls="pub-panel-global-ia"
+              data-pub-tab="global-ia"
+              tabindex="-1"
+            >
+              IA en el mundo (índice)
+            </button>
+          </div>
+          <div
+            class="pub-app pub-panel"
+            id="pub-panel-registradas"
+            role="tabpanel"
+            aria-labelledby="pub-tab-registradas"
+          >
+            <p class="pub-panel-intro">
+              Producción visible del equipo: los datos llegan desde la misma hoja donde cargan en
+              Producción Científica. Solo aparecen registros marcados como
+              <strong>OIA · Observatorio de Inteligencia Artificial</strong>.
+              <span id="pub-count-wrap" hidden>
+                Mostrando <strong id="pub-count">0</strong> en esta vista (filtradas para el
+                Observatorio).
+              </span>
+            </p>
             <div id="pub-team-entry"></div>
             <div class="pub-toolbar" id="pub-filters" role="toolbar" aria-label="Filtrar por tipo"></div>
             <div id="pub-status" class="pub-status" aria-live="polite"></div>
             <div class="pub-grid" id="pub-grid"></div>
+          </div>
+          <div
+            class="pub-app pub-panel pub-panel--index"
+            id="pub-panel-global-ia"
+            role="tabpanel"
+            aria-labelledby="pub-tab-global-ia"
+            hidden
+          >
+            <p class="pub-panel-intro pub-panel-intro--index">
+              Resultados globales desde
+              <a href="https://openalex.org" target="_blank" rel="noopener noreferrer">OpenAlex</a>
+              para trabajos académicos relacionados con inteligencia artificial. Puede haber
+              faltantes, duplicados o registros a revisar.
+              <span id="pub-index-count-wrap" hidden>
+                · <strong id="pub-index-total">0</strong> trabajos indexados
+              </span>
+            </p>
+            <div class="pub-index-search">
+              <label class="pub-index-search-label" for="pub-index-q"
+                >Buscar por título, DOI o autor/a</label
+              >
+              <div class="pub-index-search-modes" role="radiogroup" aria-label="Tipo de búsqueda">
+                <button
+                  type="button"
+                  class="pub-index-mode pub-index-mode--active"
+                  data-pub-index-mode="auto"
+                  aria-pressed="true"
+                >
+                  Auto
+                </button>
+                <button
+                  type="button"
+                  class="pub-index-mode"
+                  data-pub-index-mode="title"
+                  aria-pressed="false"
+                >
+                  Título
+                </button>
+                <button
+                  type="button"
+                  class="pub-index-mode"
+                  data-pub-index-mode="author"
+                  aria-pressed="false"
+                >
+                  Autor/a
+                </button>
+                <button
+                  type="button"
+                  class="pub-index-mode"
+                  data-pub-index-mode="doi"
+                  aria-pressed="false"
+                >
+                  DOI
+                </button>
+              </div>
+              <div class="pub-index-year">
+                <span class="pub-index-year-label">Filtrar por año</span>
+                <div class="pub-index-year-buttons" id="pub-index-year-buttons">
+                  <button
+                    type="button"
+                    class="pub-index-year-btn pub-index-year-btn--active"
+                    data-pub-year="all"
+                    aria-pressed="true"
+                  >
+                    Todos
+                  </button>
+                </div>
+              </div>
+              <div class="pub-index-search-row">
+                <input
+                  type="search"
+                  id="pub-index-q"
+                  class="pub-index-search-input"
+                  placeholder="Título, 10.1234/..., Apellido Nombre o Apellido, Nombre"
+                  autocomplete="off"
+                  enterkeyhint="search"
+                />
+                <button
+                  type="button"
+                  id="pub-index-q-clear"
+                  class="pub-more-btn pub-index-search-clear"
+                  hidden
+                >
+                  Limpiar
+                </button>
+              </div>
+            </div>
+            <div id="pub-index-status" class="pub-status" aria-live="polite"></div>
+            <div class="pub-grid" id="pub-index-grid"></div>
           </div>
         </div>
       </section>
@@ -368,7 +492,8 @@
     </footer>
 
     <script src="js/publicaciones-config.js" defer></script>
-    <script src="js/publicaciones.js?v=5" defer></script>
+    <script src="js/publicaciones.js?v=6" defer></script>
+    <script src="js/publicaciones-ia-mundo.js?v=2" defer></script>
     <script src="js/main.js?v=2" defer></script>
   </body>
 </html>
