@@ -384,47 +384,17 @@
     cargarPagina(1, "");
   }
 
-  function aniosSugeridos() {
-    var now = new Date().getFullYear();
-    return [now, now - 1, now - 2, now - 3, now - 4];
-  }
-
-  function renderBotonesAnio() {
-    var wrap = el("pub-index-year-buttons");
-    if (!wrap) return;
-
-    var html = [
-      '<button type="button" class="pub-index-year-btn' +
-        (yearFilter === "all" ? " pub-index-year-btn--active" : "") +
-        '" data-pub-year="all" aria-pressed="' +
-        (yearFilter === "all") +
-        '">Todos</button>'
-    ];
-
-    aniosSugeridos().forEach(function (y) {
-      var sy = String(y);
-      html.push(
-        '<button type="button" class="pub-index-year-btn' +
-          (yearFilter === sy ? " pub-index-year-btn--active" : "") +
-          '" data-pub-year="' +
-          sy +
-          '" aria-pressed="' +
-          (yearFilter === sy) +
-          '">' +
-          sy +
-          "</button>"
-      );
-    });
-
-    wrap.innerHTML = html.join("");
-
-    wrap.querySelectorAll("[data-pub-year]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        yearFilter = btn.getAttribute("data-pub-year") || "all";
-        renderBotonesAnio();
-        cargarPagina(1);
-      });
-    });
+  function construirOpcionesAnio() {
+    var select = el("pub-index-year");
+    if (!select) return;
+    var currentYear = new Date().getFullYear();
+    var minYear = 1990;
+    var opts = ['<option value="all">Todos los años</option>'];
+    for (var y = currentYear; y >= minYear; y--) {
+      opts.push('<option value="' + y + '">' + y + "</option>");
+    }
+    select.innerHTML = opts.join("");
+    select.value = yearFilter;
   }
 
   function seleccionarModo(modo) {
@@ -439,7 +409,10 @@
   function initBuscador() {
     var input = el("pub-index-q");
     var clearBtn = el("pub-index-q-clear");
+    var yearSelect = el("pub-index-year");
     if (!input) return;
+
+    construirOpcionesAnio();
 
     document.querySelectorAll("[data-pub-index-mode]").forEach(function (btn) {
       btn.addEventListener("click", function () {
@@ -464,7 +437,13 @@
     });
 
     if (clearBtn) clearBtn.addEventListener("click", limpiarBusqueda);
-    renderBotonesAnio();
+
+    if (yearSelect) {
+      yearSelect.addEventListener("change", function () {
+        yearFilter = yearSelect.value || "all";
+        cargarPagina(1);
+      });
+    }
   }
 
   function activarTab(tabId) {
