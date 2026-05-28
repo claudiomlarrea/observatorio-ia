@@ -238,10 +238,77 @@
         '"...</div>'
       );
     }
-    return '<div class="pub-msg pub-msg--loading">Cargando publicaciones globales de IA...</div>';
+    return '<div class="pub-msg pub-msg--loading">Cargando en OpenAlex, Crossref, Semantic Scholar y Europe PMC...</div>';
   }
 
   function cargarPagina(page, query) {
+    if (typeof query === "string") searchQuery = query;
+    if (loading) {
+      pendingPage = page;
+      pendingQuery = typeof query === "string" ? query : null;
+      return;
+    }
+
+    if (!window.PUB_FUENTES_ABIERTAS || !window.PUB_FUENTES_ABIERTAS.buscar) {
+      cargarPaginaSoloOpenAlex(page, query);
+      return;
+    }
+
+    loading = true;
+    currentPage = page;
+    var status = el("pub-index-status");
+    if (status) status.innerHTML = mensajeCarga();
+
+    window.PUB_FUENTES_ABIERTAS.buscar({
+      scope: "ia-global",
+      iaConceptId: IA_CONCEPT_ID,
+      mailto: MAILTO,
+      appLabel: "Observatorio IA UCCuyo",
+      page: page,
+      pageSize: pageSize,
+      searchQuery: searchQuery,
+      searchMode: searchMode,
+      yearFilter: yearFilter,
+      sortMode: sortMode
+    })
+      .then(function (res) {
+        loading = false;
+        if (!res || !res.items) throw new Error("format");
+
+        metaTotal = Number(res.metaTotal) || 0;
+        currentPage = Number(res.currentPage) || page;
+        totalPages = Number(res.totalPages) || Math.max(1, Math.ceil(metaTotal / pageSize));
+        items = res.items;
+
+        loaded = true;
+        actualizarContador();
+        actualizarBotonLimpiar();
+        actualizarResumenFiltros();
+
+        if (status) {
+          if (res.fuentesFallidas && res.fuentesFallidas.length) {
+            status.innerHTML =
+              '<div class="pub-msg pub-msg--hint">Algunas fuentes no respondieron (' +
+              esc(res.fuentesFallidas.join(", ")) +
+              "). Se muestran resultados de las demás.</div>";
+          } else {
+            status.innerHTML = "";
+          }
+        }
+        dibujarGrilla();
+        ejecutarPendiente();
+      })
+      .catch(function () {
+        loading = false;
+        if (status) {
+          status.innerHTML =
+            '<div class="pub-msg pub-msg--error">No se pudo cargar el índice desde las fuentes abiertas. Probá de nuevo en unos minutos.</div>';
+        }
+        ejecutarPendiente();
+      });
+  }
+
+  function cargarPaginaSoloOpenAlex(page, query) {
     if (typeof query === "string") searchQuery = query;
     if (loading) {
       pendingPage = page;
@@ -334,6 +401,8 @@
 
     var meta = it.autores || "";
     if (it.doi) meta += (meta ? " · " : "") + "DOI: " + it.doi;
+    if (it.fuente) meta += (meta ? " · " : "") + it.fuente;
+    if (it.oaUrl) meta += (meta ? " · " : "") + "Acceso abierto";
 
     return (
       '<article class="pub-row pub-row--revistas">' +
