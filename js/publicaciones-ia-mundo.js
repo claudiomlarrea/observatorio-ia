@@ -35,6 +35,10 @@
     return d.innerHTML;
   }
 
+  function formatInt(n) {
+    return Number(n || 0).toLocaleString("es-AR");
+  }
+
   function openAlexHeaders() {
     return {
       Accept: "application/json",
@@ -187,7 +191,7 @@
     var totalEl = el("pub-index-total");
     if (!wrap || !totalEl) return;
     wrap.hidden = false;
-    totalEl.textContent = String(metaTotal);
+    totalEl.textContent = formatInt(metaTotal);
   }
 
   function mensajeCarga() {
@@ -238,6 +242,7 @@
         loaded = true;
         actualizarContador();
         actualizarBotonLimpiar();
+        actualizarResumenFiltros();
 
         if (status) status.innerHTML = "";
         dibujarGrilla();
@@ -268,6 +273,16 @@
     if (!clearBtn) return;
     var tieneTexto = (input && input.value.trim()) || searchQuery.trim();
     clearBtn.hidden = !tieneTexto;
+  }
+
+  function actualizarResumenFiltros() {
+    var box = el("pub-index-active");
+    if (!box) return;
+    var parts = [];
+    if (yearFilter !== "all") parts.push("Año: " + yearFilter);
+    if (searchMode !== "auto") parts.push("Modo: " + ETIQUETA_MODO[searchMode]);
+    if (searchQuery.trim()) parts.push('Búsqueda: "' + searchQuery.trim() + '"');
+    box.textContent = parts.length ? "Filtros activos: " + parts.join(" · ") : "";
   }
 
   function filaHTML(it) {
@@ -381,6 +396,7 @@
     if (input) input.value = "";
     searchQuery = "";
     actualizarBotonLimpiar();
+    actualizarResumenFiltros();
     cargarPagina(1, "");
   }
 
@@ -397,6 +413,20 @@
     select.value = yearFilter;
   }
 
+  function limpiarTodo() {
+    var input = el("pub-index-q");
+    var yearSelect = el("pub-index-year");
+    if (input) input.value = "";
+    if (yearSelect) yearSelect.value = "all";
+    searchQuery = "";
+    searchMode = "auto";
+    yearFilter = "all";
+    seleccionarModo("auto");
+    actualizarBotonLimpiar();
+    actualizarResumenFiltros();
+    cargarPagina(1, "");
+  }
+
   function seleccionarModo(modo) {
     searchMode = modo || "auto";
     document.querySelectorAll("[data-pub-index-mode]").forEach(function (btn) {
@@ -409,6 +439,7 @@
   function initBuscador() {
     var input = el("pub-index-q");
     var clearBtn = el("pub-index-q-clear");
+    var clearAllBtn = el("pub-index-clear-all");
     var yearSelect = el("pub-index-year");
     if (!input) return;
 
@@ -421,11 +452,13 @@
           if (searchDebounce) window.clearTimeout(searchDebounce);
           cargarPagina(1, input.value);
         }
+        actualizarResumenFiltros();
       });
     });
 
     input.addEventListener("input", function () {
       actualizarBotonLimpiar();
+      actualizarResumenFiltros();
       programarBusqueda(input.value);
     });
 
@@ -437,13 +470,18 @@
     });
 
     if (clearBtn) clearBtn.addEventListener("click", limpiarBusqueda);
+    if (clearAllBtn) clearAllBtn.addEventListener("click", limpiarTodo);
 
     if (yearSelect) {
       yearSelect.addEventListener("change", function () {
         yearFilter = yearSelect.value || "all";
+        actualizarResumenFiltros();
         cargarPagina(1);
       });
     }
+
+    actualizarContador();
+    actualizarResumenFiltros();
   }
 
   function activarTab(tabId) {
