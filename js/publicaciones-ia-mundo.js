@@ -1,7 +1,7 @@
 (function () {
   var CFG = window.OBS_PUBLICACIONES || {};
   var MAILTO = String(CFG.OPENALEX_MAILTO || "observatorioia@uccuyo.edu.ar").trim();
-  var PAGE_SIZE = Number(CFG.OPENALEX_PAGE_SIZE) || 15;
+  var DEFAULT_PAGE_SIZE = Number(CFG.OPENALEX_PAGE_SIZE) || 15;
   var IA_CONCEPT_ID = String(CFG.OPENALEX_IA_CONCEPT_ID || "C154945302").trim();
   var SEARCH_DEBOUNCE_MS = 450;
 
@@ -17,6 +17,8 @@
   var pendingPage = null;
   var pendingQuery = null;
   var yearFilter = "all";
+  var pageSize = DEFAULT_PAGE_SIZE;
+  var sortMode = "date_desc";
 
   var ETIQUETA_MODO = {
     auto: "coincidencias",
@@ -37,6 +39,26 @@
 
   function formatInt(n) {
     return Number(n || 0).toLocaleString("es-AR");
+  }
+
+  function escapeRegExp(s) {
+    return String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+
+  function highlightText(text) {
+    var src = text == null ? "" : String(text);
+    var q = searchQuery.trim();
+    if (!q) return esc(src);
+    var needle = modoBusquedaEfectivo(q) === "doi" ? normalizarDoi(q) : q;
+    if (!needle) return esc(src);
+    var re = new RegExp("(" + escapeRegExp(needle) + ")", "ig");
+    var isExact = new RegExp("^" + escapeRegExp(needle) + "$", "i");
+    return src
+      .split(re)
+      .map(function (part) {
+        return isExact.test(part) ? '<mark class="pub-mark">' + esc(part) + "</mark>" : esc(part);
+      })
+      .join("");
   }
 
   function openAlexHeaders() {
@@ -151,6 +173,12 @@
     return ETIQUETA_MODO[modoBusquedaEfectivo(q)] || "coincidencias";
   }
 
+  function etiquetaOrdenActual() {
+    if (sortMode === "date_asc") return "Fecha ascendente";
+    if (sortMode === "relevance") return "Relevancia";
+    return "Fecha descendente";
+  }
+
   function fetchOpenAlex(url) {
     return fetch(url, { method: "GET", headers: openAlexHeaders() }).then(function (r) {
       if (!r.ok) throw new Error("network");
@@ -180,8 +208,11 @@
   function urlWorks(page) {
     var params = new URLSearchParams();
     params.set("filter", filtroOpenAlex());
-    params.set("sort", "publication_date:desc");
-    params.set("per-page", String(PAGE_SIZE));
+    var sort = "publication_date:desc";
+    if (sortMode === "date_asc") sort = "publication_date:asc";
+    else if (sortMode === "relevance" && searchQuery.trim()) sort = "relevance_score:desc";
+    params.set("sort", sort);
+    params.set("per-page", String(pageSize));
     params.set("page", String(page));
     return "https://api.openalex.org/works?" + params.toString();
   }
@@ -227,7 +258,7 @@
 
         metaTotal = Number(data.meta && data.meta.count) || 0;
         currentPage = Number(data.meta && data.meta.page) || page;
-        totalPages = Math.max(1, Math.ceil(metaTotal / PAGE_SIZE));
+        totalPages = Math.max(1, Math.ceil(metaTotal / pageSize));
         items = data.results.map(function (w) {
           return {
             titulo: w.display_name || "Sin titulo",
@@ -281,6 +312,8 @@
     var parts = [];
     if (yearFilter !== "all") parts.push("Año: " + yearFilter);
     if (searchMode !== "auto") parts.push("Modo: " + ETIQUETA_MODO[searchMode]);
+    parts.push("Orden: " + etiquetaOrdenActual());
+    parts.push("Página: " + pageSize);
     if (searchQuery.trim()) parts.push('Búsqueda: "' + searchQuery.trim() + '"');
     box.textContent = parts.length ? "Filtros activos: " + parts.join(" · ") : "";
   }
@@ -305,9 +338,9 @@
       esc(it.tipo) +
       "</span></div>" +
       '<div class="pub-row-main"><h3 class="pub-row-title">' +
-      esc(it.titulo) +
+      highlightText(it.titulo) +
       "</h3>" +
-      (meta ? '<p class="pub-row-meta">' + esc(meta) + "</p>" : "") +
+      (meta ? '<p class="pub-row-meta">' + highlightText(meta) + "</p>" : "") +
       "</div>" +
       '<div class="pub-row-when" aria-label="Ano de publicacion"><span class="pub-row-year">' +
       esc(it.anio || "-") +
@@ -359,8 +392,12 @@
           '">&larr; Anterior</button>';
       }
 
-      var info = "Pagina " + currentPage + " de " + totalPages;
-      if (searchQuery.trim()) info += " · " + metaTotal + " resultados";
+      if (currentPage > 1) {
+        html +=
+          '<button type="button" class="pub-more-btn pub-index-nav" data-pub-index-page="1">&laquo; Primera</button>';
+      }
+
+      var info = "Pagina " + currentPage + " de " + totalPages + " · " + formatInt(metaTotal) + " resultados";
       html += '<span class="pub-index-page-info">' + info + "</span>";
 
       if (currentPage < totalPages) {
@@ -368,6 +405,10 @@
           '<button type="button" class="pub-more-btn pub-index-nav" data-pub-index-page="' +
           (currentPage + 1) +
           '">Siguiente &rarr;</button>';
+        html +=
+          '<button type="button" class="pub-more-btn pub-index-nav" data-pub-index-page="' +
+          totalPages +
+          '">Ultima &raquo;</button>';
       }
       html += "</div>";
     }
@@ -416,11 +457,17 @@
   function limpiarTodo() {
     var input = el("pub-index-q");
     var yearSelect = el("pub-index-year");
+    var sizeSelect = el("pub-index-size");
+    var sortSelect = el("pub-index-sort");
     if (input) input.value = "";
     if (yearSelect) yearSelect.value = "all";
+    if (sizeSelect) sizeSelect.value = String(DEFAULT_PAGE_SIZE);
+    if (sortSelect) sortSelect.value = "date_desc";
     searchQuery = "";
     searchMode = "auto";
     yearFilter = "all";
+    pageSize = DEFAULT_PAGE_SIZE;
+    sortMode = "date_desc";
     seleccionarModo("auto");
     actualizarBotonLimpiar();
     actualizarResumenFiltros();
@@ -441,9 +488,13 @@
     var clearBtn = el("pub-index-q-clear");
     var clearAllBtn = el("pub-index-clear-all");
     var yearSelect = el("pub-index-year");
+    var sizeSelect = el("pub-index-size");
+    var sortSelect = el("pub-index-sort");
     if (!input) return;
 
     construirOpcionesAnio();
+    if (sizeSelect) sizeSelect.value = String(pageSize);
+    if (sortSelect) sortSelect.value = sortMode;
 
     document.querySelectorAll("[data-pub-index-mode]").forEach(function (btn) {
       btn.addEventListener("click", function () {
@@ -475,6 +526,22 @@
     if (yearSelect) {
       yearSelect.addEventListener("change", function () {
         yearFilter = yearSelect.value || "all";
+        actualizarResumenFiltros();
+        cargarPagina(1);
+      });
+    }
+
+    if (sizeSelect) {
+      sizeSelect.addEventListener("change", function () {
+        pageSize = Number(sizeSelect.value) || DEFAULT_PAGE_SIZE;
+        actualizarResumenFiltros();
+        cargarPagina(1);
+      });
+    }
+
+    if (sortSelect) {
+      sortSelect.addEventListener("change", function () {
+        sortMode = sortSelect.value || "date_desc";
         actualizarResumenFiltros();
         cargarPagina(1);
       });
