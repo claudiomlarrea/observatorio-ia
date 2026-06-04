@@ -9,9 +9,12 @@ Qué hace este sistema
 • Un pequeño programa en Google (Apps Script) LEE esa hoja y devuelve un JSON.
 • La página web muestra las publicaciones en tarjetas y botones para filtrar.
 
-IMPORTANTE: Solo se listan filas cuya columna "Unidad" sea del Observatorio,
-por ejemplo:  OIA- Observatorio de Inteligencia Artificial
-(así no se mezclan con otras unidades de la misma hoja).
+IMPORTANTE: La hoja es compartida (Consejo, Streamlit y ambos sitios web).
+En el panel de carga, "Unidad" es un desplegable con todas las unidades
+académicas del Consejo más Secretaría, OIA, Vicerrectora de Formación, etc.
+
+En la web del Observatorio solo se LISTAN filas cuya columna "Unidad" sea del
+Observatorio, por ejemplo:  OIA- Observatorio de Inteligencia Artificial.
 
 Si querés mostrar TODAS las filas de la hoja (no recomendado), abrí el archivo
 google-apps-script/PublicacionesWeb.gs y cambiá:
