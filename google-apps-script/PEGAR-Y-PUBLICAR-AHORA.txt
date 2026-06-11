@@ -1,13 +1,21 @@
-URGENTE — Las publicaciones no se ven (0 en la web)
-=================================================
+CONTADOR DE VISITAS + publicaciones (3 minutos)
+================================================
 
-Causa: el script en Google ocultaba filas sin columna "estado" (las trataba como borrador).
+Ambos sitios (Secretaría y Observatorio) usan ESTE Apps Script.
 
-Solución (3 minutos):
-1. Apps Script del OBSERVATORIO (el que ya usan ambos sitios).
-2. Abrí PublicacionesWeb.gs → borrá todo → pegá el archivo de ESTA carpeta.
-3. PublicacionesAdmin.html → pegá el de esta carpeta (si cambió).
-4. Implementar → Nueva implementación → Aplicación web (igual que antes).
-5. Esperá 1 minuto y recargá las dos webs con Cmd+Shift+R.
+1. Abrí https://script.google.com/home → proyecto Publicaciones OIA
+   (el de la URL en js/publicaciones-config.js).
 
-No hace falta proyecto nuevo de Secretaría para volver a ver las publicaciones.
+2. PublicacionesWeb.gs → seleccioná todo → borrá → pegá el archivo
+   de ESTA carpeta (PublicacionesWeb.gs).
+
+3. Implementar → Administrar implementaciones → lápiz → Nueva versión → Implementar.
+   (La URL /exec NO cambia.)
+
+4. Probar en el navegador:
+   .../exec?action=visit&site=secretaria
+   Debe responder: {"ok":true,"secretaria":1,"observatorio":0}
+   (no una lista de publicaciones).
+
+5. Recargá las dos webs con Cmd+Shift+R. El pie muestra:
+   Visitas: X Secretaría · Y Observatorio de IA
