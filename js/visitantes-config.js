@@ -1,1 +1,1 @@
-window.SEC_VISITANTES = { SITE: "secretaria" };
+window.SEC_VISITANTES = { SITE: "observatorio" };
