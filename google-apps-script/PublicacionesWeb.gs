@@ -676,6 +676,9 @@ function obtenerNoticiasMedios_() {
   items = items.concat(fetchGoogleNewsRss_());
   items = items.concat(fetchPublicacionesMedios_());
   items = dedupeNoticias_(items);
+  items = items.filter(function (it) {
+    return !esMedioExcluidoNoticia_(it);
+  });
   items.sort(comparadorNoticiaReciente_);
   return {
     ok: true,
@@ -827,6 +830,19 @@ function esRelevanteOIA_(texto) {
   if (t.indexOf("observatorio") >= 0 && t.indexOf("inteligencia artificial") >= 0) return true;
   if (t.indexOf("observatorio") >= 0 && t.indexOf("uccuyo") >= 0 && /\bia\b/.test(t)) return true;
   return false;
+}
+
+function esMedioExcluidoNoticia_(item) {
+  var blob = normalizar_(
+    val_(item && item.medio) +
+      " " +
+      val_(item && item.link) +
+      " " +
+      val_(item && item.fuente) +
+      " " +
+      val_(item && item.titulo)
+  );
+  return blob.indexOf("diario de cuyo") >= 0 || blob.indexOf("diariodecuyo") >= 0;
 }
 
 function dedupeNoticias_(items) {

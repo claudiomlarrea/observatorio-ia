@@ -9,5 +9,7 @@ window.OBS_NOTICIAS = {
     "oia uccuyo",
     "boletin observatorio ia"
   ],
-  PER_PAGE: 20
+  PER_PAGE: 20,
+  /** Medios que no deben aparecer en la sección Noticias. */
+  MEDIOS_EXCLUIDOS: ["diario de cuyo", "diariodecuyo.com"]
 };

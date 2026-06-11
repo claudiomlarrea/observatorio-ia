@@ -44,6 +44,29 @@
     return false;
   }
 
+  function esMedioExcluido(item) {
+    var blob = normalizar(
+      (item.medio || "") +
+        " " +
+        (item.link || "") +
+        " " +
+        (item.fuente || "") +
+        " " +
+        (item.titulo || "")
+    );
+    var excluidos = CFG.MEDIOS_EXCLUIDOS || ["diario de cuyo", "diariodecuyo.com"];
+    for (var i = 0; i < excluidos.length; i++) {
+      if (blob.indexOf(normalizar(excluidos[i])) >= 0) return true;
+    }
+    return false;
+  }
+
+  function filtrarPermitidos(items) {
+    return items.filter(function (it) {
+      return !esMedioExcluido(it);
+    });
+  }
+
   function normalizarUrl(url) {
     return String(url || "")
       .toLowerCase()
@@ -284,7 +307,7 @@
         visibles.length +
         " resultado" +
         (visibles.length === 1 ? "" : "s") +
-        " sobre el Observatorio (noticias UCCuyo, boletines, diarios y medios registrados).";
+        " sobre el Observatorio (Noticias UCCuyo y otros medios; sin Diario de Cuyo).";
     }
     lista.innerHTML = visibles.map(renderItem).join("");
   }
@@ -303,7 +326,7 @@
       })
     ])
       .then(function (partes) {
-        todos = ordenarItems(dedupeItems(partes[0].concat(partes[1])));
+        todos = ordenarItems(dedupeItems(filtrarPermitidos(partes[0].concat(partes[1]))));
         pintarLista();
       })
       .catch(function () {
