@@ -1,21 +1,20 @@
-CONTADOR DE VISITAS + publicaciones (3 minutos)
-================================================
+CONTADOR DE VISITAS A LAS PÁGINAS WEB (3 minutos)
+==================================================
 
-Ambos sitios (Secretaría y Observatorio) usan ESTE Apps Script.
+Cuenta cada entrada a:
+  • https://claudiomlarrea.github.io/secretaria-investigacion/
+  • https://claudiomlarrea.github.io/observatorio-ia/
 
-1. Abrí https://script.google.com/home → proyecto Publicaciones OIA
-   (el de la URL en js/publicaciones-config.js).
+NO cuenta visitas a la sección Publicaciones ni lecturas de artículos.
 
-2. PublicacionesWeb.gs → seleccioná todo → borrá → pegá el archivo
-   de ESTA carpeta (PublicacionesWeb.gs).
+1. script.google.com → proyecto Publicaciones OIA
+2. PublicacionesWeb.gs → Cmd+A → borrar → pegar el de ESTA carpeta
+3. Implementar → Administrar implementaciones → lápiz → Nueva versión → Implementar
 
-3. Implementar → Administrar implementaciones → lápiz → Nueva versión → Implementar.
-   (La URL /exec NO cambia.)
+Probar:
+  .../exec?action=visit&site=secretaria
 
-4. Probar en el navegador:
-   .../exec?action=visit&site=secretaria
-   Debe responder: {"ok":true,"secretaria":1,"observatorio":0}
-   (no una lista de publicaciones).
+Debe responder:
+  {"ok":true,"tipo":"paginas_web","secretaria":1,"observatorio":0,...}
 
-5. Recargá las dos webs con Cmd+Shift+R. El pie muestra:
-   Visitas: X Secretaría · Y Observatorio de IA
+NO debe devolver una lista "items" de publicaciones.
