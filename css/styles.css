@@ -525,6 +525,59 @@ header.section-head--bar h2 {
   gap: 1.25rem;
 }
 
+.news-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.news-card {
+  padding: 1.35rem 1.5rem 1.4rem;
+  border-radius: var(--radius);
+  border: 1px solid rgba(var(--rgb-inst), 0.1);
+  background: var(--color-surface);
+  box-shadow: var(--shadow);
+}
+
+.news-card-meta {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text-soft);
+}
+
+.news-card-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  line-height: 1.35;
+  margin: 0 0 0.65rem;
+}
+
+.news-card-title a {
+  color: var(--color-institutional);
+  text-decoration: none;
+}
+
+.news-card-title a:hover {
+  color: var(--color-green-dark);
+  text-decoration: underline;
+}
+
+.news-card-excerpt {
+  margin: 0 0 0.85rem;
+  color: var(--color-text);
+}
+
+.news-card-foot {
+  margin: 0;
+}
+
+.news-card-link {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
 @media (min-width: 640px) {
   .activity-blocks {
     grid-template-columns: repeat(2, 1fr);
