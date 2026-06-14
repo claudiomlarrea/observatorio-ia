@@ -70,6 +70,9 @@ function cultivosAptos(boroMgL, salGL) {
 /** Referencia informe IdelAgua: 5 m³/s desalinizados, 1,2 m³/s a Vicuña (24 %) */
 export const FRACCION_MINERA_INFORME = 0.24;
 export const PCT_MINERA_INFORME = 24;
+/** Tope del deslizador de simulación (escenarios what-if) */
+export const FRACCION_MINERA_SIM_MAX = 0.5;
+export const PCT_MINERA_SIM_MAX = 50;
 
 const REF = {
   qDesal: 5,
@@ -348,20 +351,36 @@ export function generarAlertas(data, extra = {}) {
   }
 
   if (data.escenario === "jachal" || data.escenario === "hibrido") {
-    if (frac >= FRACCION_MINERA_INFORME - 0.005) {
+    const pct = Math.round(frac * 100);
+    if (frac >= FRACCION_MINERA_INFORME - 0.02 && frac <= FRACCION_MINERA_INFORME + 0.02) {
       push(
         "verde",
         `Reparto informe IdelAgua: ${PCT_MINERA_INFORME}% a Vicuña (~1,2 m³/s) y ${formatearNumero(qCuenca, 2)} m³/s a la cuenca.`,
       );
-    } else if (frac >= 0.15) {
+    } else if (frac < 0.15) {
+      push(
+        "rojo",
+        `${pct}% a Vicuña — insuficiente para cubrir la demanda minera de 1,2 m³/s del informe.`,
+      );
+    } else if (frac < FRACCION_MINERA_INFORME - 0.02) {
       push(
         "amarillo",
-        `${Math.round(frac * 100)}% a la mina (${formatearNumero(qCuenca, 2)} m³/s al Jáchal) — por debajo de los 1,2 m³/s que Vicuña necesita según el informe.`,
+        `${pct}% a la mina (${formatearNumero(qCuenca, 2)} m³/s al Jáchal) — por debajo del reparto del informe IdelAgua.`,
+      );
+    } else if (frac <= 0.32) {
+      push(
+        "amarillo",
+        `${pct}% a la mina (simulación) — por encima del ${PCT_MINERA_INFORME}% del informe; ${formatearNumero(qCuenca, 2)} m³/s a la cuenca.`,
+      );
+    } else if (frac <= 0.45) {
+      push(
+        "amarillo",
+        `${pct}% a la mina · ${formatearNumero(qCuenca, 2)} m³/s al Jáchal — equilibrar en acuerdo provincial.`,
       );
     } else {
       push(
         "rojo",
-        `${Math.round(frac * 100)}% a Vicuña — insuficiente para cubrir la demanda minera de 1,2 m³/s del informe.`,
+        `${pct}% del agua tratada a Vicuña — poco caudal a la cuenca (${formatearNumero(qCuenca, 2)} m³/s).`,
       );
     }
   }

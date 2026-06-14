@@ -1,4 +1,4 @@
-import { simular, formatearNumero, FRACCION_MINERA_INFORME } from "./model.js";
+import { simular, formatearNumero, FRACCION_MINERA_SIM_MAX } from "./model.js";
 import { ETAPAS_VICUNA } from "./presets.js";
 
 const POBLACION_ZONA = 42000;
@@ -101,7 +101,7 @@ export function scoresRadar(data) {
 
 export function compararRadar(factor, fraccion, etapaId) {
   const etapa = ETAPAS_VICUNA.find((e) => e.id === etapaId) ?? ETAPAS_VICUNA[0];
-  const fracAjust = Math.min(FRACCION_MINERA_INFORME, fraccion);
+  const fracAjust = Math.min(FRACCION_MINERA_SIM_MAX, fraccion);
   const pac = simular("pacifico", factor, fracAjust);
   const jach = simular("jachal", factor, fracAjust);
   return {
