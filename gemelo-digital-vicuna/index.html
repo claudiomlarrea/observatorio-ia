@@ -125,25 +125,26 @@
           <div class="control">
             <label for="slider-minera">Agua desalinizada destinada a Vicuña</label>
             <p class="control-hint">
-              Porcentaje del caudal tratado (máx. ~5 m³/s) que usaría la mina; el resto mejora el río Jáchal.
+              Porcentaje del caudal tratado (~5 m³/s) para Vicuña. Según informe IdelAgua: 1,2 m³/s
+              (24&nbsp;%) a la mina; el resto mejora el río Jáchal.
             </p>
             <div class="slider-scale slider-scale--pct" aria-hidden="true">
-              <span><strong>10%</strong></span>
-              <span><strong>30%</strong></span>
-              <span><strong>50%</strong></span>
+              <span><strong>0%</strong></span>
+              <span><strong>12%</strong></span>
+              <span><strong>24%</strong></span>
             </div>
             <input
               type="range"
               id="slider-minera"
-              min="10"
-              max="50"
-              step="5"
+              min="0"
+              max="24"
+              step="1"
               value="24"
-              aria-valuemin="10"
-              aria-valuemax="50"
+              aria-valuemin="0"
+              aria-valuemax="24"
               aria-describedby="label-minera label-minera-detalle"
             />
-            <span class="control-value" id="label-minera">24% del caudal desalinizado</span>
+            <span class="control-value" id="label-minera">24% — reparto informe IdelAgua (1,2 m³/s Vicuña)</span>
             <span class="control-detail" id="label-minera-detalle"></span>
           </div>
         </div>

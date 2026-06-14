@@ -25,11 +25,11 @@ export const PRESETS = [
     etapa: 1,
   },
   {
-    id: "equilibrio",
-    label: "50 % mina · 50 % cuenca",
+    id: "cuenca-prioritaria",
+    label: "Cuenca prioritaria (10% mina)",
     escenario: "jachal",
     factor: 1,
-    minera: 50,
+    minera: 10,
     etapa: 1,
   },
   {
@@ -45,7 +45,7 @@ export const PRESETS = [
     label: "Vicuña Etapa 3 — mayor demanda",
     escenario: "jachal",
     factor: 1,
-    minera: 40,
+    minera: 24,
     etapa: 3,
   },
   {
@@ -53,7 +53,7 @@ export const PRESETS = [
     label: "Híbrido — diversificar riesgo",
     escenario: "hibrido",
     factor: 0.85,
-    minera: 30,
+    minera: 24,
     etapa: 2,
   },
 ];
