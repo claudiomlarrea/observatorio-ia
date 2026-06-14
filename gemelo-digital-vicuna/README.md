@@ -2,11 +2,9 @@
 
 Prototipo completo del **Observatorio de Inteligencia Artificial** (UCCuyo) + **Instituto del Agua**.
 
-## Publicado en GitHub Pages
+## Publicado (URL directa, no enlazada desde el sitio del Observatorio)
 
-**URL:** https://claudiomlarrea.github.io/observatorio-ia/gemelo-digital-vicuna/
-
-También accesible desde el sitio del Observatorio → *Herramientas de análisis de datos*.
+**URL para compartir:** https://claudiomlarrea.github.io/observatorio-ia/gemelo-digital-vicuna/
 
 ## Ver en local
 
