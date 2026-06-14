@@ -1,0 +1,20 @@
+:root {
+  --color-banner-green: #064a38;
+  --color-banner-green-dark: #042f23;
+  --color-institutional: #7a1532;
+  --color-institutional-dark: #4a0c1f;
+  --color-green: #0d6e4f;
+  --color-green-light: #e8f5f0;
+  --color-water: #1a7fb5;
+  --color-water-light: #e3f2fa;
+  --color-warning: #c45c00;
+  --color-surface: #ffffff;
+  --color-muted: #f4f0f1;
+  --color-text: #1f1418;
+  --color-text-soft: #5c4f54;
+  --color-border: #ddd5d8;
+  --font-sans: "Source Sans 3", "Source Sans Pro", system-ui, sans-serif;
+  --font-display: "Fraunces", Georgia, serif;
+  --radius: 10px;
+  --shadow: 0 14px 44px rgba(122, 21, 50, 0.1);
+}
