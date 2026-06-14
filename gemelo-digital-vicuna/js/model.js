@@ -157,6 +157,8 @@ export function simular(escenario, factorHidrologico = 1, fraccionMinera = 0.24)
   const resultado = {
     escenario,
     factorHidrologico,
+    fraccionMinera,
+    qDesalJachal,
     caudales: { blanco: qBlanco, palca: qPalca, jachal: qJachal },
     jachalActual: {
       salinidad: BASE.salJachalActual,
@@ -194,11 +196,6 @@ export function simular(escenario, factorHidrologico = 1, fraccionMinera = 0.24)
       mwEstimado: 42,
       nota: "Bombeo a 4.200 m + desalinización marina",
     };
-    resultado.alertas.push(
-      "Sin mejora de calidad del río Jáchal",
-      "Dependencia logística binacional (Chile)",
-      "Alto consumo energético por bombeo en altura",
-    );
   }
 
   if (escenario === "jachal") {
@@ -210,7 +207,6 @@ export function simular(escenario, factorHidrologico = 1, fraccionMinera = 0.24)
       qJachal,
     );
     const salFinal = salBase + (1 - factorHidrologico) * 0.35;
-    // Resultado objetivo del informe IdelAgua: mezcla ~1,4 g/l y ~0,5 mg/l B
     const boroBase = 0.5;
     const boroFinal =
       boroBase + (1 - factorHidrologico) * 0.25 + (qDesalJachal < 4 ? 0.15 : 0);
@@ -243,14 +239,6 @@ export function simular(escenario, factorHidrologico = 1, fraccionMinera = 0.24)
       mwEstimado: (qDesalJachal * 86400 * costos.kwhM3 * BASE.energiaPrecioUSD) / 1e6 * 50,
       nota: "Ósmosis inversa — menor salinidad de entrada vs. océano",
     };
-    resultado.alertas.push(
-      "Mejora significativa del agua del Jáchal",
-      "Impacto positivo en licencia social (Iglesia, Jáchal, Huaco)",
-      "Requiere acuerdo de gobernanza hídrica provincial",
-    );
-    if (factorHidrologico < 0.7) {
-      resultado.alertas.push("⚠ Sequía: caudales reducidos — revisar caudal ecológico");
-    }
   }
 
   if (escenario === "hibrido") {
@@ -285,6 +273,7 @@ export function simular(escenario, factorHidrologico = 1, fraccionMinera = 0.24)
       reduccionBoroPct: ((BASE.boroJachalActual - boroFinal) / BASE.boroJachalActual) * 100,
       cultivos: cultivosAptos(boroFinal, salFinal),
       haRegablesPotencial: 6500,
+      caudalMejoradoM3s: qDesalJachal * 0.7 * (1 - fraccionMinera),
     };
     resultado.costos = costos;
     resultado.energia = {
@@ -292,11 +281,6 @@ export function simular(escenario, factorHidrologico = 1, fraccionMinera = 0.24)
       mwEstimado: 30,
       nota: "Combinación: menor bombeo total que solo Pacífico",
     };
-    resultado.alertas.push(
-      "Diversificación de riesgo de suministro",
-      "Mejora parcial del Jáchal",
-      "Mayor complejidad de gobernanza (AR + CL + provincia)",
-    );
   }
 
   resultado.comparacion = {
@@ -304,7 +288,122 @@ export function simular(escenario, factorHidrologico = 1, fraccionMinera = 0.24)
     cultivosDespues: resultado.jachalProyectado.cultivos?.length ?? resultado.jachalActual.cultivos.length,
   };
 
+  resultado.alertas = generarAlertas(resultado);
   return resultado;
+}
+
+/** @typedef {'rojo' | 'amarillo' | 'verde'} NivelAlerta */
+/** @typedef {{ nivel: NivelAlerta, texto: string }} Alerta */
+
+/** @param {object} data @param {{ licenciaSocial?: number }} extra */
+export function generarAlertas(data, extra = {}) {
+  /** @type {Alerta[]} */
+  const alertas = [];
+  const jp = data.jachalProyectado;
+  const ja = data.jachalActual;
+  const sal = jp.salinidad ?? ja.salinidad;
+  const boro = jp.boro ?? ja.boro;
+  const mejora = jp.mejora === true;
+  const reduccionSal = jp.reduccionSalPct ?? 0;
+  const cultivos = data.comparacion.cultivosDespues;
+  const ha = jp.haRegablesPotencial ?? 3500;
+  const costo = data.costos.costoTotalM3USD;
+  const kwh = data.energia.kwhM3;
+  const factor = data.factorHidrologico;
+  const frac = data.fraccionMinera ?? 0.24;
+  const qCuenca = jp.caudalMejoradoM3s ?? 0;
+  const licencia = extra.licenciaSocial;
+
+  function push(nivel, texto) {
+    alertas.push({ nivel, texto });
+  }
+
+  if (!mejora) {
+    push("rojo", `El río Jáchal no mejora: sigue en ${formatearNumero(sal, 1)} g/l y ${formatearNumero(boro, 1)} mg/l de boro.`);
+  } else if (sal <= 1.45 && boro <= 0.55) {
+    push("verde", `Calidad del Jáchal favorable: ${formatearNumero(sal, 2)} g/l y boro ${formatearNumero(boro, 2)} mg/l (−${formatearNumero(reduccionSal, 0)}% salinidad).`);
+  } else if (sal <= 1.65 && boro <= 0.85) {
+    push("amarillo", `Mejora moderada del Jáchal (${formatearNumero(sal, 2)} g/l, boro ${formatearNumero(boro, 2)} mg/l); conviene revisar en sequía.`);
+  } else {
+    push("rojo", `Calidad del Jáchal insuficiente: ${formatearNumero(sal, 2)} g/l, boro ${formatearNumero(boro, 2)} mg/l.`);
+  }
+
+  if (mejora && cultivos >= 8) {
+    push("verde", `${cultivos} cultivos de alto valor viables vs. ${data.comparacion.cultivosAntes} en situación actual.`);
+  } else if (mejora && cultivos >= 4) {
+    push("amarillo", `${cultivos} cultivos viables; por debajo del potencial pleno del informe IdelAgua.`);
+  } else if (mejora) {
+    push("rojo", `Solo ${cultivos} cultivos aptos — la calidad del agua limita la matriz agroindustrial.`);
+  }
+
+  if (mejora && ha >= 8000) {
+    push("verde", `Has regables potenciales: ~${formatearNumero(ha, 0)} ha (vs. ~3.500 ha actuales).`);
+  } else if (mejora && ha >= 5000) {
+    push("amarillo", `Has regables estimadas: ~${formatearNumero(ha, 0)} ha — por debajo del máximo del embalse Cuesta del Viento.`);
+  } else if (!mejora) {
+    push("rojo", "Sin expansión de superficie regada: el Jáchal no mejora para el agro local.");
+  }
+
+  if (data.escenario === "jachal" || data.escenario === "hibrido") {
+    if (frac > 0.45) {
+      push("rojo", `${Math.round(frac * 100)}% del agua tratada a Vicuña — poco caudal a la cuenca (${formatearNumero(qCuenca, 2)} m³/s).`);
+    } else if (frac > 0.32) {
+      push("amarillo", `${Math.round(frac * 100)}% a la mina · ${formatearNumero(qCuenca, 2)} m³/s al Jáchal — equilibrar en acuerdo provincial.`);
+    } else {
+      push("verde", `Reparto equilibrado: ~${Math.round(frac * 100)}% Vicuña y ${formatearNumero(qCuenca, 2)} m³/s devueltos al Jáchal.`);
+    }
+  }
+
+  if (factor < 0.7) {
+    push("rojo", `Sequía severa (factor ${formatearNumero(factor, 2)}): caudal ${formatearNumero(data.caudales.jachal, 1)} m³/s — riesgo de caudal ecológico.`);
+  } else if (factor < 0.85) {
+    push("amarillo", `Bajo caudal (factor ${formatearNumero(factor, 2)}): sube el costo por m³ y baja la calidad del río.`);
+  } else if (factor >= 1.05) {
+    push("verde", `Avenida (factor ${formatearNumero(factor, 2)}): mejor dilución y menores costos unitarios.`);
+  }
+
+  if (costo <= 1.55) {
+    push("verde", `Costo del agua competitivo: USD ${formatearNumero(costo, 2)}/m³.`);
+  } else if (costo <= 1.9) {
+    push("amarillo", `Costo elevado: USD ${formatearNumero(costo, 2)}/m³ — revisar escala de planta y caudal.`);
+  } else {
+    push("rojo", `Costo alto: USD ${formatearNumero(costo, 2)}/m³ — escenario económicamente tensionado.`);
+  }
+
+  if (kwh <= 2.0) {
+    push("verde", `Eficiencia energética favorable: ${formatearNumero(kwh, 1)} kWh/m³.`);
+  } else if (kwh <= 3.5) {
+    push("amarillo", `Consumo energético moderado: ${formatearNumero(kwh, 1)} kWh/m³.`);
+  } else {
+    push("rojo", `Alto consumo energético: ${formatearNumero(kwh, 1)} kWh/m³ (bombeo Pacífico a 4.200 m).`);
+  }
+
+  if (data.escenario === "pacifico") {
+    push("rojo", "Dependencia logística binacional (Chile) y sin beneficio hídrico para Iglesia, Jáchal y Huaco.");
+    push("amarillo", "Licencia social local limitada: la cuenca del Jáchal no participa del beneficio.");
+  } else if (data.escenario === "hibrido") {
+    push("amarillo", "Gobernanza compleja: acuerdos Argentina–Chile–provincia y dos fuentes de suministro.");
+    push("verde", "Diversificación de riesgo: no depende de una sola fuente.");
+  } else {
+    push("amarillo", "Requiere acuerdo de gobernanza hídrica provincial (mina, productores, Estado).");
+    if (mejora && sal <= 1.5) {
+      push("verde", "Impacto positivo en licencia social: mejora agua potable y de riego en Iglesia, Jáchal y Huaco.");
+    }
+  }
+
+  if (licencia != null) {
+    if (licencia >= 70) {
+      push("verde", `Licencia social: ${licencia}/100 — fuerte alineación con ODS 3, 6 y 8.`);
+    } else if (licencia >= 45) {
+      push("amarillo", `Licencia social moderada: ${licencia}/100 — reforzar narrativa comunitaria.`);
+    } else {
+      push("rojo", `Licencia social baja: ${licencia}/100 — poco favorable para comunidades locales.`);
+    }
+  }
+
+  const orden = { rojo: 0, amarillo: 1, verde: 2 };
+  alertas.sort((a, b) => orden[a.nivel] - orden[b.nivel]);
+  return alertas;
 }
 
 export function etiquetaEstacion(factor) {

@@ -46,8 +46,13 @@ export function exportarInforme(data, ext, radarCmp) {
 <tr><th>Dimensión</th><th>Pacífico</th><th>Jáchal</th></tr>
 ${Object.keys(radarCmp.pacifico).map((k) => `<tr><td>${k}</td><td>${Math.round(radarCmp.pacifico[k])}</td><td>${Math.round(radarCmp.jachal[k])}</td></tr>`).join("")}
 </table>
-<h2>Alertas</h2>
-<ul>${data.alertas.map((a) => `<li>${a}</li>`).join("")}</ul>
+<h2>Alertas del escenario</h2>
+<ul>${data.alertas.map((a) => {
+  const col = a.nivel === "rojo" ? "#c41e3a" : a.nivel === "amarillo" ? "#d4a017" : "#0d6e4f";
+  const bg = a.nivel === "rojo" ? "#fdf0f2" : a.nivel === "amarillo" ? "#fffbf0" : "#eef8f3";
+  const lbl = a.nivel === "rojo" ? "Crítico" : a.nivel === "amarillo" ? "Atención" : "Favorable";
+  return `<li style="margin-bottom:8px;padding:8px 10px;border-left:4px solid ${col};background:${bg};list-style:none"><strong style="color:${col}">${lbl}:</strong> ${a.texto}</li>`;
+}).join("")}</ul>
 <p class="footer">Prototipo demostrativo. No reemplaza estudios de ingeniería ni EIA. Basado en propuesta Instituto del Agua UCCuyo (Prof. Luis F. Jiménez).</p>
 <script>window.onload=function(){window.print()}</script>
 </body></html>`;

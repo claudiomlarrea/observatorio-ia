@@ -1,4 +1,4 @@
-import { simular, etiquetaEstacion, formatearNumero } from "./model.js";
+import { simular, etiquetaEstacion, formatearNumero, generarAlertas } from "./model.js";
 import { enriquecer, compararRadar, parsearCSVHistorico } from "./extensions.js";
 import { PRESETS } from "./presets.js";
 import {
@@ -118,8 +118,23 @@ const CULTIVOS_REF = [
   { nombre: "Trigo" }, { nombre: "Membrillo (actual)" },
 ];
 
+const ETIQUETA_ALERTA = { rojo: "Crítico", amarillo: "Atención", verde: "Favorable" };
+
 function renderAlertas(data) {
-  $("#lista-alertas").innerHTML = data.alertas.map((a) => `<li>${a}</li>`).join("");
+  const lista = $("#lista-alertas");
+  if (!data.alertas.length) {
+    lista.innerHTML = "<li class='alerta alerta--amarillo'>Sin alertas para este escenario.</li>";
+    return;
+  }
+  lista.innerHTML = data.alertas
+    .map(
+      (a) =>
+        `<li class="alerta alerta--${a.nivel}" role="listitem">
+          <span class="alerta-badge">${ETIQUETA_ALERTA[a.nivel]}</span>
+          <span class="alerta-texto">${a.texto}</span>
+        </li>`,
+    )
+    .join("");
 }
 
 function renderComparativa(factor, fraccion) {
@@ -175,6 +190,7 @@ function actualizar() {
 
   const data = simular(escenarioActual, factor, fraccion);
   const ext = enriquecer(data, etapaActual);
+  data.alertas = generarAlertas(data, { licenciaSocial: ext.ods.licenciaSocial });
   const radarCmp = compararRadar(factor, fraccion, etapaActual);
   const { blanco, palca, jachal } = data.caudales;
 
