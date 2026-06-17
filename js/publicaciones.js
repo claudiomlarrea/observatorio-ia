@@ -6,19 +6,12 @@
   }
 
   function adminUrl() {
-    var url = "";
     if (CFG.ADMIN_URL && String(CFG.ADMIN_URL).trim()) {
-      url = String(CFG.ADMIN_URL).trim();
-    } else if (CFG.APPS_SCRIPT_URL && String(CFG.APPS_SCRIPT_URL).trim()) {
-      var base = String(CFG.APPS_SCRIPT_URL).trim();
-      url = base + (base.indexOf("?") >= 0 ? "&" : "?") + "action=admin";
+      return String(CFG.ADMIN_URL).trim();
     }
-    if (!url) return "";
-    // Evita «No se pudo abrir el archivo» cuando Chrome usa otra cuenta Google (/u/1/).
-    return (
-      "https://accounts.google.com/AccountChooser?continue=" +
-      encodeURIComponent(url)
-    );
+    if (!CFG.APPS_SCRIPT_URL || !String(CFG.APPS_SCRIPT_URL).trim()) return "";
+    var base = String(CFG.APPS_SCRIPT_URL).trim();
+    return base + (base.indexOf("?") >= 0 ? "&" : "?") + "action=admin&key=OIA-Privado-2026";
   }
 
   function dibujarIngresoEquipo() {
@@ -34,7 +27,11 @@
       "<a class=\"btn btn-ghost\" href=\"" +
       esc(url) +
       "\" target=\"_blank\" rel=\"noopener noreferrer\">Ingreso equipo · Cargar publicaciones</a> " +
-      "<small>(solo miembros autorizados)</small></p>";
+      "<small>(solo miembros autorizados)</small></p>" +
+      "<p class=\"pub-intro\" style=\"margin-top:8px;font-size:0.9rem;color:#555\">" +
+      "Si ves «No se pudo abrir el archivo», abrí una <strong>ventana privada</strong> en el navegador " +
+      "(sin iniciar sesión en Google) y volvé a hacer clic, o usá " +
+      "<strong>investigacion@uccuyo.edu.ar</strong>.</p>";
   }
 
   function esc(s) {
