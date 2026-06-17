@@ -128,9 +128,9 @@ function panelAdminReturnUrl_(ok, message, payload) {
 }
 
 function panelSaveResponse_(ok, message, payload) {
-  return HtmlService.createHtmlOutput(contactRedirectHtml_(panelAdminReturnUrl_(ok, message, payload))).setXFrameOptionsMode(
-    HtmlService.XFrameOptionsMode.ALLOWALL
-  );
+  return ContentService.createTextOutput(
+    contactRedirectHtml_(panelAdminReturnUrl_(ok, message, payload))
+  ).setMimeType(ContentService.MimeType.HTML);
 }
 
 /** Llamado desde el panel HTML con google.script.run (no abre página en blanco). */
@@ -321,8 +321,9 @@ function buildAdminPanelHtml_(apiUrl, adminKey, defaultUnidad) {
 
 function renderAdmin_(e) {
   if (!isAuthorized_(e)) {
-    return HtmlService.createHtmlOutput(
-      "<h3>Acceso denegado</h3>" +
+    return ContentService.createTextOutput(
+      "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"utf-8\"><title>OIA - Acceso denegado</title></head><body>" +
+        "<h3>Acceso denegado</h3>" +
         "<p>No se pudo validar el acceso. En las apps web de Google el correo con el que entraste " +
         "casi nunca se detecta automáticamente.</p>" +
         "<p><strong>Cómo entrar:</strong> usá el botón " +
@@ -331,18 +332,15 @@ function renderAdmin_(e) {
         "<p>Si abriste esta página a mano, la URL debe terminar en " +
         "<code>?action=admin&amp;key=OIA-Privado-2026</code> " +
         "(no uses la clave de Secretaría de Investigación).</p>" +
-        "<p>Si ves «No se pudo abrir el archivo», cerrá sesión de otras cuentas Google o abrí el enlace " +
-        "en una ventana privada estando logueado con claudio17larrea@gmail.com o investigacion@uccuyo.edu.ar.</p>"
-    ).setTitle("OIA - Acceso denegado");
+        "</body></html>"
+    ).setMimeType(ContentService.MimeType.HTML);
   }
   var apiUrl = ScriptApp.getService().getUrl();
   var adminKey = adminKeyFromRequest_(e) || ADMIN_ACCESS_KEY;
   var defaultUnidad = "OIA- Observatorio de Inteligencia Artificial";
-  return HtmlService.createHtmlOutput(
+  return ContentService.createTextOutput(
     buildAdminPanelHtml_(apiUrl, adminKey, defaultUnidad)
-  )
-    .setTitle("Carga de Publicaciones")
-    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  ).setMimeType(ContentService.MimeType.HTML);
 }
 
 function obtenerItemsPublicos_() {
