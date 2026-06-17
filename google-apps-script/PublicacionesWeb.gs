@@ -235,6 +235,90 @@ function isAuthorizedForPayload_(p) {
   return val_(p.key) === ADMIN_ACCESS_KEY;
 }
 
+function escapeHtml_(s) {
+  return String(s || "")
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function buildUnidadOptionsHtml_(defaultUnidad) {
+  var out = [];
+  var unidades = getUnidadesAcademicas_();
+  for (var i = 0; i < unidades.length; i++) {
+    var u = unidades[i];
+    var sel = u === defaultUnidad ? " selected" : "";
+    out.push('<option value="' + escapeHtml_(u) + '"' + sel + ">" + escapeHtml_(u) + "</option>");
+  }
+  return out.join("");
+}
+
+function buildAdminPanelHtml_(apiUrl, adminKey, defaultUnidad) {
+  var unidadOpts = buildUnidadOptionsHtml_(defaultUnidad);
+  return (
+    "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"utf-8\">" +
+    "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">" +
+    "<title>Carga de Publicaciones</title>" +
+    "<style>" +
+    "body{font-family:Arial,sans-serif;max-width:900px;margin:24px auto;padding:0 16px;color:#1b1b1b}" +
+    "h1{margin:0 0 16px}p.help{margin-top:0;color:#444}" +
+    "form{display:grid;grid-template-columns:1fr 1fr;gap:12px}" +
+    "label{font-weight:600;font-size:14px;margin-bottom:4px;display:block}" +
+    "input,select,textarea{width:100%;box-sizing:border-box;padding:10px;border:1px solid #bbb;border-radius:8px}" +
+    "textarea{min-height:96px;resize:vertical}.full{grid-column:1/-1}" +
+    ".actions{grid-column:1/-1;display:flex;gap:10px;align-items:center}" +
+    "button{background:#0b6b5d;color:#fff;border:0;border-radius:8px;padding:10px 14px;cursor:pointer}" +
+    "button:disabled{opacity:.6;cursor:wait}#msg{min-height:24px;font-weight:600}.ok{color:#0c6b2f}.err{color:#8a1f1f}" +
+    ".btn-sheet{display:inline-block;padding:10px 14px;border-radius:8px;border:2px solid #0b6b5d;color:#0b6b5d;background:#fff;font-weight:600;text-decoration:none}" +
+    "@media(max-width:760px){form{grid-template-columns:1fr}}" +
+    "</style></head><body>" +
+    "<h1>Carga de Publicaciones</h1>" +
+    "<p class=\"help\">Completá los datos y guardá. Verás un instante la página de Google y volverás al formulario con la confirmación.</p>" +
+    "<p><a class=\"btn-sheet\" href=\"https://docs.google.com/spreadsheets/d/18xXPRok4kVF81hkEDDlfDf8Vx-KI2HeywZNFSXkozwU/edit#gid=0\" target=\"_blank\" rel=\"noopener noreferrer\">Abrir planilla en Google Sheets</a></p>" +
+    "<form id=\"f\" method=\"post\" action=\"" +
+    escapeHtml_(apiUrl) +
+    "\" target=\"_top\" accept-charset=\"UTF-8\">" +
+    "<input type=\"hidden\" name=\"action\" value=\"add\">" +
+    "<input type=\"hidden\" name=\"_panel\" value=\"1\">" +
+    "<input type=\"hidden\" name=\"key\" value=\"" +
+    escapeHtml_(adminKey) +
+    "\">" +
+    "<div><label for=\"tipo\">Tipo *</label><select id=\"tipo\" name=\"tipo\" required>" +
+    "<option value=\"Revista\">Revista</option><option value=\"Libro\">Libro</option>" +
+    "<option value=\"Capítulo de libro\">Capítulo de libro</option><option value=\"Repositorio\">Informe</option>" +
+    "<option value=\"Evento\">Evento</option><option value=\"Diario\">Diario</option></select></div>" +
+    "<div><label for=\"anio\">Año</label><input id=\"anio\" name=\"anio\" type=\"number\" min=\"1900\" max=\"2100\"></div>" +
+    "<div class=\"full\"><label for=\"titulo\">Título *</label><input id=\"titulo\" name=\"titulo\" required></div>" +
+    "<div class=\"full\"><label for=\"autores\">Autor/es</label><input id=\"autores\" name=\"autores\"></div>" +
+    "<div><label for=\"revista_o_medio\">Revista / medio</label><input id=\"revista_o_medio\" name=\"revista_o_medio\"></div>" +
+    "<div><label for=\"doi\">DOI</label><input id=\"doi\" name=\"doi\"></div>" +
+    "<div><label for=\"unidad\">Unidad *</label><select id=\"unidad\" name=\"unidad\" required>" +
+    unidadOpts +
+    "</select></div>" +
+    "<div><label for=\"indexacion\">Indexación</label><input id=\"indexacion\" name=\"indexacion\"></div>" +
+    "<div><label for=\"editorial\">Editorial</label><input id=\"editorial\" name=\"editorial\"></div>" +
+    "<div><label for=\"isbn\">ISBN</label><input id=\"isbn\" name=\"isbn\"></div>" +
+    "<div><label for=\"tipo_publicacion\">Tipo publicación</label><input id=\"tipo_publicacion\" name=\"tipo_publicacion\"></div>" +
+    "<div><label for=\"link\">Link</label><input id=\"link\" name=\"link\" type=\"url\" placeholder=\"https://...\"></div>" +
+    "<div><label for=\"evento\">Evento</label><input id=\"evento\" name=\"evento\"></div>" +
+    "<div><label for=\"lugar\">Lugar</label><input id=\"lugar\" name=\"lugar\"></div>" +
+    "<div><label for=\"fecha\">Fecha</label><input id=\"fecha\" name=\"fecha\"></div>" +
+    "<input type=\"hidden\" name=\"estado\" value=\"publicado\">" +
+    "<div class=\"full\"><label for=\"resumen\">Resumen</label><textarea id=\"resumen\" name=\"resumen\"></textarea></div>" +
+    "<div class=\"full\"><label for=\"repositorio\">Repositorio</label><input id=\"repositorio\" name=\"repositorio\"></div>" +
+    "<div class=\"actions\"><button type=\"submit\" id=\"save-btn\">Guardar publicación</button><span id=\"msg\"></span></div>" +
+    "</form>" +
+    "<script>(function(){var f=document.getElementById('f'),m=document.getElementById('msg'),b=document.getElementById('save-btn');" +
+    "function setMsg(t,ok){m.textContent=t;m.className=ok?'ok':'err';}" +
+    "var p=new URLSearchParams(window.location.search);" +
+    "if(p.get('saved')==='1')setMsg('Guardado correctamente.',true);" +
+    "if(p.get('saved')==='0')setMsg('No se pudo guardar: '+(p.get('err')||'error'),false);" +
+    "f.addEventListener('submit',function(){if(!f.reportValidity())return;if(b)b.disabled=true;setMsg('Guardando…',true);});" +
+    "})();</script></body></html>"
+  );
+}
+
 function renderAdmin_(e) {
   if (!isAuthorized_(e)) {
     return HtmlService.createHtmlOutput(
@@ -251,13 +335,12 @@ function renderAdmin_(e) {
         "en una ventana privada estando logueado con claudio17larrea@gmail.com o investigacion@uccuyo.edu.ar.</p>"
     ).setTitle("OIA - Acceso denegado");
   }
-  var t = HtmlService.createTemplateFromFile("PublicacionesAdmin");
-  t.apiUrl = ScriptApp.getService().getUrl();
-  t.adminKey = adminKeyFromRequest_(e) || ADMIN_ACCESS_KEY;
-  t.unidades = getUnidadesAcademicas_();
-  t.defaultUnidad = "OIA- Observatorio de Inteligencia Artificial";
-  return t
-    .evaluate()
+  var apiUrl = ScriptApp.getService().getUrl();
+  var adminKey = adminKeyFromRequest_(e) || ADMIN_ACCESS_KEY;
+  var defaultUnidad = "OIA- Observatorio de Inteligencia Artificial";
+  return HtmlService.createHtmlOutput(
+    buildAdminPanelHtml_(apiUrl, adminKey, defaultUnidad)
+  )
     .setTitle("Carga de Publicaciones")
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
