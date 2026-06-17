@@ -238,12 +238,22 @@ function isAuthorizedForPayload_(p) {
 function renderAdmin_(e) {
   if (!isAuthorized_(e)) {
     return HtmlService.createHtmlOutput(
-      "<h3>Acceso denegado</h3><p>Tu email no está autorizado para cargar publicaciones.</p>"
+      "<h3>Acceso denegado</h3>" +
+        "<p>No se pudo validar el acceso. En las apps web de Google el correo con el que entraste " +
+        "casi nunca se detecta automáticamente.</p>" +
+        "<p><strong>Cómo entrar:</strong> usá el botón " +
+        "<em>Ingreso equipo · Cargar publicaciones</em> en la sección Publicaciones del sitio " +
+        "(ese enlace incluye la clave de acceso del Observatorio).</p>" +
+        "<p>Si abriste esta página a mano, la URL debe terminar en " +
+        "<code>?action=admin&amp;key=OIA-Privado-2026</code> " +
+        "(no uses la clave de Secretaría de Investigación).</p>" +
+        "<p>Si ves «No se pudo abrir el archivo», cerrá sesión de otras cuentas Google o abrí el enlace " +
+        "en una ventana privada estando logueado con claudio17larrea@gmail.com o investigacion@uccuyo.edu.ar.</p>"
     ).setTitle("OIA - Acceso denegado");
   }
   var t = HtmlService.createTemplateFromFile("PublicacionesAdmin");
   t.apiUrl = ScriptApp.getService().getUrl();
-  t.adminKey = adminKeyFromRequest_(e);
+  t.adminKey = adminKeyFromRequest_(e) || ADMIN_ACCESS_KEY;
   t.unidades = getUnidadesAcademicas_();
   t.defaultUnidad = "OIA- Observatorio de Inteligencia Artificial";
   return t

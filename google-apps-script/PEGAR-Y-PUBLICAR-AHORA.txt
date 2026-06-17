@@ -1,5 +1,10 @@
-CONTADOR DE VISITAS A LAS PÁGINAS WEB (3 minutos)
-==================================================
+CONTADOR DE VISITAS + PANEL DE CARGA (5 minutos)
+================================================
+
+Si «Ingreso equipo · Cargar publicaciones» falla:
+  • En js/publicaciones-config.js la clave debe ser OIA-Privado-2026 (no SEC-Investigacion-2026).
+  • En Apps Script debe existir el archivo HTML PublicacionesAdmin (nombre exacto).
+  • Ejecutá en Terminal: ./google-apps-script/activar-panel-carga.sh
 
 Cuenta cada entrada a:
   • https://claudiomlarrea.github.io/secretaria-investigacion/

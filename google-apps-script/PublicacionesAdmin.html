@@ -55,9 +55,7 @@
     <form id="f" method="post" action="<?= apiUrl ?>" target="_top" accept-charset="UTF-8">
       <input type="hidden" name="action" value="add" />
       <input type="hidden" name="_panel" value="1" />
-      <? if (adminKey) { ?>
       <input type="hidden" name="key" value="<?= adminKey ?>" />
-      <? } ?>
 
       <div>
         <label for="tipo">Tipo *</label>
@@ -97,15 +95,52 @@
       <div>
         <label for="unidad">Unidad *</label>
         <select id="unidad" name="unidad" required>
-          <option value="" disabled<? if (!defaultUnidad) { ?> selected<? } ?>>
-            Seleccionar unidad académica
+          <option value="OIA- Observatorio de Inteligencia Artificial" selected>
+            OIA- Observatorio de Inteligencia Artificial
           </option>
-          <? for (var i = 0; i < unidades.length; i++) {
-               var u = unidades[i];
-               var sel = (defaultUnidad && u === defaultUnidad) ? " selected" : "";
-          ?>
-          <option value="<?= u ?>"<?= sel ?>><?= u ?></option>
-          <? } ?>
+          <option value="Secretaría de Investigación">Secretaría de Investigación</option>
+          <option value="Unidad de Vinculación Tecnológica">Unidad de Vinculación Tecnológica</option>
+          <option value="FDCSSL- Facultad de Derecho y Ciencias Sociales Sede San Luis">
+            FDCSSL- Facultad de Derecho y Ciencias Sociales Sede San Luis
+          </option>
+          <option value="FCMSL- Facultad de Ciencias Médicas Sede San Luis">
+            FCMSL- Facultad de Ciencias Médicas Sede San Luis
+          </option>
+          <option value="FCVSL- Facultad de Ciencias Veterinarias Sede San Luis">
+            FCVSL- Facultad de Ciencias Veterinarias Sede San Luis
+          </option>
+          <option value="FCEESL- Facultad de Ciencias Económicas y Empresariales Sede San Luis">
+            FCEESL- Facultad de Ciencias Económicas y Empresariales Sede San Luis
+          </option>
+          <option value="FBOSCO- Facultad Don Bosco">FBOSCO- Facultad Don Bosco</option>
+          <option value="FCEESJ- Facultad de Ciencias Económicas y Empresariales Sede San Juan">
+            FCEESJ- Facultad de Ciencias Económicas y Empresariales Sede San Juan
+          </option>
+          <option value="FFyHSJ- Facultad de Filosofía y Humanidades">
+            FFyHSJ- Facultad de Filosofía y Humanidades
+          </option>
+          <option value="ISDSM- Instituto Universitario Santa María">
+            ISDSM- Instituto Universitario Santa María
+          </option>
+          <option value="ECRyPSJ- Escuela Cultura Religiosa y Pastoral">
+            ECRyPSJ- Escuela Cultura Religiosa y Pastoral
+          </option>
+          <option value="FDCSSJ- Facultad de Derecho y Ciencias Sociales Sede San Juan">
+            FDCSSJ- Facultad de Derecho y Ciencias Sociales Sede San Juan
+          </option>
+          <option value="FCMSJ- Facultad de Ciencias Médicas San Juan">
+            FCMSJ- Facultad de Ciencias Médicas San Juan
+          </option>
+          <option value="FEDSJ- Facultad de Educación">FEDSJ- Facultad de Educación</option>
+          <option value="ESEGSJ- Escuela de Seguridad">ESEGSJ- Escuela de Seguridad</option>
+          <option value="FCQyTSJ- Facultad de Ciencias Químicas y Tecnológicas">
+            FCQyTSJ- Facultad de Ciencias Químicas y Tecnológicas
+          </option>
+          <option value="ISB- Instituto San Buenaventura">ISB- Instituto San Buenaventura</option>
+          <option value="Vicerrectora de Formación">Vicerrectora de Formación</option>
+          <option value="Departamento de Educación a Distancia">
+            Departamento de Educación a Distancia
+          </option>
         </select>
       </div>
       <div>
