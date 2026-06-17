@@ -110,7 +110,14 @@
         <a class="btn-sheet" href="index.html#publicaciones">Volver al Observatorio</a>
       </p>
 
-      <form id="f" class="panel-form" method="post" action="" accept-charset="UTF-8">
+      <iframe
+        name="gas_frame"
+        id="gas_frame"
+        title="Respuesta de guardado"
+        style="display: none; width: 0; height: 0; border: 0"
+      ></iframe>
+
+      <form id="f" class="panel-form" method="post" action="" accept-charset="UTF-8" target="gas_frame">
         <input type="hidden" name="action" value="add" />
         <input type="hidden" name="_panel" value="1" />
         <input type="hidden" name="key" value="OIA-Privado-2026" />
@@ -261,6 +268,8 @@
         var form = document.getElementById("f");
         var msg = document.getElementById("msg");
         var btn = document.getElementById("save-btn");
+        var frame = document.getElementById("gas_frame");
+        var enviando = false;
 
         if (!api) {
           msg.textContent = "Falta configurar APPS_SCRIPT_URL en js/publicaciones-config.js";
@@ -274,13 +283,27 @@
         if (p.get("saved") === "1") {
           msg.textContent = "Guardado correctamente.";
           msg.className = "ok";
+          if (window.history && window.history.replaceState) {
+            window.history.replaceState({}, "", "panel-carga.html");
+          }
         } else if (p.get("saved") === "0") {
           msg.textContent = "No se pudo guardar: " + (p.get("err") || "error");
           msg.className = "err";
         }
 
+        if (frame) {
+          frame.addEventListener("load", function () {
+            if (!enviando) return;
+            enviando = false;
+            if (btn) btn.disabled = false;
+            msg.textContent = "Guardado correctamente.";
+            msg.className = "ok";
+          });
+        }
+
         form.addEventListener("submit", function () {
           if (!form.reportValidity()) return;
+          enviando = true;
           if (btn) btn.disabled = true;
           msg.textContent = "Guardando…";
           msg.className = "ok";
