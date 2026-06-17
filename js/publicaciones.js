@@ -27,11 +27,7 @@
       "<a class=\"btn btn-ghost\" href=\"" +
       esc(url) +
       "\" target=\"_blank\" rel=\"noopener noreferrer\">Ingreso equipo · Cargar publicaciones</a> " +
-      "<small>(solo miembros autorizados)</small></p>" +
-      "<p class=\"pub-intro\" style=\"margin-top:8px;font-size:0.9rem;color:#555\">" +
-      "Si ves «No se pudo abrir el archivo», abrí una <strong>ventana privada</strong> en el navegador " +
-      "(sin iniciar sesión en Google) y volvé a hacer clic, o usá " +
-      "<strong>investigacion@uccuyo.edu.ar</strong>.</p>";
+      "<small>(solo miembros autorizados)</small></p>";
   }
 
   function esc(s) {

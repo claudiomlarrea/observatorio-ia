@@ -121,11 +121,9 @@ function doPost(e) {
 }
 
 function panelAdminReturnUrl_(ok, message, payload) {
-  var url = ScriptApp.getService().getUrl() + "?action=admin";
-  var key = val_(payload && payload.key);
-  if (key) url += "&key=" + encodeURIComponent(key);
-  if (ok) return url + "&saved=1";
-  return url + "&saved=0&err=" + encodeURIComponent(String(message || "error"));
+  var base = "https://claudiomlarrea.github.io/observatorio-ia/panel-carga.html";
+  if (ok) return base + "?saved=1";
+  return base + "?saved=0&err=" + encodeURIComponent(String(message || "error"));
 }
 
 function panelSaveResponse_(ok, message, payload) {
