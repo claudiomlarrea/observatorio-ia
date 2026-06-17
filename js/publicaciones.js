@@ -248,10 +248,21 @@
     return String((it && it.unidad) || "").trim();
   }
 
+  function anioPublicacion(it) {
+    if (!it) return "";
+    var anio = String(it.anio || "").trim();
+    if (/^\d{4}$/.test(anio)) return anio;
+    var fecha = String(it.fecha || "").trim();
+    var src = anio || fecha;
+    if (!src) return "";
+    var m = src.match(/\b(19|20)\d{2}\b/);
+    return m ? m[0] : "";
+  }
+
   function celdaUnidadAnioHTML(it) {
     var unidad = etiquetaUnidad(it);
-    var tiempo = (it && (it.fecha || it.anio)) || "";
-    var html = '<div class="pub-row-when" aria-label="Unidad académica y año o fecha">';
+    var tiempo = anioPublicacion(it);
+    var html = '<div class="pub-row-when" aria-label="Unidad académica y año">';
     if (unidad) {
       html +=
         '<span class="pub-row-unidad" style="display:block;font-size:0.7rem;font-weight:700;color:#5c4f54;line-height:1.25;text-align:right;max-width:12rem;" title="' +
