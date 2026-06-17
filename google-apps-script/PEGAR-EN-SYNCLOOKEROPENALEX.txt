@@ -1,0 +1,22 @@
+PEGAR EN SyncLookerOpenAlex.gs (Edge compatible)
+================================================
+
+1. script.google.com → Publicaciones Página Web (investigacion@uccuyo.edu.ar)
+2. Panel izquierdo → SyncLookerOpenAlex.gs
+3. Cmd+A → borrar todo
+4. Pegar TODO el archivo PublicacionesWeb.gs de esta carpeta
+5. Cmd+S
+
+VERIFICÁ que el código pegado tenga estas líneas (si no, está mal pegado):
+  • EDGE-PANEL-v2
+  • function buildAdminPanelHtml_
+  • ContentService.createTextOutput(buildAdminPanelHtml_
+  • NO debe decir: createTemplateFromFile("PublicacionesAdmin")
+
+6. Implementar → Administrar implementaciones → lápiz → Nueva versión → Implementar
+
+7. Probar en Edge:
+   https://script.google.com/a/macros/uccuyo.edu.ar/s/AKfycbxXOx3XpKzmpffpUFJ9tLctA5FR-552RbggS4pLO2KrL3mpVVZuKyGBFdnXDC3qR5zH/exec?action=admin&key=OIA-Privado-2026
+
+Debe verse: cajas de texto, desplegables y botón verde «Guardar publicación».
+El archivo PublicacionesAdmin del panel izquierdo ya NO se usa (podés ignorarlo).

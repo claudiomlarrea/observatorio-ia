@@ -1,5 +1,6 @@
 /**
  * Publicaciones OIA - API pública + panel privado con whitelist.
+ * EDGE-PANEL-v2: formulario HTML directo (sin PublicacionesAdmin.html ni iframe).
  *
  * Endpoints:
  * - GET  ?action=public (o sin action): JSON para la web pública.
