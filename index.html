@@ -19,7 +19,7 @@
       gtag("config", "G-C55ZPTW8C2");
     </script>
     <link rel="icon" type="image/png" href="assets/logo-observatorio-ia.png" />
-    <link rel="stylesheet" href="css/styles.css?v=9" />
+    <link rel="stylesheet" href="css/styles.css?v=10" />
   </head>
   <body>
     <a class="skip-link" href="#contenido">Ir al contenido</a>
@@ -60,6 +60,7 @@
             <li><a href="#inicio">Inicio</a></li>
             <li><a href="#observatorio">El observatorio</a></li>
             <li><a href="#equipo">Equipo</a></li>
+            <li><a href="#jornadas-ia">Jornadas de IA</a></li>
             <li><a href="#actividades">Actividades</a></li>
             <li><a href="#noticias">Noticias</a></li>
             <li><a href="#herramientas">Herramientas de análisis</a></li>
@@ -99,7 +100,8 @@
             inteligencia artificial, con enfoque académico, ético y regional.
           </p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="#observatorio">Conocer el observatorio</a>
+            <a class="btn btn-primary" href="#jornadas-ia">1° Jornadas de IA 2026</a>
+            <a class="btn btn-ghost" href="#observatorio">Conocer el observatorio</a>
             <a class="btn btn-ghost" href="#herramientas">Herramientas de análisis</a>
             <a class="btn btn-ghost" href="#contacto">Contacto</a>
           </div>
@@ -215,6 +217,138 @@
               <span>Universitat Internacional de Catalunya</span>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section class="section section--jornadas" id="jornadas-ia" aria-labelledby="sec-jornadas">
+        <div class="section-inner">
+          <header class="section-head section-head--bar section-head--red">
+            <p class="section-kicker">Evento 2026</p>
+            <h2 id="sec-jornadas">1° Jornadas internas de Inteligencia Artificial</h2>
+          </header>
+
+          <p class="text-intro">
+            Encuentro virtual organizado por el <strong>Observatorio de IA</strong> para
+            docentes, investigadores y estudiantes de la Universidad Católica de Cuyo.
+            Inscribite y, si exponés, cargá tu ponencia en Word en la carpeta de tu
+            unidad académica.
+          </p>
+
+          <ul class="jornadas-facts" aria-label="Datos del evento">
+            <li>
+              <span class="jornadas-fact-label">Fecha</span>
+              <span class="jornadas-fact-value">6 de octubre de 2026</span>
+            </li>
+            <li>
+              <span class="jornadas-fact-label">Horario</span>
+              <span class="jornadas-fact-value">15:00 h</span>
+            </li>
+            <li>
+              <span class="jornadas-fact-label">Modalidad</span>
+              <span class="jornadas-fact-value">Virtual</span>
+            </li>
+            <li>
+              <span class="jornadas-fact-label">Cierre</span>
+              <span class="jornadas-fact-value"
+                >Inscripción y ponencias hasta el <strong>10 de septiembre</strong></span
+              >
+            </li>
+          </ul>
+
+          <div class="jornadas-steps">
+            <article class="jornadas-step card" aria-labelledby="jornadas-paso1">
+              <p class="jornadas-step-num" aria-hidden="true">1</p>
+              <h3 id="jornadas-paso1">Inscripción</h3>
+              <p>
+                Completá el formulario indicando si participás como
+                <strong>asistente</strong> o como <strong>expositor/a</strong>. Si
+                exponés, incluí el título de la ponencia.
+              </p>
+
+              <div id="jornadas-form-wrap" class="jornadas-form-wrap" hidden>
+                <iframe
+                  id="jornadas-form-frame"
+                  class="jornadas-form-frame"
+                  title="Formulario de inscripción — 1° Jornadas de IA 2026"
+                  loading="lazy"
+                ></iframe>
+                <p class="tile-actions">
+                  <a
+                    id="jornadas-form-link"
+                    class="btn btn-ghost"
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    hidden
+                    >Abrir formulario en otra pestaña</a
+                  >
+                </p>
+              </div>
+
+              <div id="jornadas-form-alt" class="jornadas-form-alt" hidden>
+                <p>
+                  Mientras se publica el formulario, escribinos para inscribirte
+                  (apellido y nombre, unidad académica, asistente o expositor/a y, si
+                  corresponde, título de la ponencia):
+                </p>
+                <p class="tile-actions">
+                  <a
+                    class="btn btn-primary"
+                    href="mailto:observatorioia@uccuyo.edu.ar?subject=%5BJornadas%20IA%202026%5D%20Inscripci%C3%B3n"
+                    >Inscribirme por correo</a
+                  >
+                </p>
+              </div>
+            </article>
+
+            <article class="jornadas-step card" aria-labelledby="jornadas-paso2">
+              <p class="jornadas-step-num" aria-hidden="true">2</p>
+              <h3 id="jornadas-paso2">Cargar ponencia (solo expositores)</h3>
+              <p>
+                Elegí tu unidad académica. Se abrirá Google Drive: entrá a la carpeta
+                de tu unidad y subí el archivo <strong>Word (.docx)</strong> con
+                <em>Nuevo → Subir archivo</em>.
+              </p>
+              <p class="jornadas-name-hint">
+                Nombre sugerido del archivo:
+                <code>Apellido_Nombre_TituloCorto.docx</code>
+              </p>
+
+              <label class="jornadas-label" for="jornadas-ua">Unidad académica</label>
+              <select id="jornadas-ua" class="jornadas-select" aria-describedby="jornadas-ua-hint">
+                <option value="">Seleccioná tu unidad…</option>
+              </select>
+
+              <p id="jornadas-ua-hint" class="jornadas-ua-hint" hidden></p>
+
+              <p class="tile-actions">
+                <button
+                  type="button"
+                  id="jornadas-open-drive"
+                  class="btn btn-primary"
+                  disabled
+                >
+                  Abrir carpeta en Google Drive
+                </button>
+              </p>
+
+              <p class="text-muted-small">
+                Carpeta institucional del Observatorio —
+                <a
+                  href="https://drive.google.com/drive/folders/13j0Gk4SZmCl_2lo2lBgpt8AMGnP36afI"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Jornadas de IA 2026</a
+                >. Debe estar compartida para que cualquier persona con el enlace
+                pueda cargar archivos.
+              </p>
+            </article>
+          </div>
+
+          <p class="jornadas-contact">
+            Consultas:
+            <a href="mailto:observatorioia@uccuyo.edu.ar">observatorioia@uccuyo.edu.ar</a>
+          </p>
         </div>
       </section>
 
@@ -655,6 +789,7 @@
       <div class="footer-inner">
         <span>Observatorio de Inteligencia Artificial · UCCuyo</span>
         <a href="mailto:observatorioia@uccuyo.edu.ar">observatorioia@uccuyo.edu.ar</a>
+        <a href="#jornadas-ia">Jornadas de IA</a>
         <a href="#herramientas">Herramientas de análisis</a>
         <a
           href="https://claudiomlarrea.github.io/secretaria-investigacion/#inicio"
@@ -666,6 +801,8 @@
       </div>
     </footer>
 
+    <script src="js/jornadas-config.js?v=1" defer></script>
+    <script src="js/jornadas.js?v=1" defer></script>
     <script src="js/publicaciones-config.js?v=3" defer></script>
     <script src="js/noticias-config.js?v=2" defer></script>
     <script src="js/visitantes-config.js?v=2" defer></script>

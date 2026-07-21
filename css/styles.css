@@ -1792,3 +1792,181 @@ form.simple-form small {
   transform: translateY(-1px);
   color: #fff;
 }
+
+/* —— 1° Jornadas internas de IA 2026 —— */
+.section--jornadas .text-intro {
+  max-width: 42rem;
+}
+
+.jornadas-facts {
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .jornadas-facts {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.jornadas-facts li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.9rem 1.1rem;
+  background: var(--color-muted);
+  border-radius: var(--radius);
+  border-left: 4px solid var(--color-institutional);
+}
+
+.jornadas-fact-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-green);
+}
+
+.jornadas-fact-value {
+  font-size: 1.05rem;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.jornadas-steps {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 900px) {
+  .jornadas-steps {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+.jornadas-step {
+  position: relative;
+  padding-top: 1.75rem;
+}
+
+.jornadas-step-num {
+  position: absolute;
+  top: -0.65rem;
+  left: 1.25rem;
+  width: 2rem;
+  height: 2rem;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: linear-gradient(
+    135deg,
+    #c9a227 0%,
+    #e8b923 55%,
+    #a87d12 100%
+  );
+  color: var(--color-institutional-dark);
+  font-weight: 800;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(201, 162, 39, 0.35);
+}
+
+.jornadas-step h3 {
+  margin-top: 0.25rem;
+}
+
+.jornadas-label {
+  display: block;
+  font-weight: 700;
+  margin: 1rem 0 0.4rem;
+  color: var(--color-text);
+}
+
+.jornadas-select {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--radius);
+  border: 1px solid rgba(var(--rgb-inst), 0.22);
+  background: #fff;
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.jornadas-select:focus {
+  outline: 2px solid var(--color-institutional);
+  outline-offset: 2px;
+}
+
+.jornadas-ua-hint {
+  margin: 0.75rem 0 0;
+  padding: 0.75rem 0.9rem;
+  background: rgba(var(--rgb-banner-green), 0.08);
+  border-radius: var(--radius);
+  border: 1px solid rgba(var(--rgb-banner-green), 0.2);
+  color: var(--color-text);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.jornadas-name-hint {
+  margin: 0.75rem 0 0;
+  font-size: 0.92rem;
+  color: var(--color-text-soft);
+}
+
+.jornadas-name-hint code {
+  display: inline-block;
+  margin-top: 0.25rem;
+  padding: 0.2rem 0.45rem;
+  background: rgba(var(--rgb-inst), 0.06);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: var(--color-institutional-dark);
+}
+
+.jornadas-form-wrap {
+  margin-top: 1rem;
+}
+
+.jornadas-form-frame {
+  width: 100%;
+  min-height: 28rem;
+  border: 1px solid rgba(var(--rgb-inst), 0.12);
+  border-radius: var(--radius);
+  background: #fff;
+}
+
+.jornadas-form-alt {
+  margin-top: 1rem;
+  padding: 1rem 1.1rem;
+  background: rgba(var(--rgb-inst), 0.04);
+  border-radius: var(--radius);
+}
+
+.jornadas-form-alt p:first-child {
+  margin-top: 0;
+}
+
+#jornadas-open-drive:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: none;
+}
+
+.jornadas-contact {
+  margin: 2rem 0 0;
+  font-size: 0.95rem;
+  color: var(--color-text-soft);
+}
+
+.jornadas-contact a {
+  color: var(--color-institutional);
+  font-weight: 600;
+}
