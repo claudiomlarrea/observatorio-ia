@@ -2,13 +2,14 @@
   var cfg = window.JORNADAS_IA_2026;
   if (!cfg) return;
 
-  var formWrap = document.getElementById("jornadas-form-wrap");
-  var formFrame = document.getElementById("jornadas-form-frame");
-  var formAlt = document.getElementById("jornadas-form-alt");
   var formLink = document.getElementById("jornadas-form-link");
   var uaSelect = document.getElementById("jornadas-ua");
   var openBtn = document.getElementById("jornadas-open-drive");
   var hint = document.getElementById("jornadas-ua-hint");
+
+  if (formLink && cfg.INSCRIPCION_FORM_URL) {
+    formLink.href = String(cfg.INSCRIPCION_FORM_URL).trim();
+  }
 
   function driveUrlFor(unidad) {
     if (unidad && unidad.folderId) {
@@ -44,23 +45,6 @@
         "» y subí el Word (.docx): Nuevo → Subir archivo.";
     }
     hint.hidden = false;
-  }
-
-  if (cfg.INSCRIPCION_FORM_URL && formWrap && formFrame) {
-    var formUrl = String(cfg.INSCRIPCION_FORM_URL).trim();
-    var embedUrl = formUrl.indexOf("embedded=true") >= 0
-      ? formUrl
-      : formUrl + (formUrl.indexOf("?") >= 0 ? "&" : "?") + "embedded=true";
-    formFrame.src = embedUrl;
-    formWrap.hidden = false;
-    if (formAlt) formAlt.hidden = true;
-    if (formLink) {
-      formLink.href = formUrl;
-      formLink.hidden = false;
-    }
-  } else if (formAlt) {
-    formAlt.hidden = false;
-    if (formWrap) formWrap.hidden = true;
   }
 
   if (uaSelect && cfg.UNIDADES) {

@@ -1931,29 +1931,6 @@ form.simple-form small {
   color: var(--color-institutional-dark);
 }
 
-.jornadas-form-wrap {
-  margin-top: 1rem;
-}
-
-.jornadas-form-frame {
-  width: 100%;
-  min-height: 28rem;
-  border: 1px solid rgba(var(--rgb-inst), 0.12);
-  border-radius: var(--radius);
-  background: #fff;
-}
-
-.jornadas-form-alt {
-  margin-top: 1rem;
-  padding: 1rem 1.1rem;
-  background: rgba(var(--rgb-inst), 0.04);
-  border-radius: var(--radius);
-}
-
-.jornadas-form-alt p:first-child {
-  margin-top: 0;
-}
-
 #jornadas-open-drive:disabled {
   opacity: 0.55;
   cursor: not-allowed;

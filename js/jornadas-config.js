@@ -1,9 +1,7 @@
 /**
  * 1° Jornadas internas de IA 2026 — Observatorio de IA (UCCuyo)
  *
- * INSCRIPCION_FORM_URL: pegá aquí la URL pública del Google Form
- *   (Archivo → Publicar / Enviar → enlace). Si queda vacío, se muestra
- *   el correo de inscripción como alternativa.
+ * INSCRIPCION_FORM_URL: URL pública del Google Form (se abre en otra pestaña).
  *
  * DRIVE_FOLDER_URL: carpeta madre "Jornadas de IA 2026" (enlace con permiso
  *   para que cualquier persona pueda subir archivos).
