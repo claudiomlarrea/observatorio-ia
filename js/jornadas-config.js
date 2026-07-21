@@ -12,7 +12,8 @@
  * el botón abrirá directo esa carpeta de unidad.
  */
 window.JORNADAS_IA_2026 = {
-  INSCRIPCION_FORM_URL: "",
+  INSCRIPCION_FORM_URL:
+    "https://docs.google.com/forms/d/e/1FAIpQLSc1GgR1PuBtnud5xlOGQSYUGeSYPmk1OjhHpefMSnm5XuUnvg/viewform",
   DRIVE_FOLDER_URL:
     "https://drive.google.com/drive/folders/13j0Gk4SZmCl_2lo2lBgpt8AMGnP36afI",
   UNIDADES: [

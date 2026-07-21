@@ -47,11 +47,15 @@
   }
 
   if (cfg.INSCRIPCION_FORM_URL && formWrap && formFrame) {
-    formFrame.src = cfg.INSCRIPCION_FORM_URL;
+    var formUrl = String(cfg.INSCRIPCION_FORM_URL).trim();
+    var embedUrl = formUrl.indexOf("embedded=true") >= 0
+      ? formUrl
+      : formUrl + (formUrl.indexOf("?") >= 0 ? "&" : "?") + "embedded=true";
+    formFrame.src = embedUrl;
     formWrap.hidden = false;
     if (formAlt) formAlt.hidden = true;
     if (formLink) {
-      formLink.href = cfg.INSCRIPCION_FORM_URL;
+      formLink.href = formUrl;
       formLink.hidden = false;
     }
   } else if (formAlt) {
