@@ -18,6 +18,7 @@ OUT_ONEDRIVE = Path(
     "60 Observatorio de Inteligencia Artificial/Jornadas de IA 2026/instructivo-jornadas-ia-2026.pdf"
 )
 LOGO = ROOT / "assets/logo-observatorio-ia.png"
+LOGO_CIRCLE = ROOT / "assets/logo-observatorio-ia-circle.png"
 
 OBS_URL = "https://claudiomlarrea.github.io/observatorio-ia/"
 JORNADAS_URL = "https://claudiomlarrea.github.io/observatorio-ia/#jornadas-ia"
@@ -53,6 +54,29 @@ def _header_footer(canvas, doc) -> None:
     canvas.restoreState()
 
 
+def _ensure_circular_logo() -> Path | None:
+    """Recorta el logo a un círculo con fondo transparente (sin cuadrado blanco)."""
+    src = LOGO if LOGO.is_file() else None
+    if src is None:
+        return None
+    try:
+        from PIL import Image, ImageDraw
+    except ImportError:
+        return src
+
+    im = Image.open(src).convert("RGBA")
+    size = min(im.size)
+    im = im.resize((size, size), Image.Resampling.LANCZOS)
+    mask = Image.new("L", (size, size), 0)
+    ImageDraw.Draw(mask).ellipse((0, 0, size - 1, size - 1), fill=255)
+    out = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    out.paste(im, (0, 0))
+    out.putalpha(mask)
+    LOGO_CIRCLE.parent.mkdir(parents=True, exist_ok=True)
+    out.save(LOGO_CIRCLE, "PNG")
+    return LOGO_CIRCLE
+
+
 class CoverPage(Flowable):
     def wrap(self, aw, ah):
         return aw, ah
@@ -62,39 +86,49 @@ class CoverPage(Flowable):
         w, h = A4
         c.setFillColor(GREEN_DARK)
         c.rect(0, 0, w, h, fill=1, stroke=0)
-        c.setFillColor(GOLD)
-        c.rect(0, h * 0.4, w, 2, fill=1, stroke=0)
-        if LOGO.is_file():
+
+        # Logo circular arriba, sin solaparse con el título
+        logo_path = _ensure_circular_logo()
+        logo_d = 42 * mm
+        logo_y = h - 78 * mm
+        if logo_path and logo_path.is_file():
             c.drawImage(
-                str(LOGO),
-                w / 2 - 22 * mm,
-                h - 95 * mm,
-                width=44 * mm,
-                height=44 * mm,
+                str(logo_path),
+                w / 2 - logo_d / 2,
+                logo_y,
+                width=logo_d,
+                height=logo_d,
                 mask="auto",
                 preserveAspectRatio=True,
             )
+
         c.setFillColor(colors.white)
         c.setFont("Helvetica", 9)
         c.drawCentredString(
             w / 2,
-            h - 38 * mm,
+            logo_y - 12 * mm,
             "UNIVERSIDAD CATÓLICA DE CUYO  ·  OBSERVATORIO DE INTELIGENCIA ARTIFICIAL",
         )
         c.setFont("Helvetica-Bold", 20)
-        c.drawCentredString(w / 2, h - 52 * mm, "Instructivo general")
-        c.setFont("Helvetica-Bold", 15)
-        c.drawCentredString(w / 2, h - 62 * mm, "1° Jornadas internas de IA 2026")
+        c.drawCentredString(w / 2, logo_y - 26 * mm, "Instructivo general")
+        c.setFont("Helvetica-Bold", 14)
+        c.drawCentredString(w / 2, logo_y - 36 * mm, "de las Jornadas de IA 2026")
+        c.setFont("Helvetica", 11)
+        c.drawCentredString(w / 2, logo_y - 48 * mm, "1° Jornadas internas · Encuentro virtual")
+
+        c.setFillColor(GOLD)
+        c.rect(0, h * 0.38, w, 2, fill=1, stroke=0)
+
+        c.setFillColor(colors.white)
         c.setFont("Helvetica", 11)
         for i, line in enumerate(
             [
-                "Encuentro virtual · Docentes, investigadores y estudiantes",
                 "Inscripción, resumen Word y presentación PowerPoint",
                 OBS_URL,
                 "observatorioia@uccuyo.edu.ar",
             ]
         ):
-            c.drawCentredString(w / 2, h * 0.34 - i * 14, line)
+            c.drawCentredString(w / 2, h * 0.32 - i * 16, line)
 
 
 def _build_story(styles) -> list:
