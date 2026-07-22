@@ -21,7 +21,7 @@ endobj
 4 0 obj
 <<
 /A <<
-/S /URI /Type /Action /URI (https://claudiomlarrea.github.io/observatorio-ia/#jornadas-ia)
+/S /URI /Type /Action /URI (https://claudiomlarrea.github.io/observatorio-ia/#inicio)
 >> /Border [ 0 0 0 ] /Rect [ 34.425 69.8625 370.575 113.6025 ] /Subtype /Link /Type /Annot
 >>
 endobj
@@ -44,7 +44,7 @@ endobj
 endobj
 7 0 obj
 <<
-/Author (anonymous) /CreationDate (D:20260721195928-03'00') /Creator (anonymous) /Keywords () /ModDate (D:20260721195928-03'00') /Producer (ReportLab PDF Library - \(opensource\)) 
+/Author (anonymous) /CreationDate (D:20260722115331-03'00') /Creator (anonymous) /Keywords () /ModDate (D:20260722115331-03'00') /Producer (ReportLab PDF Library - \(opensource\)) 
   /Subject (unspecified) /Title (untitled) /Trapped /False
 >>
 endobj
@@ -67,15 +67,15 @@ xref
 0000000092 00000 n 
 0000000199 00000 n 
 0001720125 00000 n 
-0001720334 00000 n 
-0001720610 00000 n 
-0001720678 00000 n 
-0001720939 00000 n 
-0001720998 00000 n 
+0001720329 00000 n 
+0001720605 00000 n 
+0001720673 00000 n 
+0001720934 00000 n 
+0001720993 00000 n 
 trailer
 <<
 /ID 
-[<55ceb7c30d6f395afbcb111a49ac5ac0><55ceb7c30d6f395afbcb111a49ac5ac0>]
+[<c1d8c67013fc4603e4c093ba4defb614><c1d8c67013fc4603e4c093ba4defb614>]
 % ReportLab generated PDF document -- digest (opensource)
 
 /Info 7 0 R
@@ -83,5 +83,5 @@ trailer
 /Size 10
 >>
 startxref
-1721220
+1721215
 %%EOF
