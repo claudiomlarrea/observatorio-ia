@@ -1,0 +1,15 @@
+---
+description: Commit y push al terminar cambios en el Observatorio
+alwaysApply: true
+---
+
+# Git: commit y push
+
+Al completar cambios en este repositorio:
+
+1. Hacer `git add` solo de archivos relevantes (nunca `.DS_Store`, `.env`, credenciales).
+2. Crear commit con mensaje claro (HEREDOC), enfocado en el porqué.
+3. Si `main` está detrás de `origin/main`, `git pull --rebase origin main` (stash `.DS_Store` si hace falta).
+4. `git push origin main` (o la rama en la que se trabaje).
+
+No pedir confirmación para commit/push salvo que el usuario diga que no publique.
