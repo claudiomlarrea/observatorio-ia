@@ -9,3 +9,4 @@ PDFs de uso para las herramientas del Observatorio.
 | Análisis EPH (INDEC) | [instructivo-analisis-eph.pdf](instructivo-analisis-eph.pdf) |
 | SAVT — Auditoría de Tesis | [instructivo-savt.pdf](instructivo-savt.pdf) |
 | 1° Jornadas de IA 2026 | [instructivo-jornadas-ia-2026.pdf](instructivo-jornadas-ia-2026.pdf) |
+| Carga de resumen · Jornadas IA 2026 | [instructivo-carga-resumen-jornadas-ia-2026.pdf](instructivo-carga-resumen-jornadas-ia-2026.pdf) |
