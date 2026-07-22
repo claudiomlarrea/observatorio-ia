@@ -1995,3 +1995,49 @@ form.simple-form small {
   color: var(--color-institutional);
   font-weight: 600;
 }
+
+/* —— Galería de Imágenes —— */
+.section--galeria .text-intro {
+  max-width: 42rem;
+}
+
+.gallery-events {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.gallery-event h3 {
+  margin-top: 0;
+}
+
+.gallery-event .tile-actions {
+  margin: 1rem 0 1.25rem;
+}
+
+.gallery-embed-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid rgba(var(--rgb-inst), 0.12);
+  background: var(--color-muted);
+  min-height: 28rem;
+}
+
+.gallery-embed {
+  display: block;
+  width: 100%;
+  height: 32rem;
+  border: 0;
+  background: #fff;
+}
+
+@media (min-width: 768px) {
+  .gallery-embed-wrap {
+    min-height: 36rem;
+  }
+
+  .gallery-embed {
+    height: 40rem;
+  }
+}
