@@ -1848,6 +1848,12 @@ form.simple-form small {
   }
 }
 
+@media (min-width: 1100px) {
+  .jornadas-steps {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
 .jornadas-step {
   position: relative;
   padding-top: 1.75rem;
