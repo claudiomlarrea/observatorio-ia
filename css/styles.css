@@ -1886,6 +1886,25 @@ form.simple-form small {
   margin-top: 0.25rem;
 }
 
+.jornadas-step .tile-actions--jornadas {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 0.45rem;
+  align-items: flex-start;
+}
+
+.jornadas-step .tile-actions--jornadas .btn-ghost {
+  background: transparent;
+  color: var(--color-institutional);
+  border: 1.5px solid var(--color-institutional);
+}
+
+.jornadas-step .tile-actions--jornadas .btn-ghost:hover {
+  background: rgba(var(--rgb-inst), 0.08);
+  color: var(--color-institutional-dark);
+}
+
 .jornadas-label {
   display: block;
   font-weight: 700;

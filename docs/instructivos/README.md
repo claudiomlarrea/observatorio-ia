@@ -8,3 +8,4 @@ PDFs de uso para las herramientas del Observatorio.
 | Encuesta Clara | [instructivo-encuesta-clara.pdf](instructivo-encuesta-clara.pdf) |
 | Análisis EPH (INDEC) | [instructivo-analisis-eph.pdf](instructivo-analisis-eph.pdf) |
 | SAVT — Auditoría de Tesis | [instructivo-savt.pdf](instructivo-savt.pdf) |
+| 1° Jornadas de IA 2026 | [instructivo-jornadas-ia-2026.pdf](instructivo-jornadas-ia-2026.pdf) |
