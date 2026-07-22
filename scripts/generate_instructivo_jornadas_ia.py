@@ -87,37 +87,48 @@ class CoverPage(Flowable):
         c.setFillColor(GREEN_DARK)
         c.rect(0, 0, w, h, fill=1, stroke=0)
 
-        # Logo circular arriba, sin solaparse con el título
-        logo_path = _ensure_circular_logo()
-        logo_d = 42 * mm
-        logo_y = h - 78 * mm
-        if logo_path and logo_path.is_file():
+        # Logo circular ARRIBA (clip elíptico: sin cuadrado blanco)
+        logo_d = 48 * mm
+        logo_top = h - 18 * mm
+        logo_y = logo_top - logo_d
+        cx = w / 2
+        cy = logo_y + logo_d / 2
+
+        logo_path = LOGO if LOGO.is_file() else None
+        if logo_path:
+            c.saveState()
+            path = c.beginPath()
+            path.circle(cx, cy, logo_d / 2)
+            c.clipPath(path, stroke=0)
             c.drawImage(
                 str(logo_path),
-                w / 2 - logo_d / 2,
+                cx - logo_d / 2,
                 logo_y,
                 width=logo_d,
                 height=logo_d,
-                mask="auto",
                 preserveAspectRatio=True,
+                mask="auto",
             )
+            c.restoreState()
 
+        # Textos debajo del logo (sin solape)
+        text_y = logo_y - 14 * mm
         c.setFillColor(colors.white)
         c.setFont("Helvetica", 9)
         c.drawCentredString(
             w / 2,
-            logo_y - 12 * mm,
+            text_y,
             "UNIVERSIDAD CATÓLICA DE CUYO  ·  OBSERVATORIO DE INTELIGENCIA ARTIFICIAL",
         )
         c.setFont("Helvetica-Bold", 20)
-        c.drawCentredString(w / 2, logo_y - 26 * mm, "Instructivo general")
+        c.drawCentredString(w / 2, text_y - 14 * mm, "Instructivo general")
         c.setFont("Helvetica-Bold", 14)
-        c.drawCentredString(w / 2, logo_y - 36 * mm, "de las Jornadas de IA 2026")
+        c.drawCentredString(w / 2, text_y - 24 * mm, "de las Jornadas de IA 2026")
         c.setFont("Helvetica", 11)
-        c.drawCentredString(w / 2, logo_y - 48 * mm, "1° Jornadas internas · Encuentro virtual")
+        c.drawCentredString(w / 2, text_y - 36 * mm, "1° Jornadas internas · Encuentro virtual")
 
         c.setFillColor(GOLD)
-        c.rect(0, h * 0.38, w, 2, fill=1, stroke=0)
+        c.rect(0, h * 0.36, w, 2, fill=1, stroke=0)
 
         c.setFillColor(colors.white)
         c.setFont("Helvetica", 11)
@@ -128,7 +139,7 @@ class CoverPage(Flowable):
                 "observatorioia@uccuyo.edu.ar",
             ]
         ):
-            c.drawCentredString(w / 2, h * 0.32 - i * 16, line)
+            c.drawCentredString(w / 2, h * 0.30 - i * 16, line)
 
 
 def _build_story(styles) -> list:
