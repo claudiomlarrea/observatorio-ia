@@ -165,7 +165,7 @@ def _build_story(styles) -> list:
         "4. Fecha límite y dónde cargar",
         "5. Nombre del archivo",
         "6. Cómo subir el PowerPoint en el Observatorio",
-        "7. Relación con el resumen e inscripción",
+        "7. Relación con el artículo científico e inscripción",
         "8. Contacto",
     ]:
         story.append(Paragraph(item, styles["OIABody"]))
@@ -175,7 +175,7 @@ def _build_story(styles) -> list:
         (
             "1. Alcance de la presentación oral",
             [
-                "Las presentaciones orales de los resúmenes se realizarán en "
+                "Las presentaciones orales se realizarán en "
                 "<b>no más de 10 minutos</b>, con hasta <b>6 diapositivas</b> elaboradas "
                 "en PowerPoint (.ppt o .pptx).",
                 "El encuentro es virtual: 6 de octubre de 2026, 15:00 h.",
@@ -184,22 +184,19 @@ def _build_story(styles) -> list:
         (
             "2. Formato PowerPoint y plantilla",
             [
-                "Utilizá la <b>plantilla oficial de PPT</b> que se ofrece junto a este "
-                "instructivo (cuando esté publicada en la carpeta de las Jornadas / Drive).",
-                "Respetá el límite de <b>hasta 6 diapositivas</b> (filminas).",
+                "Utilizá la <b>plantilla oficial de PPT</b> disponible en el cuadro 3 "
+                "de la sección Jornadas.",
+                "Respetá el límite de <b>hasta 6 diapositivas</b>.",
                 "Estructura sugerida: título y autores; contexto/objetivo; método; "
-                "resultados; conclusiones; (opcional) una diapositiva de cierre o contacto.",
-                "Preferí tipografía legible, poco texto por diapositiva y contraste alto "
-                "para proyección/pantalla compartida.",
+                "resultados; conclusiones; cierre.",
+                "Preferí tipografía legible, poco texto por diapositiva y contraste alto.",
             ],
         ),
         (
             "3. Recomendaciones para el día del encuentro",
             [
-                "Estimá y ensayá la presentación en un máximo de 10 minutos; pueden surgir "
-                "imponderables el día del evento.",
-                "Tené previsto un cronómetro para marcar el tiempo, así el moderador no "
-                "debe interrumpirte oralmente para avisar el cierre.",
+                "Estimá y ensayá la presentación en un máximo de 10 minutos.",
+                "Tené previsto un cronómetro para marcar el tiempo.",
                 "Respetá las indicaciones de «hasta 6 diapositivas».",
             ],
         ),
@@ -209,14 +206,11 @@ def _build_story(styles) -> list:
                 "<b>Fecha para carga del PPT:</b> 10 de septiembre de 2026.",
                 f"Sitio del Observatorio: <link href=\"{OBS_URL}\">{OBS_URL}</link>",
                 f"Sección Jornadas (paso 3): <link href=\"{JORNADAS_URL}\">{JORNADAS_URL}</link>",
-                "En el cuadro <b>3. Cargar presentación en PowerPoint</b> usá el botón rojo "
-                "homónimo: se abrirá Google Drive para subir el archivo.",
             ],
         ),
         (
             "5. Nombre del archivo",
             [
-                "Usá un nombre claro, sin espacios (guiones bajos):",
                 "<b>Area_Universidad_Apellido_TituloCorto.pptx</b>",
                 "Ejemplo: <b>Educacion_UCCuyo_Perez_IAEnLaEducacion.pptx</b>",
             ],
@@ -224,21 +218,20 @@ def _build_story(styles) -> list:
         (
             "6. Cómo subir el PowerPoint en el Observatorio",
             [
-                "1. Abrí la sección Jornadas: "
-                f'<link href="{JORNADAS_URL}">{JORNADAS_URL}</link>',
+                "1. Abrí la sección Jornadas.",
                 "2. En el cuadro <b>3. Cargar presentación en PowerPoint</b>, tocá el botón.",
-                "3. En Google Drive: <b>Nuevo → Subir archivo</b> y elegí tu .ppt o .pptx.",
-                "4. Verificá que el archivo quede en la carpeta de presentaciones.",
+                "3. En Google Drive: <b>Nuevo → Subir archivo</b>.",
                 f"Carpeta Drive: <link href=\"{DRIVE_PPT}\">{DRIVE_PPT}</link>",
             ],
         ),
         (
-            "7. Relación con el resumen e inscripción",
+            "7. Relación con el artículo científico e inscripción",
             [
-                "La presentación PowerPoint y el resumen Word son entregas distintas; "
-                "ambas vencen el <b>10 de septiembre de 2026</b> para expositores.",
-                "Completá también la <b>inscripción</b> (paso 1) y la <b>carga del resumen</b> "
-                "(paso 2) desde la misma sección Jornadas.",
+                "La presentación PowerPoint y el <b>artículo científico de 2.000 palabras</b> "
+                "son entregas distintas; ambas vencen el <b>10 de septiembre de 2026</b> "
+                "para expositores.",
+                "Completá también la <b>inscripción</b> (paso 1) y la "
+                "<b>carga del artículo</b> (paso 2).",
             ],
         ),
         (

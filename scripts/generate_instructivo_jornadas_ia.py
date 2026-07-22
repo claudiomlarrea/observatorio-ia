@@ -22,8 +22,11 @@ LOGO_CIRCLE = ROOT / "assets/logo-observatorio-ia-circle.png"
 
 OBS_URL = "https://claudiomlarrea.github.io/observatorio-ia/"
 JORNADAS_URL = "https://claudiomlarrea.github.io/observatorio-ia/#jornadas-ia"
-FORM_URL = (
-    "https://docs.google.com/forms/d/e/1FAIpQLSc1GgR1PuBtnud5xlOGQSYUGeSYPmk1OjhHpefMSnm5XuUnvg/viewform"
+FORM_ASISTENTES = (
+    "https://docs.google.com/forms/d/e/1FAIpQLSc1GgR1PuBtnud5xlOGQSYUGeSYPmk1OjhHpefMSnm5XuUnvg/viewform?usp=sharing"
+)
+FORM_EXPOSITORES = (
+    "https://docs.google.com/forms/d/e/1FAIpQLSdwoONOXU-N-r26LRvrYWBOA4SfKQjaJ4BDXTcJoD48whT7Tw/viewform?usp=sharing"
 )
 
 GREEN_DARK = colors.HexColor("#042f23")
@@ -134,7 +137,7 @@ class CoverPage(Flowable):
         c.setFont("Helvetica", 11)
         for i, line in enumerate(
             [
-                "Inscripción, resumen Word y presentación PowerPoint",
+                "Inscripción · Artículo científico (2.000 palabras) · PowerPoint",
                 OBS_URL,
                 "observatorioia@uccuyo.edu.ar",
             ]
@@ -150,10 +153,10 @@ def _build_story(styles) -> list:
         "1. ¿Qué son las Jornadas?",
         "2. Datos generales y fechas",
         "3. Cómo acceder desde el Observatorio de IA",
-        "4. Paso 1 — Inscripción (Google Form)",
-        "5. Paso 2 — Cargar resumen (Word)",
+        "4. Paso 1 — Inscripción (asistentes / expositores)",
+        "5. Paso 2 — Cargar artículo científico (Word)",
         "6. Paso 3 — Cargar presentación (PowerPoint)",
-        "7. Requisitos de los archivos",
+        "7. Requisitos de las entregas",
         "8. Publicación en Revista Cuadernos",
         "9. Contacto y URLs de referencia",
     ]:
@@ -165,18 +168,20 @@ def _build_story(styles) -> list:
             "1. ¿Qué son las Jornadas?",
             [
                 "Las <b>1° Jornadas Internas de Inteligencia Artificial 2026</b> son un "
-                "encuentro virtual del Observatorio de IA de la UCCuyo para visibilizar "
-                "experiencias de uso de IA en docencia, investigación y gestión, y favorecer "
-                "el diálogo interdisciplinario sobre oportunidades, riesgos y desafíos éticos.",
-                "Están dirigidas a docentes, investigadores y estudiantes de las Facultades, "
-                "Institutos y Sedes de la Universidad (San Juan, Mendoza y San Luis).",
+                "encuentro virtual del Observatorio de IA de la UCCuyo (Res. N° 741-CS-2025) "
+                "para visibilizar experiencias de uso de IA en docencia, investigación y "
+                "gestión, y favorecer el diálogo interdisciplinario sobre oportunidades, "
+                "riesgos y desafíos éticos.",
+                "Destinatarios: docentes, investigadores y estudiantes de Facultades, "
+                "Institutos y Sedes (San Juan, Mendoza y San Luis).",
             ],
         ),
         (
             "2. Datos generales y fechas",
             [
                 "<b>Encuentro:</b> 6 de octubre de 2026, 15:00 h · modalidad virtual.",
-                "<b>Cierre resumen y PowerPoint (expositores):</b> 10 de septiembre de 2026.",
+                "<b>Cierre artículo científico y PowerPoint (expositores):</b> "
+                "10 de septiembre de 2026.",
                 "<b>Cierre inscripción como asistente:</b> 28 de septiembre de 2026.",
             ],
         ),
@@ -188,50 +193,57 @@ def _build_story(styles) -> list:
                 "En el menú superior elegí <b>Jornadas de IA</b>.",
                 "<b>Sección Jornadas</b><br/>URL: "
                 f'<link href="{JORNADAS_URL}">{JORNADAS_URL}</link>',
-                "Allí están los tres pasos: inscripción, resumen y presentación.",
+                "Allí están los tres pasos: inscripción, artículo científico y presentación.",
             ],
         ),
         (
-            "4. Paso 1 — Inscripción (Google Form)",
+            "4. Paso 1 — Inscripción (asistentes / expositores)",
             [
-                "Indicá si participás como <b>asistente</b> o <b>expositor/a</b>. Si exponés, "
-                "incluí el título de la ponencia.",
-                "URL:<br/>" + f'<link href="{FORM_URL}">{FORM_URL}</link>',
-                "En la web, cuadro <b>1. Inscripción</b> → botón <b>Abrir formulario</b>.",
+                "Hay dos formularios distintos (solo para responder, no para editar):",
+                f"<b>Asistentes:</b> <link href=\"{FORM_ASISTENTES}\">{FORM_ASISTENTES}</link>",
+                f"<b>Expositores:</b> <link href=\"{FORM_EXPOSITORES}\">{FORM_EXPOSITORES}</link>",
+                "Si exponés, incluí el título de la ponencia en el formulario de expositores "
+                "y completá luego los pasos 2 y 3.",
             ],
         ),
         (
-            "5. Paso 2 — Cargar resumen (Word)",
+            "5. Paso 2 — Cargar artículo científico (Word)",
             [
-                "Resumen para Revista Cuadernos (máx. 300 palabras, normativa editorial). "
-                "Archivo Word (.docx) en Google Drive: <b>Nuevo → Subir archivo</b>.",
-                "Cuadro <b>2. Cargar resumen</b> → botón homónimo.",
-                "Nombre sugerido: <b>Apellido_Nombre_TituloCorto.docx</b>",
+                "Como complemento de la ponencia, los expositores deben cargar un "
+                "<b>artículo científico de 2.000 palabras</b> para la Revista Cuadernos "
+                "(normativa editorial vigente).",
+                "Cuadro <b>2. Cargar artículo científico</b> → plantilla Word e instructivo "
+                "específico → subida a Google Drive.",
+                "Nombre sugerido: <b>Area_Universidad_Apellido_Titulo.docx</b>",
             ],
         ),
         (
             "6. Paso 3 — Cargar presentación (PowerPoint)",
             [
                 "Material de exposición del 6 de octubre: PowerPoint (.ppt o .pptx), "
-                "<b>hasta 5 diapositivas</b>.",
-                "Cuadro <b>3. Cargar presentación en PowerPoint</b> → botón correspondiente.",
-                "Nombre sugerido: <b>Apellido_Nombre_TituloCorto.pptx</b>",
+                "<b>hasta 6 diapositivas</b>; exposición de hasta <b>10 minutos</b>.",
+                "Cuadro <b>3. Cargar presentación en PowerPoint</b> → plantilla e instructivo.",
+                "Nombre sugerido: <b>Area_Universidad_Apellido_TituloCorto.pptx</b>",
             ],
         ),
         (
-            "7. Requisitos de los archivos",
+            "7. Requisitos de las entregas",
             [
-                "Resumen y presentación son entregas distintas; ambas vencen el "
-                "10 de septiembre de 2026 para expositores.",
-                "Ejes orientativos: IA en docencia; IA en investigación; ética y teología; "
-                "IA en gestión; impacto regional.",
+                "Artículo científico y PowerPoint son entregas distintas e independientes; "
+                "ambas vencen el <b>10 de septiembre de 2026</b> para expositores.",
+                "Ejes temáticos: IA en Educación; Derecho y Ciencias Sociales; Salud y "
+                "Ciencias Médicas; Ciencias Veterinarias; Economía y sectores productivos; "
+                "Seguridad; Ciencias Químicas y Tecnológicas; Ética, teología y antropología; "
+                "investigación interdisciplinaria y gestión universitaria (eje transversal).",
             ],
         ),
         (
             "8. Publicación en Revista Cuadernos",
             [
-                "Los resúmenes podrán publicarse en un número especial de la Revista Cuadernos "
-                "(UCCuyo), conforme a la normativa editorial y evaluación de la revista.",
+                "Los artículos científicos podrán publicarse en un número especial de la "
+                "Revista Cuadernos (UCCuyo) dedicado a Inteligencia Artificial, sujetos a "
+                "la extensión de <b>2.000 palabras</b>, la estructura y la evaluación del "
+                "comité editorial conforme a la normativa de la revista.",
             ],
         ),
         (
@@ -240,7 +252,6 @@ def _build_story(styles) -> list:
                 "Correo: observatorioia@uccuyo.edu.ar",
                 f"Observatorio: <link href=\"{OBS_URL}\">{OBS_URL}</link>",
                 f"Jornadas: <link href=\"{JORNADAS_URL}\">{JORNADAS_URL}</link>",
-                f"Formulario: <link href=\"{FORM_URL}\">{FORM_URL}</link>",
             ],
         ),
     ]

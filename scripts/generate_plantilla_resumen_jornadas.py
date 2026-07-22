@@ -102,7 +102,7 @@ def _add_banner(doc: Document) -> None:
     lines = [
         ("UNIVERSIDAD CATÓLICA DE CUYO · Observatorio de IA", 9, False),
         ("1° Jornadas internas de Inteligencia Artificial 2026", 13, True),
-        ("Plantilla de resumen · Encuentro virtual · 6 de octubre de 2026 · 15:00 h", 9, False),
+        ("Plantilla de artículo científico · 2.000 palabras · 6 de octubre de 2026", 9, False),
     ]
     first = True
     for text, size, bold in lines:
@@ -179,9 +179,10 @@ def build() -> Path:
 
     _p(
         doc,
-        "INSTRUCCIONES (borrar este párrafo al enviar): Arial 10 pt, interlineado sencillo, "
-        "máximo 250 palabras en el cuerpo del resumen. Sin cuadros, gráficos ni bibliografía. "
-        "Subrayá al autor que presentará. Nombre del archivo: Area_Universidad_Apellido_Titulo.docx",
+        "INSTRUCCIONES (borrar este párrafo al enviar): Artículo científico de "
+        "aproximadamente 2.000 palabras para la Revista Cuadernos. Completá título, "
+        "autores, unidad y cuerpo. Nombre del archivo: Area_Universidad_Apellido_Titulo.docx. "
+        "Cierre de carga: 10 de septiembre de 2026.",
         size=9,
         italic=True,
         color=MUTED,
@@ -224,13 +225,15 @@ def build() -> Path:
         space_after=14,
     )
 
-    _p(doc, "Texto del resumen", size=10, bold=True, center=False, space_after=8)
+    _p(doc, "Texto del artículo científico (aprox. 2.000 palabras)", size=10, bold=True, center=False, space_after=8)
 
     for label, hint in [
-        ("Introducción.", "Breve contexto y objetivo del trabajo."),
-        ("Metodología.", "Enfoque, datos, participantes o procedimiento."),
-        ("Resultados.", "Hallazgos principales, de forma concisa."),
-        ("Conclusiones.", "Mensaje clave e implicancias."),
+        ("Introducción.", "Contexto, problema y objetivos del trabajo."),
+        ("Marco / antecedentes.", "Si corresponde, según el eje temático."),
+        ("Metodología o experiencia.", "Enfoque, datos, participantes o procedimiento."),
+        ("Resultados / hallazgos.", "Principales aportes, de forma clara."),
+        ("Discusión y conclusiones.", "Implicancias y cierre."),
+        ("Referencias.", "Según normativa editorial de la Revista Cuadernos."),
     ]:
         p = doc.add_paragraph()
         p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
@@ -243,7 +246,7 @@ def build() -> Path:
 
     _p(
         doc,
-        "Cierre de carga: 10 de septiembre de 2026 · Observatorio de IA — "
+        "Artículo de 2.000 palabras · Cierre: 10 de septiembre de 2026 · Observatorio de IA — "
         "https://claudiomlarrea.github.io/observatorio-ia/#jornadas-ia",
         size=9,
         italic=True,
