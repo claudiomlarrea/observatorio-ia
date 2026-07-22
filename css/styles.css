@@ -9,6 +9,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Compensa el header sticky al ir a #anclas (p. ej. desde el flayer) */
+  scroll-padding-top: calc(var(--header-h) + 1rem);
 }
 
 body {
@@ -372,6 +374,12 @@ a:hover {
 
 .section {
   padding: 3.5rem 1.25rem;
+}
+
+/* Anclas (#jornadas-ia, etc.): dejar espacio bajo el header sticky
+   y compensar el margin-top negativo de .section-head--bar */
+.section[id] {
+  scroll-margin-top: calc(var(--header-h) + 3.75rem);
 }
 
 .section:nth-of-type(even) {
