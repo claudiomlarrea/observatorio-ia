@@ -2232,3 +2232,123 @@ body.gallery-lightbox-open {
     display: none;
   }
 }
+
+/* —— Encuestas e informes —— */
+.section--encuestas .text-intro {
+  max-width: 42rem;
+}
+
+.encuestas-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+@media (min-width: 880px) {
+  .encuestas-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+}
+
+.encuestas-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.encuestas-card .tile-actions {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.encuestas-badge {
+  display: inline-block;
+  margin: 0 0 0.65rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: rgba(var(--rgb-banner-green), 0.12);
+  color: var(--color-green-dark);
+}
+
+.encuestas-badge--soon {
+  background: rgba(var(--rgb-inst), 0.1);
+  color: var(--color-institutional);
+}
+
+.encuestas-facts {
+  list-style: none;
+  margin: 0 0 1.1rem;
+  padding: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.encuestas-facts li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.7rem 0.9rem;
+  background: var(--color-muted);
+  border-radius: var(--radius);
+  border-left: 4px solid var(--color-institutional);
+}
+
+.encuestas-fact-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-green);
+}
+
+.encuestas-fact-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.encuestas-steps {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.encuestas-steps li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius);
+  background: rgba(var(--rgb-inst), 0.04);
+  border: 1px solid rgba(var(--rgb-inst), 0.1);
+}
+
+.encuestas-steps strong {
+  color: var(--color-institutional);
+  font-size: 0.92rem;
+}
+
+.encuestas-steps span {
+  font-size: 0.9rem;
+  color: var(--color-text-soft);
+  line-height: 1.4;
+}
+
+.encuestas-note {
+  margin: 0 0 1rem;
+  font-size: 0.92rem;
+  color: var(--color-text-soft);
+  line-height: 1.45;
+}
+
+.encuestas-card--soon .btn-primary {
+  opacity: 0.92;
+}
