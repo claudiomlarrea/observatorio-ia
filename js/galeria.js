@@ -70,27 +70,8 @@
     document.body.classList.remove("gallery-lightbox-open");
   }
 
-  function renderAlbum(album) {
-    var article = document.createElement("article");
-    article.className = "gallery-event card";
-    article.setAttribute("aria-labelledby", "galeria-" + album.id);
-
-    var h3 = document.createElement("h3");
-    h3.id = "galeria-" + album.id;
-    h3.textContent = album.title || "";
-    article.appendChild(h3);
-
-    if (album.description) {
-      var p = document.createElement("p");
-      p.textContent = album.description;
-      article.appendChild(p);
-    }
-
-    var grid = document.createElement("div");
-    grid.className = "gallery-grid";
-    grid.setAttribute("role", "list");
-
-    var photos = album.photos || [];
+  function fillGrid(grid, photos) {
+    if (grid.dataset.filled === "1") return;
     photos.forEach(function (id, i) {
       var item = document.createElement("button");
       item.type = "button";
@@ -102,7 +83,7 @@
       );
 
       var img = document.createElement("img");
-      img.src = thumbUrl(id, 640);
+      img.src = thumbUrl(id, 480);
       img.alt = "";
       img.loading = "lazy";
       img.decoding = "async";
@@ -116,8 +97,83 @@
 
       grid.appendChild(item);
     });
+    grid.dataset.filled = "1";
+  }
 
-    article.appendChild(grid);
+  function setOpen(article, toggle, panel, open) {
+    article.classList.toggle("is-open", open);
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    panel.hidden = !open;
+  }
+
+  function renderAlbum(album) {
+    var photos = album.photos || [];
+    var panelId = "galeria-panel-" + album.id;
+    var titleId = "galeria-" + album.id;
+
+    var article = document.createElement("article");
+    article.className = "gallery-event";
+
+    var toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "gallery-toggle";
+    toggle.id = titleId;
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-controls", panelId);
+
+    var titleWrap = document.createElement("span");
+    titleWrap.className = "gallery-toggle-text";
+
+    var title = document.createElement("span");
+    title.className = "gallery-toggle-title";
+    title.textContent = album.title || "";
+    titleWrap.appendChild(title);
+
+    if (photos.length) {
+      var meta = document.createElement("span");
+      meta.className = "gallery-toggle-meta";
+      meta.textContent = photos.length + " fotos";
+      titleWrap.appendChild(meta);
+    }
+
+    var chevron = document.createElement("span");
+    chevron.className = "gallery-toggle-chevron";
+    chevron.setAttribute("aria-hidden", "true");
+
+    toggle.appendChild(titleWrap);
+    toggle.appendChild(chevron);
+
+    var panel = document.createElement("div");
+    panel.className = "gallery-panel";
+    panel.id = panelId;
+    panel.hidden = true;
+    panel.setAttribute("role", "region");
+    panel.setAttribute("aria-labelledby", titleId);
+
+    if (album.description) {
+      var p = document.createElement("p");
+      p.className = "gallery-panel-desc";
+      p.textContent = album.description;
+      panel.appendChild(p);
+    }
+
+    var scroll = document.createElement("div");
+    scroll.className = "gallery-scroll";
+
+    var grid = document.createElement("div");
+    grid.className = "gallery-grid";
+    grid.setAttribute("role", "list");
+    scroll.appendChild(grid);
+    panel.appendChild(scroll);
+
+    toggle.addEventListener("click", function () {
+      var open = toggle.getAttribute("aria-expanded") !== "true";
+      if (open) fillGrid(grid, photos);
+      setOpen(article, toggle, panel, open);
+    });
+
+    article.appendChild(toggle);
+    article.appendChild(panel);
     return article;
   }
 
