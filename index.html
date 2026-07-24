@@ -516,31 +516,34 @@
               </p>
             </article>
 
-            <article class="card encuestas-card encuestas-card--soon" aria-labelledby="encuestas-docentes">
-              <p class="encuestas-badge encuestas-badge--soon">En preparación</p>
+            <article class="card encuestas-card" aria-labelledby="encuestas-docentes">
+              <p class="encuestas-badge">Laboratorio local</p>
               <h3 id="encuestas-docentes">Encuesta a docentes</h3>
               <p>
-                Próximo relevamiento orientado al cuerpo docente: usos de IA en
-                la enseñanza, criterios de evaluación, formación y necesidades
-                institucionales. En esta sección se publicarán el formulario de
-                participación, el instructivo y, luego, el informe de resultados.
+                Ecosistema para que el cuerpo docente responda el formulario, las
+                respuestas se acumulen en Google Sheets y
+                <strong>Encuesta Clara</strong> realice el análisis cuantitativo
+                (frecuencias por ítem) y cualitativo (abiertas), con descarga del
+                informe ejecutivo.
               </p>
-              <ul class="encuestas-steps" aria-label="Etapas previstas">
+              <ul class="encuestas-steps" aria-label="Flujo del ecosistema">
                 <li>
-                  <strong>1. Diseño del instrumento</strong>
-                  <span>Preguntas y validación del cuestionario para docentes.</span>
+                  <strong>1. Responder</strong>
+                  <span>Formulario Google Forms (enlace de encuestado).</span>
                 </li>
                 <li>
-                  <strong>2. Difusión e inscripción</strong>
-                  <span>Enlace al formulario y materiales de apoyo.</span>
+                  <strong>2. Acumular</strong>
+                  <span>Respuestas en la hoja vinculada de Google Sheets.</span>
                 </li>
                 <li>
-                  <strong>3. Análisis e informe</strong>
-                  <span>Publicación de hallazgos en esta misma pestaña.</span>
+                  <strong>3. Analizar e informar</strong>
+                  <span>Encuesta Clara carga el Sheets y genera el informe Word.</span>
                 </li>
               </ul>
               <p class="encuestas-note" id="encuestas-docentes-estado">
-                El formulario para docentes se habilitará próximamente. Consultas:
+                Modo laboratorio en tu Mac (aún no publicado en la web). Si el
+                formulario aún no está listo, podés probar el análisis con el Excel
+                de alumnos. Consultas:
                 <a href="mailto:observatorioia@uccuyo.edu.ar">observatorioia@uccuyo.edu.ar</a>.
               </p>
               <p class="tile-actions">
@@ -548,8 +551,29 @@
                   id="encuestas-docentes-form"
                   class="btn btn-primary"
                   href="mailto:observatorioia@uccuyo.edu.ar?subject=%5BObservatorio%20IA%5D%20Encuesta%20docentes"
-                  aria-describedby="encuestas-docentes-estado"
-                  >Avisarme cuando esté disponible</a
+                  >Responder encuesta (pendiente de Forms)</a
+                >
+                <a
+                  id="encuestas-clara-link"
+                  class="btn btn-ghost"
+                  href="http://localhost:8501/?sheet=1VGWlc-n_td6dctPdfvKmFxfKgBAdFV3P6J51Wjlg5r4"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Analizar en Encuesta Clara (local)</a
+                >
+                <a
+                  class="btn btn-ghost"
+                  href="https://cuantitativo-cualitativo-encuesta.streamlit.app/?sheet=1VGWlc-n_td6dctPdfvKmFxfKgBAdFV3P6J51Wjlg5r4"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Encuesta Clara (nube)</a
+                >
+                <a
+                  class="btn btn-ghost"
+                  href="https://docs.google.com/spreadsheets/d/1VGWlc-n_td6dctPdfvKmFxfKgBAdFV3P6J51Wjlg5r4/edit?gid=0#gid=0"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Ver hoja de respuestas</a
                 >
               </p>
             </article>
@@ -969,8 +993,8 @@
       </div>
     </footer>
 
-    <script src="js/encuestas-config.js?v=1" defer></script>
-    <script src="js/encuestas.js?v=1" defer></script>
+    <script src="js/encuestas-config.js?v=3" defer></script>
+    <script src="js/encuestas.js?v=3" defer></script>
     <script src="js/galeria-config.js?v=2" defer></script>
     <script src="js/galeria.js?v=2" defer></script>
     <script src="js/jornadas-config.js?v=7" defer></script>
