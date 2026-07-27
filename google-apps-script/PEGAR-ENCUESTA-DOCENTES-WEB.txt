@@ -1,0 +1,27 @@
+Encuesta docentes — publicar en Apps Script (Publicaciones OIA)
+=============================================================
+
+1. script.google.com → proyecto **Publicaciones OIA** (misma app que publicaciones).
+
+2. Archivo nuevo: **EncuestaDocentesWeb.gs** (copiar del repo).
+
+3. En **PublicacionesWeb.gs** deben estar estas líneas (ya en el repo local):
+   - doGet:  var encuestaGet = routeEncuestaDocentesGet_(e); if (encuestaGet) return encuestaGet;
+   - doPost: var encuestaPost = routeEncuestaDocentesPost_(e); if (encuestaPost) return encuestaPost;
+
+4. Guardar → **Implementar** → nueva versión de la app web existente.
+
+5. La app web debe ejecutarse como **usuario que accede** (no solo “yo”) para validar el correo del equipo.
+
+6. Dar al script acceso a la planilla de respuestas:
+   1Tf0rz2Fe5ulXq4y3WFHnF2wH-Ma8zCt4SH5wB_vfBtc
+   (cuenta dueña del proyecto: investigacion@uccuyo.edu.ar).
+
+7. Probar:
+   - ?action=encuesta_docentes_export  (solo correos del equipo)
+   - ?action=encuesta_docentes_equipo    (subir PDFs)
+   - ?action=encuesta_docentes_informe&tipo=ejecutivo  (público)
+
+8. Push del repo observatorio-ia a GitHub Pages para ver los botones en #encuestas.
+
+Correos autorizados (equipo): ver ENCUESTA_DOCENTES_TEAM_EMAILS en EncuestaDocentesWeb.gs

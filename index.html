@@ -520,32 +520,30 @@
               <p class="encuestas-badge">Abierta</p>
               <h3 id="encuestas-docentes">Encuesta a docentes</h3>
               <p>
-                Ecosistema para que el cuerpo docente responda el formulario, las
-                respuestas se acumulen en Google Sheets y
-                <strong>Encuesta Clara</strong> realice el análisis cuantitativo
-                (frecuencias por ítem) y cualitativo (abiertas), con descarga del
-                informe ejecutivo.
+                Los docentes completan el formulario en línea; las respuestas se acumulan en
+                Google Sheets. El equipo del Observatorio puede descargar los datos y publicar
+                los informes ejecutivo e institucional en esta misma sección.
               </p>
-              <ul class="encuestas-steps" aria-label="Flujo del ecosistema">
+              <ul class="encuestas-steps" aria-label="Flujo">
                 <li>
                   <strong>1. Responder</strong>
-                  <span>Formulario Google Forms (enlace de encuestado).</span>
+                  <span>Cualquier docente UCCuyo (formulario anónimo).</span>
                 </li>
                 <li>
                   <strong>2. Acumular</strong>
-                  <span>Respuestas en la hoja vinculada de Google Sheets.</span>
+                  <span>Respuestas en la planilla vinculada al Forms.</span>
                 </li>
                 <li>
-                  <strong>3. Analizar e informar</strong>
-                  <span>Encuesta Clara carga el Sheets y genera el informe Word.</span>
+                  <strong>3. Informar</strong>
+                  <span>Informes PDF publicados por el equipo del Observatorio.</span>
                 </li>
               </ul>
               <p class="encuestas-note" id="encuestas-docentes-estado">
-                La encuesta a docentes está abierta. Completá el formulario; el análisis
-                se hace con Encuesta Clara a partir del Google Sheets. Consultas:
+                La encuesta está abierta. Los botones de equipo requieren iniciar sesión con un
+                correo autorizado del Observatorio. Consultas:
                 <a href="mailto:observatorioia@uccuyo.edu.ar">observatorioia@uccuyo.edu.ar</a>.
               </p>
-              <p class="tile-actions">
+              <p class="tile-actions encuestas-docentes-actions">
                 <a
                   id="encuestas-docentes-form"
                   class="btn btn-primary"
@@ -555,26 +553,30 @@
                   >Responder encuesta a docentes</a
                 >
                 <a
-                  id="encuestas-clara-link"
+                  id="encuestas-docentes-export"
                   class="btn btn-ghost"
-                  href="http://localhost:8501/?sheet=1VGWlc-n_td6dctPdfvKmFxfKgBAdFV3P6J51Wjlg5r4"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  >Analizar en Encuesta Clara (local)</a
+                  href="#"
+                  title="Solo equipo Observatorio (correo Google autorizado)"
+                  >Descargar respuestas (equipo)</a
                 >
                 <a
+                  id="encuestas-docentes-panel"
                   class="btn btn-ghost"
-                  href="https://cuantitativo-cualitativo-encuesta.streamlit.app/?sheet=1VGWlc-n_td6dctPdfvKmFxfKgBAdFV3P6J51Wjlg5r4"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  >Encuesta Clara (nube)</a
+                  href="#"
+                  title="Solo equipo Observatorio (correo Google autorizado)"
+                  >Cargar informes PDF (equipo)</a
                 >
                 <a
+                  id="encuestas-docentes-informe-ejecutivo"
                   class="btn btn-ghost"
-                  href="https://docs.google.com/spreadsheets/d/1VGWlc-n_td6dctPdfvKmFxfKgBAdFV3P6J51Wjlg5r4/edit?gid=0#gid=0"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  >Ver hoja de respuestas</a
+                  href="#"
+                  >Descargar informe ejecutivo</a
+                >
+                <a
+                  id="encuestas-docentes-informe-institucional"
+                  class="btn btn-ghost"
+                  href="#"
+                  >Descargar informe institucional</a
                 >
               </p>
             </article>
@@ -994,8 +996,8 @@
       </div>
     </footer>
 
-    <script src="js/encuestas-config.js?v=4" defer></script>
-    <script src="js/encuestas.js?v=4" defer></script>
+    <script src="js/encuestas-config.js?v=5" defer></script>
+    <script src="js/encuestas.js?v=5" defer></script>
     <script src="js/galeria-config.js?v=2" defer></script>
     <script src="js/galeria.js?v=2" defer></script>
     <script src="js/jornadas-config.js?v=7" defer></script>

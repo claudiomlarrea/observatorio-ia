@@ -78,6 +78,8 @@ function doGet(e) {
   if (action === "noticias") {
     return jsonOrJsonp_(obtenerNoticiasMedios_(), e);
   }
+  var encuestaGet = routeEncuestaDocentesGet_(e);
+  if (encuestaGet) return encuestaGet;
 
   var datos = obtenerItemsPublicos_();
   return jsonOrJsonp_({ ok: true, generatedAt: new Date().toISOString(), items: datos }, e);
@@ -90,6 +92,9 @@ function doPost(e) {
   if (action === "contact") {
     return handleContact_(payload);
   }
+
+  var encuestaPost = routeEncuestaDocentesPost_(e);
+  if (encuestaPost) return encuestaPost;
 
   if (action !== "add") return json_({ ok: false, error: "invalid_action" });
 
