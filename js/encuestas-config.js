@@ -1,12 +1,12 @@
 /**
- * Configuración de Encuestas e informes (laboratorio local).
- * Completar DOCENTES_FORM_URL con el enlace de encuestado (viewform / forms.gle), nunca /edit.
- * No publicar en la web hasta validar el flujo en Mac.
+ * Configuración de Encuestas e informes.
+ * DOCENTES_FORM_URL: enlace de encuestado (viewform / forms.gle), nunca /edit.
  */
 window.OBS_ENCUESTAS = {
   ALUMNOS_INFORME_PDF:
     "docs/informes/informe_ejecutivo_ia_uccuyo_institucional.pdf",
-  DOCENTES_FORM_URL: "",
+  DOCENTES_FORM_URL:
+    "https://docs.google.com/forms/d/e/1FAIpQLSd9UOXy4tMR3PJ79KnfQA_Sw0Rf-KfvdsOY0_Pq3IdWiorHqQ/viewform",
   DOCENTES_SHEETS_ID: "1VGWlc-n_td6dctPdfvKmFxfKgBAdFV3P6J51Wjlg5r4",
   DOCENTES_SHEETS_URL:
     "https://docs.google.com/spreadsheets/d/1VGWlc-n_td6dctPdfvKmFxfKgBAdFV3P6J51Wjlg5r4/edit?gid=0#gid=0",
