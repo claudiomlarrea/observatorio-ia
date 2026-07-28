@@ -15,12 +15,11 @@ OUT = ROOT / "assets" / "flayer-encuesta-docentes-2026.pdf"
 
 URL = "https://claudiomlarrea.github.io/observatorio-ia/#encuestas"
 
-# Zona del CTA verde en la imagen Stories (coords desde abajo-izquierda).
-# Amplia a propósito: Preview / Chrome a veces fallan con rects chicos.
-LEFT = 0.06
-RIGHT = 0.94
-BOTTOM = 0.035
-TOP = 0.20
+# Zona del CTA verde (coords desde abajo-izquierda, proporción del PNG).
+LEFT = 0.09
+RIGHT = 0.91
+BOTTOM = 0.032
+TOP = 0.105
 
 
 def main() -> None:
