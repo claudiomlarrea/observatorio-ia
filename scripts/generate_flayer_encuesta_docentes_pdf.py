@@ -15,37 +15,39 @@ OUT = ROOT / "assets" / "flayer-encuesta-docentes-2026.pdf"
 
 URL = "https://claudiomlarrea.github.io/observatorio-ia/#encuestas"
 
-# Misma zona que el CTA del flayer web (porcentaje sobre la imagen)
-LEFT = 0.085
-RIGHT = 0.915
-BOTTOM = 0.115
-HEIGHT = 0.072
+# Zona del CTA verde en la imagen Stories (coords desde abajo-izquierda).
+# Amplia a propósito: Preview / Chrome a veces fallan con rects chicos.
+LEFT = 0.06
+RIGHT = 0.94
+BOTTOM = 0.035
+TOP = 0.20
 
 
 def main() -> None:
     im = Image.open(PNG).convert("RGB")
-    # Ancho cómodo para compartir / imprimir (proporción Stories)
     page_w = 420.0
     page_h = page_w * im.height / im.width
 
     c = canvas.Canvas(str(OUT), pagesize=(page_w, page_h))
-    c.drawImage(ImageReader(im), 0, 0, width=page_w, height=page_h, preserveAspectRatio=True, mask="auto")
+    c.drawImage(
+        ImageReader(im),
+        0,
+        0,
+        width=page_w,
+        height=page_h,
+        preserveAspectRatio=True,
+        mask="auto",
+    )
 
-    x1 = LEFT * page_w
-    x2 = RIGHT * page_w
-    y1 = BOTTOM * page_h
-    y2 = y1 + HEIGHT * page_h
-    # Área un poco más amplia para que sea fácil tocar el botón
-    pad_x = 0.02 * page_w
-    pad_y = 0.01 * page_h
-    rect = (x1 - pad_x, y1 - pad_y, x2 + pad_x, y2 + pad_y)
-
-    c.linkURL(URL, rect, relative=1)
+    rect = (LEFT * page_w, BOTTOM * page_h, RIGHT * page_w, TOP * page_h)
+    # relative=0: rectángulo absoluto en puntos de página
+    c.linkURL(URL, rect, relative=0, thickness=0)
     c.setTitle("Encuesta a docentes 2026 — Observatorio de IA")
     c.setAuthor("Observatorio de Inteligencia Artificial · UCCuyo")
     c.save()
     print(f"OK {OUT} ({OUT.stat().st_size} bytes)")
-    print(f"Link → {URL} rect={tuple(round(x, 1) for x in rect)}")
+    print(f"Link → {URL}")
+    print(f"rect={tuple(round(x, 1) for x in rect)} page=({page_w:.0f}x{page_h:.0f})")
 
 
 if __name__ == "__main__":
