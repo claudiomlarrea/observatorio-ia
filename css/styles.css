@@ -2349,6 +2349,19 @@ body.gallery-lightbox-open {
   line-height: 1.45;
 }
 
+.encuestas-card .btn-soft-green {
+  background: #d8ebe2;
+  color: var(--color-green-dark);
+  border: 1.5px solid #9fc9b6;
+  font-weight: 600;
+}
+
+.encuestas-card .btn-soft-green:hover {
+  background: #c6e0d6;
+  color: var(--color-banner-green-dark);
+  border-color: #7db89a;
+}
+
 .encuestas-card--soon .btn-primary {
   opacity: 0.92;
 }
