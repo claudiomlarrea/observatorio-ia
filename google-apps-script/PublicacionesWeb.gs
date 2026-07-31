@@ -6,9 +6,9 @@
  * - GET  ?action=public (o sin action): JSON para la web pública.
  * - GET  ?action=admin: panel HTML de carga (solo emails autorizados).
  * - GET  ?action=visit&site=secretaria|observatorio: +1 visita a esa página web (GitHub Pages).
- * - GET  ?action=visitgeo&site=observatorio&country=AR&countryName=Argentina&region=San Juan:
+ * - GET  ?action=visitgeo&site=observatorio|secretaria&country=AR&countryName=Argentina&region=San Juan:
  *       +1 a contador agregado de origen (sin IP).
- * - GET  ?action=visitmap&site=observatorio: JSON de países/regiones para el mapa público.
+ * - GET  ?action=visitmap&site=observatorio|secretaria: JSON de países/regiones para el mapa público.
  * - POST ?action=add: agrega publicación (solo emails autorizados).
  * - POST ?action=contact: envía consulta del formulario web (público).
  */
@@ -19,14 +19,18 @@ var CONTACT_COPY_TO = "investigacion@uccuyo.edu.ar";
 var HOJA_PUBLICACIONES = "Hoja 1";
 var HOJA_CONTACTOS = "Contactos web";
 var HOJA_VISITAS_GEO = "Visitas geo";
-/** Pegá acá el export de GA4 (país/región/sesiones) si no usás la API. */
+/** Pegá acá el export de GA4 del Observatorio (país/región/sesiones) si no usás la API. */
 var HOJA_BACKFILL_GA = "Backfill GA";
+/** Idem para la Secretaría de Investigación. */
+var HOJA_BACKFILL_GA_SECRETARIA = "Backfill GA Secretaria";
 /**
  * ID numérico de la propiedad GA4 (Admin → Configuración de la propiedad).
  * No es el Measurement ID G-XXXX. Dejar "" para usar solo la hoja Backfill GA.
  */
 var GA4_PROPERTY_ID = "";
 var GA4_MEASUREMENT_ID = "G-C55ZPTW8C2";
+var GA4_PATH_OBSERVATORIO = "observatorio-ia";
+var GA4_PATH_SECRETARIA = "secretaria-investigacion";
 var SOLO_FILA_OBSERVATORIO = true;
 var PATRON_UNIDAD_OIA = /OIA|Observatorio de Inteligencia Artificial/i;
 var ESTADO_PUBLICABLE = "publicado";
@@ -765,11 +769,11 @@ function registrarVisita_(site) {
 
 /**
  * Origen aproximado de visitas (país / región). No recibe ni guarda IP.
- * Solo site=observatorio en esta entrega.
+ * Sitios: observatorio | secretaria.
  */
 function registrarVisitaGeo_(site, country, countryName, region) {
   site = normalizar_(site);
-  if (site !== "observatorio") {
+  if (site !== "observatorio" && site !== "secretaria") {
     return { ok: false, error: "invalid_site" };
   }
 
@@ -870,58 +874,87 @@ function totalVisitasGeoSite_(site) {
 }
 
 /**
- * Ejecutar UNA vez desde el editor (▶) con investigacion@uccuyo.edu.ar.
- * Reparte las visitas del contador Observatorio que aún no tienen origen,
- * según proporciones de Google Analytics (API o hoja "Backfill GA").
- *
- * Uso forzado (repetir): backfillVisitasGeoDesdeGA(true)
+ * Backfill Observatorio (compatibilidad).
+ * Uso forzado: backfillVisitasGeoDesdeGA(true)
  */
 function backfillVisitasGeoDesdeGA(force) {
+  return backfillVisitasGeoSite_("observatorio", force === true);
+}
+
+/** Backfill Secretaría. Uso forzado: backfillVisitasGeoSecretaria(true) */
+function backfillVisitasGeoSecretaria(force) {
+  return backfillVisitasGeoSite_("secretaria", force === true);
+}
+
+/**
+ * Reparte visitas del contador sin origen según proporciones de GA
+ * (API o hoja Backfill correspondiente).
+ */
+function backfillVisitasGeoSite_(site, force) {
+  site = normalizar_(site);
+  if (site !== "observatorio" && site !== "secretaria") {
+    return { ok: false, error: "invalid_site" };
+  }
+
   var props = PropertiesService.getScriptProperties();
-  if (!force && props.getProperty("visitas_geo_backfill_done") === "1") {
+  var doneKey = "visitas_geo_backfill_done_" + site;
+  if (!force && props.getProperty(doneKey) === "1") {
     var msgDone =
-      "El backfill ya se ejecutó. Para repetirlo: backfillVisitasGeoDesdeGA(true)";
+      "El backfill de " +
+      site +
+      " ya se ejecutó. Para repetirlo: backfillVisitasGeoSite_('" +
+      site +
+      "', true)";
     Logger.log(msgDone);
     return { ok: false, error: "already_done", message: msgDone };
   }
+
+  var hoja = site === "secretaria" ? HOJA_BACKFILL_GA_SECRETARIA : HOJA_BACKFILL_GA;
+  var pathFilter =
+    site === "secretaria" ? GA4_PATH_SECRETARIA : GA4_PATH_OBSERVATORIO;
+  var propCount =
+    site === "secretaria" ? "visitas_web_secretaria" : "visitas_web_observatorio";
 
   var weights = [];
   var source = "";
   if (String(GA4_PROPERTY_ID || "").trim()) {
     try {
-      weights = fetchGa4GeoWeights_();
+      weights = fetchGa4GeoWeights_(pathFilter);
       source = "ga4_api";
     } catch (errApi) {
       Logger.log("GA4 API falló, pruebo hoja: " + errApi);
     }
   }
   if (!weights.length) {
-    weights = leerPesosBackfillHoja_();
-    source = "sheet_backfill_ga";
+    weights = leerPesosBackfillHoja_(hoja);
+    source = "sheet_" + hoja;
   }
   if (!weights.length) {
     var msgEmpty =
-      "No hay datos de GA. Completá GA4_PROPERTY_ID o pegá filas en la hoja '" +
-      HOJA_BACKFILL_GA +
-      "'. Ejecutá prepararHojaBackfillGA() para crear la plantilla.";
+      "No hay datos de GA para " +
+      site +
+      ". Completá GA4_PROPERTY_ID o pegá filas en '" +
+      hoja +
+      "'. Ejecutá prepararHojaBackfillGA() / prepararHojaBackfillGASecretaria().";
     Logger.log(msgEmpty);
     return { ok: false, error: "no_weights", message: msgEmpty };
   }
 
-  var obsTotal =
-    parseInt(props.getProperty("visitas_web_observatorio") || "0", 10) || 0;
-  var geoTotal = totalVisitasGeoSite_("observatorio");
-  var faltantes = obsTotal - geoTotal;
+  var siteTotal = parseInt(props.getProperty(propCount) || "0", 10) || 0;
+  var geoTotal = totalVisitasGeoSite_(site);
+  var faltantes = siteTotal - geoTotal;
   if (faltantes <= 0) {
     var msgOk =
-      "No hay visitas pendientes de origen (contador=" +
-      obsTotal +
+      "No hay visitas pendientes de origen en " +
+      site +
+      " (contador=" +
+      siteTotal +
       ", geo=" +
       geoTotal +
       ").";
     Logger.log(msgOk);
-    props.setProperty("visitas_geo_backfill_done", "1");
-    return { ok: true, assigned: 0, message: msgOk, source: source };
+    props.setProperty(doneKey, "1");
+    return { ok: true, assigned: 0, message: msgOk, source: source, site: site };
   }
 
   var assignedRows = repartirPesosAVisitas_(weights, faltantes);
@@ -934,7 +967,7 @@ function backfillVisitasGeoDesdeGA(force) {
       var row = assignedRows[i];
       incrementarVisitaGeoRowBy_(
         sh,
-        "observatorio",
+        site,
         row.country,
         row.countryName,
         row.region,
@@ -945,22 +978,25 @@ function backfillVisitasGeoDesdeGA(force) {
     lock.releaseLock();
   }
 
-  props.setProperty("visitas_geo_backfill_done", "1");
-  props.setProperty("visitas_geo_backfill_source", source);
-  props.setProperty("visitas_geo_backfill_at", new Date().toISOString());
-  props.setProperty("visitas_geo_backfill_assigned", String(faltantes));
+  props.setProperty(doneKey, "1");
+  props.setProperty("visitas_geo_backfill_source_" + site, source);
+  props.setProperty("visitas_geo_backfill_at_" + site, new Date().toISOString());
+  props.setProperty("visitas_geo_backfill_assigned_" + site, String(faltantes));
 
   var summary =
-    "Backfill OK: +" +
+    "Backfill OK (" +
+    site +
+    "): +" +
     faltantes +
     " orígenes (fuente=" +
     source +
-    "). Contador Observatorio=" +
-    obsTotal +
+    "). Contador=" +
+    siteTotal +
     ".";
   Logger.log(summary);
   return {
     ok: true,
+    site: site,
     assigned: faltantes,
     source: source,
     rows: assignedRows.length,
@@ -968,11 +1004,20 @@ function backfillVisitasGeoDesdeGA(force) {
   };
 }
 
-/** Crea la hoja plantilla para pegar el export de GA4. */
+/** Plantilla GA Observatorio. */
 function prepararHojaBackfillGA() {
+  return prepararHojaBackfillPlantilla_(HOJA_BACKFILL_GA);
+}
+
+/** Plantilla GA Secretaría. */
+function prepararHojaBackfillGASecretaria() {
+  return prepararHojaBackfillPlantilla_(HOJA_BACKFILL_GA_SECRETARIA);
+}
+
+function prepararHojaBackfillPlantilla_(nombre) {
   var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-  var sh = ss.getSheetByName(HOJA_BACKFILL_GA);
-  if (!sh) sh = ss.insertSheet(HOJA_BACKFILL_GA);
+  var sh = ss.getSheetByName(nombre);
+  if (!sh) sh = ss.insertSheet(nombre);
   sh.clear();
   sh.appendRow(["country", "countryName", "region", "sessions"]);
   sh.getRange(1, 1, 1, 4).setFontWeight("bold");
@@ -982,12 +1027,13 @@ function prepararHojaBackfillGA() {
   sh.appendRow(["CL", "Chile", "", "10"]);
   sh.appendRow(["US", "United States", "", "5"]);
   sh.setFrozenRows(1);
-  Logger.log("Hoja lista: " + HOJA_BACKFILL_GA);
-  return HOJA_BACKFILL_GA;
+  Logger.log("Hoja lista: " + nombre);
+  return nombre;
 }
 
-function leerPesosBackfillHoja_() {
-  var sh = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(HOJA_BACKFILL_GA);
+function leerPesosBackfillHoja_(nombreHoja) {
+  nombreHoja = nombreHoja || HOJA_BACKFILL_GA;
+  var sh = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(nombreHoja);
   if (!sh || sh.getLastRow() < 2) return [];
   var values = sh.getRange(2, 1, sh.getLastRow(), 4).getDisplayValues();
   var out = [];
@@ -1004,7 +1050,8 @@ function leerPesosBackfillHoja_() {
   return out;
 }
 
-function fetchGa4GeoWeights_() {
+function fetchGa4GeoWeights_(pathContains) {
+  pathContains = String(pathContains || GA4_PATH_OBSERVATORIO).trim();
   var propertyId = String(GA4_PROPERTY_ID || "")
     .trim()
     .replace(/^properties\//, "");
@@ -1029,7 +1076,7 @@ function fetchGa4GeoWeights_() {
         fieldName: "pagePathPlusQueryString",
         stringFilter: {
           matchType: "CONTAINS",
-          value: "observatorio-ia",
+          value: pathContains,
           caseSensitive: false
         }
       }
@@ -1065,7 +1112,7 @@ function fetchGa4GeoWeights_() {
     if (parsed) out.push(parsed);
   }
   if (!out.length) {
-    throw new Error("GA4 no devolvió filas para observatorio-ia");
+    throw new Error("GA4 no devolvió filas para " + pathContains);
   }
   return out;
 }

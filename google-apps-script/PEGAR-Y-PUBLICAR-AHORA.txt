@@ -24,13 +24,11 @@ Debe responder:
 
 NO debe devolver una lista "items" de publicaciones.
 
-Mapa de origen (Observatorio):
-  .../exec?action=visitgeo&site=observatorio&country=AR&countryName=Argentina&region=San%20Juan
-  .../exec?action=visitmap&site=observatorio
+Mapa de origen:
+  Observatorio:  .../exec?action=visitgeo&site=observatorio&country=AR&...
+  Secretaría:    .../exec?action=visitgeo&site=secretaria&country=AR&...
+  Mapas:         .../exec?action=visitmap&site=observatorio|secretaria
 
-Tras pegar el .gs nuevo: Implementar → Nueva versión (como siempre).
-La hoja "Visitas geo" se crea sola en la planilla al primer visitgeo.
-
-Backfill histórico (~593) con Google Analytics:
-  Ver google-apps-script/BACKFILL-VISITAS-GA.txt
-  Resumen: prepararHojaBackfillGA → pegar export GA → backfillVisitasGeoDesdeGA
+Backfill GA: ver BACKFILL-VISITAS-GA.txt
+  Observatorio → backfillVisitasGeoDesdeGA
+  Secretaría   → backfillVisitasGeoSecretaria

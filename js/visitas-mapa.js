@@ -13,7 +13,7 @@
     return;
   }
 
-  var GEO_SESSION_KEY = "obs_visitgeo_" + site;
+  var GEO_SESSION_KEY = "visitgeo_" + site;
   var COUNTRY_CENTROIDS = {
     AF: [-65.2, 33.9],
     AL: [20.2, 41.2],
