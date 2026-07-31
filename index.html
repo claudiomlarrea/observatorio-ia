@@ -19,7 +19,7 @@
       gtag("config", "G-C55ZPTW8C2");
     </script>
     <link rel="icon" type="image/png" href="assets/logo-observatorio-ia.png" />
-    <link rel="stylesheet" href="css/styles.css?v=23" />
+    <link rel="stylesheet" href="css/styles.css?v=24" />
   </head>
   <body>
     <a class="skip-link" href="#contenido">Ir al contenido</a>
@@ -64,6 +64,7 @@
             <li><a href="#galeria">Galería de Imágenes</a></li>
             <li><a href="#actividades">Actividades</a></li>
             <li><a href="#acompanamiento">Acompañamiento</a></li>
+            <li><a href="#visitas">Origen de visitas</a></li>
             <li><a href="#encuestas">Encuestas e informes</a></li>
             <li><a href="#noticias">Noticias</a></li>
             <li><a href="#herramientas">Herramientas de análisis</a></li>
@@ -109,6 +110,7 @@
             <a class="btn btn-ghost" href="#galeria">Galería de Imágenes</a>
             <a class="btn btn-ghost" href="#actividades">Actividades</a>
             <a class="btn btn-ghost" href="#acompanamiento">Acompañamiento</a>
+            <a class="btn btn-ghost" href="#visitas">Origen de visitas</a>
             <a class="btn btn-ghost" href="#encuestas">Encuestas e informes</a>
             <a class="btn btn-ghost" href="#noticias">Noticias</a>
             <a class="btn btn-ghost" href="#herramientas">Herramientas de análisis</a>
@@ -1012,6 +1014,37 @@
         </div>
       </section>
 
+      <section class="section section--visitas" id="visitas" aria-labelledby="sec-visitas">
+        <div class="section-inner">
+          <header class="section-head section-head--bar section-head--green">
+            <p class="section-kicker">Alcance</p>
+            <h2 id="sec-visitas">Origen de visitas</h2>
+          </header>
+          <p class="text-intro">
+            Estimación del país y, cuando está disponible, de la provincia o
+            región desde donde se consulta el sitio del Observatorio. El dato es
+            aproximado (geolocalización por IP): no identifica personas ni
+            guarda la dirección IP.
+          </p>
+          <p id="visitas-total" class="visitas-total" hidden></p>
+          <p id="visitas-status" class="visitas-status" aria-live="polite"></p>
+          <div class="visitas-layout">
+            <div
+              id="visitas-mapa"
+              class="visitas-mapa"
+              role="img"
+              aria-label="Mapa de origen estimado de las visitas"
+            ></div>
+            <div id="visitas-lista" class="visitas-lista"></div>
+          </div>
+          <p class="visitas-note">
+            Las visitas registradas antes de activar este mapa no tienen origen
+            geográfico. Redes móviles, VPN y campus universitarios pueden
+            desplazar la ubicación estimada.
+          </p>
+        </div>
+      </section>
+
       <section class="section" id="contacto" aria-labelledby="sec-contacto">
         <div class="section-inner">
           <header class="section-head section-head--bar section-head--green">
@@ -1068,6 +1101,7 @@
         <a href="mailto:observatorioia@uccuyo.edu.ar">observatorioia@uccuyo.edu.ar</a>
         <a href="#jornadas-ia">Jornadas de IA</a>
         <a href="#acompanamiento">Acompañamiento</a>
+        <a href="#visitas">Origen de visitas</a>
         <a href="#encuestas">Encuestas e informes</a>
         <a href="#galeria">Galería de Imágenes</a>
         <a href="#herramientas">Herramientas de análisis</a>
@@ -1091,6 +1125,7 @@
     <script src="js/noticias-config.js?v=2" defer></script>
     <script src="js/visitantes-config.js?v=2" defer></script>
     <script src="js/visitantes.js?v=2" defer></script>
+    <script src="js/visitas-mapa.js?v=1" defer></script>
     <script src="js/noticias.js?v=2" defer></script>
     <script src="js/publicaciones.js?v=8" defer></script>
     <script src="js/publicaciones-fuentes-abiertas.js?v=1" defer></script>

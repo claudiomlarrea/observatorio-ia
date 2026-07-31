@@ -23,3 +23,10 @@ Debe responder:
   {"ok":true,"tipo":"paginas_web","secretaria":1,"observatorio":0,...}
 
 NO debe devolver una lista "items" de publicaciones.
+
+Mapa de origen (Observatorio):
+  .../exec?action=visitgeo&site=observatorio&country=AR&countryName=Argentina&region=San%20Juan
+  .../exec?action=visitmap&site=observatorio
+
+Tras pegar el .gs nuevo: Implementar → Nueva versión (como siempre).
+La hoja "Visitas geo" se crea sola en la planilla al primer visitgeo.

@@ -6,6 +6,9 @@
  * - GET  ?action=public (o sin action): JSON para la web pública.
  * - GET  ?action=admin: panel HTML de carga (solo emails autorizados).
  * - GET  ?action=visit&site=secretaria|observatorio: +1 visita a esa página web (GitHub Pages).
+ * - GET  ?action=visitgeo&site=observatorio&country=AR&countryName=Argentina&region=San Juan:
+ *       +1 a contador agregado de origen (sin IP).
+ * - GET  ?action=visitmap&site=observatorio: JSON de países/regiones para el mapa público.
  * - POST ?action=add: agrega publicación (solo emails autorizados).
  * - POST ?action=contact: envía consulta del formulario web (público).
  */
@@ -15,6 +18,7 @@ var CONTACT_TO = "observatorioia@uccuyo.edu.ar";
 var CONTACT_COPY_TO = "investigacion@uccuyo.edu.ar";
 var HOJA_PUBLICACIONES = "Hoja 1";
 var HOJA_CONTACTOS = "Contactos web";
+var HOJA_VISITAS_GEO = "Visitas geo";
 var SOLO_FILA_OBSERVATORIO = true;
 var PATRON_UNIDAD_OIA = /OIA|Observatorio de Inteligencia Artificial/i;
 var ESTADO_PUBLICABLE = "publicado";
@@ -74,6 +78,20 @@ function doGet(e) {
   }
   if (action === "visit") {
     return jsonOrJsonp_(registrarVisita_(param_(e, "site", "")), e);
+  }
+  if (action === "visitgeo") {
+    return jsonOrJsonp_(
+      registrarVisitaGeo_(
+        param_(e, "site", ""),
+        param_(e, "country", ""),
+        param_(e, "countryName", ""),
+        param_(e, "region", "")
+      ),
+      e
+    );
+  }
+  if (action === "visitmap") {
+    return jsonOrJsonp_(obtenerMapaVisitas_(param_(e, "site", "observatorio")), e);
   }
   if (action === "noticias") {
     return jsonOrJsonp_(obtenerNoticiasMedios_(), e);
@@ -734,6 +752,161 @@ function registrarVisita_(site) {
       secretaria: "https://claudiomlarrea.github.io/secretaria-investigacion/",
       observatorio: "https://claudiomlarrea.github.io/observatorio-ia/"
     }
+  };
+}
+
+/**
+ * Origen aproximado de visitas (país / región). No recibe ni guarda IP.
+ * Solo site=observatorio en esta entrega.
+ */
+function registrarVisitaGeo_(site, country, countryName, region) {
+  site = normalizar_(site);
+  if (site !== "observatorio") {
+    return { ok: false, error: "invalid_site" };
+  }
+
+  country = String(country || "")
+    .trim()
+    .toUpperCase()
+    .replace(/[^A-Z]/g, "")
+    .slice(0, 2);
+  if (!country || country.length !== 2) {
+    return { ok: false, error: "invalid_country" };
+  }
+
+  countryName = String(countryName || "")
+    .trim()
+    .replace(/[\r\n\t]+/g, " ")
+    .slice(0, 80);
+  if (!countryName) countryName = country;
+
+  region = String(region || "")
+    .trim()
+    .replace(/[\r\n\t]+/g, " ")
+    .slice(0, 80);
+  if (normalizar_(region) === "unknown" || normalizar_(region) === "n/a") {
+    region = "";
+  }
+
+  try {
+    var sh = getVisitasGeoSheet_();
+    var lock = LockService.getScriptLock();
+    lock.waitLock(15000);
+    try {
+      incrementarVisitaGeoRow_(sh, site, country, countryName, region);
+    } finally {
+      lock.releaseLock();
+    }
+    return { ok: true, site: site, country: country, region: region };
+  } catch (err) {
+    Logger.log("registrarVisitaGeo_: " + err);
+    return { ok: false, error: "geo_save_failed" };
+  }
+}
+
+function getVisitasGeoSheet_() {
+  var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sh = ss.getSheetByName(HOJA_VISITAS_GEO);
+  if (!sh) {
+    sh = ss.insertSheet(HOJA_VISITAS_GEO);
+    sh.appendRow(["site", "country", "countryName", "region", "count"]);
+    sh.getRange(1, 1, 1, 5).setFontWeight("bold");
+  }
+  return sh;
+}
+
+function incrementarVisitaGeoRow_(sh, site, country, countryName, region) {
+  var last = sh.getLastRow();
+  if (last < 2) {
+    sh.appendRow([site, country, countryName, region, 1]);
+    return;
+  }
+  var values = sh.getRange(2, 1, last, 5).getDisplayValues();
+  var i;
+  for (i = 0; i < values.length; i++) {
+    var rowSite = normalizar_(values[i][0]);
+    var rowCountry = String(values[i][1] || "")
+      .trim()
+      .toUpperCase();
+    var rowRegion = String(values[i][3] || "").trim();
+    if (rowSite === site && rowCountry === country && rowRegion === region) {
+      var count = parseInt(values[i][4], 10) || 0;
+      sh.getRange(i + 2, 5).setValue(count + 1);
+      if (countryName && !String(values[i][2] || "").trim()) {
+        sh.getRange(i + 2, 3).setValue(countryName);
+      }
+      return;
+    }
+  }
+  sh.appendRow([site, country, countryName, region, 1]);
+}
+
+function obtenerMapaVisitas_(site) {
+  site = normalizar_(site) || "observatorio";
+  if (site !== "observatorio" && site !== "secretaria") {
+    return { ok: false, error: "invalid_site" };
+  }
+
+  var countriesMap = {};
+  var regions = [];
+  var total = 0;
+
+  try {
+    var sh = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(HOJA_VISITAS_GEO);
+    if (sh && sh.getLastRow() >= 2) {
+      var values = sh.getRange(2, 1, sh.getLastRow(), 5).getDisplayValues();
+      var i;
+      for (i = 0; i < values.length; i++) {
+        if (normalizar_(values[i][0]) !== site) continue;
+        var code = String(values[i][1] || "")
+          .trim()
+          .toUpperCase();
+        if (!code) continue;
+        var name = String(values[i][2] || "").trim() || code;
+        var region = String(values[i][3] || "").trim();
+        var count = parseInt(values[i][4], 10) || 0;
+        if (count <= 0) continue;
+        total += count;
+        if (!countriesMap[code]) {
+          countriesMap[code] = { code: code, name: name, count: 0 };
+        }
+        countriesMap[code].count += count;
+        if (name && !countriesMap[code].name) countriesMap[code].name = name;
+        if (region) {
+          regions.push({
+            country: code,
+            countryName: countriesMap[code].name,
+            region: region,
+            count: count
+          });
+        }
+      }
+    }
+  } catch (err) {
+    Logger.log("obtenerMapaVisitas_: " + err);
+  }
+
+  var countries = [];
+  var k;
+  for (k in countriesMap) {
+    if (countriesMap.hasOwnProperty(k)) countries.push(countriesMap[k]);
+  }
+  countries.sort(function (a, b) {
+    return b.count - a.count;
+  });
+  regions.sort(function (a, b) {
+    return b.count - a.count;
+  });
+
+  return {
+    ok: true,
+    site: site,
+    generatedAt: new Date().toISOString(),
+    total: total,
+    countries: countries,
+    regions: regions,
+    note:
+      "Origen estimado por geolocalización de IP. No identifica personas. Las visitas anteriores al mapa no tienen origen."
   };
 }
 
