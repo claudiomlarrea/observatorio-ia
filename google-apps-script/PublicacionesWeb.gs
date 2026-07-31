@@ -19,6 +19,14 @@ var CONTACT_COPY_TO = "investigacion@uccuyo.edu.ar";
 var HOJA_PUBLICACIONES = "Hoja 1";
 var HOJA_CONTACTOS = "Contactos web";
 var HOJA_VISITAS_GEO = "Visitas geo";
+/** Pegá acá el export de GA4 (país/región/sesiones) si no usás la API. */
+var HOJA_BACKFILL_GA = "Backfill GA";
+/**
+ * ID numérico de la propiedad GA4 (Admin → Configuración de la propiedad).
+ * No es el Measurement ID G-XXXX. Dejar "" para usar solo la hoja Backfill GA.
+ */
+var GA4_PROPERTY_ID = "";
+var GA4_MEASUREMENT_ID = "G-C55ZPTW8C2";
 var SOLO_FILA_OBSERVATORIO = true;
 var PATRON_UNIDAD_OIA = /OIA|Observatorio de Inteligencia Artificial/i;
 var ESTADO_PUBLICABLE = "publicado";
@@ -816,9 +824,15 @@ function getVisitasGeoSheet_() {
 }
 
 function incrementarVisitaGeoRow_(sh, site, country, countryName, region) {
+  incrementarVisitaGeoRowBy_(sh, site, country, countryName, region, 1);
+}
+
+function incrementarVisitaGeoRowBy_(sh, site, country, countryName, region, delta) {
+  delta = parseInt(delta, 10) || 0;
+  if (delta <= 0) return;
   var last = sh.getLastRow();
   if (last < 2) {
-    sh.appendRow([site, country, countryName, region, 1]);
+    sh.appendRow([site, country, countryName, region, delta]);
     return;
   }
   var values = sh.getRange(2, 1, last, 5).getDisplayValues();
@@ -831,14 +845,307 @@ function incrementarVisitaGeoRow_(sh, site, country, countryName, region) {
     var rowRegion = String(values[i][3] || "").trim();
     if (rowSite === site && rowCountry === country && rowRegion === region) {
       var count = parseInt(values[i][4], 10) || 0;
-      sh.getRange(i + 2, 5).setValue(count + 1);
+      sh.getRange(i + 2, 5).setValue(count + delta);
       if (countryName && !String(values[i][2] || "").trim()) {
         sh.getRange(i + 2, 3).setValue(countryName);
       }
       return;
     }
   }
-  sh.appendRow([site, country, countryName, region, 1]);
+  sh.appendRow([site, country, countryName, region, delta]);
+}
+
+function totalVisitasGeoSite_(site) {
+  site = normalizar_(site);
+  var sh = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(HOJA_VISITAS_GEO);
+  if (!sh || sh.getLastRow() < 2) return 0;
+  var values = sh.getRange(2, 1, sh.getLastRow(), 5).getDisplayValues();
+  var total = 0;
+  var i;
+  for (i = 0; i < values.length; i++) {
+    if (normalizar_(values[i][0]) !== site) continue;
+    total += parseInt(values[i][4], 10) || 0;
+  }
+  return total;
+}
+
+/**
+ * Ejecutar UNA vez desde el editor (▶) con investigacion@uccuyo.edu.ar.
+ * Reparte las visitas del contador Observatorio que aún no tienen origen,
+ * según proporciones de Google Analytics (API o hoja "Backfill GA").
+ *
+ * Uso forzado (repetir): backfillVisitasGeoDesdeGA(true)
+ */
+function backfillVisitasGeoDesdeGA(force) {
+  var props = PropertiesService.getScriptProperties();
+  if (!force && props.getProperty("visitas_geo_backfill_done") === "1") {
+    var msgDone =
+      "El backfill ya se ejecutó. Para repetirlo: backfillVisitasGeoDesdeGA(true)";
+    Logger.log(msgDone);
+    return { ok: false, error: "already_done", message: msgDone };
+  }
+
+  var weights = [];
+  var source = "";
+  if (String(GA4_PROPERTY_ID || "").trim()) {
+    try {
+      weights = fetchGa4GeoWeights_();
+      source = "ga4_api";
+    } catch (errApi) {
+      Logger.log("GA4 API falló, pruebo hoja: " + errApi);
+    }
+  }
+  if (!weights.length) {
+    weights = leerPesosBackfillHoja_();
+    source = "sheet_backfill_ga";
+  }
+  if (!weights.length) {
+    var msgEmpty =
+      "No hay datos de GA. Completá GA4_PROPERTY_ID o pegá filas en la hoja '" +
+      HOJA_BACKFILL_GA +
+      "'. Ejecutá prepararHojaBackfillGA() para crear la plantilla.";
+    Logger.log(msgEmpty);
+    return { ok: false, error: "no_weights", message: msgEmpty };
+  }
+
+  var obsTotal =
+    parseInt(props.getProperty("visitas_web_observatorio") || "0", 10) || 0;
+  var geoTotal = totalVisitasGeoSite_("observatorio");
+  var faltantes = obsTotal - geoTotal;
+  if (faltantes <= 0) {
+    var msgOk =
+      "No hay visitas pendientes de origen (contador=" +
+      obsTotal +
+      ", geo=" +
+      geoTotal +
+      ").";
+    Logger.log(msgOk);
+    props.setProperty("visitas_geo_backfill_done", "1");
+    return { ok: true, assigned: 0, message: msgOk, source: source };
+  }
+
+  var assignedRows = repartirPesosAVisitas_(weights, faltantes);
+  var sh = getVisitasGeoSheet_();
+  var lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+  try {
+    var i;
+    for (i = 0; i < assignedRows.length; i++) {
+      var row = assignedRows[i];
+      incrementarVisitaGeoRowBy_(
+        sh,
+        "observatorio",
+        row.country,
+        row.countryName,
+        row.region,
+        row.count
+      );
+    }
+  } finally {
+    lock.releaseLock();
+  }
+
+  props.setProperty("visitas_geo_backfill_done", "1");
+  props.setProperty("visitas_geo_backfill_source", source);
+  props.setProperty("visitas_geo_backfill_at", new Date().toISOString());
+  props.setProperty("visitas_geo_backfill_assigned", String(faltantes));
+
+  var summary =
+    "Backfill OK: +" +
+    faltantes +
+    " orígenes (fuente=" +
+    source +
+    "). Contador Observatorio=" +
+    obsTotal +
+    ".";
+  Logger.log(summary);
+  return {
+    ok: true,
+    assigned: faltantes,
+    source: source,
+    rows: assignedRows.length,
+    message: summary
+  };
+}
+
+/** Crea la hoja plantilla para pegar el export de GA4. */
+function prepararHojaBackfillGA() {
+  var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sh = ss.getSheetByName(HOJA_BACKFILL_GA);
+  if (!sh) sh = ss.insertSheet(HOJA_BACKFILL_GA);
+  sh.clear();
+  sh.appendRow(["country", "countryName", "region", "sessions"]);
+  sh.getRange(1, 1, 1, 4).setFontWeight("bold");
+  sh.appendRow(["AR", "Argentina", "San Juan", "100"]);
+  sh.appendRow(["AR", "Argentina", "Mendoza", "40"]);
+  sh.appendRow(["AR", "Argentina", "", "20"]);
+  sh.appendRow(["CL", "Chile", "", "10"]);
+  sh.appendRow(["US", "United States", "", "5"]);
+  sh.setFrozenRows(1);
+  Logger.log("Hoja lista: " + HOJA_BACKFILL_GA);
+  return HOJA_BACKFILL_GA;
+}
+
+function leerPesosBackfillHoja_() {
+  var sh = SpreadsheetApp.openById(SPREADSHEET_ID).getSheetByName(HOJA_BACKFILL_GA);
+  if (!sh || sh.getLastRow() < 2) return [];
+  var values = sh.getRange(2, 1, sh.getLastRow(), 4).getDisplayValues();
+  var out = [];
+  var i;
+  for (i = 0; i < values.length; i++) {
+    var parsed = normalizarPesoGeo_(
+      values[i][0],
+      values[i][1],
+      values[i][2],
+      values[i][3]
+    );
+    if (parsed) out.push(parsed);
+  }
+  return out;
+}
+
+function fetchGa4GeoWeights_() {
+  var propertyId = String(GA4_PROPERTY_ID || "")
+    .trim()
+    .replace(/^properties\//, "");
+  if (!/^\d+$/.test(propertyId)) {
+    throw new Error("GA4_PROPERTY_ID inválido (debe ser numérico)");
+  }
+
+  var url =
+    "https://analyticsdata.googleapis.com/v1beta/properties/" +
+    propertyId +
+    ":runReport";
+  var body = {
+    dateRanges: [{ startDate: "2020-01-01", endDate: "today" }],
+    dimensions: [
+      { name: "countryId" },
+      { name: "country" },
+      { name: "region" }
+    ],
+    metrics: [{ name: "sessions" }],
+    dimensionFilter: {
+      filter: {
+        fieldName: "pagePathPlusQueryString",
+        stringFilter: {
+          matchType: "CONTAINS",
+          value: "observatorio-ia",
+          caseSensitive: false
+        }
+      }
+    },
+    limit: "10000"
+  };
+
+  var resp = UrlFetchApp.fetch(url, {
+    method: "post",
+    contentType: "application/json",
+    headers: { Authorization: "Bearer " + ScriptApp.getOAuthToken() },
+    payload: JSON.stringify(body),
+    muteHttpExceptions: true
+  });
+  var code = resp.getResponseCode();
+  var text = resp.getContentText();
+  if (code < 200 || code >= 300) {
+    throw new Error("GA4 HTTP " + code + ": " + text.slice(0, 400));
+  }
+  var json = JSON.parse(text);
+  var rows = json.rows || [];
+  var out = [];
+  var i;
+  for (i = 0; i < rows.length; i++) {
+    var dims = rows[i].dimensionValues || [];
+    var mets = rows[i].metricValues || [];
+    var parsed = normalizarPesoGeo_(
+      dims[0] && dims[0].value,
+      dims[1] && dims[1].value,
+      dims[2] && dims[2].value,
+      mets[0] && mets[0].value
+    );
+    if (parsed) out.push(parsed);
+  }
+  if (!out.length) {
+    throw new Error("GA4 no devolvió filas para observatorio-ia");
+  }
+  return out;
+}
+
+function normalizarPesoGeo_(country, countryName, region, weight) {
+  country = String(country || "")
+    .trim()
+    .toUpperCase()
+    .replace(/[^A-Z]/g, "")
+    .slice(0, 2);
+  if (!country || country.length !== 2) return null;
+
+  countryName = String(countryName || "")
+    .trim()
+    .replace(/[\r\n\t]+/g, " ")
+    .slice(0, 80);
+  if (
+    !countryName ||
+    normalizar_(countryName) === "(not set)" ||
+    normalizar_(countryName) === "not set"
+  ) {
+    countryName = country;
+  }
+
+  region = String(region || "")
+    .trim()
+    .replace(/[\r\n\t]+/g, " ")
+    .slice(0, 80);
+  if (
+    !region ||
+    normalizar_(region) === "(not set)" ||
+    normalizar_(region) === "not set" ||
+    normalizar_(region) === "n/a" ||
+    normalizar_(region) === "unknown"
+  ) {
+    region = "";
+  }
+
+  var w = parseFloat(String(weight || "").replace(",", "."));
+  if (!isFinite(w) || w <= 0) return null;
+
+  return {
+    country: country,
+    countryName: countryName,
+    region: region,
+    weight: w
+  };
+}
+
+/** Largest remainder: reparte `total` enteros según pesos. */
+function repartirPesosAVisitas_(weights, total) {
+  var sum = 0;
+  var i;
+  for (i = 0; i < weights.length; i++) sum += weights[i].weight;
+  if (sum <= 0 || total <= 0) return [];
+
+  var rows = [];
+  var assigned = 0;
+  for (i = 0; i < weights.length; i++) {
+    var exact = (weights[i].weight / sum) * total;
+    var base = Math.floor(exact);
+    rows.push({
+      country: weights[i].country,
+      countryName: weights[i].countryName,
+      region: weights[i].region,
+      count: base,
+      frac: exact - base
+    });
+    assigned += base;
+  }
+  rows.sort(function (a, b) {
+    return b.frac - a.frac;
+  });
+  var rem = total - assigned;
+  for (i = 0; i < rem && i < rows.length; i++) {
+    rows[i].count += 1;
+  }
+  return rows.filter(function (r) {
+    return r.count > 0;
+  });
 }
 
 function obtenerMapaVisitas_(site) {
@@ -906,7 +1213,7 @@ function obtenerMapaVisitas_(site) {
     countries: countries,
     regions: regions,
     note:
-      "Origen estimado por geolocalización de IP. No identifica personas. Las visitas anteriores al mapa no tienen origen."
+      "Origen estimado por geolocalización de IP y, si se aplicó, reparto histórico según Google Analytics. No identifica personas."
   };
 }
 

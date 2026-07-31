@@ -30,3 +30,7 @@ Mapa de origen (Observatorio):
 
 Tras pegar el .gs nuevo: Implementar → Nueva versión (como siempre).
 La hoja "Visitas geo" se crea sola en la planilla al primer visitgeo.
+
+Backfill histórico (~593) con Google Analytics:
+  Ver google-apps-script/BACKFILL-VISITAS-GA.txt
+  Resumen: prepararHojaBackfillGA → pegar export GA → backfillVisitasGeoDesdeGA

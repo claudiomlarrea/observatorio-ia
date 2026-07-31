@@ -1,0 +1,70 @@
+BACKFILL de visitas históricas con Google Analytics
+====================================================
+
+Objetivo: repartir las ~593 visitas del contador Observatorio que no tienen
+origen, según la proporción país/región de GA4 (G-C55ZPTW8C2).
+
+Cuenta: investigacion@uccuyo.edu.ar
+Proyecto Apps Script: Publicaciones Página Web
+Archivo: PublicacionesWeb.gs (pegar el del repo y publicar Nueva versión)
+
+--------------------------------------------------
+Opción A — Pegar export de GA (recomendada, sin API)
+--------------------------------------------------
+
+1. En Apps Script, ejecutá la función: prepararHojaBackfillGA
+   (autorizá si pide permisos). Se crea la hoja "Backfill GA" en la planilla.
+
+2. En Google Analytics → Informes → Datos demográficos / Detalles del usuario
+   (o Explorar):
+   - Dimensiones: País ID (o País) + Región
+   - Métrica: Sesiones (o Usuarios activos)
+   - Filtro: Página contiene "observatorio-ia"
+   - Período: desde que existe el sitio hasta hoy
+
+3. Exportá / copiá las filas y pegá en la hoja Backfill GA:
+   country | countryName | region | sessions
+   Ejemplo:
+     AR | Argentina | San Juan | 320
+     AR | Argentina | Mendoza  | 80
+     AR | Argentina |          | 40
+     CL | Chile     |          | 15
+
+   country = código ISO de 2 letras (AR, CL, US…).
+   region vacía si GA dice "(not set)".
+
+4. En Apps Script ejecutá: backfillVisitasGeoDesdeGA
+   Reparte: contador Observatorio − visitas ya con geo.
+
+5. Recargá https://claudiomlarrea.github.io/observatorio-ia/#visitas
+
+Para repetir el backfill (cuidado, suma otra vez): 
+  backfillVisitasGeoDesdeGA(true)
+  Mejor: vaciar filas de backfill en "Visitas geo" antes, o ajustar a mano.
+
+--------------------------------------------------
+Opción B — API GA4 (automática)
+--------------------------------------------------
+
+1. Admin de GA4 → Configuración de la propiedad → ID de propiedad (números).
+2. En PublicacionesWeb.gs poné:
+     var GA4_PROPERTY_ID = "123456789";
+3. En el proyecto Apps Script:
+   Configuración → Mostrar el archivo de manifiesto "appsscript.json"
+   Agregá el alcance:
+     https://www.googleapis.com/auth/analytics.readonly
+   También necesitás:
+     https://www.googleapis.com/auth/script.external_request
+4. Activá en Google Cloud del proyecto la "Google Analytics Data API"
+   (o la primera ejecución pedirá autorización).
+5. Ejecutá: backfillVisitasGeoDesdeGA
+
+Si la API falla, el script usa automáticamente la hoja Backfill GA.
+
+--------------------------------------------------
+Notas
+--------------------------------------------------
+
+- Es una estimación (proporciones de GA), no visita por visita.
+- El contador del hero no cambia; solo se completa el mapa.
+- No se guarda IP.
