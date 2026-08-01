@@ -101,7 +101,11 @@
 
     status.innerHTML = "<div class=\"pub-msg pub-msg--loading\">Cargando publicaciones…</div>";
 
-    var urlLive = url + (url.indexOf("?") >= 0 ? "&" : "?") + "_=" + Date.now();
+    var urlLive =
+      url +
+      (url.indexOf("?") >= 0 ? "&" : "?") +
+      "action=public&_=" +
+      Date.now();
     fetchJson(urlLive).then(
       function (data) {
         if (!data || !data.ok || !Array.isArray(data.items)) throw new Error("format");
@@ -113,6 +117,9 @@
       function () {
         return fetchJsonp(urlLive).then(
           function (data) {
+            if (data && data.ok === false) {
+              throw new Error(data.message || data.error || "backend");
+            }
             if (!data || !data.ok || !Array.isArray(data.items)) throw new Error("format");
             items = data.items;
             var cw2 = el("pub-count-wrap");
@@ -121,8 +128,10 @@
           },
           function () {
             status.innerHTML =
-              "<div class=\"pub-msg pub-msg--error\">No se pudo conectar al servicio de publicaciones. Revisá la URL en " +
-              "<code>publicaciones-config.js</code> y volvé a cargar esta página (<kbd>⌘⇧R</kbd>).</div>";
+              "<div class=\"pub-msg pub-msg--error\">No se pudo conectar al servicio de publicaciones. " +
+              "Si acabás de republicar Apps Script, usá <strong>Administrar implementaciones → lápiz → Nueva versión</strong> " +
+              "(no crees una implementación nueva) y verificá que exista el archivo <code>EncuestaDocentesWeb</code>. " +
+              "Después recargá con <kbd>⌘⇧R</kbd>.</div>";
           }
         );
       }

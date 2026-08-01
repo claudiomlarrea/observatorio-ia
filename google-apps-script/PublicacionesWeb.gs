@@ -85,34 +85,49 @@ function getUnidadesAcademicas_() {
 
 function doGet(e) {
   var action = param_(e, "action", "public");
-  if (action === "admin") {
-    return renderAdmin_(e);
-  }
-  if (action === "visit") {
-    return jsonOrJsonp_(registrarVisita_(param_(e, "site", "")), e);
-  }
-  if (action === "visitgeo") {
+  try {
+    if (action === "admin") {
+      return renderAdmin_(e);
+    }
+    if (action === "visit") {
+      return jsonOrJsonp_(registrarVisita_(param_(e, "site", "")), e);
+    }
+    if (action === "visitgeo") {
+      return jsonOrJsonp_(
+        registrarVisitaGeo_(
+          param_(e, "site", ""),
+          param_(e, "country", ""),
+          param_(e, "countryName", ""),
+          param_(e, "region", "")
+        ),
+        e
+      );
+    }
+    if (action === "visitmap") {
+      return jsonOrJsonp_(obtenerMapaVisitas_(param_(e, "site", "observatorio")), e);
+    }
+    if (action === "noticias") {
+      return jsonOrJsonp_(obtenerNoticiasMedios_(), e);
+    }
+    if (typeof routeEncuestaDocentesGet_ === "function") {
+      var encuestaGet = routeEncuestaDocentesGet_(e);
+      if (encuestaGet) return encuestaGet;
+    }
+
+    var datos = obtenerItemsPublicos_();
+    return jsonOrJsonp_({ ok: true, generatedAt: new Date().toISOString(), items: datos }, e);
+  } catch (err) {
+    Logger.log("doGet action=" + action + " err=" + err);
     return jsonOrJsonp_(
-      registrarVisitaGeo_(
-        param_(e, "site", ""),
-        param_(e, "country", ""),
-        param_(e, "countryName", ""),
-        param_(e, "region", "")
-      ),
+      {
+        ok: false,
+        error: "doGet_failed",
+        action: action,
+        message: String(err && err.message ? err.message : err)
+      },
       e
     );
   }
-  if (action === "visitmap") {
-    return jsonOrJsonp_(obtenerMapaVisitas_(param_(e, "site", "observatorio")), e);
-  }
-  if (action === "noticias") {
-    return jsonOrJsonp_(obtenerNoticiasMedios_(), e);
-  }
-  var encuestaGet = routeEncuestaDocentesGet_(e);
-  if (encuestaGet) return encuestaGet;
-
-  var datos = obtenerItemsPublicos_();
-  return jsonOrJsonp_({ ok: true, generatedAt: new Date().toISOString(), items: datos }, e);
 }
 
 function doPost(e) {
@@ -385,12 +400,16 @@ function obtenerItemsPublicos_() {
   var out = [];
 
   for (var i = startIdx; i < values.length; i++) {
-    var o = rowAToObj_(values[i]);
-    if (!o.titulo && !o.autores && !o.evento) continue;
-    if (SOLO_FILA_OBSERVATORIO && !PATRON_UNIDAD_OIA.test(String(o.unidad || ""))) continue;
-    if (!esVisibleEnWeb_(o)) continue;
-    o.categoria = inferirCategoria_(o);
-    out.push(o);
+    try {
+      var o = rowAToObj_(values[i]);
+      if (!o.titulo && !o.autores && !o.evento) continue;
+      if (SOLO_FILA_OBSERVATORIO && !PATRON_UNIDAD_OIA.test(String(o.unidad || ""))) continue;
+      if (!esVisibleEnWeb_(o)) continue;
+      o.categoria = inferirCategoria_(o);
+      out.push(o);
+    } catch (errRow) {
+      Logger.log("obtenerItemsPublicos_ fila " + i + ": " + errRow);
+    }
   }
 
   out.sort(comparadorFechaReciente_);

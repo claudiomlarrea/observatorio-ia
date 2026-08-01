@@ -1,0 +1,34 @@
+URGENTE — Publicaciones caídas en la web
+========================================
+
+Diagnóstico (2026-07-31):
+  ?action=visit     → OK
+  ?action=public    → FALLA (el listado de publicaciones)
+Causa típica: excepción en doGet al leer la planilla, o falta el archivo
+EncuestaDocentesWeb en el proyecto Apps Script.
+
+Cuenta: investigacion@uccuyo.edu.ar
+Proyecto: Publicaciones Página Web
+
+1) En el panel izquierdo de Apps Script deben existir AMBOS:
+   - PublicacionesWeb.gs
+   - EncuestaDocentesWeb.gs   ← si no está, File → Nuevo → Script y pegá
+     el de observatorio-ia/google-apps-script/EncuestaDocentesWeb.gs
+
+2) Pegá el PublicacionesWeb.gs ACTUAL del repo (ya con try/catch):
+   observatorio-ia/google-apps-script/PublicacionesWeb.gs
+   Cmd+A → Cmd+C en Cursor → en Apps Script Cmd+A → Cmd+V → Cmd+S
+
+3) Publicar SIN crear implementación nueva:
+   Implementar → Administrar implementaciones → lápiz (la de /exec)
+   → Versión: Nueva versión → Implementar
+   Ejecutar como: tu cuenta
+   Quién tiene acceso: Cualquier persona
+
+4) Probar en el navegador (debe devolver ok:true e items:[...]):
+   .../exec?action=public
+
+5) Recargar el Observatorio con ⌘⇧R:
+   https://claudiomlarrea.github.io/observatorio-ia/#publicaciones
+
+Si action=public responde ok:false con "message", ese texto indica el error exacto.
