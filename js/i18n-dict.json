@@ -1,0 +1,1006 @@
+{
+  "meta.description": {
+    "es": "Observatorio de Inteligencia Artificial de la Universidad Católica de Cuyo. Investigación, formación y vinculación en IA.",
+    "en": "Artificial Intelligence Observatory of the Universidad Católica de Cuyo. Research, training, and outreach on AI."
+  },
+  "meta.title": {
+    "es": "Observatorio de Inteligencia Artificial | Universidad Católica de Cuyo",
+    "en": "Artificial Intelligence Observatory | Universidad Católica de Cuyo"
+  },
+  "a11y.skipLink": {
+    "es": "Ir al contenido",
+    "en": "Skip to content"
+  },
+  "banner.top": {
+    "es": "Universidad Católica de Cuyo · Observatorio de Inteligencia Artificial",
+    "en": "Universidad Católica de Cuyo · Artificial Intelligence Observatory"
+  },
+  "brand.kicker": {
+    "es": "Universidad Católica de Cuyo",
+    "en": "Universidad Católica de Cuyo"
+  },
+  "brand.title": {
+    "es": "Observatorio de IA",
+    "en": "AI Observatory"
+  },
+  "nav.toggleOpen": {
+    "es": "Abrir menú",
+    "en": "Open menu"
+  },
+  "nav.ariaLabel": {
+    "es": "Principal",
+    "en": "Main"
+  },
+  "nav.inicio": {
+    "es": "Inicio",
+    "en": "Home"
+  },
+  "nav.observatorio": {
+    "es": "El observatorio",
+    "en": "The observatory"
+  },
+  "nav.equipo": {
+    "es": "Equipo",
+    "en": "Team"
+  },
+  "nav.jornadas": {
+    "es": "Jornadas de IA",
+    "en": "AI Conference"
+  },
+  "nav.galeria": {
+    "es": "Galería de Imágenes",
+    "en": "Image Gallery"
+  },
+  "nav.actividades": {
+    "es": "Actividades",
+    "en": "Activities"
+  },
+  "nav.acompanamiento": {
+    "es": "Acompañamiento",
+    "en": "Support & consulting"
+  },
+  "nav.visitas": {
+    "es": "Visitas al Observatorio",
+    "en": "Observatory visits"
+  },
+  "nav.encuestas": {
+    "es": "Encuestas e informes",
+    "en": "Surveys & reports"
+  },
+  "nav.noticias": {
+    "es": "Noticias",
+    "en": "News"
+  },
+  "nav.herramientas": {
+    "es": "Herramientas de análisis",
+    "en": "Analysis tools"
+  },
+  "nav.publicaciones": {
+    "es": "Biblioteca de IA",
+    "en": "AI Library"
+  },
+  "nav.secretaria": {
+    "es": "Secretaría de Investigación",
+    "en": "Research Secretariat"
+  },
+  "nav.contacto": {
+    "es": "Contacto",
+    "en": "Contact"
+  },
+  "hero.title": {
+    "es": "Observatorio de Inteligencia Artificial",
+    "en": "Artificial Intelligence Observatory"
+  },
+  "hero.lead": {
+    "es": "Promovemos el análisis, la formación, la investigación y la vinculación institucional sobre el impacto y las aplicaciones de la inteligencia artificial, con enfoque académico, ético y regional.",
+    "en": "We promote analysis, training, research, and institutional outreach on the impact and applications of artificial intelligence, with an academic, ethical, and regional focus."
+  },
+  "hero.cta.observatorio": {
+    "es": "El observatorio",
+    "en": "The observatory"
+  },
+  "hero.cta.equipo": {
+    "es": "Equipo",
+    "en": "Team"
+  },
+  "hero.cta.jornadas": {
+    "es": "Jornadas de IA",
+    "en": "AI Conference"
+  },
+  "hero.cta.galeria": {
+    "es": "Galería de Imágenes",
+    "en": "Image Gallery"
+  },
+  "hero.cta.actividades": {
+    "es": "Actividades",
+    "en": "Activities"
+  },
+  "hero.cta.acompanamiento": {
+    "es": "Acompañamiento",
+    "en": "Support & consulting"
+  },
+  "hero.cta.visitas": {
+    "es": "Visitas al Observatorio",
+    "en": "Observatory visits"
+  },
+  "hero.cta.encuestas": {
+    "es": "Encuestas e informes",
+    "en": "Surveys & reports"
+  },
+  "hero.cta.noticias": {
+    "es": "Noticias",
+    "en": "News"
+  },
+  "hero.cta.herramientas": {
+    "es": "Herramientas de análisis",
+    "en": "Analysis tools"
+  },
+  "hero.cta.publicaciones": {
+    "es": "Biblioteca de IA",
+    "en": "AI Library"
+  },
+  "hero.cta.secretaria": {
+    "es": "Secretaría de Investigación",
+    "en": "Research Secretariat"
+  },
+  "hero.cta.contacto": {
+    "es": "Contacto",
+    "en": "Contact"
+  },
+  "hero.email": {
+    "es": "observatorioia@uccuyo.edu.ar",
+    "en": "observatorioia@uccuyo.edu.ar"
+  },
+  "sec.observatorio.kicker": {
+    "es": "Identidad",
+    "en": "Identity"
+  },
+  "sec.observatorio.title": {
+    "es": "El observatorio",
+    "en": "The observatory"
+  },
+  "sec.observatorio.mision.title": {
+    "es": "Misión",
+    "en": "Mission"
+  },
+  "sec.observatorio.mision.body": {
+    "es": "El Observatorio de Inteligencia Artificial de la Universidad Católica de Cuyo tiene como misión promover el análisis, la formación, la investigación y la vinculación institucional en torno al uso, impacto y aplicaciones de la inteligencia artificial en distintos ámbitos, contribuyendo al desarrollo académico, científico y social de la comunidad.",
+    "en": "The Artificial Intelligence Observatory of the Universidad Católica de Cuyo aims to promote analysis, training, research, and institutional outreach around the use, impact, and applications of artificial intelligence across different fields, contributing to the academic, scientific, and social development of the community."
+  },
+  "sec.observatorio.vision.title": {
+    "es": "Visión",
+    "en": "Vision"
+  },
+  "sec.observatorio.vision.body": {
+    "es": "El Observatorio aspira a consolidarse como un referente académico y científico en el estudio, análisis y aplicación de la inteligencia artificial, promoviendo su uso responsable, ético e innovador en los distintos ámbitos del conocimiento y la sociedad, con impacto a nivel regional, nacional e internacional.",
+    "en": "The Observatory aspires to become an academic and scientific reference in the study, analysis, and application of artificial intelligence, promoting its responsible, ethical, and innovative use across fields of knowledge and society, with regional, national, and international impact."
+  },
+  "sec.observatorio.lineas.title": {
+    "es": "Líneas de trabajo",
+    "en": "Lines of work"
+  },
+  "sec.observatorio.lineas.intro": {
+    "es": "El Observatorio desarrolla actividades de investigación, formación y vinculación orientadas a comprender y aplicar el impacto de la inteligencia artificial en distintos ámbitos.",
+    "en": "The Observatory carries out research, training, and outreach activities aimed at understanding and applying the impact of artificial intelligence across different fields."
+  },
+  "sec.observatorio.lineas.item1": {
+    "es": "IA en educación",
+    "en": "AI in education"
+  },
+  "sec.observatorio.lineas.item2": {
+    "es": "Análisis de datos para la toma de decisiones",
+    "en": "Data analysis for decision-making"
+  },
+  "sec.observatorio.lineas.item3": {
+    "es": "Inclusión digital",
+    "en": "Digital inclusion"
+  },
+  "sec.observatorio.lineas.item4": {
+    "es": "Capacidades tecnológicas en la comunidad",
+    "en": "Technological capabilities in the community"
+  },
+  "sec.equipo.kicker": {
+    "es": "Personas",
+    "en": "People"
+  },
+  "sec.equipo.title": {
+    "es": "Equipo ejecutivo",
+    "en": "Executive team"
+  },
+  "sec.equipo.intro": {
+    "es": "El Observatorio está dirigido por Claudio Larrea Arnau y cuenta con un equipo interdisciplinario orientado a investigación, formación y vinculación institucional en inteligencia artificial. Consultas:",
+    "en": "The Observatory is directed by Claudio Larrea Arnau and has an interdisciplinary team focused on research, training, and institutional outreach in artificial intelligence. Inquiries:"
+  },
+  "sec.equipo.role.direccion": {
+    "es": "Dirección",
+    "en": "Director"
+  },
+  "sec.equipo.role.ejecutivo": {
+    "es": "Equipo ejecutivo",
+    "en": "Executive team"
+  },
+  "sec.equipo.role.asesor": {
+    "es": "Asesor externo",
+    "en": "External advisor"
+  },
+  "sec.equipo.org.uccuyo": {
+    "es": "Universidad Católica de Cuyo",
+    "en": "Universidad Católica de Cuyo"
+  },
+  "sec.equipo.org.uic": {
+    "es": "Universitat Internacional de Catalunya",
+    "en": "Universitat Internacional de Catalunya"
+  },
+  "sec.jornadas.kicker": {
+    "es": "Evento 2026",
+    "en": "2026 event"
+  },
+  "sec.jornadas.title": {
+    "es": "1° Jornadas internas de Inteligencia Artificial",
+    "en": "1st Internal Conference on Artificial Intelligence"
+  },
+  "sec.jornadas.intro": {
+    "es": "Encuentro virtual organizado por el Observatorio de IA para docentes, investigadores y estudiantes de la Universidad Católica de Cuyo. Inscribite y, si exponés, cargá tu artículo científico (2.000 palabras) y la presentación PowerPoint.",
+    "en": "Virtual meeting organized by the AI Observatory for faculty, researchers, and students of the Universidad Católica de Cuyo. Register and, if you present, upload your scientific article (2,000 words) and PowerPoint presentation."
+  },
+  "sec.jornadas.facts.ariaLabel": {
+    "es": "Datos del evento",
+    "en": "Event details"
+  },
+  "sec.jornadas.facts.fecha.label": {
+    "es": "Fecha",
+    "en": "Date"
+  },
+  "sec.jornadas.facts.fecha.value": {
+    "es": "6 de octubre de 2026",
+    "en": "October 6, 2026"
+  },
+  "sec.jornadas.facts.horario.label": {
+    "es": "Horario",
+    "en": "Time"
+  },
+  "sec.jornadas.facts.horario.value": {
+    "es": "15:00 h",
+    "en": "3:00 p.m."
+  },
+  "sec.jornadas.facts.modalidad.label": {
+    "es": "Modalidad",
+    "en": "Format"
+  },
+  "sec.jornadas.facts.modalidad.value": {
+    "es": "Virtual",
+    "en": "Online"
+  },
+  "sec.jornadas.facts.cierreExpositores.label": {
+    "es": "Cierre expositores",
+    "en": "Presenter deadline"
+  },
+  "sec.jornadas.facts.cierreExpositores.value": {
+    "es": "Artículo y PPT hasta el 10 de septiembre",
+    "en": "Article and PPT due by September 10"
+  },
+  "sec.jornadas.facts.cierreAsistentes.label": {
+    "es": "Cierre asistentes",
+    "en": "Attendee deadline"
+  },
+  "sec.jornadas.facts.cierreAsistentes.value": {
+    "es": "Inscripción hasta el 28 de septiembre",
+    "en": "Registration open until September 28"
+  },
+  "sec.jornadas.step1.title": {
+    "es": "Inscripción",
+    "en": "Registration"
+  },
+  "sec.jornadas.step1.body": {
+    "es": "Elegí el formulario según tu participación: asistente o expositor/a. Si exponés, en el formulario de expositores incluí el título de la ponencia y luego cargá el artículo científico y la presentación (pasos 2 y 3).",
+    "en": "Choose the form that matches your role: attendee or presenter. If you present, include the talk title in the presenter form, then upload the scientific article and presentation (steps 2 and 3)."
+  },
+  "sec.jornadas.step1.btnAsistentes": {
+    "es": "Formulario para asistentes",
+    "en": "Attendee registration form"
+  },
+  "sec.jornadas.step1.btnExpositores": {
+    "es": "Formulario para expositores",
+    "en": "Presenter registration form"
+  },
+  "sec.jornadas.step1.btnInstructivo": {
+    "es": "Instructivo general de las jornadas",
+    "en": "General conference guide (PDF, Spanish)"
+  },
+  "sec.jornadas.step2.title": {
+    "es": "Cargar artículo científico",
+    "en": "Upload scientific article"
+  },
+  "sec.jornadas.step2.body": {
+    "es": "Descargá la plantilla Word, redactá el artículo científico de 2.000 palabras (Revista Cuadernos) y subí el archivo .docx con Nuevo → Subir archivo en Drive.",
+    "en": "Download the Word template, write the 2,000-word scientific article (Revista Cuadernos), and upload the .docx file with New → File upload in Drive."
+  },
+  "sec.jornadas.step2.nameHint": {
+    "es": "Nombre sugerido del archivo:",
+    "en": "Suggested file name:"
+  },
+  "sec.jornadas.step2.btnCargar": {
+    "es": "Cargar artículo científico",
+    "en": "Upload scientific article"
+  },
+  "sec.jornadas.step2.btnInstructivo": {
+    "es": "Instructivo carga de artículo",
+    "en": "Article upload guide (PDF, Spanish)"
+  },
+  "sec.jornadas.step2.btnPlantilla": {
+    "es": "Descargar plantilla Word",
+    "en": "Download Word template"
+  },
+  "sec.jornadas.step3.title": {
+    "es": "Cargar presentación en PowerPoint",
+    "en": "Upload PowerPoint presentation"
+  },
+  "sec.jornadas.step3.body": {
+    "es": "Se abrirá Google Drive. Subí el archivo PowerPoint (.ppt o .pptx) con Nuevo → Subir archivo. Hasta 6 diapositivas; exposición de hasta 10 minutos. Descargá la plantilla (6 diapositivas editables), completá cada apartado y subí el archivo.",
+    "en": "Google Drive will open. Upload the PowerPoint file (.ppt or .pptx) with New → File upload. Up to 6 slides; talks of up to 10 minutes. Download the template (6 editable slides), complete each section, and upload the file."
+  },
+  "sec.jornadas.step3.nameHint": {
+    "es": "Nombre sugerido del archivo:",
+    "en": "Suggested file name:"
+  },
+  "sec.jornadas.step3.btnCargar": {
+    "es": "Cargar presentación en PowerPoint",
+    "en": "Upload PowerPoint presentation"
+  },
+  "sec.jornadas.step3.btnInstructivo": {
+    "es": "Instructivo carga de presentación",
+    "en": "Presentation upload guide (PDF, Spanish)"
+  },
+  "sec.jornadas.step3.btnPlantilla": {
+    "es": "Descargar plantilla PowerPoint (6 diapositivas)",
+    "en": "Download PowerPoint template (6 slides)"
+  },
+  "sec.jornadas.contact.label": {
+    "es": "Consultas:",
+    "en": "Inquiries:"
+  },
+  "sec.jornadas.contact.flayer": {
+    "es": "Flayer PDF (descargar)",
+    "en": "Flyer PDF (download, Spanish)"
+  },
+  "sec.galeria.kicker": {
+    "es": "Archivo visual",
+    "en": "Visual archive"
+  },
+  "sec.galeria.title": {
+    "es": "Galería de Imágenes",
+    "en": "Image Gallery"
+  },
+  "sec.galeria.intro": {
+    "es": "Registro fotográfico de visitas, encuentros y actividades del Observatorio de Inteligencia Artificial.",
+    "en": "Photo record of visits, meetings, and activities of the Artificial Intelligence Observatory."
+  },
+  "sec.actividades.kicker": {
+    "es": "Qué hacemos",
+    "en": "What we do"
+  },
+  "sec.actividades.title": {
+    "es": "Actividades",
+    "en": "Activities"
+  },
+  "sec.actividades.investigacion.title": {
+    "es": "Investigación",
+    "en": "Research"
+  },
+  "sec.actividades.investigacion.body": {
+    "es": "Proyectos y estudios sobre impacto y buenas prácticas en IA.",
+    "en": "Projects and studies on AI impact and good practices."
+  },
+  "sec.actividades.encuestas.title": {
+    "es": "Encuestas",
+    "en": "Surveys"
+  },
+  "sec.actividades.encuestas.body": {
+    "es": "Diseño y aplicación de instrumentos para alumnos, docentes y otros actores de la comunidad universitaria. Ver encuestas e informes y análisis con herramientas de análisis.",
+    "en": "Design and administration of instruments for students, faculty, and other members of the university community. See surveys & reports and analysis with analysis tools."
+  },
+  "sec.actividades.encuestas.linkEncuestas": {
+    "es": "encuestas e informes",
+    "en": "surveys & reports"
+  },
+  "sec.actividades.encuestas.linkHerramientas": {
+    "es": "herramientas de análisis",
+    "en": "analysis tools"
+  },
+  "sec.actividades.formacion.title": {
+    "es": "Formación",
+    "en": "Training"
+  },
+  "sec.actividades.formacion.body": {
+    "es": "Espacios de capacitación y reflexión en torno a herramientas y marcos éticos.",
+    "en": "Training and reflection spaces around tools and ethical frameworks."
+  },
+  "sec.actividades.vinculacion.title": {
+    "es": "Vinculación",
+    "en": "Outreach"
+  },
+  "sec.actividades.vinculacion.body": {
+    "es": "Articulación con organismos y la sociedad para transferencia y extensión.",
+    "en": "Collaboration with organizations and society for knowledge transfer and extension."
+  },
+  "sec.acompanamiento.kicker": {
+    "es": "Vinculación",
+    "en": "Outreach"
+  },
+  "sec.acompanamiento.title": {
+    "es": "Acompañamiento",
+    "en": "Support & consulting"
+  },
+  "sec.acompanamiento.intro": {
+    "es": "Acompañamos a instituciones, equipos y organizaciones en el desarrollo de páginas web interactivas, la realización y el análisis de encuestas, la elaboración de planes estratégicos y el diseño de programas a medida, con enfoque académico, ético y orientado a resultados.",
+    "en": "We support institutions, teams, and organizations in developing interactive websites, conducting and analyzing surveys, preparing strategic plans, and designing custom programs, with an academic, ethical, and results-oriented approach."
+  },
+  "sec.acompanamiento.card1.title": {
+    "es": "Elaboración de páginas web interactivas",
+    "en": "Interactive website development"
+  },
+  "sec.acompanamiento.card1.body": {
+    "es": "Diseñamos y desarrollamos sitios y experiencias digitales claras, accesibles e interactivas, alineadas a la identidad institucional y pensadas para comunicar, informar y vincular.",
+    "en": "We design and build clear, accessible, interactive sites and digital experiences aligned with institutional identity and intended to communicate, inform, and connect."
+  },
+  "sec.acompanamiento.card2.title": {
+    "es": "Realización y análisis de encuestas",
+    "en": "Survey design and analysis"
+  },
+  "sec.acompanamiento.card2.body": {
+    "es": "Acompañamos el diseño del instrumento, la recolección de respuestas y el análisis cuantitativo y cualitativo, con informes ejecutivos orientados a la toma de decisiones.",
+    "en": "We support instrument design, response collection, and quantitative and qualitative analysis, with executive reports oriented to decision-making."
+  },
+  "sec.acompanamiento.card3.title": {
+    "es": "Elaboración y asesoramiento de Planes Estratégicos",
+    "en": "Strategic plan development and advisory"
+  },
+  "sec.acompanamiento.card3.body": {
+    "es": "Asesoramos en la formulación, revisión y seguimiento de planes estratégicos institucionales, con diagnóstico, priorización de líneas de acción e indicadores de avance.",
+    "en": "We advise on formulating, reviewing, and monitoring institutional strategic plans, including diagnosis, prioritization of action lines, and progress indicators."
+  },
+  "sec.acompanamiento.card4.title": {
+    "es": "Elaboración de programas a medida",
+    "en": "Custom program design"
+  },
+  "sec.acompanamiento.card4.body": {
+    "es": "Desarrollamos programas de formación, vinculación o intervención adaptados a cada institución: objetivos, público, contenidos y evaluación definidos en conjunto.",
+    "en": "We develop training, outreach, or intervention programs tailored to each institution: goals, audience, content, and evaluation defined jointly."
+  },
+  "sec.acompanamiento.cta.text": {
+    "es": "¿Querés conocer más o conversar sobre un acompañamiento?",
+    "en": "Want to learn more or talk about a support engagement?"
+  },
+  "sec.acompanamiento.cta.btn": {
+    "es": "Escribinos",
+    "en": "Write to us"
+  },
+  "sec.encuestas.kicker": {
+    "es": "Diagnóstico institucional",
+    "en": "Institutional diagnosis"
+  },
+  "sec.encuestas.title": {
+    "es": "Encuestas e informes",
+    "en": "Surveys & reports"
+  },
+  "sec.encuestas.intro": {
+    "es": "Espacio del Observatorio para publicar resultados de encuestas sobre inteligencia artificial y preparar nuevos relevamientos a la comunidad universitaria.",
+    "en": "Observatory space to publish survey results on artificial intelligence and prepare new studies of the university community."
+  },
+  "sec.encuestas.badge.disponible": {
+    "es": "Disponible",
+    "en": "Available"
+  },
+  "sec.encuestas.badge.abierta": {
+    "es": "Abierta",
+    "en": "Open"
+  },
+  "sec.encuestas.alumnos.title": {
+    "es": "Encuesta a estudiantes 2026",
+    "en": "2026 student survey"
+  },
+  "sec.encuestas.alumnos.body": {
+    "es": "Informe ejecutivo sobre el uso de herramientas de inteligencia artificial por estudiantes de la Universidad Católica de Cuyo. Relevamiento a 348 estudiantes de distintas carreras y sedes (San Juan, San Luis y Mendoza), con lectura orientada a la toma de decisiones institucionales.",
+    "en": "Executive report on the use of artificial intelligence tools by students of the Universidad Católica de Cuyo. Survey of 348 students from different programs and campuses (San Juan, San Luis, and Mendoza), with analysis oriented to institutional decision-making."
+  },
+  "sec.encuestas.alumnos.facts.ariaLabel": {
+    "es": "Datos del estudio",
+    "en": "Study facts"
+  },
+  "sec.encuestas.alumnos.facts.muestra.label": {
+    "es": "Muestra",
+    "en": "Sample"
+  },
+  "sec.encuestas.alumnos.facts.muestra.value": {
+    "es": "348 estudiantes",
+    "en": "348 students"
+  },
+  "sec.encuestas.alumnos.facts.poblacion.label": {
+    "es": "Población de referencia",
+    "en": "Reference population"
+  },
+  "sec.encuestas.alumnos.facts.poblacion.value": {
+    "es": "~10.000 estudiantes",
+    "en": "~10,000 students"
+  },
+  "sec.encuestas.alumnos.facts.adopcion.label": {
+    "es": "Adopción de IA",
+    "en": "AI adoption"
+  },
+  "sec.encuestas.alumnos.facts.adopcion.value": {
+    "es": "98 % del estudiantado",
+    "en": "98% of students"
+  },
+  "sec.encuestas.alumnos.btnVer": {
+    "es": "Ver informe ejecutivo (PDF)",
+    "en": "View executive report (PDF, Spanish)"
+  },
+  "sec.encuestas.alumnos.btnDescargar": {
+    "es": "Descargar PDF",
+    "en": "Download PDF (Spanish)"
+  },
+  "sec.encuestas.docentes.title": {
+    "es": "Encuesta a docentes",
+    "en": "Faculty survey"
+  },
+  "sec.encuestas.docentes.body": {
+    "es": "Desde el Observatorio de Inteligencia Artificial invitamos al cuerpo docente de la UCCuyo a responder una encuesta anónima sobre percepción, conocimiento y uso de la IA en la enseñanza, la evaluación y la gestión académica. Las respuestas alimentan el diagnóstico institucional y se analizan con Encuesta Clara; el equipo puede publicar los informes en esta misma sección.",
+    "en": "The Artificial Intelligence Observatory invites UCCuyo faculty to complete an anonymous survey on perception, knowledge, and use of AI in teaching, assessment, and academic management. Responses feed the institutional diagnosis and are analyzed with Encuesta Clara; the team may publish reports in this same section."
+  },
+  "sec.encuestas.docentes.steps.ariaLabel": {
+    "es": "Flujo",
+    "en": "Workflow"
+  },
+  "sec.encuestas.docentes.steps.1.title": {
+    "es": "1. Responder",
+    "en": "1. Respond"
+  },
+  "sec.encuestas.docentes.steps.1.body": {
+    "es": "Cualquier docente UCCuyo (formulario anónimo).",
+    "en": "Any UCCuyo faculty member (anonymous form)."
+  },
+  "sec.encuestas.docentes.steps.2.title": {
+    "es": "2. Acumular",
+    "en": "2. Collect"
+  },
+  "sec.encuestas.docentes.steps.2.body": {
+    "es": "Respuestas en la planilla vinculada al Forms.",
+    "en": "Responses in the spreadsheet linked to Forms."
+  },
+  "sec.encuestas.docentes.steps.3.title": {
+    "es": "3. Informar",
+    "en": "3. Report"
+  },
+  "sec.encuestas.docentes.steps.3.body": {
+    "es": "Informes PDF publicados por el equipo del Observatorio.",
+    "en": "PDF reports published by the Observatory team."
+  },
+  "sec.encuestas.docentes.note": {
+    "es": "La encuesta está abierta. Los botones de equipo requieren iniciar sesión con un correo autorizado del Observatorio. Consultas:",
+    "en": "The survey is open. Team buttons require signing in with an authorized Observatory email. Inquiries:"
+  },
+  "sec.encuestas.docentes.btnResponder": {
+    "es": "Responder encuesta a docentes",
+    "en": "Take the faculty survey"
+  },
+  "sec.encuestas.docentes.btnFlayer": {
+    "es": "Flayer (descargar PDF)",
+    "en": "Flyer (download PDF, Spanish)"
+  },
+  "sec.encuestas.docentes.btnDescargarRespuestas": {
+    "es": "Descargar respuestas (equipo)",
+    "en": "Download responses (team)"
+  },
+  "sec.encuestas.docentes.btnCargarInformes": {
+    "es": "Cargar informes PDF (equipo)",
+    "en": "Upload PDF reports (team)"
+  },
+  "sec.encuestas.docentes.btnInformeEjecutivo": {
+    "es": "Descargar informe ejecutivo",
+    "en": "Download executive report"
+  },
+  "sec.encuestas.docentes.btnInformeInstitucional": {
+    "es": "Descargar informe institucional",
+    "en": "Download institutional report"
+  },
+  "sec.encuestas.docentes.titleEquipo": {
+    "es": "Solo equipo Observatorio (correo Google autorizado)",
+    "en": "Observatory team only (authorized Google account)"
+  },
+  "sec.noticias.kicker": {
+    "es": "Medios",
+    "en": "Media"
+  },
+  "sec.noticias.title": {
+    "es": "Noticias",
+    "en": "News"
+  },
+  "sec.noticias.intro": {
+    "es": "Búsqueda automática en Noticias UCCuyo y otros medios sobre el Observatorio. No se incluyen publicaciones del Diario de Cuyo.",
+    "en": "Automatic search in UCCuyo News and other media about the Observatory. Diario de Cuyo publications are not included."
+  },
+  "sec.noticias.search.label": {
+    "es": "Filtrar resultados",
+    "en": "Filter results"
+  },
+  "sec.noticias.search.placeholder": {
+    "es": "Título, medio o palabra clave…",
+    "en": "Title, outlet, or keyword…"
+  },
+  "sec.noticias.count.suffix": {
+    "es": "en esta vista",
+    "en": "in this view"
+  },
+  "sec.noticias.status.loading": {
+    "es": "Buscando noticias, boletines y menciones en medios…",
+    "en": "Searching news, bulletins, and media mentions…"
+  },
+  "sec.herramientas.kicker": {
+    "es": "Productos",
+    "en": "Products"
+  },
+  "sec.herramientas.title": {
+    "es": "Herramientas de análisis",
+    "en": "Analysis tools"
+  },
+  "sec.herramientas.intro": {
+    "es": "Plataformas en línea que el Observatorio pone a disposición de la comunidad para el análisis de datos de encuestas institucionales, de la Encuesta Permanente de Hogares (INDEC), estudios sobre IA en educación, evaluación presencial híbrida y la pre-auditoría de tesis. Se amplían a medida que se incorporen nuevas herramientas.",
+    "en": "Online platforms the Observatory makes available to the community for analyzing institutional survey data, Permanent Household Survey (INDEC) data, studies on AI in education, hybrid in-person assessment, and thesis pre-audit. The set grows as new tools are added."
+  },
+  "sec.herramientas.badge.disponible": {
+    "es": "Disponible",
+    "en": "Available"
+  },
+  "sec.herramientas.clara.title": {
+    "es": "Encuesta Clara",
+    "en": "Encuesta Clara"
+  },
+  "sec.herramientas.clara.lead": {
+    "es": "Del Excel de Google Forms a tablas, cruces y temas del texto libre: análisis cuantitativo y cualitativo en español, pensado para encuestas institucionales.",
+    "en": "From Google Forms Excel to tables, cross-tabs, and free-text themes: quantitative and qualitative analysis in Spanish, designed for institutional surveys."
+  },
+  "sec.herramientas.clara.item1": {
+    "es": "Carga de respuestas en Excel (.xlsx)",
+    "en": "Upload responses as Excel (.xlsx)"
+  },
+  "sec.herramientas.clara.item2": {
+    "es": "Resumen de ítems, cruces y análisis guiado",
+    "en": "Item summaries, cross-tabs, and guided analysis"
+  },
+  "sec.herramientas.clara.item3": {
+    "es": "Lectura de respuestas abiertas y sentimiento",
+    "en": "Open-ended responses and sentiment reading"
+  },
+  "sec.herramientas.clara.btnAbrir": {
+    "es": "Abrir Encuesta Clara",
+    "en": "Open Encuesta Clara"
+  },
+  "sec.herramientas.clara.btnInstructivo": {
+    "es": "Instructivo (PDF)",
+    "en": "Guide (PDF, Spanish)"
+  },
+  "sec.herramientas.eph.title": {
+    "es": "Análisis EPH (INDEC)",
+    "en": "EPH analysis (INDEC)"
+  },
+  "sec.herramientas.eph.lead": {
+    "es": "Microdatos de la Encuesta Permanente de Hogares: descriptivos, desigualdad, correlaciones, índice de exclusión digital, regresión logística, modelos predictivos e interpretabilidad (SHAP).",
+    "en": "Permanent Household Survey microdata: descriptives, inequality, correlations, digital exclusion index, logistic regression, predictive models, and interpretability (SHAP)."
+  },
+  "sec.herramientas.eph.item1": {
+    "es": "Hogares, individuos y módulo TIC (.xlsx, .txt, .csv, .dbf)",
+    "en": "Households, individuals, and ICT module (.xlsx, .txt, .csv, .dbf)"
+  },
+  "sec.herramientas.eph.item2": {
+    "es": "Modo guiado y modo experto",
+    "en": "Guided mode and expert mode"
+  },
+  "sec.herramientas.eph.item3": {
+    "es": "Exportación de resultados",
+    "en": "Export results"
+  },
+  "sec.herramientas.eph.btnAbrir": {
+    "es": "Abrir análisis EPH",
+    "en": "Open EPH analysis"
+  },
+  "sec.herramientas.eph.btnInstructivo": {
+    "es": "Instructivo (PDF)",
+    "en": "Guide (PDF, Spanish)"
+  },
+  "sec.herramientas.savt.title": {
+    "es": "SAVT — Auditoría de Tesis",
+    "en": "SAVT — Thesis Audit"
+  },
+  "sec.herramientas.savt.lead": {
+    "es": "Pre-auditoría académica integral de tesis y trabajos finales: estructura, bibliografía, citas, integridad, ética y profundidad, con orientación antes de la evaluación del jurado.",
+    "en": "Comprehensive academic pre-audit of theses and final papers: structure, bibliography, citations, integrity, ethics, and depth, with guidance before jury evaluation."
+  },
+  "sec.herramientas.savt.item1": {
+    "es": "Carga de tesis en Word (.docx) o PDF",
+    "en": "Upload thesis as Word (.docx) or PDF"
+  },
+  "sec.herramientas.savt.item2": {
+    "es": "Índice ICAI, checklist y apartados con observaciones",
+    "en": "ICAI index, checklist, and sections with comments"
+  },
+  "sec.herramientas.savt.item3": {
+    "es": "Informe descargable en CSV y Word (.docx)",
+    "en": "Downloadable report in CSV and Word (.docx)"
+  },
+  "sec.herramientas.savt.btnAbrir": {
+    "es": "Abrir SAVT",
+    "en": "Open SAVT"
+  },
+  "sec.herramientas.savt.btnInstructivo": {
+    "es": "Instructivo (PDF)",
+    "en": "Guide (PDF, Spanish)"
+  },
+  "sec.herramientas.evaluar.title": {
+    "es": "EvaluAR",
+    "en": "EvaluAR"
+  },
+  "sec.herramientas.evaluar.lead": {
+    "es": "Examen en papel, corrección digital. Para parciales presenciales con opción múltiple, verdadero/falso y emparejamiento: los alumnos cargan respuestas después de rendir y el docente obtiene la planilla de notas al instante.",
+    "en": "Paper exam, digital grading. For in-person midterms with multiple choice, true/false, and matching: students submit answers after the exam and the instructor gets the grade sheet instantly."
+  },
+  "sec.herramientas.evaluar.item1": {
+    "es": "Clave de respuestas pregunta por pregunta",
+    "en": "Answer key question by question"
+  },
+  "sec.herramientas.evaluar.item2": {
+    "es": "Código del parcial para que los alumnos marquen sus respuestas",
+    "en": "Exam code so students can mark their answers"
+  },
+  "sec.herramientas.evaluar.item3": {
+    "es": "Planilla de notas y exportación Excel",
+    "en": "Grade sheet and Excel export"
+  },
+  "sec.herramientas.evaluar.btnAbrir": {
+    "es": "Abrir EvaluAR",
+    "en": "Open EvaluAR"
+  },
+  "sec.herramientas.evaluar.btnInstructivo": {
+    "es": "Instructivo (PDF)",
+    "en": "Guide (PDF, Spanish)"
+  },
+  "common.abrir": {
+    "es": "Abrir",
+    "en": "Open"
+  },
+  "common.instructivoPdf": {
+    "es": "Instructivo (PDF)",
+    "en": "Guide (PDF, Spanish)"
+  },
+  "common.descargar": {
+    "es": "Descargar",
+    "en": "Download"
+  },
+  "common.disponible": {
+    "es": "Disponible",
+    "en": "Available"
+  },
+  "common.consultas": {
+    "es": "Consultas:",
+    "en": "Inquiries:"
+  },
+  "sec.publicaciones.kicker": {
+    "es": "Difusión",
+    "en": "Dissemination"
+  },
+  "sec.publicaciones.title": {
+    "es": "Biblioteca de IA",
+    "en": "AI Library"
+  },
+  "sec.publicaciones.intro": {
+    "es": "Consultá la producción del Observatorio cargada por el equipo o explorá un índice global con más de 19 millones de artículos científicos sobre inteligencia artificial, disponibles para consultar y descargar.",
+    "en": "Browse Observatory output uploaded by the team, or explore a global index of more than 19 million scientific articles on artificial intelligence, available to view and download."
+  },
+  "sec.publicaciones.tabs.ariaLabel": {
+    "es": "Vistas de la Biblioteca de IA",
+    "en": "AI Library views"
+  },
+  "sec.publicaciones.tabs.registradas": {
+    "es": "Producción del Observatorio",
+    "en": "Observatory output"
+  },
+  "sec.publicaciones.tabs.global": {
+    "es": "IA en el mundo (índice)",
+    "en": "AI worldwide (index)"
+  },
+  "sec.publicaciones.panel.registradas.intro": {
+    "es": "Producción visible del equipo: los datos llegan desde la misma hoja donde cargan en Producción Científica. Solo aparecen registros marcados como OIA · Observatorio de Inteligencia Artificial.",
+    "en": "Visible team output: data comes from the same sheet used for Scientific Output uploads. Only records tagged OIA · Observatorio de Inteligencia Artificial are shown."
+  },
+  "sec.publicaciones.panel.registradas.count": {
+    "es": "Mostrando {n} en esta vista (filtradas para el Observatorio).",
+    "en": "Showing {n} in this view (filtered for the Observatory)."
+  },
+  "sec.publicaciones.filters.ariaLabel": {
+    "es": "Filtrar por tipo",
+    "en": "Filter by type"
+  },
+  "sec.publicaciones.panel.global.intro": {
+    "es": "Resultados globales desde OpenAlex, Crossref, Semantic Scholar y Europe PMC (incluye PubMed), con enlaces de acceso abierto vía Unpaywall, para trabajos relacionados con inteligencia artificial. Puede haber faltantes, duplicados o registros a revisar.",
+    "en": "Global results from OpenAlex, Crossref, Semantic Scholar, and Europe PMC (including PubMed), with open-access links via Unpaywall, for works related to artificial intelligence. There may be gaps, duplicates, or records to review."
+  },
+  "sec.publicaciones.panel.global.badge": {
+    "es": "Resultados aproximados",
+    "en": "Approximate results"
+  },
+  "sec.publicaciones.panel.global.count": {
+    "es": "{n} trabajos aproximados (referencia OpenAlex)",
+    "en": "{n} approximate works (OpenAlex reference)"
+  },
+  "sec.publicaciones.index.search.label": {
+    "es": "Buscar por título, DOI o autor/a",
+    "en": "Search by title, DOI, or author"
+  },
+  "sec.publicaciones.index.search.modes.ariaLabel": {
+    "es": "Tipo de búsqueda",
+    "en": "Search type"
+  },
+  "sec.publicaciones.index.mode.auto": {
+    "es": "Auto",
+    "en": "Auto"
+  },
+  "sec.publicaciones.index.mode.title": {
+    "es": "Título",
+    "en": "Title"
+  },
+  "sec.publicaciones.index.mode.author": {
+    "es": "Autor/a",
+    "en": "Author"
+  },
+  "sec.publicaciones.index.mode.doi": {
+    "es": "DOI",
+    "en": "DOI"
+  },
+  "sec.publicaciones.index.year.label": {
+    "es": "Filtrar por año",
+    "en": "Filter by year"
+  },
+  "sec.publicaciones.index.year.selectAria": {
+    "es": "Filtrar publicaciones por año",
+    "en": "Filter publications by year"
+  },
+  "sec.publicaciones.index.year.all": {
+    "es": "Todos los años",
+    "en": "All years"
+  },
+  "sec.publicaciones.index.search.placeholder": {
+    "es": "Título, 10.1234/..., Apellido Nombre o Apellido, Nombre",
+    "en": "Title, 10.1234/..., Last First, or Last, First"
+  },
+  "sec.publicaciones.index.btnClear": {
+    "es": "Limpiar",
+    "en": "Clear"
+  },
+  "sec.publicaciones.index.btnClearAll": {
+    "es": "Limpiar todo",
+    "en": "Clear all"
+  },
+  "sec.publicaciones.index.size.label": {
+    "es": "Por página",
+    "en": "Per page"
+  },
+  "sec.publicaciones.index.size.aria": {
+    "es": "Cantidad por página",
+    "en": "Items per page"
+  },
+  "sec.publicaciones.index.sort.label": {
+    "es": "Orden",
+    "en": "Sort"
+  },
+  "sec.publicaciones.index.sort.aria": {
+    "es": "Ordenar publicaciones",
+    "en": "Sort publications"
+  },
+  "sec.publicaciones.index.sort.dateDesc": {
+    "es": "Fecha: más reciente",
+    "en": "Date: newest"
+  },
+  "sec.publicaciones.index.sort.dateAsc": {
+    "es": "Fecha: más antigua",
+    "en": "Date: oldest"
+  },
+  "sec.publicaciones.index.sort.relevance": {
+    "es": "Relevancia (si hay búsqueda)",
+    "en": "Relevance (when searching)"
+  },
+  "sec.visitas.kicker": {
+    "es": "Alcance",
+    "en": "Reach"
+  },
+  "sec.visitas.title": {
+    "es": "Visitas al Observatorio",
+    "en": "Observatory visits"
+  },
+  "sec.visitas.intro": {
+    "es": "Estimación del país y, cuando está disponible, de la provincia o región desde donde se consulta el sitio del Observatorio. Tocá un origen en la lista para enfocarlo en el mapa. El dato es aproximado (geolocalización por IP): no identifica personas ni guarda la dirección IP.",
+    "en": "Estimate of the country and, when available, the province or region from which the Observatory site is viewed. Tap an origin in the list to focus it on the map. The data is approximate (IP geolocation): it does not identify people or store IP addresses."
+  },
+  "sec.visitas.map.ariaLabel": {
+    "es": "Mapa de origen estimado de las visitas",
+    "en": "Map of estimated visit origins"
+  },
+  "sec.visitas.note": {
+    "es": "El origen es una estimación por IP. Las visitas anteriores al mapa se pueden repartir con las proporciones de Google Analytics (backfill en Apps Script). Redes móviles, VPN y campus universitarios pueden desplazar la ubicación estimada.",
+    "en": "Origin is an IP-based estimate. Visits before the map may be distributed using Google Analytics proportions (Apps Script backfill). Mobile networks, VPNs, and university campuses can shift the estimated location."
+  },
+  "sec.contacto.kicker": {
+    "es": "Escríbenos",
+    "en": "Write to us"
+  },
+  "sec.contacto.title": {
+    "es": "Contacto",
+    "en": "Contact"
+  },
+  "sec.contacto.instit.title": {
+    "es": "Contacto institucional",
+    "en": "Institutional contact"
+  },
+  "sec.contacto.label.correo": {
+    "es": "Correo",
+    "en": "Email"
+  },
+  "sec.contacto.label.universidad": {
+    "es": "Universidad",
+    "en": "University"
+  },
+  "sec.contacto.label.telefono": {
+    "es": "Teléfono",
+    "en": "Phone"
+  },
+  "sec.contacto.universidad.value": {
+    "es": "Universidad Católica de Cuyo",
+    "en": "Universidad Católica de Cuyo"
+  },
+  "sec.contacto.lead": {
+    "es": "Para consultas, propuestas de colaboración o actividades de extensión, escribinos por correo electrónico. Te responderemos a la brevedad.",
+    "en": "For inquiries, collaboration proposals, or extension activities, write to us by email. We will reply shortly."
+  },
+  "sec.contacto.btnEmail": {
+    "es": "Escribir a observatorioia@uccuyo.edu.ar",
+    "en": "Email observatorioia@uccuyo.edu.ar"
+  },
+  "sec.contacto.emailHint": {
+    "es": "Se abrirá tu programa de correo (Gmail, Outlook, etc.) con nuestro email ya cargado. Podés escribir el mensaje ahí y enviarlo.",
+    "en": "Your email app (Gmail, Outlook, etc.) will open with our address already filled in. You can write your message there and send it."
+  },
+  "footer.brand": {
+    "es": "Observatorio de Inteligencia Artificial · UCCuyo",
+    "en": "Artificial Intelligence Observatory · UCCuyo"
+  },
+  "footer.jornadas": {
+    "es": "Jornadas de IA",
+    "en": "AI Conference"
+  },
+  "footer.acompanamiento": {
+    "es": "Acompañamiento",
+    "en": "Support & consulting"
+  },
+  "footer.visitas": {
+    "es": "Visitas al Observatorio",
+    "en": "Observatory visits"
+  },
+  "footer.encuestas": {
+    "es": "Encuestas e informes",
+    "en": "Surveys & reports"
+  },
+  "footer.galeria": {
+    "es": "Galería de Imágenes",
+    "en": "Image Gallery"
+  },
+  "footer.herramientas": {
+    "es": "Herramientas de análisis",
+    "en": "Analysis tools"
+  },
+  "footer.secretaria": {
+    "es": "Secretaría de Investigación",
+    "en": "Research Secretariat"
+  },
+  "footer.site": {
+    "es": "uccuyo.edu.ar",
+    "en": "uccuyo.edu.ar"
+  }
+}
