@@ -1,18 +1,54 @@
 /**
- * Parallax suave en la escena 3D de Acompañamiento.
- * Sin librerías; respeta prefers-reduced-motion.
+ * Escena 3D de Acompañamiento: parallax + clic lleva a la tarjeta.
  */
 (function () {
   var root = document.getElementById("acompanamiento-scene");
   if (!root) return;
 
   var stage = root.querySelector("[data-scene-stage]");
-  if (!stage) return;
+  var panels = root.querySelectorAll(".acompanamiento-scene__panel[data-target]");
+  var cards = document.querySelectorAll(".acompanamiento-card[id^='acomp-']");
+  var clearTimer = 0;
+
+  function highlightCard(id) {
+    var target = document.getElementById(id);
+    if (!target) return;
+
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].classList.remove("is-spotlight");
+    }
+    for (var j = 0; j < panels.length; j++) {
+      panels[j].classList.toggle(
+        "is-active",
+        panels[j].getAttribute("data-target") === id
+      );
+    }
+
+    target.classList.add("is-spotlight");
+    target.scrollIntoView({ behavior: "smooth", block: "center" });
+    try {
+      target.focus({ preventScroll: true });
+    } catch (_e) {
+      target.focus();
+    }
+
+    if (clearTimer) window.clearTimeout(clearTimer);
+    clearTimer = window.setTimeout(function () {
+      target.classList.remove("is-spotlight");
+    }, 2600);
+  }
+
+  for (var p = 0; p < panels.length; p++) {
+    panels[p].addEventListener("click", function (e) {
+      var id = e.currentTarget.getAttribute("data-target");
+      if (id) highlightCard(id);
+    });
+  }
 
   var reduce =
     window.matchMedia &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduce) return;
+  if (reduce || !stage) return;
 
   var baseRx = -18;
   var baseRy = 12;
