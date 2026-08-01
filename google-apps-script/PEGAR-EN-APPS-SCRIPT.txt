@@ -1,0 +1,11 @@
+PEGÁ ESTOS 2 ARCHIVOS EN APPS SCRIPT (investigacion@uccuyo.edu.ar)
+Proyecto: Publicaciones Página Web
+
+1) PublicacionesWeb.gs  → reemplazá TODO el contenido con PublicacionesWeb.gs
+2) EncuestaDocentesWeb.gs → si no existe, Nuevo → Script, nombralo EncuestaDocentesWeb
+   y pegá EncuestaDocentesWeb.gs
+
+Luego: Implementar → Administrar implementaciones → LÁPIZ → Nueva versión → Implementar
+NO crees "Nueva implementación".
+
+Probar: .../exec?action=public   debe devolver {"ok":true,"items":[...]}

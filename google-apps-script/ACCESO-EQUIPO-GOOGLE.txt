@@ -1,0 +1,22 @@
+# Panel de carga — acceso por correo Google
+
+Ya no se usa clave en la URL (`&key=...`). El panel es:
+
+  .../exec?action=admin
+
+Correos autorizados (AUTHORIZED_EMAILS en PublicacionesWeb.gs):
+  investigacion@uccuyo.edu.ar
+  jose.lamalfa@uccuyosl.edu.ar
+  asistente.inv@uccuyo.edu.ar
+  vincutec@uccuyo.edu.ar
+  lpizarro@uccuyo.edu.ar
+  barias@uccuyo.edu.ar
+  claudio17larrea@gmail.com
+  observatorioia@uccuyo.edu.ar
+
+Tras pegar el .gs actualizado:
+  1. Implementar → lápiz → Nueva versión (misma URL /exec).
+  2. Quién tiene acceso: «Cualquier usuario de Google».
+  3. Ejecutar como: tu cuenta (investigacion@...).
+
+Jornadas IA / EvaluAR / listado público / visitas: no cambian (siguen sin login).

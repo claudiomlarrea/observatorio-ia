@@ -55,7 +55,6 @@
     <form id="f" method="post" action="<?= apiUrl ?>" target="_top" accept-charset="UTF-8">
       <input type="hidden" name="action" value="add" />
       <input type="hidden" name="_panel" value="1" />
-      <input type="hidden" name="key" value="<?= adminKey ?>" />
 
       <div>
         <label for="tipo">Tipo *</label>
@@ -218,10 +217,7 @@
           if (p.get("saved") === "1") {
             setMsg("Guardado correctamente.", true);
             if (window.history && window.history.replaceState) {
-              var clean = window.location.pathname + "?action=admin";
-              var key = p.get("key");
-              if (key) clean += "&key=" + encodeURIComponent(key);
-              window.history.replaceState({}, "", clean);
+              window.history.replaceState({}, "", window.location.pathname + "?action=admin");
             }
             return;
           }

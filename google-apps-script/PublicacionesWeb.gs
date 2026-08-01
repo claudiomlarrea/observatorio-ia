@@ -40,19 +40,16 @@ var LOOKER_SHEET_ID = "10SKDfZJIZGSTOaOWgGmB46WPM0Bd0BvLe4aZ9jilA34";
 var LOOKER_TAB = "indice_openalex";
 var LOOKER_HEADERS = ["anio", "titulo", "autores", "doi", "url", "fuente", "fecha_sync"];
 
-var ADMIN_ACCESS_KEY = "OIA-Privado-2026";
-
+/** Acceso equipo: solo correos Google autorizados (sin clave en el frontend). */
 var AUTHORIZED_EMAILS = [
-  "claudio.larrea@hotmail.com",
-  "claudio17larrea@gmail.com",
   "investigacion@uccuyo.edu.ar",
-  "observatorioia@uccuyo.edu.ar",
-  "barias@uccuyo.edu.ar",
-  "vincutec@uccuyo.edu.ar",
-  "asistente.inv@uccuyo.edu.ar",
   "jose.lamalfa@uccuyosl.edu.ar",
-  "laurapizarro92@gmail.com",
-  "lpizarro@uccuyo.edu.ar"
+  "asistente.inv@uccuyo.edu.ar",
+  "vincutec@uccuyo.edu.ar",
+  "lpizarro@uccuyo.edu.ar",
+  "barias@uccuyo.edu.ar",
+  "claudio17larrea@gmail.com",
+  "observatorioia@uccuyo.edu.ar"
 ];
 
 /** Misma lista que Consejo / Producción Científica (Streamlit) + unidades transversales. */
@@ -268,7 +265,6 @@ function lookerHasDoi_(sh, doi) {
 /** En el editor: elegí esta función y ▶ Ejecutar (autoriza permisos de la planilla). */
 function authorizeSavePanel() {
   var r = savePublicationAdmin_({
-    key: ADMIN_ACCESS_KEY,
     tipo: "Diario",
     titulo: "Prueba permisos panel",
     unidad: "OIA- Observatorio de Inteligencia Artificial",
@@ -280,8 +276,7 @@ function authorizeSavePanel() {
 
 function isAuthorizedForPayload_(p) {
   var email = getEmail_();
-  if (email && AUTHORIZED_EMAILS.indexOf(email) >= 0) return true;
-  return val_(p.key) === ADMIN_ACCESS_KEY;
+  return !!(email && AUTHORIZED_EMAILS.indexOf(email) >= 0);
 }
 
 function escapeHtml_(s) {
@@ -303,8 +298,9 @@ function buildUnidadOptionsHtml_(defaultUnidad) {
   return out.join("");
 }
 
-function buildAdminPanelHtml_(apiUrl, adminKey, defaultUnidad) {
+function buildAdminPanelHtml_(apiUrl, defaultUnidad) {
   var unidadOpts = buildUnidadOptionsHtml_(defaultUnidad);
+  var email = escapeHtml_(getEmail_() || "");
   return (
     "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"utf-8\">" +
     "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">" +
@@ -323,16 +319,15 @@ function buildAdminPanelHtml_(apiUrl, adminKey, defaultUnidad) {
     "@media(max-width:760px){form{grid-template-columns:1fr}}" +
     "</style></head><body>" +
     "<h1>Carga de Publicaciones</h1>" +
-    "<p class=\"help\">Completá los datos y guardá. Verás un instante la página de Google y volverás al formulario con la confirmación.</p>" +
+    "<p class=\"help\">Sesión: <strong>" +
+    (email || "(sin correo detectado)") +
+    "</strong>. Completá los datos y guardá.</p>" +
     "<p><a class=\"btn-sheet\" href=\"https://docs.google.com/spreadsheets/d/18xXPRok4kVF81hkEDDlfDf8Vx-KI2HeywZNFSXkozwU/edit#gid=0\" target=\"_blank\" rel=\"noopener noreferrer\">Abrir planilla en Google Sheets</a></p>" +
     "<form id=\"f\" method=\"post\" action=\"" +
     escapeHtml_(apiUrl) +
     "\" target=\"_top\" accept-charset=\"UTF-8\">" +
     "<input type=\"hidden\" name=\"action\" value=\"add\">" +
     "<input type=\"hidden\" name=\"_panel\" value=\"1\">" +
-    "<input type=\"hidden\" name=\"key\" value=\"" +
-    escapeHtml_(adminKey) +
-    "\">" +
     "<div><label for=\"tipo\">Tipo *</label><select id=\"tipo\" name=\"tipo\" required>" +
     "<option value=\"Revista\">Revista</option><option value=\"Libro\">Libro</option>" +
     "<option value=\"Capítulo de libro\">Capítulo de libro</option><option value=\"Repositorio\">Informe</option>" +
@@ -373,22 +368,18 @@ function renderAdmin_(e) {
     return ContentService.createTextOutput(
       "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"utf-8\"><title>OIA - Acceso denegado</title></head><body>" +
         "<h3>Acceso denegado</h3>" +
-        "<p>No se pudo validar el acceso. En las apps web de Google el correo con el que entraste " +
-        "casi nunca se detecta automáticamente.</p>" +
-        "<p><strong>Cómo entrar:</strong> usá el botón " +
-        "<em>Ingreso equipo · Cargar publicaciones</em> en la sección Publicaciones del sitio " +
-        "(ese enlace incluye la clave de acceso del Observatorio).</p>" +
-        "<p>Si abriste esta página a mano, la URL debe terminar en " +
-        "<code>?action=admin&amp;key=OIA-Privado-2026</code> " +
-        "(no uses la clave de Secretaría de Investigación).</p>" +
+        "<p>Iniciá sesión en Google con un correo autorizado del equipo " +
+        "(por ejemplo <code>investigacion@uccuyo.edu.ar</code>) y volvé a abrir " +
+        "<em>Ingreso equipo · Cargar publicaciones</em>.</p>" +
+        "<p>En la implementación de Apps Script, «Quién tiene acceso» debe ser " +
+        "<strong>Cualquier usuario de Google</strong> para que se detecte tu correo.</p>" +
         "</body></html>"
     ).setMimeType(ContentService.MimeType.HTML);
   }
   var apiUrl = ScriptApp.getService().getUrl();
-  var adminKey = adminKeyFromRequest_(e) || ADMIN_ACCESS_KEY;
   var defaultUnidad = "OIA- Observatorio de Inteligencia Artificial";
   return ContentService.createTextOutput(
-    buildAdminPanelHtml_(apiUrl, adminKey, defaultUnidad)
+    buildAdminPanelHtml_(apiUrl, defaultUnidad)
   ).setMimeType(ContentService.MimeType.HTML);
 }
 
@@ -739,27 +730,21 @@ function normalizar_(x) {
 }
 
 function getEmail_() {
+  var email = "";
   try {
-    return String(Session.getActiveUser().getEmail() || "").toLowerCase().trim();
-  } catch (_e) {
-    return "";
+    email = String(Session.getActiveUser().getEmail() || "").toLowerCase().trim();
+  } catch (_e) {}
+  if (!email) {
+    try {
+      email = String(Session.getEffectiveUser().getEmail() || "").toLowerCase().trim();
+    } catch (_e2) {}
   }
+  return email;
 }
 
 function isAuthorized_(e) {
   var email = getEmail_();
-  if (email && AUTHORIZED_EMAILS.indexOf(email) >= 0) return true;
-  if (adminKeyFromRequest_(e) === ADMIN_ACCESS_KEY) return true;
-  if (e) {
-    var payload = mergePostParams_(e);
-    if (val_(payload.key) === ADMIN_ACCESS_KEY) return true;
-  }
-  return false;
-}
-
-function adminKeyFromRequest_(e) {
-  if (!e || !e.parameter) return "";
-  return val_(e.parameter.key);
+  return !!(email && AUTHORIZED_EMAILS.indexOf(email) >= 0);
 }
 
 /** Visitas a las páginas en GitHub Pages (no a la sección Publicaciones). */

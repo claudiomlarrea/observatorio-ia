@@ -10,11 +10,12 @@ var ENCUESTA_DOCENTES_RESPUESTAS_ID = "1Tf0rz2Fe5ulXq4y3WFHnF2wH-Ma8zCt4SH5wB_vf
 var ENCUESTA_DOCENTES_TEAM_EMAILS = [
   "investigacion@uccuyo.edu.ar",
   "jose.lamalfa@uccuyosl.edu.ar",
-  "coordi.investigacion@uccuyo.edu.ar",
-  "laurapizarro92@gmail.com",
   "asistente.inv@uccuyo.edu.ar",
-  "phd.ariasv@gmail.com",
+  "vincutec@uccuyo.edu.ar",
   "lpizarro@uccuyo.edu.ar",
+  "barias@uccuyo.edu.ar",
+  "claudio17larrea@gmail.com",
+  "observatorioia@uccuyo.edu.ar"
 ];
 
 var ENCUESTA_DOCENTES_PROP_EJECUTIVO = "encuesta_docentes_informe_ejecutivo_id";

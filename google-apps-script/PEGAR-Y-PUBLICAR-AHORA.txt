@@ -2,8 +2,8 @@ CONTADOR DE VISITAS + PANEL DE CARGA (5 minutos)
 ================================================
 
 Si «Ingreso equipo · Cargar publicaciones» falla:
-  • En js/publicaciones-config.js la clave debe ser OIA-Privado-2026 (no SEC-Investigacion-2026).
-  • En Apps Script debe existir el archivo HTML PublicacionesAdmin (nombre exacto).
+  • Ver ACCESO-EQUIPO-GOOGLE.txt (solo correos autorizados; sin clave en la URL).
+  • En la implementación: «Quién tiene acceso» = Cualquier usuario de Google.
   • Ejecutá en Terminal: ./google-apps-script/activar-panel-carga.sh
 
 Cuenta cada entrada a:
