@@ -1,22 +1,26 @@
-# Pegá estos archivos en el Space Hugging Face
+# Pegá / actualizá en Hugging Face
 # https://huggingface.co/spaces/Observatorio-IA-2026/ai-library
 
-Archivos en esta carpeta:
+## Cambio mínimo del título (index.html actual del Space)
+
+En Edit file → index.html, reemplazá:
+
+  <title>Artificial Intelligence Observatory | Catholic University of Cuyo</title>
+por:
+  <title>World Artificial Intelligence Library | Catholic University of Cuyo</title>
+
+y:
+
+  <h1>Artificial Intelligence Observatory</h1>
+por:
+  <h1>World Artificial Intelligence Library</h1>
+
+Commit changes en el Space.
+
+## Paquete completo (recomendado)
+
+Subí desde esta carpeta:
   README.md
   index.html
   style.css
-  logo-observatorio-ia.png   ← subir también (el logo local)
-
-Arreglo rápido del logo (si solo editás el index.html actual del Space):
-
-  Cambiá esta línea rota:
-    src=".../assets/img/logo-oia.png"
-
-  Por UNA de estas dos opciones:
-
-  A) Con archivo local en el Space (recomendado):
-    src="logo-observatorio-ia.png"
-    y subí logo-observatorio-ia.png en Files → Upload file
-
-  B) Sin subir PNG (URL pública):
-    src="https://claudiomlarrea.github.io/observatorio-ia/assets/logo-observatorio-ia.png"
+  logo-observatorio-ia.png
