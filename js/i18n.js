@@ -15,6 +15,11 @@
 
   function detectLang() {
     try {
+      var params = new URLSearchParams(window.location.search || "");
+      var q = String(params.get("lang") || "").toLowerCase();
+      if (q === "es" || q === "en") return q;
+    } catch (_e0) {}
+    try {
       var saved = localStorage.getItem(STORAGE_KEY);
       if (saved === "es" || saved === "en") return saved;
     } catch (_e) {}
