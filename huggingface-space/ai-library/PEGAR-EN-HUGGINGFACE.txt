@@ -2,17 +2,21 @@
 # https://huggingface.co/spaces/Observatorio-IA-2026/ai-library
 
 Archivos en esta carpeta:
-  README.md   → reemplazar el README del Space (sdk: static)
-  index.html  → reemplazar index.html
-  style.css   → reemplazar style.css
+  README.md
+  index.html
+  style.css
+  logo-observatorio-ia.png   ← subir también (el logo local)
 
-Cómo subir (opción simple):
-1. Abrí Files en el Space
-2. Editá / subí cada archivo con el contenido de esta carpeta
-3. Commit en main
+Arreglo rápido del logo (si solo editás el index.html actual del Space):
 
-Enlace principal (inglés + pestaña índice global):
-https://claudiomlarrea.github.io/observatorio-ia/?lang=en#publicaciones-global-ia
+  Cambiá esta línea rota:
+    src=".../assets/img/logo-oia.png"
 
-Logo corregido:
-https://claudiomlarrea.github.io/observatorio-ia/assets/logo-observatorio-ia.png
+  Por UNA de estas dos opciones:
+
+  A) Con archivo local en el Space (recomendado):
+    src="logo-observatorio-ia.png"
+    y subí logo-observatorio-ia.png en Files → Upload file
+
+  B) Sin subir PNG (URL pública):
+    src="https://claudiomlarrea.github.io/observatorio-ia/assets/logo-observatorio-ia.png"
