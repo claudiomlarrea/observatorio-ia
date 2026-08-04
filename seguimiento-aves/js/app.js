@@ -1,11 +1,11 @@
 /**
- * AviPeso — seguimiento de peso diario en aves de corral (0–30 días)
+ * AviCreci — seguimiento de peso diario en aves de corral (0–30 días)
  * Observatorio de Inteligencia Artificial · UCCuyo
  */
 (function () {
   "use strict";
 
-  const STORAGE_KEY = "avipeso-oia-v1";
+  const STORAGE_KEY = "avicreci-oia-v1";
   const MAX_DAY = 30;
 
   const RAZAS = {
@@ -490,7 +490,7 @@
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `avipeso-${(a.idAnimal || "lote").replace(/\s+/g, "_")}.csv`;
+    link.download = `avicreci-${(a.idAnimal || "lote").replace(/\s+/g, "_")}.csv`;
     link.click();
     URL.revokeObjectURL(url);
     toast("CSV exportado.");
