@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="AviPeso — seguimiento del aumento de peso diario en aves de corral de 0 a 30 días. Observatorio de Inteligencia Artificial · UCCuyo."
+    />
+    <title>AviPeso · Observatorio de IA · UCCuyo</title>
+    <link rel="icon" type="image/png" href="assets/logo-observatorio-ia.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
+    <script src="js/app.js" defer></script>
+  </head>
+  <body>
+    <div class="top-banner">
+      <a href="../">← Observatorio de Inteligencia Artificial · UCCuyo</a>
+    </div>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="logo-wrap">
+          <img
+            src="assets/logo-observatorio-ia.png"
+            width="120"
+            height="120"
+            alt="Observatorio de Inteligencia Artificial · UCCuyo"
+            decoding="async"
+          />
+        </div>
+        <p class="brand-kicker">Observatorio de Inteligencia Artificial · UCCuyo</p>
+        <h1 class="brand-title">AviPeso</h1>
+        <p class="brand-sub">
+          Evaluación y seguimiento del aumento de peso diario en aves de corral,
+          desde el nacimiento hasta los 30 días de vida.
+        </p>
+        <span class="badge">Prototipo · Manual de marca UCCuyo</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="panel panel--green" aria-labelledby="sec-animal">
+        <h2 id="sec-animal">Identificación del animal / lote</h2>
+        <p class="panel-lead">
+          Completá los campos desplegables. Los datos se guardan en este navegador.
+        </p>
+        <form id="form-animal" class="grid-2" autocomplete="off">
+          <div class="field">
+            <label for="especie">Especie</label>
+            <select id="especie" name="especie" required>
+              <option value="">Seleccionar…</option>
+              <option value="pollo-parrillero">Pollo parrillero (broiler)</option>
+              <option value="gallina-postura">Gallina de postura</option>
+              <option value="pato">Pato</option>
+              <option value="pavo">Pavo</option>
+              <option value="codorniz">Codorniz</option>
+              <option value="otra">Otra ave de corral</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="raza">Raza / línea genética</label>
+            <select id="raza" name="raza" required>
+              <option value="">Seleccionar especie primero…</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="sexo">Sexo</label>
+            <select id="sexo" name="sexo" required>
+              <option value="">Seleccionar…</option>
+              <option value="macho">Macho</option>
+              <option value="hembra">Hembra</option>
+              <option value="mixto">Mixto (lote)</option>
+              <option value="no-determinado">No determinado</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="sistema">Sistema de crianza</label>
+            <select id="sistema" name="sistema" required>
+              <option value="">Seleccionar…</option>
+              <option value="intensivo">Intensivo / confinado</option>
+              <option value="semi-intensivo">Semi-intensivo</option>
+              <option value="extensivo">Extensivo / pastoreo</option>
+              <option value="experimental">Experimental / ensayo</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="id-animal">Identificador</label>
+            <input
+              id="id-animal"
+              name="idAnimal"
+              type="text"
+              maxlength="40"
+              placeholder="Ej. Lote-A-01 o anillo 247"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="fecha-nacimiento">Fecha de nacimiento / eclosión</label>
+            <input id="fecha-nacimiento" name="fechaNacimiento" type="date" required />
+          </div>
+          <div class="field">
+            <label for="peso-nacimiento">Peso al nacer (g)</label>
+            <input
+              id="peso-nacimiento"
+              name="pesoNacimiento"
+              type="number"
+              min="1"
+              max="500"
+              step="0.1"
+              placeholder="Ej. 42"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="ubicacion">Unidad / galpón</label>
+            <select id="ubicacion" name="ubicacion" required>
+              <option value="">Seleccionar…</option>
+              <option value="galpon-1">Galpón 1</option>
+              <option value="galpon-2">Galpón 2</option>
+              <option value="galpon-3">Galpón 3</option>
+              <option value="modulo-experimental">Módulo experimental</option>
+              <option value="campo">Campo / pastoreo</option>
+            </select>
+          </div>
+        </form>
+        <div class="actions">
+          <button type="submit" form="form-animal" class="btn btn-primary">Guardar animal</button>
+          <button type="button" class="btn btn-ghost" id="btn-demo">Cargar ejemplo broiler</button>
+          <button type="button" class="btn btn-ghost" id="btn-reset">Limpiar todo</button>
+        </div>
+        <div id="animal-activo" hidden></div>
+      </section>
+
+      <div class="layout-main">
+        <section class="panel panel--maroon" aria-labelledby="sec-peso">
+          <h2 id="sec-peso">Registro de peso diario</h2>
+          <p class="panel-lead">
+            Seleccioná el día de vida (0–30) e ingresá el peso en gramos.
+            El sistema calcula la ganancia diaria.
+          </p>
+          <form id="form-peso" class="grid-2" autocomplete="off">
+            <div class="field">
+              <label for="dia-vida">Día de vida</label>
+              <select id="dia-vida" name="diaVida" required>
+                <option value="">Seleccionar…</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="peso-g">Peso (g)</label>
+              <input
+                id="peso-g"
+                name="peso"
+                type="number"
+                min="1"
+                max="5000"
+                step="0.1"
+                placeholder="Ej. 185.5"
+                required
+              />
+            </div>
+            <div class="field">
+              <label for="condicion">Condición corporal</label>
+              <select id="condicion" name="condicion">
+                <option value="normal">Normal</option>
+                <option value="baja">Baja / retraso</option>
+                <option value="alta">Alta / sobresaliente</option>
+                <option value="enfermo">Sospecha sanitaria</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="observacion">Observación</label>
+              <select id="observacion" name="observacion">
+                <option value="sin-obs">Sin observaciones</option>
+                <option value="cambio-alimento">Cambio de alimento</option>
+                <option value="vacunacion">Vacunación</option>
+                <option value="estres-termico">Estrés térmico</option>
+                <option value="manejo">Manejo / traslado</option>
+                <option value="otra">Otra</option>
+              </select>
+            </div>
+          </form>
+          <div class="actions">
+            <button type="submit" form="form-peso" class="btn btn-secondary">Registrar peso</button>
+            <button type="button" class="btn btn-accent" id="btn-export">Exportar CSV</button>
+          </div>
+        </section>
+
+        <section class="panel panel--orange" aria-labelledby="sec-indicadores">
+          <h2 id="sec-indicadores">Indicadores (0–30 días)</h2>
+          <p class="panel-lead">Resumen automático a partir de los registros cargados.</p>
+          <div class="stats" id="stats">
+            <div class="stat">
+              <span class="stat-label">Peso actual</span>
+              <span class="stat-value" id="stat-peso">—</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Ganancia total</span>
+              <span class="stat-value" id="stat-ganancia">—</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Ganancia diaria media</span>
+              <span class="stat-value" id="stat-adg">—</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Días registrados</span>
+              <span class="stat-value" id="stat-dias">0</span>
+            </div>
+          </div>
+          <div class="legend-colors" aria-hidden="true">
+            <span><i style="background: #064a31"></i> Verde institucional</span>
+            <span><i style="background: #7d1b1c"></i> Granate subordinado</span>
+            <span><i style="background: #e38a00"></i> Naranja acento</span>
+          </div>
+        </section>
+      </div>
+
+      <section class="panel panel--green" aria-labelledby="sec-curva">
+        <h2 id="sec-curva">Curva de peso y ganancia diaria</h2>
+        <p class="panel-lead">
+          Evolución del peso corporal (g) y del aumento diario (g/día) hasta el día 30.
+        </p>
+        <div class="chart-wrap">
+          <canvas id="chart-peso" aria-label="Gráfico de peso y ganancia diaria"></canvas>
+        </div>
+      </section>
+
+      <section class="panel panel--maroon" aria-labelledby="sec-tabla">
+        <h2 id="sec-tabla">Historial de mediciones</h2>
+        <p class="panel-lead">Detalle día a día. La ganancia se calcula respecto del registro anterior.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Día</th>
+                <th>Peso (g)</th>
+                <th>Ganancia (g/día)</th>
+                <th>Condición</th>
+                <th>Observación</th>
+                <th><span class="sr-only">Acciones</span></th>
+              </tr>
+            </thead>
+            <tbody id="tabla-pesos"></tbody>
+          </table>
+        </div>
+        <p class="empty-hint" id="tabla-vacia">Todavía no hay registros de peso.</p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>
+        <strong>AviPeso</strong> · Observatorio de Inteligencia Artificial · Universidad Católica de Cuyo
+        · Colores corporativos del Manual de Normas UCCuyo 2017
+      </p>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
