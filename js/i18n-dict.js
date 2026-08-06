@@ -72,8 +72,8 @@ window.I18N_DICT = {
     "en": "News"
   },
   "nav.herramientas": {
-    "es": "Herramientas de análisis",
-    "en": "Analysis tools"
+    "es": "Sistemas del Observatorio",
+    "en": "Observatory systems"
   },
   "nav.publicaciones": {
     "es": "Biblioteca de IA",
@@ -132,8 +132,8 @@ window.I18N_DICT = {
     "en": "News"
   },
   "hero.cta.herramientas": {
-    "es": "Herramientas de análisis",
-    "en": "Analysis tools"
+    "es": "Sistemas del Observatorio",
+    "en": "Observatory systems"
   },
   "hero.cta.publicaciones": {
     "es": "Biblioteca de IA",
@@ -396,16 +396,16 @@ window.I18N_DICT = {
     "en": "Surveys"
   },
   "sec.actividades.encuestas.body": {
-    "es": "Diseño y aplicación de instrumentos para alumnos, docentes y otros actores de la comunidad universitaria. Ver encuestas e informes y análisis con herramientas de análisis.",
-    "en": "Design and administration of instruments for students, faculty, and other members of the university community. See surveys & reports and analysis with analysis tools."
+    "es": "Diseño y aplicación de instrumentos para alumnos, docentes y otros actores de la comunidad universitaria. Ver encuestas e informes y sistemas del Observatorio.",
+    "en": "Design and administration of instruments for students, faculty, and other members of the university community. See surveys & reports and Observatory systems."
   },
   "sec.actividades.encuestas.linkEncuestas": {
     "es": "encuestas e informes",
     "en": "surveys & reports"
   },
   "sec.actividades.encuestas.linkHerramientas": {
-    "es": "herramientas de análisis",
-    "en": "analysis tools"
+    "es": "sistemas del Observatorio",
+    "en": "Observatory systems"
   },
   "sec.actividades.formacion.title": {
     "es": "Formación",
@@ -636,16 +636,44 @@ window.I18N_DICT = {
     "en": "Searching news, bulletins, and media mentions…"
   },
   "sec.herramientas.kicker": {
-    "es": "Productos",
-    "en": "Products"
+    "es": "Desarrollos propios",
+    "en": "In-house developments"
   },
   "sec.herramientas.title": {
-    "es": "Herramientas de análisis",
-    "en": "Analysis tools"
+    "es": "Sistemas del Observatorio",
+    "en": "Observatory systems"
   },
   "sec.herramientas.intro": {
-    "es": "Plataformas en línea que el Observatorio pone a disposición de la comunidad para el análisis de datos de encuestas institucionales, de la Encuesta Permanente de Hogares (INDEC), estudios sobre IA en educación, evaluación presencial híbrida y la pre-auditoría de tesis. Se amplían a medida que se incorporen nuevas herramientas.",
-    "en": "Online platforms the Observatory makes available to the community for analyzing institutional survey data, Permanent Household Survey (INDEC) data, studies on AI in education, hybrid in-person assessment, and thesis pre-audit. The set grows as new tools are added."
+    "es": "Sistemas y plataformas desarrollados por el Observatorio de Inteligencia Artificial de la UCCuyo para la comunidad universitaria e instituciones vinculadas: encuestas, datos, evaluación, auditoría académica, planificación estratégica y más. Se amplían a medida que se incorporan nuevos desarrollos.",
+    "en": "Systems and platforms developed by the UCCuyo Artificial Intelligence Observatory for the university community and partner institutions: surveys, data, assessment, academic audit, strategic planning, and more. The catalog grows as new developments are added."
+  },
+  "sec.herramientas.rumbo.title": {
+    "es": "Rumbo Deporte",
+    "en": "Rumbo Deporte"
+  },
+  "sec.herramientas.rumbo.lead": {
+    "es": "Plan Estratégico Institucional (PEI) + actividades + tablero de monitoreo para clubes, federaciones y asociaciones, alineado a la metodología COI.",
+    "en": "Institutional Strategic Plan (PEI) + activities + monitoring dashboard for clubs, federations, and associations, aligned with IOC methodology."
+  },
+  "sec.herramientas.rumbo.item1": {
+    "es": "FODA, visión, prioridades, plan de acción y KPI",
+    "en": "SWOT, vision, priorities, action plan, and KPIs"
+  },
+  "sec.herramientas.rumbo.item2": {
+    "es": "Actividades de ejecución y tablero meta vs. avance",
+    "en": "Execution activities and target vs. progress dashboard"
+  },
+  "sec.herramientas.rumbo.item3": {
+    "es": "Exportación Word / Markdown y respaldo JSON",
+    "en": "Word / Markdown export and JSON backup"
+  },
+  "sec.herramientas.rumbo.videoCaption": {
+    "es": "Demo 30 segundos · principales pantallas del sistema",
+    "en": "30-second demo · main system screens"
+  },
+  "sec.herramientas.rumbo.contactPrefix": {
+    "es": "Para más información o asesoramiento, comunicarse con",
+    "en": "For more information or advice, contact"
   },
   "sec.herramientas.badge.disponible": {
     "es": "Disponible",
@@ -992,8 +1020,8 @@ window.I18N_DICT = {
     "en": "Image Gallery"
   },
   "footer.herramientas": {
-    "es": "Herramientas de análisis",
-    "en": "Analysis tools"
+    "es": "Sistemas del Observatorio",
+    "en": "Observatory systems"
   },
   "footer.secretaria": {
     "es": "Secretaría de Investigación",
