@@ -29,7 +29,7 @@ window.OBS_PUBLICACIONES = {
       fecha: "2026-08-13",
       resumen:
         "Inscripción gratuita. Flayer con formulario de inscripción y enlace de Meet.",
-      link: "assets/flayer-webinar-evaluar-13agosto-2026.pdf",
+      link: "assets/flayer-webinar-evaluar-13agosto-2026.pdf?v=2",
       estado: "publicado"
     }
   ]
