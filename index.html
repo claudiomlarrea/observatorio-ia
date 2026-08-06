@@ -19,7 +19,7 @@
       gtag("config", "G-C55ZPTW8C2");
     </script>
     <link rel="icon" type="image/png" href="assets/logo-observatorio-ia.png" />
-    <link rel="stylesheet" href="css/styles.css?v=39" />
+    <link rel="stylesheet" href="css/styles.css?v=40" />
   </head>
   <body>
     <a class="skip-link" href="#contenido" data-i18n="a11y.skipLink">Ir al contenido</a>
@@ -923,12 +923,12 @@
                 <li data-i18n="sec.herramientas.rumbo.item3">Exportación Word / Markdown y respaldo JSON</li>
               </ul>
               <div class="tool-card-media">
-                <a
+                <div
                   class="tool-card-video-link"
-                  href="assets/rumbo-deporte-demo-30s.mp4"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Abrir demo de Rumbo Deporte en una pestaña nueva"
+                  role="button"
+                  tabindex="0"
+                  data-video-open="assets/rumbo-deporte-demo-30s.mp4"
+                  aria-label="Abrir demo de Rumbo Deporte en una pestaña nueva con doble clic"
                   data-i18n-attr="aria-label:sec.herramientas.rumbo.videoOpenAria"
                 >
                   <video
@@ -944,9 +944,12 @@
                   <span class="tool-card-video-open" data-i18n="sec.herramientas.rumbo.btnVideo"
                     >Ver demo en pestaña nueva</span
                   >
-                </a>
+                </div>
                 <p class="tool-card-video-caption" data-i18n="sec.herramientas.rumbo.videoCaption">
-                  Demo 30 segundos · principales pantallas del sistema · clic para abrir
+                  Demo 30 segundos · principales pantallas del sistema
+                </p>
+                <p class="tool-card-video-hint" data-i18n="sec.herramientas.rumbo.videoHint">
+                  Hacer doble clic en el video
                 </p>
               </div>
               <p class="tool-card-contact">
@@ -1233,8 +1236,9 @@
       </div>
     </footer>
 
-    <script src="js/i18n-dict.js?v=6"></script>
+    <script src="js/i18n-dict.js?v=7"></script>
     <script src="js/i18n.js?v=2"></script>
+    <script src="js/video-open.js?v=1" defer></script>
     <script src="js/encuestas-config.js?v=5" defer></script>
     <script src="js/encuestas.js?v=5" defer></script>
     <script src="js/galeria-config.js?v=2" defer></script>
