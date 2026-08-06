@@ -671,6 +671,10 @@ window.I18N_DICT = {
     "es": "Demo 30 segundos · principales pantallas del sistema",
     "en": "30-second demo · main system screens"
   },
+  "sec.herramientas.rumbo.btnAbrir": {
+    "es": "Abrir Rumbo Deporte",
+    "en": "Open Rumbo Deporte"
+  },
   "sec.herramientas.rumbo.contactPrefix": {
     "es": "Para más información o asesoramiento, comunicarse con",
     "en": "For more information or advice, contact"
