@@ -647,6 +647,10 @@ window.I18N_DICT = {
     "es": "Sistemas y plataformas desarrollados por el Observatorio de Inteligencia Artificial de la UCCuyo para la comunidad universitaria e instituciones vinculadas: encuestas, datos, evaluación, auditoría académica, planificación estratégica y más. Se amplían a medida que se incorporan nuevos desarrollos.",
     "en": "Systems and platforms developed by the UCCuyo Artificial Intelligence Observatory for the university community and partner institutions: surveys, data, assessment, academic audit, strategic planning, and more. The catalog grows as new developments are added."
   },
+  "sec.herramientas.rumbo.badge": {
+    "es": "Demo · consulta",
+    "en": "Demo · inquiry"
+  },
   "sec.herramientas.rumbo.title": {
     "es": "Rumbo Deporte",
     "en": "Rumbo Deporte"
