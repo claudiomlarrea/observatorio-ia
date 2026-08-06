@@ -756,12 +756,16 @@ window.I18N_DICT = {
     "en": "Word / Markdown export and JSON backup"
   },
   "sec.herramientas.rumbo.videoCaption": {
-    "es": "Demo 30 segundos · principales pantallas del sistema",
-    "en": "30-second demo · main system screens"
+    "es": "Demo 30 segundos · principales pantallas del sistema · clic para abrir",
+    "en": "30-second demo · main system screens · click to open"
   },
   "sec.herramientas.rumbo.btnVideo": {
     "es": "Ver demo en pestaña nueva",
     "en": "Open demo in a new tab"
+  },
+  "sec.herramientas.rumbo.videoOpenAria": {
+    "es": "Abrir demo de Rumbo Deporte en una pestaña nueva",
+    "en": "Open Rumbo Deporte demo in a new tab"
   },
   "sec.herramientas.rumbo.btnAbrir": {
     "es": "Abrir Rumbo Deporte",

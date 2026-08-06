@@ -1317,6 +1317,26 @@ header.section-head--bar h2 {
   margin: 0.55rem 0 0.25rem;
 }
 
+.tool-card-video-link {
+  position: relative;
+  display: block;
+  border-radius: calc(var(--radius) - 2px);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  outline-offset: 3px;
+}
+
+.tool-card-video-link:hover .tool-card-video,
+.tool-card-video-link:focus-visible .tool-card-video {
+  filter: brightness(0.82);
+}
+
+.tool-card-video-link:hover .tool-card-video-open,
+.tool-card-video-link:focus-visible .tool-card-video-open {
+  background: rgba(6, 74, 56, 0.95);
+}
+
 .tool-card-video {
   display: block;
   width: 100%;
@@ -1324,6 +1344,30 @@ header.section-head--bar h2 {
   background: #0b2f22;
   aspect-ratio: 16 / 9;
   object-fit: cover;
+  pointer-events: none;
+}
+
+.tool-card-video-open {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 12rem;
+  max-width: calc(100% - 1.5rem);
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  background: rgba(6, 74, 56, 0.88);
+  color: #fff;
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.25;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  pointer-events: none;
 }
 
 .tool-card-video-caption {
@@ -1331,10 +1375,6 @@ header.section-head--bar h2 {
   font-size: 0.78rem;
   line-height: 1.3;
   color: var(--color-muted, #5a6b64);
-}
-
-.tool-card-media .tile-actions {
-  margin-top: 0.55rem;
 }
 
 .tool-card-contact {
