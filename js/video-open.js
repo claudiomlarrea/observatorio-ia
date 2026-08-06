@@ -12,17 +12,10 @@
       e.preventDefault();
       openVideo(url);
     });
-
-    el.addEventListener("keydown", function (e) {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        openVideo(url);
-      }
-    });
   }
 
   function init() {
-    document.querySelectorAll("[data-video-open]").forEach(bind);
+    document.querySelectorAll("video[data-video-open]").forEach(bind);
   }
 
   if (document.readyState === "loading") {

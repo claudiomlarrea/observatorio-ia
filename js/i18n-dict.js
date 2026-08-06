@@ -764,8 +764,8 @@ window.I18N_DICT = {
     "en": "Double-click the video"
   },
   "sec.herramientas.rumbo.btnVideo": {
-    "es": "Ver demo en pestaña nueva",
-    "en": "Open demo in a new tab"
+    "es": "Abrir video en pestaña nueva",
+    "en": "Open video in a new tab"
   },
   "sec.herramientas.rumbo.videoOpenAria": {
     "es": "Abrir demo de Rumbo Deporte en una pestaña nueva con doble clic",
