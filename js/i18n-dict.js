@@ -759,6 +759,10 @@ window.I18N_DICT = {
     "es": "Demo 30 segundos · principales pantallas del sistema",
     "en": "30-second demo · main system screens"
   },
+  "sec.herramientas.rumbo.btnVideo": {
+    "es": "Ver demo en pestaña nueva",
+    "en": "Open demo in a new tab"
+  },
   "sec.herramientas.rumbo.btnAbrir": {
     "es": "Abrir Rumbo Deporte",
     "en": "Open Rumbo Deporte"

@@ -1333,6 +1333,10 @@ header.section-head--bar h2 {
   color: var(--color-muted, #5a6b64);
 }
 
+.tool-card-media .tile-actions {
+  margin-top: 0.55rem;
+}
+
 .tool-card-contact {
   margin: 0.55rem 0 0;
   font-size: 0.86rem;
