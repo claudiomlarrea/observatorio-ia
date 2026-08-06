@@ -98,6 +98,13 @@
     dibujarIngresoEquipo();
 
     if (!url) {
+      items = localItems();
+      if (items.length) {
+        var cwLocal = el("pub-count-wrap");
+        if (cwLocal) cwLocal.hidden = false;
+        renderTodo();
+        return;
+      }
       status.innerHTML =
         "<div class=\"pub-msg pub-msg--hint\">Las publicaciones se mostrarán aquí cuando conectés la aplicación web (Google Apps Script). " +
         "Pasos en el archivo <strong>INSTRUCCIONES.txt</strong>.</div>";
@@ -114,7 +121,7 @@
     fetchJson(urlLive).then(
       function (data) {
         if (!data || !data.ok || !Array.isArray(data.items)) throw new Error("format");
-        items = data.items;
+        items = mergeLocal(data.items);
         var cw = el("pub-count-wrap");
         if (cw) cw.hidden = false;
         renderTodo();
@@ -126,12 +133,19 @@
               throw new Error(data.message || data.error || "backend");
             }
             if (!data || !data.ok || !Array.isArray(data.items)) throw new Error("format");
-            items = data.items;
+            items = mergeLocal(data.items);
             var cw2 = el("pub-count-wrap");
             if (cw2) cw2.hidden = false;
             renderTodo();
           },
           function () {
+            items = localItems();
+            if (items.length) {
+              var cw3 = el("pub-count-wrap");
+              if (cw3) cw3.hidden = false;
+              renderTodo();
+              return;
+            }
             status.innerHTML =
               "<div class=\"pub-msg pub-msg--error\">No se pudo conectar al servicio de publicaciones. " +
               "Si acabás de republicar Apps Script, usá <strong>Administrar implementaciones → lápiz → Nueva versión</strong> " +
@@ -141,6 +155,34 @@
         );
       }
     );
+  }
+
+  function localItems() {
+    var list = CFG.LOCAL_ITEMS;
+    return Array.isArray(list) ? list.slice() : [];
+  }
+
+  function mergeLocal(remote) {
+    var local = localItems();
+    if (!local.length) return remote.slice();
+    var seen = {};
+    var out = [];
+    function keyOf(it) {
+      return String((it && it.titulo) || "")
+        .toLowerCase()
+        .trim();
+    }
+    local.forEach(function (it) {
+      var k = keyOf(it);
+      if (k) seen[k] = true;
+      out.push(it);
+    });
+    remote.forEach(function (it) {
+      var k = keyOf(it);
+      if (k && seen[k]) return;
+      out.push(it);
+    });
+    return out;
   }
 
   function renderTodo() {
@@ -237,6 +279,8 @@
     if (/^https?:\/\//i.test(u)) return u;
     if (/^doi:/i.test(u)) return doiToUrl(u);
     if (/^10\.\d+/i.test(u)) return doiToUrl(u);
+    // Rutas relativas del sitio (p. ej. assets/flayer-....pdf)
+    if (/^[./a-z0-9_-]/i.test(u) && u.indexOf("://") < 0) return u;
     return "#";
   }
 
@@ -254,7 +298,9 @@
     var href = "";
     if (it.link) href = safeHref(it.link);
     else if (it.doi) href = doiToUrl(it.doi);
-    var label = /doi\.org/i.test(href) ? "Ver DOI" : "Abrir enlace";
+    var label = "Abrir enlace";
+    if (/doi\.org/i.test(href)) label = "Ver DOI";
+    else if (/\.pdf(\?|#|$)/i.test(href)) label = "Ver flayer (PDF)";
     return { href: href, label: label };
   }
 

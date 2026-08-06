@@ -412,8 +412,8 @@ window.I18N_DICT = {
     "en": "Time"
   },
   "sec.webinar.facts.horario.value": {
-    "es": "19:00 hs",
-    "en": "7:00 p.m."
+    "es": "19:00 – 20:00 hs",
+    "en": "7:00 – 8:00 p.m."
   },
   "sec.webinar.facts.modalidad.label": {
     "es": "Modalidad",

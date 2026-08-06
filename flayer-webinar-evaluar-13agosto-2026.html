@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Webinar EvaluAR — jueves 13 de agosto, 19:00 hs. Observatorio de Inteligencia Artificial, UCCuyo."
+      content="Webinar EvaluAR — jueves 13 de agosto, 19:00–20:00 hs. Observatorio de Inteligencia Artificial, UCCuyo."
     />
     <meta property="og:title" content="Webinar EvaluAR · Observatorio de IA" />
     <meta
       property="og:description"
-      content="Primer webinar del Observatorio. Jueves 13 de agosto · 19:00 hs. Inscripción gratuita."
+      content="Primer webinar del Observatorio. Jueves 13 de agosto · 19:00–20:00 hs. Inscripción gratuita."
     />
     <meta
       property="og:image"
@@ -57,7 +57,7 @@
 
       .flyer {
         display: block;
-        width: min(28rem, 100%, calc((100vh - 6rem) * 2 / 3));
+        width: min(28rem, 100%, calc((100vh - 8rem) * 2 / 3));
         aspect-ratio: 2 / 3;
         border-radius: 1rem;
         overflow: hidden;
@@ -91,6 +91,11 @@
         box-shadow: 0 8px 24px rgba(74, 12, 31, 0.45);
       }
 
+      .cta.meet {
+        background: linear-gradient(135deg, var(--verde) 0%, #043528 100%);
+        box-shadow: 0 8px 24px rgba(6, 74, 56, 0.45);
+      }
+
       .cta:hover {
         filter: brightness(1.08);
       }
@@ -113,26 +118,35 @@
       <div class="stack">
         <a
           class="flyer"
-          href="https://claudiomlarrea.github.io/observatorio-ia/#webinars"
-          aria-label="Ir a la pestaña Webinars del Observatorio"
+          href="assets/flayer-webinar-evaluar-13agosto-2026.pdf"
+          aria-label="Abrir flayer PDF del webinar EvaluAR"
         >
           <img
             src="assets/flayer-webinar-evaluar-13agosto-2026.png"
             width="480"
             height="752"
-            alt="Flayer Webinar EvaluAR — jueves 13 de agosto, 19:00 hs"
+            alt="Flayer Webinar EvaluAR — jueves 13 de agosto, 19:00–20:00 hs"
           />
         </a>
         <a
           class="cta"
-          href="https://claudiomlarrea.github.io/observatorio-ia/#webinars"
+          href="https://docs.google.com/forms/d/1QgjOQ5TwAEa2Mmj2O6iVO-_gfErVmj6bx5UyUPSxokY/edit"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          Inscribirme en el Observatorio
+          Inscribirme al webinar
+        </a>
+        <a
+          class="cta meet"
+          href="https://meet.google.com/rzu-voaf-yjh"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Unirme al Meet
         </a>
         <p class="hint">
-          Te lleva a la pestaña
-          <a href="https://claudiomlarrea.github.io/observatorio-ia/#webinars">Webinars</a>
-          para completar la inscripción.
+          Jueves 13 de agosto · 19:00–20:00 ·
+          <a href="assets/flayer-webinar-evaluar-13agosto-2026.pdf">Descargar PDF</a>
         </p>
       </div>
     </div>
