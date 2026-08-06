@@ -47,9 +47,9 @@ window.I18N_DICT = {
     "es": "Jornadas de IA",
     "en": "AI Conference"
   },
-  "nav.webinar": {
-    "es": "Webinar",
-    "en": "Webinar"
+  "nav.webinars": {
+    "es": "Webinars",
+    "en": "Webinars"
   },
   "nav.galeria": {
     "es": "Galería de Imágenes",
@@ -111,9 +111,9 @@ window.I18N_DICT = {
     "es": "Jornadas de IA",
     "en": "AI Conference"
   },
-  "hero.cta.webinar": {
-    "es": "Webinar",
-    "en": "Webinar"
+  "hero.cta.webinars": {
+    "es": "Webinars",
+    "en": "Webinars"
   },
   "hero.cta.galeria": {
     "es": "Galería de Imágenes",
@@ -375,9 +375,9 @@ window.I18N_DICT = {
     "es": "Ciclo 2026",
     "en": "2026 series"
   },
-  "sec.webinar.title": {
-    "es": "Webinar",
-    "en": "Webinar"
+  "sec.webinars.title": {
+    "es": "Webinars",
+    "en": "Webinars"
   },
   "sec.webinar.intro": {
     "es": "Primer webinar del Observatorio de Inteligencia Artificial. Presentamos <strong>EvaluAR</strong>, la herramienta para parciales presenciales con corrección digital.",
@@ -1087,9 +1087,9 @@ window.I18N_DICT = {
     "es": "Jornadas de IA",
     "en": "AI Conference"
   },
-  "footer.webinar": {
-    "es": "Webinar",
-    "en": "Webinar"
+  "footer.webinars": {
+    "es": "Webinars",
+    "en": "Webinars"
   },
   "footer.acompanamiento": {
     "es": "Acompañamiento",

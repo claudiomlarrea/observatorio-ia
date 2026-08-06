@@ -1,8 +1,8 @@
 name: Deploy static site to Pages
 
+# Pages publishes from branch `main` (legacy). Keep this workflow
+# manual-only so it does not fight the branch deploy.
 on:
-  push:
-    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -16,6 +16,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
