@@ -439,6 +439,14 @@ window.I18N_DICT = {
     "es": "Inscribirme al webinar",
     "en": "Register for the webinar"
   },
+  "sec.webinar.ctaMeet": {
+    "es": "Ingresar al webinar",
+    "en": "Join the webinar"
+  },
+  "sec.webinar.meetHint": {
+    "es": "Google Meet · jueves 13 de agosto · 19:00 – 20:00 (Argentina)",
+    "en": "Google Meet · Thursday, August 13 · 7:00 – 8:00 p.m. (Argentina)"
+  },
   "sec.galeria.kicker": {
     "es": "Archivo visual",
     "en": "Visual archive"
