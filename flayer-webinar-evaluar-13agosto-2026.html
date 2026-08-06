@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Webinar EvaluAR — jueves 13 de agosto, 19:00 hs. Observatorio de Inteligencia Artificial, UCCuyo."
+    />
+    <meta property="og:title" content="Webinar EvaluAR · Observatorio de IA" />
+    <meta
+      property="og:description"
+      content="Primer webinar del Observatorio. Jueves 13 de agosto · 19:00 hs. Inscripción gratuita."
+    />
+    <meta
+      property="og:image"
+      content="https://claudiomlarrea.github.io/observatorio-ia/assets/flayer-webinar-evaluar-13agosto-2026.png"
+    />
+    <title>Webinar EvaluAR | Observatorio de IA</title>
+    <link rel="icon" type="image/png" href="assets/logo-observatorio-ia.png" />
+    <style>
+      :root {
+        --verde: #064a38;
+        --rojo: #7a1532;
+        --rojo-oscuro: #4a0c1f;
+        --blanco: #ffffff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: #1a0a10;
+        font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      }
+
+      .page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+
+      .stack {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.85rem;
+        max-width: 28rem;
+        width: 100%;
+      }
+
+      .flyer {
+        display: block;
+        width: min(28rem, 100%, calc((100vh - 6rem) * 2 / 3));
+        aspect-ratio: 2 / 3;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+        background: var(--rojo-oscuro);
+        text-decoration: none;
+      }
+
+      .flyer img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: fill;
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: min(28rem, 100%);
+        padding: 0.9rem 1.25rem;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--rojo) 0%, var(--rojo-oscuro) 100%);
+        color: var(--blanco);
+        font-weight: 700;
+        font-size: 1.05rem;
+        text-decoration: none;
+        text-align: center;
+        box-shadow: 0 8px 24px rgba(74, 12, 31, 0.45);
+      }
+
+      .cta:hover {
+        filter: brightness(1.08);
+      }
+
+      .hint {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 0.9rem;
+        text-align: center;
+      }
+
+      .hint a {
+        color: #f4b400;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="stack">
+        <a
+          class="flyer"
+          href="https://claudiomlarrea.github.io/observatorio-ia/#webinar"
+          aria-label="Ir a la pestaña Webinar del Observatorio"
+        >
+          <img
+            src="assets/flayer-webinar-evaluar-13agosto-2026.png"
+            width="480"
+            height="752"
+            alt="Flayer Webinar EvaluAR — jueves 13 de agosto, 19:00 hs"
+          />
+        </a>
+        <a
+          class="cta"
+          href="https://claudiomlarrea.github.io/observatorio-ia/#webinar"
+        >
+          Inscribirme en el Observatorio
+        </a>
+        <p class="hint">
+          Te lleva a la pestaña
+          <a href="https://claudiomlarrea.github.io/observatorio-ia/#webinar">Webinar</a>
+          para completar la inscripción.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

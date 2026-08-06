@@ -47,6 +47,10 @@ window.I18N_DICT = {
     "es": "Jornadas de IA",
     "en": "AI Conference"
   },
+  "nav.webinar": {
+    "es": "Webinar",
+    "en": "Webinar"
+  },
   "nav.galeria": {
     "es": "Galería de Imágenes",
     "en": "Image Gallery"
@@ -106,6 +110,10 @@ window.I18N_DICT = {
   "hero.cta.jornadas": {
     "es": "Jornadas de IA",
     "en": "AI Conference"
+  },
+  "hero.cta.webinar": {
+    "es": "Webinar",
+    "en": "Webinar"
   },
   "hero.cta.galeria": {
     "es": "Galería de Imágenes",
@@ -362,6 +370,74 @@ window.I18N_DICT = {
   "sec.jornadas.contact.flayer": {
     "es": "Flayer PDF (descargar)",
     "en": "Flyer PDF (download, Spanish)"
+  },
+  "sec.webinar.kicker": {
+    "es": "Ciclo 2026",
+    "en": "2026 series"
+  },
+  "sec.webinar.title": {
+    "es": "Webinar",
+    "en": "Webinar"
+  },
+  "sec.webinar.intro": {
+    "es": "Primer webinar del Observatorio de Inteligencia Artificial. Presentamos <strong>EvaluAR</strong>, la herramienta para parciales presenciales con corrección digital.",
+    "en": "First webinar of the Artificial Intelligence Observatory. We present <strong>EvaluAR</strong>, the tool for in-person exams with digital grading."
+  },
+  "sec.webinar.download": {
+    "es": "Descargar flayer (PDF)",
+    "en": "Download flyer (PDF)"
+  },
+  "sec.webinar.badge": {
+    "es": "Primer webinar del Observatorio",
+    "en": "First Observatory webinar"
+  },
+  "sec.webinar.eventTitle": {
+    "es": "EvaluAR",
+    "en": "EvaluAR"
+  },
+  "sec.webinar.tagline": {
+    "es": "Examen en papel · Corrección digital",
+    "en": "Paper exam · Digital grading"
+  },
+  "sec.webinar.facts.fecha.label": {
+    "es": "Fecha",
+    "en": "Date"
+  },
+  "sec.webinar.facts.fecha.value": {
+    "es": "Jueves 13 de agosto de 2026",
+    "en": "Thursday, August 13, 2026"
+  },
+  "sec.webinar.facts.horario.label": {
+    "es": "Horario",
+    "en": "Time"
+  },
+  "sec.webinar.facts.horario.value": {
+    "es": "19:00 hs",
+    "en": "7:00 p.m."
+  },
+  "sec.webinar.facts.modalidad.label": {
+    "es": "Modalidad",
+    "en": "Format"
+  },
+  "sec.webinar.facts.modalidad.value": {
+    "es": "Virtual (Google Meet)",
+    "en": "Online (Google Meet)"
+  },
+  "sec.webinar.facts.disertante.label": {
+    "es": "Disertante",
+    "en": "Speaker"
+  },
+  "sec.webinar.facts.disertante.value": {
+    "es": "Dr. Claudio Larrea · Director del Observatorio de IA",
+    "en": "Dr. Claudio Larrea · Director of the AI Observatory"
+  },
+  "sec.webinar.about": {
+    "es": "Dirigido a docentes, investigadores y demás interesados. Inscripción gratuita.",
+    "en": "For faculty, researchers, and anyone interested. Free registration."
+  },
+  "sec.webinar.cta": {
+    "es": "Inscribirme al webinar",
+    "en": "Register for the webinar"
   },
   "sec.galeria.kicker": {
     "es": "Archivo visual",
@@ -1010,6 +1086,10 @@ window.I18N_DICT = {
   "footer.jornadas": {
     "es": "Jornadas de IA",
     "en": "AI Conference"
+  },
+  "footer.webinar": {
+    "es": "Webinar",
+    "en": "Webinar"
   },
   "footer.acompanamiento": {
     "es": "Acompañamiento",
