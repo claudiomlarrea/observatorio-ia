@@ -777,46 +777,179 @@ header.section-head--bar h2 {
   color: var(--color-text-soft);
 }
 
-/* —— Convocatoria —— */
-.cronograma {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.95rem;
-  margin: 0 0 1.5rem;
-  background: #fff;
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: 0 1px 0 rgba(var(--rgb-inst), 0.04);
+/* —— Convocatoria (mismo patrón que Jornadas IA) —— */
+.section--convocatoria .text-intro {
+  max-width: 42rem;
 }
 
-.cronograma th,
-.cronograma td {
-  padding: 0.7rem 0.9rem;
-  text-align: left;
-  border-bottom: 1px solid rgba(var(--rgb-inst), 0.1);
-  vertical-align: top;
+.conv-facts {
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
 }
 
-.cronograma th {
-  background: var(--color-water-dark);
-  color: #fff;
-  font-weight: 700;
-}
-
-.cronograma tr:nth-child(even) td {
-  background: rgba(var(--rgb-water), 0.04);
-}
-
-.cronograma td:last-child {
-  font-weight: 600;
-  color: var(--color-water-dark);
-  white-space: nowrap;
-}
-
-@media (max-width: 640px) {
-  .cronograma td:last-child {
-    white-space: normal;
+@media (min-width: 640px) {
+  .conv-facts {
+    grid-template-columns: 1fr 1fr;
   }
+}
+
+@media (min-width: 1000px) {
+  .conv-facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.conv-facts li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.9rem 1.1rem;
+  background: var(--color-muted);
+  border-radius: var(--radius);
+  border-left: 4px solid var(--color-water);
+}
+
+.conv-facts--cronograma {
+  margin-top: 1.5rem;
+}
+
+.conv-facts--cronograma li {
+  border-left-color: var(--color-institutional);
+}
+
+.conv-fact-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-green);
+}
+
+.conv-fact-value {
+  font-size: 1.05rem;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.conv-steps {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 900px) {
+  .conv-steps {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+@media (min-width: 1100px) {
+  .conv-steps {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.conv-step {
+  position: relative;
+  padding-top: 1.75rem;
+}
+
+.conv-step-num {
+  position: absolute;
+  top: -0.65rem;
+  left: 1.25rem;
+  width: 2.15rem;
+  height: 2.15rem;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    #f3d56a 0%,
+    #e8b923 42%,
+    #c9a227 78%,
+    #9a7410 100%
+  );
+  color: var(--color-institutional-dark);
+  font-weight: 800;
+  font-size: 0.95rem;
+  border: 1px solid rgba(255, 236, 170, 0.85);
+  border-bottom-color: rgba(90, 60, 8, 0.45);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -3px 0 rgba(120, 80, 10, 0.28),
+    0 3px 0 rgba(80, 50, 5, 0.35),
+    0 8px 14px rgba(80, 50, 5, 0.28);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.conv-step h3 {
+  margin-top: 0.25rem;
+  color: var(--color-institutional-dark);
+}
+
+.tile-actions {
+  margin-top: 1rem;
+}
+
+.tile-actions--conv {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 0.45rem;
+  align-items: flex-start;
+}
+
+.tile-actions--conv .btn-ghost {
+  background: transparent;
+  color: var(--color-institutional);
+  border: 1.5px solid var(--color-institutional);
+}
+
+.tile-actions--conv .btn-ghost:hover {
+  background: rgba(var(--rgb-inst), 0.08);
+  color: var(--color-institutional-dark);
+}
+
+.conv-name-hint {
+  margin: 0.75rem 0 0;
+  font-size: 0.92rem;
+  color: var(--color-text-soft);
+}
+
+.conv-name-hint code {
+  display: inline-block;
+  margin-top: 0.25rem;
+  padding: 0.2rem 0.45rem;
+  background: rgba(var(--rgb-water), 0.08);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: var(--color-water-dark);
+}
+
+.conv-mini-list {
+  margin: 0.75rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.95rem;
+  color: var(--color-text-soft);
+}
+
+.conv-mini-list li {
+  margin: 0.25rem 0;
+}
+
+.conv-ejes {
+  margin-top: 1.75rem;
+  scroll-margin-top: calc(var(--header-h) + 1.5rem);
+}
+
+.conv-ejes h3 {
+  margin-top: 0;
 }
 
 .check-list {
@@ -826,6 +959,28 @@ header.section-head--bar h2 {
 
 .check-list li {
   margin: 0.35rem 0;
+}
+
+.conv-contact {
+  margin: 2rem 0 0;
+  font-size: 0.95rem;
+  color: var(--color-text-soft);
+}
+
+.conv-contact a {
+  color: var(--color-institutional);
+  font-weight: 600;
+}
+
+/* legacy cronograma/budget kept if referenced elsewhere */
+.cronograma {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  margin: 0 0 1.5rem;
+  background: #fff;
+  border-radius: var(--radius);
+  overflow: hidden;
 }
 
 .budget-callout {
@@ -838,11 +993,6 @@ header.section-head--bar h2 {
     rgba(var(--rgb-inst), 0.06) 100%
   );
   border: 1px solid rgba(var(--rgb-water), 0.25);
-}
-
-.budget-callout strong {
-  color: var(--color-water-dark);
-  font-size: 1.15rem;
 }
 
 .doc-grid {
