@@ -6,8 +6,13 @@
 
   var lightbox = null;
   var lightboxImg = null;
+  var lightboxVideo = null;
   var currentList = [];
   var currentIndex = 0;
+
+  function isVideo(item) {
+    return item && (item.type === "video" || /\.mp4($|\?)/i.test(item.src || ""));
+  }
 
   function ensureLightbox() {
     if (lightbox) return;
@@ -16,14 +21,16 @@
     lightbox.hidden = true;
     lightbox.setAttribute("role", "dialog");
     lightbox.setAttribute("aria-modal", "true");
-    lightbox.setAttribute("aria-label", "Vista ampliada de la foto");
+    lightbox.setAttribute("aria-label", "Vista ampliada");
     lightbox.innerHTML =
       '<button type="button" class="gallery-lightbox-close" aria-label="Cerrar">×</button>' +
-      '<button type="button" class="gallery-lightbox-nav gallery-lightbox-prev" aria-label="Foto anterior">‹</button>' +
+      '<button type="button" class="gallery-lightbox-nav gallery-lightbox-prev" aria-label="Anterior">‹</button>' +
       '<img class="gallery-lightbox-img" alt="" />' +
-      '<button type="button" class="gallery-lightbox-nav gallery-lightbox-next" aria-label="Foto siguiente">›</button>';
+      '<video class="gallery-lightbox-video" controls playsinline></video>' +
+      '<button type="button" class="gallery-lightbox-nav gallery-lightbox-next" aria-label="Siguiente">›</button>';
     document.body.appendChild(lightbox);
     lightboxImg = lightbox.querySelector(".gallery-lightbox-img");
+    lightboxVideo = lightbox.querySelector(".gallery-lightbox-video");
 
     lightbox.querySelector(".gallery-lightbox-close").addEventListener("click", closeLightbox);
     lightbox.querySelector(".gallery-lightbox-prev").addEventListener("click", function (e) {
@@ -45,20 +52,42 @@
     });
   }
 
+  function stopVideo() {
+    if (!lightboxVideo) return;
+    lightboxVideo.pause();
+    lightboxVideo.removeAttribute("src");
+    lightboxVideo.load();
+    lightboxVideo.hidden = true;
+  }
+
   function showAt(index) {
     if (!currentList.length) return;
     currentIndex = (index + currentList.length) % currentList.length;
     ensureLightbox();
-    var photo = currentList[currentIndex];
-    lightboxImg.src = photo.src;
-    lightboxImg.alt = photo.alt || "";
+    var item = currentList[currentIndex];
+    stopVideo();
+    if (isVideo(item)) {
+      lightboxImg.hidden = true;
+      lightboxImg.removeAttribute("src");
+      lightboxVideo.hidden = false;
+      if (item.poster) lightboxVideo.setAttribute("poster", item.poster);
+      else lightboxVideo.removeAttribute("poster");
+      lightboxVideo.src = item.src;
+      lightboxVideo.play().catch(function () {});
+    } else {
+      lightboxImg.hidden = false;
+      lightboxImg.src = item.src;
+      lightboxImg.alt = item.alt || "";
+    }
     lightbox.hidden = false;
     document.body.classList.add("gallery-lightbox-open");
   }
 
   function closeLightbox() {
     if (!lightbox) return;
+    stopVideo();
     lightbox.hidden = true;
+    lightboxImg.hidden = false;
     lightboxImg.removeAttribute("src");
     lightboxImg.alt = "";
     document.body.classList.remove("gallery-lightbox-open");
@@ -69,19 +98,28 @@
     photos.forEach(function (photo, i) {
       var item = document.createElement("button");
       item.type = "button";
-      item.className = "gallery-item";
+      item.className = "gallery-item" + (isVideo(photo) ? " gallery-item--video" : "");
       item.setAttribute("role", "listitem");
       item.setAttribute(
         "aria-label",
-        photo.alt || "Ver foto " + (i + 1) + " de " + photos.length
+        photo.alt ||
+          (isVideo(photo) ? "Ver video " : "Ver foto ") + (i + 1) + " de " + photos.length
       );
 
       var img = document.createElement("img");
-      img.src = photo.src;
+      img.src = isVideo(photo) ? photo.poster || photo.src : photo.src;
       img.alt = photo.alt || "";
       img.loading = "lazy";
       img.decoding = "async";
       item.appendChild(img);
+
+      if (isVideo(photo)) {
+        var badge = document.createElement("span");
+        badge.className = "gallery-video-badge";
+        badge.setAttribute("aria-hidden", "true");
+        badge.textContent = "▶ Video";
+        item.appendChild(badge);
+      }
 
       item.addEventListener("click", function () {
         currentList = photos;
@@ -103,6 +141,11 @@
     var photos = album.photos || [];
     var panelId = "galeria-panel-" + album.id;
     var titleId = "galeria-" + album.id;
+    var videos = photos.filter(isVideo).length;
+    var images = photos.length - videos;
+    var metaParts = [];
+    if (images) metaParts.push(images + (images === 1 ? " imagen" : " imágenes"));
+    if (videos) metaParts.push(videos + (videos === 1 ? " video" : " videos"));
 
     var article = document.createElement("article");
     article.className = "gallery-event" + (openByDefault ? " is-open" : "");
@@ -120,8 +163,7 @@
       "</span>" +
       '<span class="gallery-toggle-chevron" aria-hidden="true"></span>';
     toggle.querySelector(".gallery-toggle-title").textContent = album.title;
-    toggle.querySelector(".gallery-toggle-meta").textContent =
-      photos.length + (photos.length === 1 ? " imagen" : " imágenes");
+    toggle.querySelector(".gallery-toggle-meta").textContent = metaParts.join(" · ");
 
     var panel = document.createElement("div");
     panel.className = "gallery-panel";

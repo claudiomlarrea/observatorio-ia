@@ -1299,6 +1299,40 @@ header.section-head--bar h2 {
   transform: scale(1.04);
 }
 
+.gallery-item--video {
+  cursor: pointer;
+  position: relative;
+}
+
+.gallery-video-badge {
+  position: absolute;
+  left: 0.45rem;
+  bottom: 0.45rem;
+  z-index: 1;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(14, 79, 114, 0.92);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  pointer-events: none;
+}
+
+.gallery-lightbox-video {
+  max-width: min(92vw, 56rem);
+  max-height: 88vh;
+  width: auto;
+  height: auto;
+  border-radius: 6px;
+  background: #000;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+
+.gallery-lightbox-video[hidden] {
+  display: none;
+}
+
 body.gallery-lightbox-open {
   overflow: hidden;
 }
