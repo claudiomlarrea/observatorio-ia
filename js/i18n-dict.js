@@ -76,8 +76,8 @@ window.I18N_DICT = {
     "en": "News"
   },
   "nav.herramientas": {
-    "es": "Sistemas del Observatorio",
-    "en": "Observatory systems"
+    "es": "Caja de herramientas IA",
+    "en": "AI Toolbox"
   },
   "nav.publicaciones": {
     "es": "Biblioteca de IA",
@@ -140,8 +140,8 @@ window.I18N_DICT = {
     "en": "News"
   },
   "hero.cta.herramientas": {
-    "es": "Sistemas del Observatorio",
-    "en": "Observatory systems"
+    "es": "Caja de herramientas IA",
+    "en": "AI Toolbox"
   },
   "hero.cta.publicaciones": {
     "es": "Biblioteca de IA",
@@ -480,16 +480,16 @@ window.I18N_DICT = {
     "en": "Surveys"
   },
   "sec.actividades.encuestas.body": {
-    "es": "Diseño y aplicación de instrumentos para alumnos, docentes y otros actores de la comunidad universitaria. Ver encuestas e informes y sistemas del Observatorio.",
-    "en": "Design and administration of instruments for students, faculty, and other members of the university community. See surveys & reports and Observatory systems."
+    "es": "Diseño y aplicación de instrumentos para alumnos, docentes y otros actores de la comunidad universitaria. Ver encuestas e informes y caja de herramientas IA.",
+    "en": "Design and administration of instruments for students, faculty, and other members of the university community. See surveys & reports and AI Toolbox."
   },
   "sec.actividades.encuestas.linkEncuestas": {
     "es": "encuestas e informes",
     "en": "surveys & reports"
   },
   "sec.actividades.encuestas.linkHerramientas": {
-    "es": "sistemas del Observatorio",
-    "en": "Observatory systems"
+    "es": "caja de herramientas IA",
+    "en": "AI Toolbox"
   },
   "sec.actividades.formacion.title": {
     "es": "Formación",
@@ -724,8 +724,8 @@ window.I18N_DICT = {
     "en": "In-house developments"
   },
   "sec.herramientas.title": {
-    "es": "Sistemas del Observatorio",
-    "en": "Observatory systems"
+    "es": "Caja de herramientas IA",
+    "en": "AI Toolbox"
   },
   "sec.herramientas.intro": {
     "es": "Sistemas y plataformas desarrollados por el Observatorio de Inteligencia Artificial de la UCCuyo para la comunidad universitaria e instituciones vinculadas: encuestas, datos, evaluación, auditoría académica, planificación estratégica y más. Se amplían a medida que se incorporan nuevos desarrollos.",
@@ -1128,8 +1128,8 @@ window.I18N_DICT = {
     "en": "Image Gallery"
   },
   "footer.herramientas": {
-    "es": "Sistemas del Observatorio",
-    "en": "Observatory systems"
+    "es": "Caja de herramientas IA",
+    "en": "AI Toolbox"
   },
   "footer.secretaria": {
     "es": "Secretaría de Investigación",
