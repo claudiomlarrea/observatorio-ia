@@ -1063,8 +1063,8 @@ window.I18N_DICT = {
     "en": "Observatory output"
   },
   "sec.publicaciones.tabs.global": {
-    "es": "Artículos científicos de IA",
-    "en": "AI scientific articles"
+    "es": "Publicaciones de IA en el mundo",
+    "en": "AI publications worldwide"
   },
   "sec.publicaciones.panel.registradas.intro": {
     "es": "Producción visible del equipo: los datos llegan desde la misma hoja donde cargan en Producción Científica. Solo aparecen registros marcados como OIA · Observatorio de Inteligencia Artificial.",
