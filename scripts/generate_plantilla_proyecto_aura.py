@@ -27,7 +27,8 @@ OUT_PLANTILLA = (
     / "instituto-del-agua/documentos/plantillas"
     / "plantilla-proyecto-investigacion-extension-AURA-2026.docx"
 )
-LOGO_SLOGAN = ROOT / "instituto-del-agua/assets/logo-aura-slogan-header.png"
+LOGO_SLOGAN = ROOT / "instituto-del-agua/assets/logo-aura-slogan-word.png"
+LOGO_SLOGAN_FALLBACK = ROOT / "instituto-del-agua/assets/logo-aura-slogan-header.png"
 LOGO_GOTA = ROOT / "instituto-del-agua/assets/logo-aura-gota.png"
 LOGO_UCCUYO = ROOT / "instituto-del-agua/assets/logo-uccuyo.png"
 
@@ -179,13 +180,15 @@ def _add_banner(doc: Document, subtitle: str) -> None:
     logo = (
         LOGO_SLOGAN
         if LOGO_SLOGAN.is_file()
+        else LOGO_SLOGAN_FALLBACK
+        if LOGO_SLOGAN_FALLBACK.is_file()
         else LOGO_GOTA
         if LOGO_GOTA.is_file()
         else LOGO_UCCUYO
     )
     if logo.is_file():
         run = p_logo.add_run()
-        run.add_picture(str(logo), width=Cm(4.6))
+        run.add_picture(str(logo), width=Cm(5.4))
 
     lines = [
         ("UNIVERSIDAD CATÓLICA DE CUYO · Secretaría de Investigación y Extensión", 8, False, MUTED),
