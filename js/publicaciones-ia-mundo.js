@@ -9,6 +9,7 @@
 
   var items = [];
   var metaTotal = 0;
+  var globalIaTotal = 0;
   var currentPage = 1;
   var totalPages = 1;
   var loaded = false;
@@ -223,9 +224,47 @@
   function actualizarContador() {
     var wrap = el("pub-index-count-wrap");
     var totalEl = el("pub-index-total");
-    if (!wrap || !totalEl) return;
-    wrap.hidden = false;
-    totalEl.textContent = formatInt(metaTotal);
+    if (wrap && totalEl) {
+      wrap.hidden = false;
+      totalEl.textContent = formatInt(metaTotal);
+    }
+    if (
+      metaTotal > 0 &&
+      !searchQuery.trim() &&
+      yearFilter === "all" &&
+      window.OBS_NUMEROS_API
+    ) {
+      globalIaTotal = metaTotal;
+      window.OBS_NUMEROS_API.set("publicaciones", globalIaTotal);
+    }
+  }
+
+  function prefetchTotalMundial() {
+    var params = new URLSearchParams();
+    params.set("filter", filtroOpenAlex());
+    params.set("per-page", "1");
+    params.set("page", "1");
+    if (MAILTO) params.set("mailto", MAILTO);
+    fetchOpenAlex("https://api.openalex.org/works?" + params.toString())
+      .then(function (data) {
+        var n = Number(data && data.meta && data.meta.count) || 0;
+        if (n > 0) {
+          globalIaTotal = n;
+          if (!searchQuery.trim() && yearFilter === "all") {
+            metaTotal = n;
+          }
+          if (window.OBS_NUMEROS_API) {
+            window.OBS_NUMEROS_API.set("publicaciones", globalIaTotal);
+          }
+          var wrap = el("pub-index-count-wrap");
+          var totalEl = el("pub-index-total");
+          if (wrap && totalEl && !searchQuery.trim() && yearFilter === "all") {
+            wrap.hidden = false;
+            totalEl.textContent = formatInt(globalIaTotal);
+          }
+        }
+      })
+      .catch(function () {});
   }
 
   function mensajeCarga() {
@@ -647,6 +686,28 @@
     if (tabId === "global-ia" && !loaded && !loading) {
       cargarPagina(1);
     }
+
+    if (tabId === "global-ia") {
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, "", "#publicaciones-global-ia");
+      } else {
+        window.location.hash = "publicaciones-global-ia";
+      }
+    } else if (tabId === "registradas") {
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, "", "#publicaciones");
+      }
+    }
+  }
+
+  function syncHashTab() {
+    if (window.location.hash === "#publicaciones-global-ia") {
+      activarTab("global-ia");
+      var sec = el("publicaciones");
+      if (sec && typeof sec.scrollIntoView === "function") {
+        sec.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
   }
 
   function initTabs() {
@@ -654,6 +715,7 @@
     if (!tablist) return;
 
     initBuscador();
+    prefetchTotalMundial();
 
     tablist.querySelectorAll("[data-pub-tab]").forEach(function (btn) {
       btn.addEventListener("click", function () {
@@ -673,7 +735,8 @@
       });
     });
 
-    if (window.location.hash === "#publicaciones-global-ia") activarTab("global-ia");
+    window.addEventListener("hashchange", syncHashTab);
+    syncHashTab();
   }
 
   if (document.readyState === "loading") {

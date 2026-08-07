@@ -193,9 +193,6 @@
     el("pub-status").innerHTML = "";
     dibujarFiltros();
     dibujarGrilla();
-    if (window.OBS_NUMEROS_API) {
-      window.OBS_NUMEROS_API.set("publicaciones", items.length);
-    }
   }
 
   function dibujarFiltros() {

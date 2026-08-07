@@ -44,9 +44,13 @@
     var html = "";
     (CFG.items || []).forEach(function (it) {
       var val = state[it.id];
+      var shown = fmt(val);
+      var big = shown.replace(/\D/g, "").length >= 7;
       var inner =
-        '<span class="numeros-value">' +
-        fmt(val) +
+        '<span class="numeros-value' +
+        (big ? " numeros-value--lg" : "") +
+        '">' +
+        shown +
         '</span><span class="numeros-label">' +
         labelFor(it) +
         "</span>";
