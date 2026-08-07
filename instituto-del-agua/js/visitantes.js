@@ -22,7 +22,9 @@
     if (!data || !data.ok || data.agua == null || Array.isArray(data.items)) return;
     root.hidden = false;
     root.innerHTML =
-      "Visitas al sitio: <strong>" + fmt(data.agua) + "</strong>";
+      '<a href="#visitas">Visitas al Instituto: <strong>' +
+      fmt(data.agua) +
+      "</strong></a>";
   }
 
   function fetchJson(url) {
