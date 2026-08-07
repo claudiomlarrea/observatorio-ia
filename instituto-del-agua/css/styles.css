@@ -1142,3 +1142,239 @@ header.section-head--bar h2 {
     gap: 0.65rem;
   }
 }
+
+/* —— Galería —— */
+.gallery-events {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.gallery-event {
+  border: 1px solid rgba(var(--rgb-inst), 0.14);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.gallery-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  margin: 0;
+  padding: 1rem 1.15rem;
+  border: 0;
+  background: rgba(var(--rgb-inst), 0.04);
+  color: var(--color-institutional);
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  transition: background 0.15s ease;
+}
+
+.gallery-toggle:hover {
+  background: rgba(var(--rgb-inst), 0.08);
+}
+
+.gallery-toggle:focus-visible {
+  outline: 3px solid var(--color-institutional);
+  outline-offset: -3px;
+}
+
+.gallery-event.is-open .gallery-toggle {
+  background: rgba(var(--rgb-inst), 0.1);
+  border-bottom: 1px solid rgba(var(--rgb-inst), 0.12);
+}
+
+.gallery-toggle-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.gallery-toggle-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--color-institutional);
+}
+
+.gallery-toggle-meta {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-text-soft);
+}
+
+.gallery-toggle-chevron {
+  flex: 0 0 auto;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  background: rgba(var(--rgb-inst), 0.1);
+  position: relative;
+}
+
+.gallery-toggle-chevron::before {
+  content: "";
+  position: absolute;
+  inset: 0.45rem;
+  border-right: 2px solid var(--color-institutional);
+  border-bottom: 2px solid var(--color-institutional);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.2s ease;
+}
+
+.gallery-event.is-open .gallery-toggle-chevron::before {
+  transform: translateY(2px) rotate(225deg);
+}
+
+.gallery-panel {
+  padding: 0.9rem 1rem 1.1rem;
+}
+
+.gallery-panel-desc {
+  margin: 0 0 0.85rem;
+  color: var(--color-text-soft);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.gallery-scroll {
+  max-height: min(28rem, 58vh);
+  overflow: auto;
+  padding-right: 0.15rem;
+  overscroll-behavior: contain;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+@media (min-width: 640px) {
+  .gallery-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+}
+
+@media (min-width: 960px) {
+  .gallery-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.gallery-item {
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--color-muted);
+  cursor: zoom-in;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+}
+
+.gallery-item:focus-visible {
+  outline: 3px solid var(--color-institutional);
+  outline-offset: 2px;
+}
+
+.gallery-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.25s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.04);
+}
+
+body.gallery-lightbox-open {
+  overflow: hidden;
+}
+
+.gallery-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 3.5rem;
+  background: rgba(15, 8, 10, 0.92);
+}
+
+.gallery-lightbox[hidden] {
+  display: none;
+}
+
+.gallery-lightbox-img {
+  max-width: min(92vw, 72rem);
+  max-height: 88vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  user-select: none;
+  pointer-events: none;
+}
+
+.gallery-lightbox-close,
+.gallery-lightbox-nav {
+  position: absolute;
+  border: 0;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.75rem;
+  line-height: 1;
+  border-radius: 999px;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-lightbox-close:hover,
+.gallery-lightbox-nav:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.gallery-lightbox-close {
+  top: 1rem;
+  right: 1rem;
+  font-size: 2rem;
+}
+
+.gallery-lightbox-prev {
+  left: 0.75rem;
+}
+
+.gallery-lightbox-next {
+  right: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .gallery-lightbox {
+    padding: 3.5rem 0.75rem 1.5rem;
+  }
+
+  .gallery-lightbox-nav {
+    display: none;
+  }
+}
+
+/* —— Encuestas e informes —— */
+
