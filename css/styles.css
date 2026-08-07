@@ -384,6 +384,165 @@ a:hover {
   gap: 0.75rem;
 }
 
+.hero-actions .btn-primary {
+  min-width: min(100%, 16rem);
+}
+
+/* —— Observatorio en números —— */
+.section--numeros .text-intro {
+  max-width: 46rem;
+}
+
+.numeros-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+@media (min-width: 720px) {
+  .numeros-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.numeros-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1rem 1.05rem;
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  border: 1px solid rgba(var(--rgb-inst), 0.1);
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 1px 0 rgba(var(--rgb-inst), 0.04);
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+a.numeros-card:hover {
+  border-color: rgba(var(--rgb-inst), 0.35);
+  transform: translateY(-1px);
+}
+
+.numeros-value {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--color-institutional);
+}
+
+.numeros-label {
+  font-size: 0.88rem;
+  line-height: 1.3;
+  color: var(--color-text-soft);
+  font-weight: 600;
+}
+
+.numeros-editorial,
+.pub-editorial {
+  margin: 1.15rem 0 0;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--color-institutional);
+  background: rgba(var(--rgb-inst), 0.05);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-institutional-dark);
+}
+
+/* —— Impacto / Datos (misma familia visual) —— */
+.impacto-grid,
+.datos-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 800px) {
+  .impacto-grid,
+  .datos-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.impacto-card,
+.datos-card {
+  margin: 0;
+  padding: 1.15rem 1.2rem 1.25rem;
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  border: 1px solid rgba(var(--rgb-inst), 0.1);
+  box-shadow: 0 1px 0 rgba(var(--rgb-inst), 0.04);
+}
+
+.impacto-card h3,
+.datos-card h3 {
+  margin: 0.35rem 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--color-institutional-dark);
+}
+
+.impacto-card p,
+.datos-card p {
+  margin: 0 0 0.75rem;
+  color: var(--color-text-soft);
+  line-height: 1.45;
+}
+
+.impacto-card .tile-actions,
+.datos-card .tile-actions {
+  margin: 0.25rem 0 0;
+}
+
+.impacto-card__tag {
+  display: inline-block;
+  margin: 0;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: rgba(var(--rgb-inst), 0.1);
+  color: var(--color-institutional);
+}
+
+.datos-card--soon {
+  border-style: dashed;
+  background: rgba(var(--rgb-inst), 0.03);
+}
+
+.datos-soon {
+  margin: 0;
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-green-dark);
+}
+
+.pub-chip--papers {
+  background: rgba(74, 12, 31, 0.12);
+  color: var(--color-institutional-dark);
+}
+
+.pub-chip--documentos {
+  background: rgba(13, 110, 79, 0.14);
+  color: #064a38;
+}
+
+.pub-chip--protocolos {
+  background: rgba(90, 70, 40, 0.14);
+  color: #5a4628;
+}
+
+.pub-chip--datasets {
+  background: rgba(30, 90, 140, 0.14);
+  color: #1e5a8c;
+}
+
 .hero-mail-row {
   display: flex;
   flex-wrap: wrap;

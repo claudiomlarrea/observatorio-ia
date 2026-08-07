@@ -43,9 +43,13 @@
 
   var filtrosDef = [
     { id: "todas", label: "Ver todas", icono: "✨" },
+    { id: "papers", label: "Papers / artículos", icono: "📄" },
+    { id: "documentos", label: "Documentos de trabajo", icono: "📝" },
     { id: "revistas", label: "Revistas", icono: "📑" },
     { id: "libros", label: "Libros y capítulos", icono: "📚" },
-    { id: "repositorios", label: "Informes", icono: "🗂️" },
+    { id: "repositorios", label: "Informes técnicos", icono: "🗂️" },
+    { id: "protocolos", label: "Protocolos", icono: "📋" },
+    { id: "datasets", label: "Datasets", icono: "📊" },
     { id: "eventos", label: "Reuniones / eventos", icono: "🎓" },
     { id: "diarios", label: "Medios / diarios", icono: "📰" }
   ];
@@ -189,6 +193,9 @@
     el("pub-status").innerHTML = "";
     dibujarFiltros();
     dibujarGrilla();
+    if (window.OBS_NUMEROS_API) {
+      window.OBS_NUMEROS_API.set("publicaciones", items.length);
+    }
   }
 
   function dibujarFiltros() {
@@ -233,13 +240,25 @@
 
   function categoriaItem(it) {
     var c = String((it && it.categoria) || "").toLowerCase().trim();
+    if (c === "papers" || c === "paper" || c === "articulos" || c === "artículos") return "papers";
+    if (c === "documentos" || c === "documento" || c === "dt" || c === "working-paper") return "documentos";
+    if (c === "protocolos" || c === "protocolo") return "protocolos";
+    if (c === "datasets" || c === "dataset" || c === "datos") return "datasets";
     if (c) return c;
 
     var t = String((it && it.tipo_origen) || "").toLowerCase().trim();
     var tp = String((it && it.tipo_publicacion) || "").toLowerCase().trim();
 
+    if (t === "paper" || t === "articulo" || t === "artículo" || tp.indexOf("paper") >= 0 || tp.indexOf("artículo") >= 0 || tp.indexOf("articulo") >= 0) {
+      return "papers";
+    }
+    if (t === "documento" || t === "dt" || tp.indexOf("documento de trabajo") >= 0 || tp.indexOf("working paper") >= 0) {
+      return "documentos";
+    }
+    if (t === "protocolo" || tp.indexOf("protocolo") >= 0) return "protocolos";
+    if (t === "dataset" || tp.indexOf("dataset") >= 0 || tp.indexOf("datos") >= 0) return "datasets";
     if (t === "revista") return "revistas";
-    if (t === "repositorio") return "repositorios";
+    if (t === "repositorio" || t === "informe" || tp.indexOf("informe") >= 0) return "repositorios";
     if (t === "evento") return "eventos";
     if (t === "diario") return "diarios";
     if (t === "libro" || t.indexOf("capitulo") >= 0 || t.indexOf("capítulo") >= 0) return "libros";
@@ -247,6 +266,7 @@
     if (it && it.repositorio) return "repositorios";
     if (it && it.evento) return "eventos";
     if (it && it.revista_o_medio && !(it && it.doi)) return "diarios";
+    if (it && it.doi) return "papers";
     return "otros";
   }
 
@@ -256,9 +276,13 @@
 
   function textoChip(categoria) {
     var m = {
+      papers: "Paper / artículo",
+      documentos: "Documento de trabajo",
       revistas: "Revista",
       libros: "Libro / capítulo",
-      repositorios: "Repositorio",
+      repositorios: "Informe técnico",
+      protocolos: "Protocolo",
+      datasets: "Dataset",
       eventos: "Evento científico",
       diarios: "Medios",
       otros: "Publicación"

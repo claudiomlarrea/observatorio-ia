@@ -19,7 +19,7 @@
       gtag("config", "G-C55ZPTW8C2");
     </script>
     <link rel="icon" type="image/png" href="assets/logo-observatorio-ia.png" />
-    <link rel="stylesheet" href="css/styles.css?v=43" />
+    <link rel="stylesheet" href="css/styles.css?v=44" />
   </head>
   <body>
     <a class="skip-link" href="#contenido" data-i18n="a11y.skipLink">Ir al contenido</a>
@@ -59,17 +59,20 @@
           <ul>
             <li><a href="#inicio" data-i18n="nav.inicio">Inicio</a></li>
             <li><a href="#observatorio" data-i18n="nav.observatorio">El observatorio</a></li>
+            <li><a href="#numeros" data-i18n="nav.numeros">En números</a></li>
+            <li><a href="#herramientas" data-i18n="nav.herramientas">Caja de herramientas IA</a></li>
+            <li><a href="#publicaciones" data-i18n="nav.publicaciones">Biblioteca de IA</a></li>
+            <li><a href="#datos" data-i18n="nav.datos">Datos del Observatorio</a></li>
+            <li><a href="#encuestas" data-i18n="nav.encuestas">Encuestas e informes</a></li>
             <li><a href="#equipo" data-i18n="nav.equipo">Equipo</a></li>
             <li><a href="#jornadas-ia" data-i18n="nav.jornadas">Jornadas de IA</a></li>
             <li><a href="#webinars" data-i18n="nav.webinars">Webinars</a></li>
             <li><a href="#galeria" data-i18n="nav.galeria">Galería de Imágenes</a></li>
             <li><a href="#actividades" data-i18n="nav.actividades">Actividades</a></li>
             <li><a href="#acompanamiento" data-i18n="nav.acompanamiento">Acompañamiento</a></li>
+            <li><a href="#impacto" data-i18n="nav.impacto">Impacto</a></li>
             <li><a href="#visitas" data-i18n="nav.visitas">Visitas al Observatorio</a></li>
-            <li><a href="#encuestas" data-i18n="nav.encuestas">Encuestas e informes</a></li>
             <li><a href="#noticias" data-i18n="nav.noticias">Noticias</a></li>
-            <li><a href="#herramientas" data-i18n="nav.herramientas">Caja de herramientas IA</a></li>
-            <li><a href="#publicaciones" data-i18n="nav.publicaciones">Biblioteca de IA</a></li>
             <li>
               <a
                 href="https://claudiomlarrea.github.io/secretaria-investigacion/#inicio"
@@ -104,24 +107,9 @@
             inteligencia artificial, con enfoque académico, ético y regional.
           </p>
           <div class="hero-actions">
-            <a class="btn btn-ghost" href="#observatorio" data-i18n="hero.cta.observatorio">El observatorio</a>
-            <a class="btn btn-ghost" href="#equipo" data-i18n="hero.cta.equipo">Equipo</a>
-            <a class="btn btn-primary" href="#jornadas-ia" data-i18n="hero.cta.jornadas">Jornadas de IA</a>
-            <a class="btn btn-ghost" href="#webinars" data-i18n="hero.cta.webinars">Webinars</a>
-            <a class="btn btn-ghost" href="#galeria" data-i18n="hero.cta.galeria">Galería de Imágenes</a>
-            <a class="btn btn-ghost" href="#actividades" data-i18n="hero.cta.actividades">Actividades</a>
-            <a class="btn btn-ghost" href="#acompanamiento" data-i18n="hero.cta.acompanamiento">Acompañamiento</a>
-            <a class="btn btn-ghost" href="#visitas" data-i18n="hero.cta.visitas">Visitas al Observatorio</a>
-            <a class="btn btn-ghost" href="#encuestas" data-i18n="hero.cta.encuestas">Encuestas e informes</a>
-            <a class="btn btn-ghost" href="#noticias" data-i18n="hero.cta.noticias">Noticias</a>
-            <a class="btn btn-ghost" href="#herramientas" data-i18n="hero.cta.herramientas">Caja de herramientas IA</a>
+            <a class="btn btn-primary" href="#herramientas" data-i18n="hero.cta.herramientas">Caja de herramientas IA</a>
             <a class="btn btn-ghost" href="#publicaciones" data-i18n="hero.cta.publicaciones">Biblioteca de IA</a>
-            <a
-              class="btn btn-ghost"
-              href="https://claudiomlarrea.github.io/secretaria-investigacion/#inicio"
-              target="_blank"
-              rel="noopener noreferrer"
-               data-i18n="hero.cta.secretaria">Secretaría de Investigación</a>
+            <a class="btn btn-ghost" href="#encuestas" data-i18n="hero.cta.encuestas">Encuestas e informes</a>
             <a class="btn btn-ghost" href="#contacto" data-i18n="hero.cta.contacto">Contacto</a>
           </div>
           <div class="hero-mail-row">
@@ -130,6 +118,23 @@
             </p>
             <p id="visitantes-widget" class="visitantes-widget visitantes-widget--hero" aria-live="polite" hidden></p>
           </div>
+        </div>
+      </section>
+
+      <section class="section section--numeros" id="numeros" aria-labelledby="sec-numeros">
+        <div class="section-inner">
+          <header class="section-head section-head--bar section-head--green">
+            <p class="section-kicker" data-i18n="sec.numeros.kicker">Indicadores</p>
+            <h2 id="sec-numeros" data-i18n="sec.numeros.title">Observatorio en números</h2>
+          </header>
+          <p class="text-intro" data-i18n="sec.numeros.intro">
+            Cifras verificables de producción propia, actividad institucional y alcance.
+            Algunas se actualizan con las visitas y la Biblioteca de IA.
+          </p>
+          <div class="numeros-grid" id="numeros-grid" aria-live="polite"></div>
+          <p class="numeros-editorial" id="numeros-editorial">
+            Ritmo editorial: al menos un producto al mes (informe, indicador, encuesta o herramienta).
+          </p>
         </div>
       </section>
 
@@ -784,6 +789,61 @@
         </div>
       </section>
 
+      <section class="section section--impacto" id="impacto" aria-labelledby="sec-impacto">
+        <div class="section-inner">
+          <header class="section-head section-head--bar section-head--red">
+            <p class="section-kicker" data-i18n="sec.impacto.kicker">Alcance institucional</p>
+            <h2 id="sec-impacto" data-i18n="sec.impacto.title">Impacto</h2>
+          </header>
+          <p class="text-intro" data-i18n="sec.impacto.intro">
+            Presencia en medios, actividades abiertas y líneas de acompañamiento a instituciones.
+          </p>
+          <div class="impacto-grid">
+            <article class="impacto-card">
+              <p class="impacto-card__tag" data-i18n="sec.impacto.card1.tag">Medios</p>
+              <h3 data-i18n="sec.impacto.card1.title">Creación del Observatorio en la prensa</h3>
+              <p data-i18n="sec.impacto.card1.body">
+                Cobertura en Noticias UCCuyo y medios digitales sobre la creación del Observatorio de IA.
+              </p>
+              <p class="tile-actions">
+                <a class="btn btn-ghost" href="#noticias" data-i18n="sec.impacto.card1.cta">Ver noticias</a>
+              </p>
+            </article>
+            <article class="impacto-card">
+              <p class="impacto-card__tag" data-i18n="sec.impacto.card2.tag">Formación</p>
+              <h3 data-i18n="sec.impacto.card2.title">Jornadas y webinars</h3>
+              <p data-i18n="sec.impacto.card2.body">
+                Espacios de capacitación y difusión: Jornadas internas de IA y webinars abiertos (EvaluAR y próximos).
+              </p>
+              <p class="tile-actions">
+                <a class="btn btn-ghost" href="#jornadas-ia" data-i18n="sec.impacto.card2.cta1">Jornadas</a>
+                <a class="btn btn-ghost" href="#webinars" data-i18n="sec.impacto.card2.cta2">Webinars</a>
+              </p>
+            </article>
+            <article class="impacto-card">
+              <p class="impacto-card__tag" data-i18n="sec.impacto.card3.tag">Asesoramiento</p>
+              <h3 data-i18n="sec.impacto.card3.title">Acompañamiento institucional</h3>
+              <p data-i18n="sec.impacto.card3.body">
+                Sitios interactivos, encuestas, planes estratégicos y programas a medida para equipos e instituciones.
+              </p>
+              <p class="tile-actions">
+                <a class="btn btn-ghost" href="#acompanamiento" data-i18n="sec.impacto.card3.cta">Ver acompañamiento</a>
+              </p>
+            </article>
+            <article class="impacto-card">
+              <p class="impacto-card__tag" data-i18n="sec.impacto.card4.tag">Desarrollos</p>
+              <h3 data-i18n="sec.impacto.card4.title">Herramientas propias en uso</h3>
+              <p data-i18n="sec.impacto.card4.body">
+                Encuesta Clara, EPH, SAVT, EvaluAR y Rumbo Deporte: sistemas abiertos a la comunidad universitaria.
+              </p>
+              <p class="tile-actions">
+                <a class="btn btn-primary" href="#herramientas" data-i18n="sec.impacto.card4.cta">Abrir caja de herramientas</a>
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <section class="section section--tools" id="herramientas" aria-labelledby="sec-tools">
         <div class="section-inner">
           <header class="section-head section-head--bar section-head--red">
@@ -971,9 +1031,11 @@
             <h2 id="sec-pub" data-i18n="sec.publicaciones.title">Biblioteca de IA</h2>
           </header>
           <p class="pub-intro" data-i18n="sec.publicaciones.intro">
-            Consultá la producción del Observatorio cargada por el equipo o explorá un
-            índice global con más de 19 millones de artículos científicos sobre
-            inteligencia artificial, disponibles para consultar y descargar.
+            Producción del Observatorio tipificada (papers, documentos de trabajo, informes técnicos,
+            protocolos, datasets, eventos y medios) e índice global OpenAlex con literatura científica sobre IA.
+          </p>
+          <p class="pub-editorial" data-i18n="sec.publicaciones.editorial">
+            Compromiso editorial: al menos un producto al mes — informe, indicador, encuesta o herramienta.
           </p>
           <div class="pub-tabs" role="tablist" aria-label="Vistas de la Biblioteca de IA" data-i18n-attr="aria-label:sec.publicaciones.tabs.ariaLabel">
             <button
@@ -1138,6 +1200,78 @@
         </div>
       </section>
 
+      <section class="section section--datos" id="datos" aria-labelledby="sec-datos">
+        <div class="section-inner">
+          <header class="section-head section-head--bar section-head--green">
+            <p class="section-kicker" data-i18n="sec.datos.kicker">Evidencia</p>
+            <h2 id="sec-datos" data-i18n="sec.datos.title">Datos del Observatorio</h2>
+          </header>
+          <p class="text-intro" data-i18n="sec.datos.intro">
+            Hub de datos ya disponibles: mapa de visitas, encuestas institucionales y herramientas de análisis.
+            Los tableros nacionales ampliados se irán sumando sobre esta base.
+          </p>
+          <div class="datos-grid">
+            <article class="datos-card">
+              <h3 data-i18n="sec.datos.card1.title">Mapa de visitas</h3>
+              <p data-i18n="sec.datos.card1.body">
+                Origen estimado por país y provincia/región, con ranking y foco Argentina.
+              </p>
+              <p class="tile-actions">
+                <a class="btn btn-primary" href="#visitas" data-i18n="sec.datos.card1.cta">Ver mapa</a>
+              </p>
+            </article>
+            <article class="datos-card">
+              <h3 data-i18n="sec.datos.card2.title">Encuestas e informes</h3>
+              <p data-i18n="sec.datos.card2.body">
+                Relevamientos a estudiantes y docentes, con informes ejecutivos e institucionales.
+              </p>
+              <p class="tile-actions">
+                <a class="btn btn-primary" href="#encuestas" data-i18n="sec.datos.card2.cta">Ver encuestas</a>
+              </p>
+            </article>
+            <article class="datos-card">
+              <h3 data-i18n="sec.datos.card3.title">Análisis EPH (INDEC)</h3>
+              <p data-i18n="sec.datos.card3.body">
+                Microdatos de hogares: desigualdad, exclusión digital, modelos predictivos e interpretabilidad.
+              </p>
+              <p class="tile-actions">
+                <a
+                  class="btn btn-primary"
+                  href="https://eph-analyzer.streamlit.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-i18n="sec.datos.card3.cta"
+                  >Abrir EPH</a
+                >
+              </p>
+            </article>
+            <article class="datos-card">
+              <h3 data-i18n="sec.datos.card4.title">Encuesta Clara</h3>
+              <p data-i18n="sec.datos.card4.body">
+                De Excel de formularios a tablas, cruces y análisis cualitativo en español.
+              </p>
+              <p class="tile-actions">
+                <a
+                  class="btn btn-primary"
+                  href="https://cuantitativo-cualitativo-encuesta.streamlit.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-i18n="sec.datos.card4.cta"
+                  >Abrir Encuesta Clara</a
+                >
+              </p>
+            </article>
+            <article class="datos-card datos-card--soon">
+              <h3 data-i18n="sec.datos.card5.title">Indicadores por provincia</h3>
+              <p data-i18n="sec.datos.card5.body">
+                En desarrollo: evolución del uso de IA y tableros provinciales a partir de encuestas y fuentes abiertas.
+              </p>
+              <p class="datos-soon" data-i18n="sec.datos.card5.badge">Próximamente</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <section class="section section--visitas" id="visitas" aria-labelledby="sec-visitas">
         <div class="section-inner">
           <header class="section-head section-head--bar section-head--green">
@@ -1230,6 +1364,10 @@
         <a href="#encuestas" data-i18n="footer.encuestas">Encuestas e informes</a>
         <a href="#galeria" data-i18n="footer.galeria">Galería de Imágenes</a>
         <a href="#herramientas" data-i18n="footer.herramientas">Caja de herramientas IA</a>
+        <a href="#publicaciones" data-i18n="footer.publicaciones">Biblioteca de IA</a>
+        <a href="#datos" data-i18n="footer.datos">Datos del Observatorio</a>
+        <a href="#impacto" data-i18n="footer.impacto">Impacto</a>
+        <a href="#numeros" data-i18n="footer.numeros">En números</a>
         <a
           href="https://claudiomlarrea.github.io/secretaria-investigacion/#inicio"
           target="_blank"
@@ -1239,8 +1377,10 @@
       </div>
     </footer>
 
-    <script src="js/i18n-dict.js?v=8"></script>
+    <script src="js/i18n-dict.js?v=9"></script>
     <script src="js/i18n.js?v=2"></script>
+    <script src="js/observatorio-numeros-config.js?v=1" defer></script>
+    <script src="js/observatorio-numeros.js?v=1" defer></script>
     <script src="js/video-open.js?v=2" defer></script>
     <script src="js/encuestas-config.js?v=5" defer></script>
     <script src="js/encuestas.js?v=5" defer></script>
@@ -1252,9 +1392,9 @@
     <script src="js/noticias-config.js?v=2" defer></script>
     <script src="js/visitantes-config.js?v=2" defer></script>
     <script src="js/visitantes.js?v=3" defer></script>
-    <script src="js/visitas-mapa.js?v=7" defer></script>
+    <script src="js/visitas-mapa.js?v=8" defer></script>
     <script src="js/noticias.js?v=2" defer></script>
-    <script src="js/publicaciones.js?v=12" defer></script>
+    <script src="js/publicaciones.js?v=13" defer></script>
     <script src="js/publicaciones-fuentes-abiertas.js?v=1" defer></script>
     <script src="js/publicaciones-ia-mundo.js?v=3" defer></script>
     <script src="js/main.js?v=2" defer></script>

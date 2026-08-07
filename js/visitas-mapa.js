@@ -531,6 +531,11 @@
           pct(topRegion.count, total) +
           "</em></div>"
         : "");
+
+    if (window.OBS_NUMEROS_API) {
+      window.OBS_NUMEROS_API.set("visitas", total);
+      window.OBS_NUMEROS_API.set("provincias", regions.length);
+    }
   }
 
   function popupHtml(title, count, total) {

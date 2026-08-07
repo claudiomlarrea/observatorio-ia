@@ -83,6 +83,18 @@ window.I18N_DICT = {
     "es": "Biblioteca de IA",
     "en": "AI Library"
   },
+  "nav.numeros": {
+    "es": "En números",
+    "en": "In numbers"
+  },
+  "nav.datos": {
+    "es": "Datos del Observatorio",
+    "en": "Observatory data"
+  },
+  "nav.impacto": {
+    "es": "Impacto",
+    "en": "Impact"
+  },
   "nav.secretaria": {
     "es": "Secretaría de Investigación",
     "en": "Research Secretariat"
@@ -159,6 +171,117 @@ window.I18N_DICT = {
     "es": "observatorioia@uccuyo.edu.ar",
     "en": "observatorioia@uccuyo.edu.ar"
   },
+  "sec.numeros.kicker": {
+    "es": "Indicadores",
+    "en": "Indicators"
+  },
+  "sec.numeros.title": {
+    "es": "Observatorio en números",
+    "en": "Observatory in numbers"
+  },
+  "sec.numeros.intro": {
+    "es": "Cifras verificables de producción propia, actividad institucional y alcance. Algunas se actualizan con las visitas y la Biblioteca de IA.",
+    "en": "Verifiable figures on in-house production, institutional activity, and reach. Some update from visits and the AI Library."
+  },
+  "sec.numeros.editorial": {
+    "es": "Ritmo editorial: al menos un producto al mes (informe, indicador, encuesta o herramienta).",
+    "en": "Editorial cadence: at least one product per month (report, indicator, survey, or tool)."
+  },
+  "sec.impacto.kicker": {
+    "es": "Alcance institucional",
+    "en": "Institutional reach"
+  },
+  "sec.impacto.title": {
+    "es": "Impacto",
+    "en": "Impact"
+  },
+  "sec.impacto.intro": {
+    "es": "Presencia en medios, actividades abiertas y líneas de acompañamiento a instituciones.",
+    "en": "Media presence, open activities, and institutional support lines."
+  },
+  "sec.impacto.card1.tag": { "es": "Medios", "en": "Media" },
+  "sec.impacto.card1.title": {
+    "es": "Creación del Observatorio en la prensa",
+    "en": "Observatory launch in the press"
+  },
+  "sec.impacto.card1.body": {
+    "es": "Cobertura en Noticias UCCuyo y medios digitales sobre la creación del Observatorio de IA.",
+    "en": "Coverage in UCCuyo News and digital media on the creation of the AI Observatory."
+  },
+  "sec.impacto.card1.cta": { "es": "Ver noticias", "en": "See news" },
+  "sec.impacto.card2.tag": { "es": "Formación", "en": "Training" },
+  "sec.impacto.card2.title": {
+    "es": "Jornadas y webinars",
+    "en": "Conference and webinars"
+  },
+  "sec.impacto.card2.body": {
+    "es": "Espacios de capacitación y difusión: Jornadas internas de IA y webinars abiertos (EvaluAR y próximos).",
+    "en": "Training and outreach spaces: internal AI Conference and open webinars (EvaluAR and upcoming)."
+  },
+  "sec.impacto.card2.cta1": { "es": "Jornadas", "en": "Conference" },
+  "sec.impacto.card2.cta2": { "es": "Webinars", "en": "Webinars" },
+  "sec.impacto.card3.tag": { "es": "Asesoramiento", "en": "Advisory" },
+  "sec.impacto.card3.title": {
+    "es": "Acompañamiento institucional",
+    "en": "Institutional support"
+  },
+  "sec.impacto.card3.body": {
+    "es": "Sitios interactivos, encuestas, planes estratégicos y programas a medida para equipos e instituciones.",
+    "en": "Interactive sites, surveys, strategic plans, and tailored programs for teams and institutions."
+  },
+  "sec.impacto.card3.cta": { "es": "Ver acompañamiento", "en": "See support" },
+  "sec.impacto.card4.tag": { "es": "Desarrollos", "en": "Developments" },
+  "sec.impacto.card4.title": {
+    "es": "Herramientas propias en uso",
+    "en": "In-house tools in use"
+  },
+  "sec.impacto.card4.body": {
+    "es": "Encuesta Clara, EPH, SAVT, EvaluAR y Rumbo Deporte: sistemas abiertos a la comunidad universitaria.",
+    "en": "Encuesta Clara, EPH, SAVT, EvaluAR, and Rumbo Deporte: systems open to the university community."
+  },
+  "sec.impacto.card4.cta": { "es": "Abrir caja de herramientas", "en": "Open AI Toolbox" },
+  "sec.datos.kicker": { "es": "Evidencia", "en": "Evidence" },
+  "sec.datos.title": {
+    "es": "Datos del Observatorio",
+    "en": "Observatory data"
+  },
+  "sec.datos.intro": {
+    "es": "Hub de datos ya disponibles: mapa de visitas, encuestas institucionales y herramientas de análisis. Los tableros nacionales ampliados se irán sumando sobre esta base.",
+    "en": "Hub of available data: visits map, institutional surveys, and analysis tools. Broader national dashboards will build on this foundation."
+  },
+  "sec.datos.card1.title": { "es": "Mapa de visitas", "en": "Visits map" },
+  "sec.datos.card1.body": {
+    "es": "Origen estimado por país y provincia/región, con ranking y foco Argentina.",
+    "en": "Estimated origin by country and province/region, with ranking and Argentina focus."
+  },
+  "sec.datos.card1.cta": { "es": "Ver mapa", "en": "View map" },
+  "sec.datos.card2.title": { "es": "Encuestas e informes", "en": "Surveys & reports" },
+  "sec.datos.card2.body": {
+    "es": "Relevamientos a estudiantes y docentes, con informes ejecutivos e institucionales.",
+    "en": "Student and faculty surveys, with executive and institutional reports."
+  },
+  "sec.datos.card2.cta": { "es": "Ver encuestas", "en": "View surveys" },
+  "sec.datos.card3.title": { "es": "Análisis EPH (INDEC)", "en": "EPH analysis (INDEC)" },
+  "sec.datos.card3.body": {
+    "es": "Microdatos de hogares: desigualdad, exclusión digital, modelos predictivos e interpretabilidad.",
+    "en": "Household microdata: inequality, digital exclusion, predictive models, and interpretability."
+  },
+  "sec.datos.card3.cta": { "es": "Abrir EPH", "en": "Open EPH" },
+  "sec.datos.card4.title": { "es": "Encuesta Clara", "en": "Encuesta Clara" },
+  "sec.datos.card4.body": {
+    "es": "De Excel de formularios a tablas, cruces y análisis cualitativo en español.",
+    "en": "From form spreadsheets to tables, cross-tabs, and qualitative analysis in Spanish."
+  },
+  "sec.datos.card4.cta": { "es": "Abrir Encuesta Clara", "en": "Open Encuesta Clara" },
+  "sec.datos.card5.title": {
+    "es": "Indicadores por provincia",
+    "en": "Province indicators"
+  },
+  "sec.datos.card5.body": {
+    "es": "En desarrollo: evolución del uso de IA y tableros provinciales a partir de encuestas y fuentes abiertas.",
+    "en": "In progress: AI-use trends and provincial dashboards from surveys and open sources."
+  },
+  "sec.datos.card5.badge": { "es": "Próximamente", "en": "Coming soon" },
   "sec.observatorio.kicker": {
     "es": "Identidad",
     "en": "Identity"
@@ -924,8 +1047,12 @@ window.I18N_DICT = {
     "en": "AI Library"
   },
   "sec.publicaciones.intro": {
-    "es": "Consultá la producción del Observatorio cargada por el equipo o explorá un índice global con más de 19 millones de artículos científicos sobre inteligencia artificial, disponibles para consultar y descargar.",
-    "en": "Browse Observatory output uploaded by the team, or explore a global index of more than 19 million scientific articles on artificial intelligence, available to view and download."
+    "es": "Producción del Observatorio tipificada (papers, documentos de trabajo, informes técnicos, protocolos, datasets, eventos y medios) e índice global OpenAlex con literatura científica sobre IA.",
+    "en": "Typed Observatory output (papers, working papers, technical reports, protocols, datasets, events, and media) plus a global OpenAlex index of AI scientific literature."
+  },
+  "sec.publicaciones.editorial": {
+    "es": "Compromiso editorial: al menos un producto al mes — informe, indicador, encuesta o herramienta.",
+    "en": "Editorial commitment: at least one product per month — report, indicator, survey, or tool."
   },
   "sec.publicaciones.tabs.ariaLabel": {
     "es": "Vistas de la Biblioteca de IA",
@@ -1130,6 +1257,22 @@ window.I18N_DICT = {
   "footer.herramientas": {
     "es": "Caja de herramientas IA",
     "en": "AI Toolbox"
+  },
+  "footer.publicaciones": {
+    "es": "Biblioteca de IA",
+    "en": "AI Library"
+  },
+  "footer.datos": {
+    "es": "Datos del Observatorio",
+    "en": "Observatory data"
+  },
+  "footer.impacto": {
+    "es": "Impacto",
+    "en": "Impact"
+  },
+  "footer.numeros": {
+    "es": "En números",
+    "en": "In numbers"
   },
   "footer.secretaria": {
     "es": "Secretaría de Investigación",
