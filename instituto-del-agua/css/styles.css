@@ -386,15 +386,15 @@ a:hover {
 .hero-slogan {
   display: block;
   width: auto;
-  max-width: min(18rem, 88%);
+  max-width: min(28rem, 94%);
   height: auto;
-  max-height: 5.75rem;
+  max-height: 11.5rem;
   object-fit: contain;
   object-position: left center;
-  margin: 0 0 1.15rem;
-  padding: 0.4rem 0.55rem;
+  margin: 0 0 1.25rem;
+  padding: 0.55rem 0.75rem;
   background: #fff;
-  border-radius: 10px;
+  border-radius: 12px;
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
 }
 
