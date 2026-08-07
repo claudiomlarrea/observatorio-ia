@@ -9,7 +9,7 @@
     />
     <title>Instituto del Agua | Universidad Católica de Cuyo</title>
     <link rel="icon" type="image/png" href="assets/logo-aura-slogan-header.png" />
-    <link rel="stylesheet" href="css/styles.css?v=11" />
+    <link rel="stylesheet" href="css/styles.css?v=12" />
   </head>
   <body>
     <a class="skip-link" href="#contenido">Ir al contenido</a>
@@ -53,6 +53,7 @@
               <li><a href="#convocatoria">Convocatoria</a></li>
               <li><a href="#documentos">Documentos</a></li>
               <li><a href="#galeria">Galería de imágenes</a></li>
+              <li><a href="#visitas">Visitas</a></li>
               <li><a href="#contacto">Contacto</a></li>
             </ul>
           </nav>
@@ -89,6 +90,7 @@
               Director: Ing. Luis Jiménez ·
               <a href="mailto:luisjimenez@uccuyo.edu.ar">luisjimenez@uccuyo.edu.ar</a>
             </p>
+            <p id="visitantes-widget" class="visitantes-widget visitantes-widget--hero" aria-live="polite" hidden></p>
           </div>
         </div>
       </section>
@@ -500,6 +502,37 @@
         </div>
       </section>
 
+      <section class="section section--visitas" id="visitas" aria-labelledby="sec-visitas">
+        <div class="section-inner">
+          <header class="section-head section-head--bar section-head--green">
+            <p class="section-kicker">Alcance</p>
+            <h2 id="sec-visitas">Visitas al Instituto del Agua</h2>
+          </header>
+          <p class="text-intro">
+            Estimación del país y, cuando está disponible, de la provincia o
+            región desde donde se consulta el sitio del Instituto del Agua.
+            Tocá un origen en la lista para enfocarlo en el mapa. El dato es
+            aproximado (geolocalización por IP): no identifica personas ni
+            guarda la dirección IP.
+          </p>
+          <p id="visitas-total" class="visitas-total" hidden></p>
+          <p id="visitas-status" class="visitas-status" aria-live="polite"></p>
+          <div class="visitas-layout">
+            <div
+              id="visitas-mapa"
+              class="visitas-mapa"
+              role="img"
+              aria-label="Mapa de origen estimado de las visitas"
+            ></div>
+            <div id="visitas-lista" class="visitas-lista"></div>
+          </div>
+          <p class="visitas-note">
+            El origen es una estimación por IP. Redes móviles, VPN y campus
+            universitarios pueden desplazar la ubicación estimada.
+          </p>
+        </div>
+      </section>
+
       <section class="section" id="contacto" aria-labelledby="sec-contacto">
         <div class="section-inner">
           <header class="section-head section-head--bar section-head--green">
@@ -556,6 +589,7 @@
             <li><a href="#convocatoria">Convocatoria</a></li>
             <li><a href="#documentos">Documentos</a></li>
             <li><a href="#galeria">Galería de imágenes</a></li>
+            <li><a href="#visitas">Visitas</a></li>
             <li><a href="#contacto">Contacto</a></li>
           </ul>
         </div>
@@ -577,5 +611,9 @@
     <script src="js/main.js" defer></script>
     <script src="js/galeria-config.js?v=2" defer></script>
     <script src="js/galeria.js?v=2" defer></script>
+    <script src="js/publicaciones-config.js?v=1" defer></script>
+    <script src="js/visitantes-config.js?v=1" defer></script>
+    <script src="js/visitantes.js?v=1" defer></script>
+    <script src="js/visitas-mapa.js?v=1" defer></script>
   </body>
 </html>

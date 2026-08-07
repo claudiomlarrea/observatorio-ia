@@ -5,10 +5,10 @@
  * Endpoints:
  * - GET  ?action=public (o sin action): JSON para la web pública.
  * - GET  ?action=admin: panel HTML de carga (solo emails autorizados).
- * - GET  ?action=visit&site=secretaria|observatorio: +1 visita a esa página web (GitHub Pages).
- * - GET  ?action=visitgeo&site=observatorio|secretaria&country=AR&countryName=Argentina&region=San Juan:
+ * - GET  ?action=visit&site=secretaria|observatorio|agua: +1 visita a esa página web (GitHub Pages).
+ * - GET  ?action=visitgeo&site=observatorio|secretaria|agua&country=AR&countryName=Argentina&region=San Juan:
  *       +1 a contador agregado de origen (sin IP).
- * - GET  ?action=visitmap&site=observatorio|secretaria: JSON de países/regiones para el mapa público.
+ * - GET  ?action=visitmap&site=observatorio|secretaria|agua: JSON de países/regiones para el mapa público.
  * - POST ?action=add: agrega publicación (solo emails autorizados).
  * - POST ?action=contact: envía consulta del formulario web (público).
  */
@@ -747,37 +747,48 @@ function isAuthorized_(e) {
   return !!(email && AUTHORIZED_EMAILS.indexOf(email) >= 0);
 }
 
+/** Sitios con contador y mapa de visitas propios. */
+function isVisitasSite_(site) {
+  return site === "observatorio" || site === "secretaria" || site === "agua";
+}
+
 /** Visitas a las páginas en GitHub Pages (no a la sección Publicaciones). */
 function registrarVisita_(site) {
   var props = PropertiesService.getScriptProperties();
   var sec = parseInt(props.getProperty("visitas_web_secretaria") || "0", 10) || 0;
   var obs = parseInt(props.getProperty("visitas_web_observatorio") || "0", 10) || 0;
+  var agua = parseInt(props.getProperty("visitas_web_agua") || "0", 10) || 0;
   if (site === "secretaria") {
     sec++;
     props.setProperty("visitas_web_secretaria", String(sec));
   } else if (site === "observatorio") {
     obs++;
     props.setProperty("visitas_web_observatorio", String(obs));
+  } else if (site === "agua") {
+    agua++;
+    props.setProperty("visitas_web_agua", String(agua));
   }
   return {
     ok: true,
     tipo: "paginas_web",
     secretaria: sec,
     observatorio: obs,
+    agua: agua,
     paginas: {
       secretaria: "https://claudiomlarrea.github.io/secretaria-investigacion/",
-      observatorio: "https://claudiomlarrea.github.io/observatorio-ia/"
+      observatorio: "https://claudiomlarrea.github.io/observatorio-ia/",
+      agua: "https://claudiomlarrea.github.io/observatorio-ia/instituto-del-agua/"
     }
   };
 }
 
 /**
  * Origen aproximado de visitas (país / región). No recibe ni guarda IP.
- * Sitios: observatorio | secretaria.
+ * Sitios: observatorio | secretaria | agua.
  */
 function registrarVisitaGeo_(site, country, countryName, region) {
   site = normalizar_(site);
-  if (site !== "observatorio" && site !== "secretaria") {
+  if (!isVisitasSite_(site)) {
     return { ok: false, error: "invalid_site" };
   }
 
@@ -1201,7 +1212,7 @@ function repartirPesosAVisitas_(weights, total) {
 
 function obtenerMapaVisitas_(site) {
   site = normalizar_(site) || "observatorio";
-  if (site !== "observatorio" && site !== "secretaria") {
+  if (!isVisitasSite_(site)) {
     return { ok: false, error: "invalid_site" };
   }
 

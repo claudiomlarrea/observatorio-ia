@@ -1,0 +1,22 @@
+PARCHE — Visitas Instituto del Agua (site=agua)
+===============================================
+
+El frontend del Instituto ya usa SITE: "agua".
+Hay que publicar una nueva versión de Apps Script o el mapa
+responderá {"ok":false,"error":"invalid_site"}.
+
+1. Abrí en Cursor:
+   google-apps-script/PublicacionesWeb.gs
+2. Cmd+A → copiar
+3. Proyecto Apps Script «Publicaciones Página Web»
+   (cuenta investigacion@uccuyo.edu.ar)
+4. PublicacionesWeb.gs → Cmd+A → pegar → Guardar
+5. Implementar → Administrar implementaciones → lápiz (/exec)
+   → Nueva versión → Implementar
+
+Atajo: ./activar-visitas.sh (copia el .gs al portapapeles y abre el proyecto).
+
+Cambios incluidos:
+- Contador visitas_web_agua
+- visitgeo / visitmap aceptan site=agua
+- Respuesta de visit incluye campo "agua"
