@@ -1,0 +1,10 @@
+---
+description: Always commit and push completed site changes
+alwaysApply: true
+---
+
+# Always commit and push
+
+After finishing a requested change on this site, always create a git commit and push to `origin` on the current branch. Do not ask whether to commit or push unless secrets/credentials are involved or the user explicitly says not to publish yet.
+
+Follow the existing commit-message and git-safety protocols (HEREDOC messages, no force push, no config changes, no amend unless the amend rules apply).

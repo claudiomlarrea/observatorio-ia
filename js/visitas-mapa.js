@@ -29,6 +29,9 @@
 
   var mapApi = null;
   var markerIndex = {};
+  var REGION_PAGE_SIZE = 8;
+  var regionsVisibleLimit = REGION_PAGE_SIZE;
+  var lastListData = null;
 
   var COUNTRY_CENTROIDS = {
     AF: [-65.2, 33.9],
@@ -564,14 +567,51 @@
   function bindListClicks() {
     if (!listRoot) return;
     listRoot.onclick = function (e) {
+      var moreBtn = e.target.closest("[data-visitas-regions-more]");
+      if (moreBtn) {
+        regionsVisibleLimit += REGION_PAGE_SIZE;
+        if (lastListData) renderList(lastListData, true);
+        return;
+      }
       var btn = e.target.closest("[data-marker-key]");
       if (!btn) return;
       focusMarker(btn.getAttribute("data-marker-key"));
     };
   }
 
-  function renderList(data) {
+  function regionRowHtml(r, idx, maxCount, total) {
+    var code = String(r.country || "").toUpperCase();
+    var preferred = regionMarkerKey(code, r.region);
+    var key = resolveListMarkerKey(preferred, code);
+    var label = r.region;
+    if (r.countryName && code !== "AR") label += " (" + r.countryName + ")";
+    return (
+      '<li><button type="button" class="visitas-rank__btn" data-marker-key="' +
+      escapeHtml(key) +
+      '"' +
+      (markerIndex[key] ? "" : " disabled") +
+      ">" +
+      '<span class="visitas-rank__pos">' +
+      (idx + 1) +
+      "</span>" +
+      '<span class="visitas-rank__meta"><span class="visitas-rank__name">' +
+      escapeHtml(label) +
+      '</span><span class="visitas-rank__bar" aria-hidden="true"><i style="width:' +
+      Math.max(6, Math.round((100 * r.count) / (maxCount || 1))) +
+      '%"></i></span></span>' +
+      '<strong><em>' +
+      pct(r.count, total) +
+      "</em>" +
+      fmt(r.count) +
+      "</strong></button></li>"
+    );
+  }
+
+  function renderList(data, keepLimit) {
     if (!listRoot) return;
+    lastListData = data;
+    if (!keepLimit) regionsVisibleLimit = REGION_PAGE_SIZE;
+
     var countries = data.countries || [];
     var regions = data.regions || [];
     var total = Number(data.total) || 0;
@@ -610,34 +650,28 @@
     html += "</ol></div>";
 
     if (regions.length) {
-      html += "<div><h3>" + tt("dyn.visitas.regions", "Provincias / regiones") + "</h3><ol class=\"visitas-rank\">";
-      regions.slice(0, 12).forEach(function (r, idx) {
-        var code = String(r.country || "").toUpperCase();
-        var preferred = regionMarkerKey(code, r.region);
-        var key = resolveListMarkerKey(preferred, code);
-        var label = r.region;
-        if (r.countryName && code !== "AR") label += " (" + r.countryName + ")";
-        html +=
-          '<li><button type="button" class="visitas-rank__btn" data-marker-key="' +
-          escapeHtml(key) +
-          '"' +
-          (markerIndex[key] ? "" : " disabled") +
-          ">" +
-          '<span class="visitas-rank__pos">' +
-          (idx + 1) +
-          "</span>" +
-          '<span class="visitas-rank__meta"><span class="visitas-rank__name">' +
-          escapeHtml(label) +
-          '</span><span class="visitas-rank__bar" aria-hidden="true"><i style="width:' +
-          Math.max(6, Math.round((100 * r.count) / (regions[0].count || 1))) +
-          '%"></i></span></span>' +
-          '<strong><em>' +
-          pct(r.count, total) +
-          "</em>" +
-          fmt(r.count) +
-          "</strong></button></li>";
+      var shownRegions = regions.slice(0, regionsVisibleLimit);
+      var restantes = regions.length - shownRegions.length;
+      var maxRegion = regions[0].count || 1;
+      html +=
+        "<div><h3>" +
+        tt("dyn.visitas.regions", "Provincias / regiones") +
+        '</h3><ol class="visitas-rank">';
+      shownRegions.forEach(function (r, idx) {
+        html += regionRowHtml(r, idx, maxRegion, total);
       });
-      html += "</ol></div>";
+      html += "</ol>";
+      if (restantes > 0) {
+        html +=
+          '<div class="visitas-more-wrap">' +
+          '<button type="button" class="pub-more-btn" data-visitas-regions-more="1">' +
+          tt("dyn.visitas.verMas", "Ver más") +
+          " (" +
+          restantes +
+          ")</button>" +
+          "</div>";
+      }
+      html += "</div>";
     }
     html += "</div>";
     listRoot.innerHTML = html;

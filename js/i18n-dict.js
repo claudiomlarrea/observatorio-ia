@@ -1147,6 +1147,7 @@ window.I18N_DICT = {
   "dyn.visitas.empty": {"es": "Todavía no hay orígenes registrados. El mapa se irá completando con las nuevas visitas.", "en": "No origins recorded yet. The map will fill in with new visits."},
   "dyn.visitas.countries": {"es": "Países", "en": "Countries"},
   "dyn.visitas.regions": {"es": "Provincias / regiones", "en": "Provinces / regions"},
+  "dyn.visitas.verMas": {"es": "Ver más", "en": "See more"},
   "dyn.visitas.withOrigin": {"es": "Con origen", "en": "With origin"},
   "dyn.visitas.main": {"es": "Principal", "en": "Top"},
   "dyn.visitas.topRegion": {"es": "Provincia destacada", "en": "Top province"},

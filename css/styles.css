@@ -1168,6 +1168,12 @@ header.section-head--bar h2 {
   overflow: hidden;
 }
 
+.visitas-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.85rem;
+}
+
 .visitas-rank li {
   border-top: 1px solid rgba(var(--rgb-inst), 0.08);
 }
