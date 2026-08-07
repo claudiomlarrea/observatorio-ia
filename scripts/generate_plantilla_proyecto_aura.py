@@ -27,6 +27,7 @@ OUT_PLANTILLA = (
     / "instituto-del-agua/documentos/plantillas"
     / "plantilla-proyecto-investigacion-extension-AURA-2026.docx"
 )
+LOGO_SLOGAN = ROOT / "instituto-del-agua/assets/logo-aura-slogan-header.png"
 LOGO_GOTA = ROOT / "instituto-del-agua/assets/logo-aura-gota.png"
 LOGO_UCCUYO = ROOT / "instituto-del-agua/assets/logo-uccuyo.png"
 
@@ -165,34 +166,41 @@ def _add_banner(doc: Document, subtitle: str) -> None:
     table.autofit = False
     cell_logo = table.cell(0, 0)
     cell_text = table.cell(0, 1)
-    cell_logo.width = Cm(2.6)
-    cell_text.width = Cm(14.5)
+    cell_logo.width = Cm(5.2)
+    cell_text.width = Cm(11.9)
 
     for cell in (cell_logo, cell_text):
-        _shade_cell(cell, "0E4F72")
-        _set_cell_margins(cell, top=80, bottom=80, left=80, right=80)
+        _shade_cell(cell, "FFFFFF")
+        _set_cell_margins(cell, top=60, bottom=60, left=80, right=80)
 
+    # White band with slogan logo (gota + «Ahorrar agua hoy…»)
     p_logo = cell_logo.paragraphs[0]
     p_logo.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    logo = LOGO_GOTA if LOGO_GOTA.is_file() else LOGO_UCCUYO
+    logo = (
+        LOGO_SLOGAN
+        if LOGO_SLOGAN.is_file()
+        else LOGO_GOTA
+        if LOGO_GOTA.is_file()
+        else LOGO_UCCUYO
+    )
     if logo.is_file():
         run = p_logo.add_run()
-        run.add_picture(str(logo), width=Cm(1.85))
+        run.add_picture(str(logo), width=Cm(4.6))
 
     lines = [
-        ("UNIVERSIDAD CATÓLICA DE CUYO · Secretaría de Investigación y Extensión", 8, False),
-        ("Plan Integral AURA · Convocatoria 2026", 13, True),
-        (subtitle, 9, False),
+        ("UNIVERSIDAD CATÓLICA DE CUYO · Secretaría de Investigación y Extensión", 8, False, MUTED),
+        ("Plan Integral AURA · Convocatoria 2026", 12, True, WATER),
+        (subtitle, 9, False, MUTED),
     ]
     first = True
-    for text, size, bold in lines:
+    for text, size, bold, color in lines:
         p = cell_text.paragraphs[0] if first else cell_text.add_paragraph()
         first = False
         p.alignment = WD_ALIGN_PARAGRAPH.LEFT
         p.paragraph_format.space_before = Pt(0)
         p.paragraph_format.space_after = Pt(2)
         r = p.add_run(text)
-        _set_run_font(r, size=size, bold=bold, color=RGBColor(0xFF, 0xFF, 0xFF))
+        _set_run_font(r, size=size, bold=bold, color=color)
 
     bar = doc.add_table(rows=1, cols=1)
     bar.alignment = WD_TABLE_ALIGNMENT.CENTER
