@@ -1,0 +1,23 @@
+PARCHE — Visitas Plan AURA (site=aura)
+======================================
+
+El frontend de plan-aura/ ya usa SITE: "aura".
+Hay que publicar una nueva versión de Apps Script o el mapa
+responderá {"ok":false,"error":"invalid_site"}.
+
+1. Abrí en Cursor:
+   google-apps-script/PublicacionesWeb.gs
+2. Cmd+A → copiar
+3. Proyecto Apps Script «Publicaciones Página Web»
+4. Pegá sobre el .gs de visitas/publicaciones → Guardar
+5. Implementar → Administrar implementaciones → lápiz (/exec)
+   → Nueva versión → Implementar
+
+Probar:
+  .../exec?action=visitgeo&site=aura&country=AR&countryName=Argentina&region=San%20Juan
+  .../exec?action=visitmap&site=aura
+
+Luego:
+  https://claudiomlarrea.github.io/observatorio-ia/plan-aura/#visitas
+
+No afecta los contadores observatorio / secretaria / agua.
