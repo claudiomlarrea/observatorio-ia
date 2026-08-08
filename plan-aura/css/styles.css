@@ -822,6 +822,52 @@ header.section-head--bar h2 {
   margin-bottom: 1rem;
 }
 
+/* —— Sala de la Comisión —— */
+
+.section--comision {
+  background: linear-gradient(180deg, #f7f9f8 0%, #fff 55%);
+}
+
+.sala-doors {
+  display: grid;
+  gap: 1.25rem;
+  margin: 0 0 0.5rem;
+}
+
+@media (min-width: 700px) {
+  .sala-doors {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1100px) {
+  .sala-doors {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.sala-door h3 {
+  color: var(--color-green-dark);
+}
+
+.sala-door .tile-actions {
+  margin-top: 1rem;
+}
+
+.sala-note {
+  margin: 0 0 0.85rem;
+  color: var(--color-text-soft);
+  font-size: 0.95rem;
+}
+
+.sala-members {
+  margin: 0 0 1rem;
+}
+
+.sala-members li + li {
+  margin-top: 0.65rem;
+}
+
 .conv-steps {
   display: grid;
   gap: 1.5rem;
