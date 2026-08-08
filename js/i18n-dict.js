@@ -76,8 +76,8 @@ window.I18N_DICT = {
     "en": "News"
   },
   "nav.herramientas": {
-    "es": "Caja de herramientas IA",
-    "en": "AI Toolbox"
+    "es": "Aplicaciones IA",
+    "en": "AI Apps"
   },
   "nav.publicaciones": {
     "es": "Biblioteca de IA",
@@ -152,8 +152,8 @@ window.I18N_DICT = {
     "en": "News"
   },
   "hero.cta.herramientas": {
-    "es": "Caja de herramientas IA",
-    "en": "AI Toolbox"
+    "es": "Aplicaciones IA",
+    "en": "AI Apps"
   },
   "hero.cta.publicaciones": {
     "es": "Biblioteca de IA",
@@ -239,7 +239,7 @@ window.I18N_DICT = {
     "es": "Encuesta Clara, EPH, SAVT, EvaluAR y Rumbo Deporte: sistemas abiertos a la comunidad universitaria.",
     "en": "Encuesta Clara, EPH, SAVT, EvaluAR, and Rumbo Deporte: systems open to the university community."
   },
-  "sec.impacto.card4.cta": { "es": "Abrir caja de herramientas", "en": "Open AI Toolbox" },
+  "sec.impacto.card4.cta": { "es": "Abrir aplicaciones IA", "en": "Open AI Apps" },
   "sec.datos.kicker": { "es": "Evidencia", "en": "Evidence" },
   "sec.datos.title": {
     "es": "Datos del Observatorio",
@@ -603,16 +603,16 @@ window.I18N_DICT = {
     "en": "Surveys"
   },
   "sec.actividades.encuestas.body": {
-    "es": "Diseño y aplicación de instrumentos para alumnos, docentes y otros actores de la comunidad universitaria. Ver encuestas e informes y caja de herramientas IA.",
-    "en": "Design and administration of instruments for students, faculty, and other members of the university community. See surveys & reports and AI Toolbox."
+    "es": "Diseño y aplicación de instrumentos para alumnos, docentes y otros actores de la comunidad universitaria. Ver encuestas e informes y aplicaciones IA.",
+    "en": "Design and administration of instruments for students, faculty, and other members of the university community. See surveys & reports and AI Apps."
   },
   "sec.actividades.encuestas.linkEncuestas": {
     "es": "encuestas e informes",
     "en": "surveys & reports"
   },
   "sec.actividades.encuestas.linkHerramientas": {
-    "es": "caja de herramientas IA",
-    "en": "AI Toolbox"
+    "es": "aplicaciones IA",
+    "en": "AI Apps"
   },
   "sec.actividades.formacion.title": {
     "es": "Formación",
@@ -847,8 +847,8 @@ window.I18N_DICT = {
     "en": "In-house developments"
   },
   "sec.herramientas.title": {
-    "es": "Caja de herramientas IA",
-    "en": "AI Toolbox"
+    "es": "Aplicaciones IA",
+    "en": "AI Apps"
   },
   "sec.herramientas.intro": {
     "es": "Sistemas y plataformas desarrollados por el Observatorio de Inteligencia Artificial de la UCCuyo para la comunidad universitaria e instituciones vinculadas: encuestas, datos, evaluación, auditoría académica, planificación estratégica y más. Se amplían a medida que se incorporan nuevos desarrollos.",
@@ -1255,8 +1255,8 @@ window.I18N_DICT = {
     "en": "Image Gallery"
   },
   "footer.herramientas": {
-    "es": "Caja de herramientas IA",
-    "en": "AI Toolbox"
+    "es": "Aplicaciones IA",
+    "en": "AI Apps"
   },
   "footer.publicaciones": {
     "es": "Biblioteca de IA",
