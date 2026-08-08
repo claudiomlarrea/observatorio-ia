@@ -810,6 +810,18 @@ header.section-head--bar h2 {
   font-weight: 600;
 }
 
+.conv-modalidades {
+  margin: 0 0 2rem;
+}
+
+.conv-modalidades .card h3 {
+  color: var(--color-water-dark);
+}
+
+.conv-modalidades .conv-mini-list {
+  margin-bottom: 1rem;
+}
+
 .conv-steps {
   display: grid;
   gap: 1.5rem;
