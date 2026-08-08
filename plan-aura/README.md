@@ -4,7 +4,9 @@ Sitio institucional del **Plan Integral AURA** (Universidad Católica de Cuyo).
 
 Publicado en GitHub Pages junto al Observatorio de IA:
 
-**https://claudiomlarrea.github.io/observatorio-ia/plan-aura/**
+**Sitio (URL institucional):** https://observatorio-ia.uccuyo.edu.ar/plan-aura/
+
+(Hosting técnico en GitHub Pages; el enlace público a usar es el de UCCuyo.)
 
 ## Contenido inicial
 

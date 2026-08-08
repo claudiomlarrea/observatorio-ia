@@ -788,7 +788,7 @@ function registrarVisita_(site) {
       secretaria: "https://claudiomlarrea.github.io/secretaria-investigacion/",
       observatorio: "https://claudiomlarrea.github.io/observatorio-ia/",
       agua: "https://claudiomlarrea.github.io/observatorio-ia/instituto-del-agua/",
-      aura: "https://claudiomlarrea.github.io/observatorio-ia/plan-aura/"
+      aura: "https://observatorio-ia.uccuyo.edu.ar/plan-aura/"
     }
   };
 }
