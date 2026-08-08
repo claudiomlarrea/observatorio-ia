@@ -18,6 +18,6 @@ Probar:
   .../exec?action=visitmap&site=aura
 
 Luego:
-  https://observatorio-ia.uccuyo.edu.ar/plan-aura/#visitas
+  https://plan-aura.com.ar/#visitas
 
 No afecta los contadores observatorio / secretaria / agua.
