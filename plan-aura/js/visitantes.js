@@ -8,6 +8,8 @@
   var site = CFG.SITE && String(CFG.SITE).trim();
   if (!base || !site) return;
 
+  var lastData = null;
+
   function fmt(n) {
     var x = Number(n);
     if (!isFinite(x)) return "—";
@@ -20,12 +22,19 @@
 
   function pintar(data) {
     if (!data || !data.ok || data.aura == null || Array.isArray(data.items)) return;
+    lastData = data;
+    var count = "<strong>" + fmt(data.aura) + "</strong>";
+    var text =
+      window.I18N && window.I18N.t
+        ? window.I18N.t("dyn.visitas.widget", { n: count })
+        : "Visitas al Plan AURA: " + count;
     root.hidden = false;
-    root.innerHTML =
-      '<a href="#visitas">Visitas al Plan AURA: <strong>' +
-      fmt(data.aura) +
-      "</strong></a>";
+    root.innerHTML = '<a href="#visitas">' + text + "</a>";
   }
+
+  window.addEventListener("oia:langchange", function () {
+    if (lastData) pintar(lastData);
+  });
 
   function fetchJson(url) {
     return fetch(url, { method: "GET" }).then(function (r) {
