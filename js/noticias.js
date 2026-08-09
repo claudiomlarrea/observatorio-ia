@@ -215,6 +215,11 @@
   }
 
   function linkLabel(item) {
+    if (item.origen === "observatorio") {
+      if (String(item.link || "").indexOf("#webinars") === 0) return "Ver webinar";
+      if (String(item.link || "").indexOf("#jornadas") === 0) return "Ver jornadas";
+      return "Ver en el sitio";
+    }
     if (item.origen === "uccuyo_noticias") return "Leer en noticias.uccuyo.edu.ar";
     if (item.origen === "google_news") return "Leer en el medio";
     if (item.origen === "boletin") return "Ver boletín";
@@ -223,10 +228,21 @@
 
   function chipClass(fuente) {
     var f = normalizar(fuente);
+    if (f.indexOf("observatorio") >= 0) return "news-chip--boletin";
     if (f.indexOf("uccuyo") >= 0) return "news-chip--uccuyo";
     if (f.indexOf("boletin") >= 0) return "news-chip--boletin";
     if (f.indexOf("diario") >= 0) return "news-chip--diario";
     return "news-chip--medio";
+  }
+
+  function esLinkInterno(link) {
+    var s = String(link || "");
+    return s.charAt(0) === "#" || s.indexOf(location.pathname) === 0;
+  }
+
+  function hrefAttrs(link) {
+    if (esLinkInterno(link)) return 'href="' + esc(link) + '"';
+    return 'href="' + esc(link) + '" target="_blank" rel="noopener noreferrer"';
   }
 
   function renderItem(item) {
@@ -242,24 +258,40 @@
       meta += " · " + esc(item.medio);
     }
     var excerpt = item.excerpt ? '<p class="news-card-excerpt">' + esc(item.excerpt) + "</p>" : "";
+    var a = hrefAttrs(item.link);
     return (
       '<li><article class="news-card">' +
       '<p class="news-card-meta">' +
       meta +
       "</p>" +
-      '<h3 class="news-card-title"><a href="' +
-      esc(item.link) +
-      '" target="_blank" rel="noopener noreferrer">' +
+      '<h3 class="news-card-title"><a ' +
+      a +
+      ">" +
       esc(item.titulo) +
       "</a></h3>" +
       excerpt +
-      '<p class="news-card-foot"><a class="news-card-link" href="' +
-      esc(item.link) +
-      '" target="_blank" rel="noopener noreferrer">' +
+      '<p class="news-card-foot"><a class="news-card-link" ' +
+      a +
+      ">" +
       esc(linkLabel(item)) +
       "</a></p>" +
       "</article></li>"
     );
+  }
+
+  function itemsDestacadas() {
+    return (CFG.DESTACADAS || []).map(function (it) {
+      return {
+        id: it.id,
+        fuente: it.fuente || "Observatorio de IA",
+        medio: it.medio || "Evento",
+        titulo: it.titulo,
+        excerpt: it.excerpt || "",
+        link: it.link,
+        fecha: it.fecha,
+        origen: it.origen || "observatorio"
+      };
+    });
   }
 
   var todos = [];
@@ -307,13 +339,14 @@
         visibles.length +
         " resultado" +
         (visibles.length === 1 ? "" : "s") +
-        " sobre el Observatorio (Noticias UCCuyo y otros medios; sin Diario de Cuyo).";
+        " (avisos del Observatorio, Noticias UCCuyo y otros medios; sin Diario de Cuyo).";
     }
     lista.innerHTML = visibles.map(renderItem).join("");
   }
 
   function cargar() {
     var status = el("news-status");
+    var destacadas = itemsDestacadas();
     if (status) {
       status.className = "news-status news-status--loading";
       status.textContent = "Buscando noticias, boletines y menciones en medios…";
@@ -326,10 +359,16 @@
       })
     ])
       .then(function (partes) {
-        todos = ordenarItems(dedupeItems(filtrarPermitidos(partes[0].concat(partes[1]))));
+        var externas = ordenarItems(dedupeItems(filtrarPermitidos(partes[0].concat(partes[1]))));
+        todos = destacadas.concat(externas);
         pintarLista();
       })
       .catch(function () {
+        if (destacadas.length) {
+          todos = destacadas;
+          pintarLista();
+          return;
+        }
         if (status) {
           status.className = "news-status news-status--error";
           status.textContent =

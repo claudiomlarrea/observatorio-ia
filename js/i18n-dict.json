@@ -616,8 +616,8 @@
     "en": "News"
   },
   "sec.noticias.intro": {
-    "es": "Búsqueda automática en Noticias UCCuyo y otros medios sobre el Observatorio. No se incluyen publicaciones del Diario de Cuyo.",
-    "en": "Automatic search in UCCuyo News and other media about the Observatory. Diario de Cuyo publications are not included."
+    "es": "Avisos del Observatorio (webinars y jornadas) y búsqueda automática en <strong>Noticias UCCuyo</strong> y otros medios. No se incluyen publicaciones del Diario de Cuyo.",
+    "en": "Observatory notices (webinars and conference) plus automatic search in <strong>UCCuyo News</strong> and other media. Diario de Cuyo publications are not included."
   },
   "sec.noticias.search.label": {
     "es": "Filtrar resultados",
