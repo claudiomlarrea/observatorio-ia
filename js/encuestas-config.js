@@ -1,9 +1,11 @@
 /**
  * Encuestas docentes — URLs del formulario y del backend (Apps Script OIA).
+ * DOCENTES_PUBLICA: false = en laboratorio (sin formulario público).
  */
 window.OBS_ENCUESTAS = {
   ALUMNOS_INFORME_PDF:
     "docs/informes/informe_ejecutivo_ia_uccuyo_institucional.pdf",
+  DOCENTES_PUBLICA: false,
   DOCENTES_FORM_URL:
     "https://docs.google.com/forms/d/e/1FAIpQLSd9UOXy4tMR3PJ79KnfQA_Sw0Rf-KfvdsOY0_Pq3IdWiorHqQ/viewform",
   DOCENTES_SHEETS_ID: "1Tf0rz2Fe5ulXq4y3WFHnF2wH-Ma8zCt4SH5wB_vfBtc",

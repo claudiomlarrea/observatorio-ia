@@ -495,6 +495,10 @@
     "es": "Abierta",
     "en": "Open"
   },
+  "sec.encuestas.badge.laboratorio": {
+    "es": "En laboratorio",
+    "en": "In lab"
+  },
   "sec.encuestas.alumnos.title": {
     "es": "Encuesta a estudiantes 2026",
     "en": "2026 student survey"
@@ -576,12 +580,16 @@
     "en": "PDF reports published by the Observatory team."
   },
   "sec.encuestas.docentes.note": {
-    "es": "La encuesta está abierta. Los botones de equipo requieren iniciar sesión con un correo autorizado del Observatorio. Consultas:",
-    "en": "The survey is open. Team buttons require signing in with an authorized Observatory email. Inquiries:"
+    "es": "La encuesta está en laboratorio y todavía no está abierta al público. Cuando se publique, el formulario estará disponible aquí. Consultas: <a href=\"mailto:observatorioia@uccuyo.edu.ar\">observatorioia@uccuyo.edu.ar</a>.",
+    "en": "The survey is in the lab and not yet open to the public. When published, the form will be available here. Contact: <a href=\"mailto:observatorioia@uccuyo.edu.ar\">observatorioia@uccuyo.edu.ar</a>."
   },
   "sec.encuestas.docentes.btnResponder": {
     "es": "Responder encuesta a docentes",
     "en": "Take the faculty survey"
+  },
+  "sec.encuestas.docentes.btnProximamente": {
+    "es": "Responder encuesta (próximamente)",
+    "en": "Take survey (coming soon)"
   },
   "sec.encuestas.docentes.btnFlayer": {
     "es": "Flayer (descargar PDF)",
