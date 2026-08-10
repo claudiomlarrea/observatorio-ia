@@ -30,10 +30,7 @@
       '<button type="button" class="gallery-lightbox-close" aria-label="Cerrar">×</button>' +
       '<button type="button" class="gallery-lightbox-nav gallery-lightbox-prev" aria-label="Foto anterior">‹</button>' +
       '<img class="gallery-lightbox-img" alt="" />' +
-      '<button type="button" class="gallery-lightbox-nav gallery-lightbox-next" aria-label="Foto siguiente">›</button>' +
-      '<div class="gallery-lightbox-toolbar">' +
-      '<button type="button" class="gallery-lightbox-ar">Proyectar en el espacio</button>' +
-      "</div>";
+      '<button type="button" class="gallery-lightbox-nav gallery-lightbox-next" aria-label="Foto siguiente">›</button>';
     document.body.appendChild(lightbox);
     lightboxImg = lightbox.querySelector(".gallery-lightbox-img");
 
@@ -46,18 +43,11 @@
       e.stopPropagation();
       showAt(currentIndex + 1);
     });
-    lightbox.querySelector(".gallery-lightbox-ar").addEventListener("click", function (e) {
-      e.stopPropagation();
-      if (!window.OBS_GALERIA_AR || !currentList.length) return;
-      var url = thumbUrl(currentList[currentIndex], 1600);
-      window.OBS_GALERIA_AR.open(url);
-    });
     lightbox.addEventListener("click", function (e) {
       if (e.target === lightbox) closeLightbox();
     });
     document.addEventListener("keydown", function (e) {
       if (lightbox.hidden) return;
-      if (document.body.classList.contains("gallery-ar-open")) return;
       if (e.key === "Escape") closeLightbox();
       if (e.key === "ArrowLeft") showAt(currentIndex - 1);
       if (e.key === "ArrowRight") showAt(currentIndex + 1);
