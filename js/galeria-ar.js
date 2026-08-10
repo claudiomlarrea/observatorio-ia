@@ -1,6 +1,6 @@
 /**
  * Proyección AR ligera para la galería: cámara trasera + imagen anclable.
- * Sin QR. Funciona en HTTPS (GitHub Pages) desde el celular/tablet.
+ * Sin QR. Funciona en HTTPS (observatorio-ia.uccuyo.edu.ar) desde el celular/tablet.
  */
 (function () {
   var root = null;

@@ -1,5 +1,7 @@
 # Observatorio IA
 
-Sitio web público del Observatorio de Inteligencia Artificial.
+Sitio web público del Observatorio de Inteligencia Artificial (UCCuyo).
 
-**Sitio:** https://claudiomlarrea.github.io/observatorio-ia/
+**Sitio (URL institucional):** https://observatorio-ia.uccuyo.edu.ar/
+
+**Espejo (GitHub Pages):** https://claudiomlarrea.github.io/observatorio-ia/

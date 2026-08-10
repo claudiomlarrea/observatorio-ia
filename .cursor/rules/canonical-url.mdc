@@ -1,0 +1,16 @@
+---
+description: URL canónica del Observatorio IA (UCCuyo)
+alwaysApply: true
+---
+
+# URL canónica del Observatorio
+
+La URL pública principal del sitio es la institucional de Sistemas UCCuyo:
+
+**https://observatorio-ia.uccuyo.edu.ar/**
+
+Espejo / deploy técnico (GitHub Pages):
+
+**https://claudiomlarrea.github.io/observatorio-ia/**
+
+Al comunicar enlaces al usuario, priorizar siempre `observatorio-ia.uccuyo.edu.ar` (con el ancla que corresponda, p. ej. `#galeria`, `#inicio`). El push a `main` publica en GitHub Pages; el dominio UCCuyo apunta al mismo sitio.
