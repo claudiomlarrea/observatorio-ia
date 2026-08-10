@@ -794,6 +794,39 @@ header.section-head--bar h2 {
   max-width: 42rem;
 }
 
+.conv-wip-badge {
+  display: inline-block;
+  margin: 0 0 0.75rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: rgba(var(--rgb-inst), 0.12);
+  color: var(--color-institutional);
+}
+
+.conv-wip-note {
+  margin: 0 0 1.25rem;
+  max-width: 42rem;
+  padding: 0.85rem 1rem;
+  border-left: 3px solid var(--color-institutional);
+  background: rgba(var(--rgb-inst), 0.06);
+  color: var(--color-text-soft);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.section--convocatoria.is-wip .tile-actions--conv a,
+.section--convocatoria.is-wip .conv-contact a[href^="documentos"],
+.section--convocatoria.is-wip .conv-contact a[href^="https://"] {
+  pointer-events: none;
+  opacity: 0.45;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
 .conv-facts {
   list-style: none;
   margin: 0 0 2rem;
@@ -1037,6 +1070,17 @@ header.section-head--bar h2 {
   transform: translateY(-1px);
   color: inherit;
   text-decoration: none;
+}
+
+.doc-link--wip {
+  opacity: 0.72;
+  cursor: not-allowed;
+  pointer-events: none;
+  border-style: dashed;
+}
+
+.doc-link--wip .doc-link__tag {
+  color: var(--color-institutional);
 }
 
 .doc-link__tag {
