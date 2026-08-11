@@ -1,0 +1,26 @@
+# Reparar panel "Ingreso equipo · Cargar publicaciones"
+
+Síntoma: al abrir ?action=admin se ve el HTML como texto (código fuente),
+no el formulario. URL típica: script.googleusercontent.com/.../echo
+
+Causa: renderAdmin_ devolvía ContentService (texto). Debe ser HtmlService.
+
+1) Abrí el proyecto Apps Script con investigacion@uccuyo.edu.ar
+   (Publicaciones Página Web).
+
+2) Pegá el PublicacionesWeb.gs actual del repo:
+   observatorio-ia/google-apps-script/PublicacionesWeb.gs
+   Cmd+A → Cmd+C en Cursor → en Apps Script Cmd+A → Cmd+V → Guardar.
+
+3) Implementar → Administrar implementaciones → lápiz (la de /exec)
+   → Versión: Nueva versión → Implementar
+   Ejecutar como: tu cuenta
+   Quién tiene acceso: Cualquier usuario de Google
+
+4) Probar:
+   .../exec?action=admin
+   Debe verse el formulario "Carga de Publicaciones", no el código.
+
+5) Desde el Observatorio:
+   https://observatorio-ia.uccuyo.edu.ar/#publicaciones
+   → Ingreso equipo · Cargar publicaciones

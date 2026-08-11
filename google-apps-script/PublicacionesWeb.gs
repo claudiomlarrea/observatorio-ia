@@ -1,6 +1,6 @@
 /**
  * Publicaciones OIA - API pública + panel privado con whitelist.
- * EDGE-PANEL-v2: formulario HTML directo (sin PublicacionesAdmin.html ni iframe).
+ * EDGE-PANEL-v3: panel con HtmlService (no ContentService: evita HTML crudo en /echo).
  *
  * Endpoints:
  * - GET  ?action=public (o sin action): JSON para la web pública.
@@ -365,7 +365,7 @@ function buildAdminPanelHtml_(apiUrl, defaultUnidad) {
 
 function renderAdmin_(e) {
   if (!isAuthorized_(e)) {
-    return ContentService.createTextOutput(
+    return HtmlService.createHtmlOutput(
       "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"utf-8\"><title>OIA - Acceso denegado</title></head><body>" +
         "<h3>Acceso denegado</h3>" +
         "<p>Iniciá sesión en Google con un correo autorizado del equipo " +
@@ -374,13 +374,15 @@ function renderAdmin_(e) {
         "<p>En la implementación de Apps Script, «Quién tiene acceso» debe ser " +
         "<strong>Cualquier usuario de Google</strong> para que se detecte tu correo.</p>" +
         "</body></html>"
-    ).setMimeType(ContentService.MimeType.HTML);
+    )
+      .setTitle("OIA - Acceso denegado")
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   }
   var apiUrl = ScriptApp.getService().getUrl();
   var defaultUnidad = "OIA- Observatorio de Inteligencia Artificial";
-  return ContentService.createTextOutput(
-    buildAdminPanelHtml_(apiUrl, defaultUnidad)
-  ).setMimeType(ContentService.MimeType.HTML);
+  return HtmlService.createHtmlOutput(buildAdminPanelHtml_(apiUrl, defaultUnidad))
+    .setTitle("Carga de Publicaciones")
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
 function obtenerItemsPublicos_() {
