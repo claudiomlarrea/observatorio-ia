@@ -188,7 +188,7 @@ body {
 
 .botonera {
   position: sticky;
-  top: 0;
+  top: env(safe-area-inset-top, 0px);
   z-index: 40;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -197,7 +197,6 @@ body {
   margin: -0.75rem auto 0;
   width: calc(100% - 1.25rem);
   padding: 0.55rem;
-  padding-top: calc(0.55rem + env(safe-area-inset-top, 0px));
   background: color-mix(in srgb, var(--surface) 96%, transparent);
   backdrop-filter: blur(12px);
   border: 1px solid var(--border);
