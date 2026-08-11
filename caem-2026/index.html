@@ -74,6 +74,19 @@
     </nav>
 
     <main id="contenido" class="main">
+      <section class="active-filters" id="active-filters" hidden aria-live="polite">
+        <div class="active-filters-head">
+          <h2 class="active-filters-title" data-i18n="filters.activeTitle">Filtros activos</h2>
+          <button type="button" class="clear-btn" id="clear-filters" data-i18n="filters.clear">
+            Limpiar
+          </button>
+        </div>
+        <div class="chip-row" id="chip-row"></div>
+        <p class="combine-hint" data-i18n="filters.combineHint">
+          Podés combinar: tocá otro botón (por ejemplo Aula + Horario).
+        </p>
+      </section>
+
       <section class="step-panel" id="step-panel" aria-live="polite">
         <div class="step-head">
           <h2 class="step-title" id="step-title">Elegí el día</h2>
@@ -110,9 +123,6 @@
       >
         <div class="results-head">
           <h2 class="results-title" id="results-title" data-i18n="results.title">Resultados</h2>
-          <button type="button" class="back-btn" id="back-btn" data-i18n="back.filter">
-            ← Cambiar filtro
-          </button>
         </div>
         <div id="results-body"></div>
       </section>

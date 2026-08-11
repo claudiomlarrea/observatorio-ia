@@ -76,9 +76,37 @@ window.I18N_DICT = {
     es: "Después vas a ver los horarios de ese día.",
     en: "Next you will see that day's time slots."
   },
+  "step.horario.dayHelpCombine": {
+    es: "Elegí el día para cruzarlo con los filtros que ya pusiste.",
+    en: "Choose the day to combine it with your current filters."
+  },
   "step.horario.slotTitle": {
     es: "Elegí el horario",
     en: "Choose the time"
+  },
+  "step.horario.wholeDay": {
+    es: "Todo el día",
+    en: "Whole day"
+  },
+  "step.horario.wholeDayHelp": {
+    es: "Sin fijar una franja horaria",
+    en: "Without locking a time slot"
+  },
+  "filters.activeTitle": {
+    es: "Filtros activos",
+    en: "Active filters"
+  },
+  "filters.clear": {
+    es: "Limpiar",
+    en: "Clear"
+  },
+  "filters.remove": {
+    es: "Quitar filtro",
+    en: "Remove filter"
+  },
+  "filters.combineHint": {
+    es: "Podés combinar: tocá otro botón (por ejemplo Aula + Horario).",
+    en: "You can combine filters: tap another button (for example Room + Schedule)."
   },
   "step.tema.title": {
     es: "Elegí el eje temático",

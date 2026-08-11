@@ -11,33 +11,37 @@
     receso: "tipo.receso",
   };
 
-  const MODE_COPY_KEYS = {
-    horario: { title: "step.horario.dayTitle", help: "step.horario.dayHelp" },
-    tema: { title: "step.tema.title", help: "step.tema.help" },
-    tipo: { title: "step.tipo.title", help: "step.tipo.help" },
-    disertante: { title: "step.disertante.title", help: "step.disertante.help" },
-    aula: { title: "step.aula.title", help: "step.aula.help" },
-    ahora: { title: "step.ahora.title", help: "step.ahora.help" },
-  };
-
   const EJE_NAME_KEYS = {
     "eje-1": "eje.1.name",
     "eje-2": "eje.2.name",
     "eje-3": "eje.3.name",
   };
 
+  const emptyFilters = () => ({
+    day: null,
+    inicio: null,
+    fin: null,
+    ejeId: null,
+    tipo: null,
+    persona: null,
+    sala: null,
+    ahora: false,
+  });
+
   const state = {
     data: null,
     mode: "horario",
-    day: null,
+    pickingDay: true,
     letter: "Todas",
     personQuery: "",
-    selection: null,
-    showResults: false,
+    filters: emptyFilters(),
   };
 
   const els = {
     botonera: document.getElementById("botonera"),
+    activeFilters: document.getElementById("active-filters"),
+    chipRow: document.getElementById("chip-row"),
+    clearFilters: document.getElementById("clear-filters"),
     stepPanel: document.getElementById("step-panel"),
     stepTitle: document.getElementById("step-title"),
     stepHelp: document.getElementById("step-help"),
@@ -47,7 +51,6 @@
     results: document.getElementById("results"),
     resultsTitle: document.getElementById("results-title"),
     resultsBody: document.getElementById("results-body"),
-    backBtn: document.getElementById("back-btn"),
   };
 
   function dayShort(dia) {
@@ -144,6 +147,24 @@
     return "";
   }
 
+  function hasAnyFilter() {
+    const f = state.filters;
+    return Boolean(
+      f.day || f.inicio || f.ejeId || f.tipo || f.persona || f.sala || f.ahora
+    );
+  }
+
+  function modeHasFilter(mode) {
+    const f = state.filters;
+    if (mode === "horario") return Boolean(f.day || f.inicio);
+    if (mode === "tema") return Boolean(f.ejeId);
+    if (mode === "tipo") return Boolean(f.tipo);
+    if (mode === "disertante") return Boolean(f.persona);
+    if (mode === "aula") return Boolean(f.sala);
+    if (mode === "ahora") return Boolean(f.ahora);
+    return false;
+  }
+
   function groupBySlot(sessions) {
     const map = new Map();
     for (const s of sessions) {
@@ -194,34 +215,89 @@
     );
   }
 
-  function sessionsForSelection() {
-    const { mode, selection, data } = state;
-    if (!selection) return [];
-    const all = data.sesiones.filter((s) => s.tipo !== "receso" || mode === "horario");
+  function ahoraSessionsBase() {
+    const { date, minutes } = argentinaNow();
+    const congressDays = state.data.meta.fechas;
 
-    switch (mode) {
-      case "horario":
-        return all.filter((s) => s.dia === selection.day && s.inicio === selection.inicio);
-      case "tema":
-        return all.filter((s) => s.ejeId === selection && s.tipo !== "receso");
-      case "tipo":
-        return all.filter((s) => s.tipo === selection);
-      case "disertante":
-        return all.filter(
-          (s) =>
-            (s.disertantes || []).includes(selection) || (s.moderadores || []).includes(selection)
-        );
-      case "aula":
-        return all.filter((s) => s.sala === selection && s.tipo !== "receso");
-      case "ahora":
-        return selection.sessions || [];
-      default:
-        return [];
+    if (congressDays.includes(date)) {
+      const today = state.data.sesiones.filter((s) => s.dia === date && s.tipo !== "receso");
+      const ongoing = today.filter(
+        (s) => toMinutes(s.inicio) <= minutes && minutes < toMinutes(s.fin)
+      );
+      if (ongoing.length) return { labelKey: "now.ongoing", sessions: ongoing };
+      const upcoming = today
+        .filter((s) => toMinutes(s.inicio) > minutes)
+        .sort((a, b) => toMinutes(a.inicio) - toMinutes(b.inicio));
+      if (upcoming.length) {
+        const start = upcoming[0].inicio;
+        return {
+          labelKey: "now.next",
+          sessions: upcoming.filter((s) => s.inicio === start),
+        };
+      }
+      return { labelKey: "now.end", sessions: [] };
     }
+
+    const firstDay = congressDays[0];
+    const daySessions = state.data.sesiones
+      .filter((s) => s.dia === firstDay && s.tipo !== "receso")
+      .sort((a, b) => toMinutes(a.inicio) - toMinutes(b.inicio));
+    if (!daySessions.length) return { labelKey: "now.opening", sessions: [] };
+    const start = daySessions[0].inicio;
+    return {
+      labelKey: "now.opening",
+      sessions: daySessions.filter((s) => s.inicio === start),
+    };
+  }
+
+  function filteredSessions() {
+    const f = state.filters;
+    if (!hasAnyFilter()) return [];
+
+    let list = state.data.sesiones.filter((s) => s.tipo !== "receso");
+
+    if (f.ahora) {
+      const base = ahoraSessionsBase().sessions;
+      const ids = new Set(base.map((s) => s.id));
+      list = list.filter((s) => ids.has(s.id));
+    }
+    if (f.day) list = list.filter((s) => s.dia === f.day);
+    if (f.inicio) list = list.filter((s) => s.inicio === f.inicio);
+    if (f.ejeId) list = list.filter((s) => s.ejeId === f.ejeId);
+    if (f.tipo) list = list.filter((s) => s.tipo === f.tipo);
+    if (f.sala) list = list.filter((s) => s.sala === f.sala);
+    if (f.persona) {
+      list = list.filter(
+        (s) =>
+          (s.disertantes || []).includes(f.persona) || (s.moderadores || []).includes(f.persona)
+      );
+    }
+    return list;
+  }
+
+  /** Options for the current picker are narrowed by the other active filters. */
+  function sessionsForPickerContext(excludeMode) {
+    const saved = { ...state.filters };
+    if (excludeMode === "horario") {
+      state.filters.day = null;
+      state.filters.inicio = null;
+      state.filters.fin = null;
+      state.filters.ahora = false;
+    } else if (excludeMode === "tema") state.filters.ejeId = null;
+    else if (excludeMode === "tipo") state.filters.tipo = null;
+    else if (excludeMode === "disertante") state.filters.persona = null;
+    else if (excludeMode === "aula") state.filters.sala = null;
+    else if (excludeMode === "ahora") state.filters.ahora = false;
+
+    const hadOther = hasAnyFilter();
+    let list = hadOther
+      ? filteredSessions()
+      : state.data.sesiones.filter((s) => s.tipo !== "receso");
+    state.filters = saved;
+    return list;
   }
 
   function renderSession(session, query = "") {
-    const isReceso = session.tipo === "receso";
     const tipo = tipoLabel(session.tipo);
     const people = [];
     if (session.disertantes?.length) {
@@ -243,7 +319,7 @@
       : "";
 
     return `
-      <article class="session${isReceso ? " is-receso" : ""}" data-sala="${escapeHtml(session.sala || "")}">
+      <article class="session" data-sala="${escapeHtml(session.sala || "")}">
         <div class="session-meta">
           <span class="badge badge-time">${escapeHtml(session.inicio)} – ${escapeHtml(session.fin)}</span>
           ${salaBadge}
@@ -259,8 +335,7 @@
     if (!sessions.length) {
       return `<p class="empty">${escapeHtml(t("results.empty"))}</p>`;
     }
-    const byDay = groupByDay(sessions);
-    return byDay
+    return groupByDay(sessions)
       .map(({ dia, items }) => {
         const slots = groupBySlot(items);
         return `
@@ -268,7 +343,7 @@
             <h3 class="day-label">${escapeHtml(dayLong(dia))}</h3>
             ${slots
               .map((slot) => {
-                const parallel = slot.items.filter((s) => s.tipo !== "receso").length > 1;
+                const parallel = slot.items.length > 1;
                 return `
                   <section class="slot">
                     <h4 class="slot-time">${escapeHtml(slot.inicio)} <span>– ${escapeHtml(slot.fin)}</span></h4>
@@ -283,88 +358,6 @@
         `;
       })
       .join("");
-  }
-
-  function setMode(mode) {
-    state.mode = mode;
-    state.selection = null;
-    state.showResults = false;
-    state.day = null;
-    state.letter = "Todas";
-    state.personQuery = "";
-    if (els.personFilter) els.personFilter.value = "";
-
-    els.botonera.querySelectorAll(".mode-btn").forEach((btn) => {
-      btn.classList.toggle("is-active", btn.dataset.mode === mode);
-    });
-
-    if (mode === "ahora") {
-      showAhora();
-      return;
-    }
-
-    els.results.hidden = true;
-    els.stepPanel.hidden = false;
-    renderStep();
-  }
-
-  function showResults(title) {
-    const sessions = sessionsForSelection();
-    const query = state.mode === "disertante" ? state.selection : "";
-    state.showResults = true;
-    els.stepPanel.hidden = true;
-    els.results.hidden = false;
-    els.resultsTitle.textContent = title;
-    els.resultsBody.innerHTML = renderSessionsList(sessions, query || "");
-    els.results.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
-  function showAhora() {
-    const { date, minutes } = argentinaNow();
-    const congressDays = state.data.meta.fechas;
-    let label = t("now.next");
-    let sessions = [];
-
-    if (congressDays.includes(date)) {
-      const today = state.data.sesiones.filter((s) => s.dia === date && s.tipo !== "receso");
-      const ongoing = today.filter(
-        (s) => toMinutes(s.inicio) <= minutes && minutes < toMinutes(s.fin)
-      );
-      if (ongoing.length) {
-        label = t("now.ongoing");
-        sessions = ongoing;
-      } else {
-        const upcoming = today
-          .filter((s) => toMinutes(s.inicio) > minutes)
-          .sort((a, b) => toMinutes(a.inicio) - toMinutes(b.inicio));
-        if (upcoming.length) {
-          const slotStart = upcoming[0].inicio;
-          sessions = upcoming.filter((s) => s.inicio === slotStart);
-          label = t("now.next");
-        } else {
-          label = t("now.end");
-        }
-      }
-    } else {
-      const firstDay = congressDays[0];
-      const daySessions = state.data.sesiones
-        .filter((s) => s.dia === firstDay && s.tipo !== "receso")
-        .sort((a, b) => toMinutes(a.inicio) - toMinutes(b.inicio));
-      if (daySessions.length) {
-        const slotStart = daySessions[0].inicio;
-        sessions = daySessions.filter((s) => s.inicio === slotStart);
-        label = t("now.opening");
-      }
-    }
-
-    state.selection = { sessions };
-    els.stepPanel.hidden = true;
-    els.results.hidden = false;
-    state.showResults = true;
-    els.resultsTitle.textContent = label;
-    els.resultsBody.innerHTML = sessions.length
-      ? renderSessionsList(sessions)
-      : `<p class="empty">${escapeHtml(t("now.empty"))}</p>`;
   }
 
   function optionButton({ value, title, subtitle, count, selected }) {
@@ -387,10 +380,118 @@
     `;
   }
 
+  function chips() {
+    const f = state.filters;
+    const items = [];
+    if (f.ahora) items.push({ key: "ahora", label: t("mode.ahora") });
+    if (f.day && f.inicio) {
+      items.push({
+        key: "horario",
+        label: `${dayShort(f.day)} · ${f.inicio}${f.fin ? `–${f.fin}` : ""}`,
+      });
+    } else if (f.day) {
+      items.push({ key: "horario", label: dayShort(f.day) });
+    }
+    if (f.sala) items.push({ key: "aula", label: f.sala });
+    if (f.ejeId) {
+      const eje = state.data.ejes.find((e) => e.id === f.ejeId);
+      items.push({
+        key: "tema",
+        label: eje ? ejeName(eje.id, eje.nombre) : f.ejeId,
+      });
+    }
+    if (f.tipo) items.push({ key: "tipo", label: tipoLabel(f.tipo) });
+    if (f.persona) items.push({ key: "disertante", label: f.persona });
+    return items;
+  }
+
+  function renderChips() {
+    const list = chips();
+    if (!list.length) {
+      els.activeFilters.hidden = true;
+      els.chipRow.innerHTML = "";
+      return;
+    }
+    els.activeFilters.hidden = false;
+    els.chipRow.innerHTML = list
+      .map(
+        (chip) => `
+      <button type="button" class="filter-chip" data-remove="${escapeHtml(chip.key)}" title="${escapeHtml(
+          t("filters.remove")
+        )}">
+        <span>${escapeHtml(chip.label)}</span>
+        <span class="filter-chip-x" aria-hidden="true">×</span>
+      </button>`
+      )
+      .join("");
+  }
+
+  function updateModeButtons() {
+    els.botonera.querySelectorAll(".mode-btn").forEach((btn) => {
+      const mode = btn.dataset.mode;
+      btn.classList.toggle("is-active", mode === state.mode);
+      btn.classList.toggle("has-filter", modeHasFilter(mode));
+    });
+  }
+
+  function renderResults() {
+    if (!hasAnyFilter()) {
+      els.results.hidden = true;
+      els.resultsBody.innerHTML = "";
+      return;
+    }
+    const sessions = filteredSessions();
+    const query = state.filters.persona || "";
+    els.results.hidden = false;
+    els.resultsTitle.textContent = `${t("results.title")} · ${sessionCountLabel(sessions.length)}`;
+    els.resultsBody.innerHTML = renderSessionsList(sessions, query);
+  }
+
+  function clearFilterKey(key) {
+    if (key === "horario") {
+      state.filters.day = null;
+      state.filters.inicio = null;
+      state.filters.fin = null;
+    } else if (key === "aula") state.filters.sala = null;
+    else if (key === "tema") state.filters.ejeId = null;
+    else if (key === "tipo") state.filters.tipo = null;
+    else if (key === "disertante") state.filters.persona = null;
+    else if (key === "ahora") state.filters.ahora = false;
+  }
+
+  function setMode(mode) {
+    state.mode = mode;
+    state.letter = "Todas";
+    state.personQuery = "";
+    if (els.personFilter) els.personFilter.value = "";
+
+    if (mode === "ahora") {
+      state.filters.ahora = true;
+      // Ahora replaces explicit horario to avoid contradiction
+      state.filters.day = null;
+      state.filters.inicio = null;
+      state.filters.fin = null;
+      state.pickingDay = true;
+      updateModeButtons();
+      renderChips();
+      renderResults();
+      els.stepPanel.hidden = true;
+      return;
+    }
+
+    if (mode === "horario") {
+      state.filters.ahora = false;
+      state.pickingDay = !state.filters.day;
+    }
+
+    els.stepPanel.hidden = false;
+    updateModeButtons();
+    renderChips();
+    renderResults();
+    renderStep();
+  }
+
   function renderStep() {
-    const copy = MODE_COPY_KEYS[state.mode];
-    els.stepTitle.textContent = t(copy.title);
-    els.stepHelp.textContent = t(copy.help);
     els.stepTools.hidden = state.mode !== "disertante";
     els.optionGrid.classList.toggle(
       "is-compact",
@@ -405,19 +506,27 @@
   }
 
   function renderHorarioStep() {
-    if (!state.day) {
+    const ctx = sessionsForPickerContext("horario");
+
+    if (state.pickingDay || !state.filters.day) {
       els.stepTitle.textContent = t("step.horario.dayTitle");
-      els.stepHelp.textContent = t("step.horario.dayHelp");
-      els.optionGrid.innerHTML = state.data.meta.fechas
+      els.stepHelp.textContent = hasAnyFilter()
+        ? t("step.horario.dayHelpCombine")
+        : t("step.horario.dayHelp");
+
+      const days = state.data.meta.fechas.filter((dia) => ctx.some((s) => s.dia === dia));
+      const sourceDays = days.length ? days : state.data.meta.fechas;
+
+      els.optionGrid.innerHTML = sourceDays
         .map((dia, i) => {
           const eje = state.data.ejes.find((e) => e.dia === dia);
+          const count = ctx.filter((s) => s.dia === dia).length;
           return optionButton({
             value: dia,
             title: dayShort(dia),
-            subtitle: eje
-              ? `${t(`eje.${i + 1}.label`)}: ${ejeName(eje.id, eje.nombre)}`
-              : "",
-            count: state.data.sesiones.filter((s) => s.dia === dia && s.tipo !== "receso").length,
+            subtitle: eje ? `${t(`eje.${i + 1}.label`)}: ${ejeName(eje.id, eje.nombre)}` : "",
+            count,
+            selected: state.filters.day === dia && !state.filters.inicio,
           });
         })
         .join("");
@@ -425,74 +534,117 @@
     }
 
     els.stepTitle.textContent = t("step.horario.slotTitle");
-    els.stepHelp.textContent = dayLong(state.day);
-    const slots = groupBySlot(
-      state.data.sesiones.filter((s) => s.dia === state.day && s.tipo !== "receso")
-    );
+    els.stepHelp.textContent = dayLong(state.filters.day);
+    const daySessions = ctx.filter((s) => s.dia === state.filters.day);
+    const slots = groupBySlot(daySessions);
+
     els.optionGrid.innerHTML =
       optionButton({
         value: "__back_days__",
         title: t("back.days"),
         subtitle: t("back.days.sub"),
       }) +
+      optionButton({
+        value: "__whole_day__",
+        title: t("step.horario.wholeDay"),
+        subtitle: t("step.horario.wholeDayHelp"),
+        count: daySessions.length,
+        selected: Boolean(state.filters.day && !state.filters.inicio),
+      }) +
       slots
         .map((slot) => {
           const salas = [...new Set(slot.items.map((s) => s.sala).filter(Boolean))].join(" · ");
           return optionButton({
-            value: slot.inicio,
+            value: `${slot.inicio}|${slot.fin}`,
             title: `${slot.inicio} – ${slot.fin}`,
             subtitle: salas,
             count: slot.items.length,
+            selected: state.filters.inicio === slot.inicio,
           });
         })
         .join("");
   }
 
   function renderTemaStep() {
+    els.stepTitle.textContent = t("step.tema.title");
+    els.stepHelp.textContent = t("step.tema.help");
+    const ctx = sessionsForPickerContext("tema");
     els.optionGrid.innerHTML = state.data.ejes
       .map((eje, i) =>
         optionButton({
           value: eje.id,
           title: t(`eje.${i + 1}.label`),
           subtitle: `${dayShort(eje.dia)} · ${ejeName(eje.id, eje.nombre)}`,
-          count: state.data.sesiones.filter((s) => s.ejeId === eje.id && s.tipo !== "receso")
-            .length,
+          count: ctx.filter((s) => s.ejeId === eje.id).length,
+          selected: state.filters.ejeId === eje.id,
         })
       )
       .join("");
   }
 
   function renderTipoStep() {
-    const tipos = [...new Set(state.data.sesiones.map((s) => s.tipo))].filter((x) => x !== "receso");
+    els.stepTitle.textContent = t("step.tipo.title");
+    els.stepHelp.textContent = t("step.tipo.help");
+    const ctx = sessionsForPickerContext("tipo");
+    const tipos = [...new Set(ctx.map((s) => s.tipo))];
     const order = ["bienvenida", "conferencia", "plenaria", "mesa", "conversatorio", "acto"];
     tipos.sort((a, b) => order.indexOf(a) - order.indexOf(b));
-    els.optionGrid.innerHTML = tipos
+    const list = tipos.length
+      ? tipos
+      : [...new Set(state.data.sesiones.map((s) => s.tipo))].filter((x) => x !== "receso");
+    els.optionGrid.innerHTML = list
       .map((tipo) =>
         optionButton({
           value: tipo,
           title: tipoLabel(tipo),
-          count: state.data.sesiones.filter((s) => s.tipo === tipo).length,
+          count: ctx.filter((s) => s.tipo === tipo).length,
+          selected: state.filters.tipo === tipo,
         })
       )
       .join("");
   }
 
   function renderAulaStep() {
-    const salas = state.data.meta.salas;
-    els.optionGrid.innerHTML = salas
+    els.stepTitle.textContent = t("step.aula.title");
+    els.stepHelp.textContent = t("step.aula.help");
+    const ctx = sessionsForPickerContext("aula");
+    els.optionGrid.innerHTML = state.data.meta.salas
       .map((sala) =>
         optionButton({
           value: sala,
           title: sala,
           subtitle: sala === "Aula Magna" ? t("room.magna.sub") : t("room.consejo.sub"),
-          count: state.data.sesiones.filter((s) => s.sala === sala && s.tipo !== "receso").length,
+          count: ctx.filter((s) => s.sala === sala).length,
+          selected: state.filters.sala === sala,
         })
       )
       .join("");
   }
 
   function renderDisertanteStep() {
+    els.stepTitle.textContent = t("step.disertante.title");
+    els.stepHelp.textContent = t("step.disertante.help");
+    const ctx = sessionsForPickerContext("disertante");
+    const namesInCtx = new Set();
+    ctx.forEach((s) => {
+      (s.disertantes || []).forEach((n) => namesInCtx.add(n));
+      (s.moderadores || []).forEach((n) => namesInCtx.add(n));
+    });
+
     let people = collectPeople();
+    if (hasAnyFilter() || namesInCtx.size) {
+      // When other filters exist, only people still present in the narrowed set
+      const narrowed = sessionsForPickerContext("disertante");
+      if (hasAnyFilter()) {
+        const allowed = new Set();
+        narrowed.forEach((s) => {
+          (s.disertantes || []).forEach((n) => allowed.add(n));
+          (s.moderadores || []).forEach((n) => allowed.add(n));
+        });
+        people = people.filter((p) => allowed.has(p.name));
+      }
+    }
+
     if (state.personQuery) {
       const q = normalize(state.personQuery);
       people = people.filter((p) => normalize(p.name).includes(q));
@@ -502,11 +654,13 @@
       );
     }
 
-    const allPeople = collectPeople();
+    const allForLetters = people.length
+      ? people
+      : collectPeople().filter((p) => namesInCtx.has(p.name));
     const letters = [
       "Todas",
       ..."ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").filter((L) =>
-        allPeople.some((p) => normalize(personLastName(p.name)).startsWith(normalize(L)))
+        allForLetters.some((p) => normalize(personLastName(p.name)).startsWith(normalize(L)))
       ),
     ];
 
@@ -535,6 +689,7 @@
                 title: p.name,
                 subtitle: [...p.roles].join(" · "),
                 count: p.count,
+                selected: state.filters.persona === p.name,
               })
             )
             .join("")
@@ -546,70 +701,87 @@
 
     if (mode === "horario") {
       if (value === "__back_days__") {
-        state.day = null;
+        state.pickingDay = true;
+        state.filters.inicio = null;
+        state.filters.fin = null;
+        renderStep();
+        renderChips();
+        renderResults();
+        return;
+      }
+      if (value === "__whole_day__") {
+        state.filters.inicio = null;
+        state.filters.fin = null;
+        state.filters.ahora = false;
+        updateAll();
+        return;
+      }
+      if (state.pickingDay || !state.filters.day) {
+        state.filters.day = value;
+        state.filters.inicio = null;
+        state.filters.fin = null;
+        state.filters.ahora = false;
+        state.pickingDay = false;
+        updateModeButtons();
+        renderChips();
+        renderResults();
         renderStep();
         return;
       }
-      if (!state.day) {
-        state.day = value;
-        renderStep();
-        return;
-      }
-      state.selection = { day: state.day, inicio: value };
-      showResults(`${dayShort(state.day)} · ${value}`);
+      const [inicio, fin] = value.split("|");
+      state.filters.inicio = inicio;
+      state.filters.fin = fin;
+      state.filters.ahora = false;
+      updateAll();
       return;
     }
 
     if (mode === "tema") {
-      state.selection = value;
+      state.filters.ejeId = value;
+      // Align day with eje if horario day not set
       const eje = state.data.ejes.find((e) => e.id === value);
-      showResults(
-        eje ? t("results.axis", { name: ejeName(eje.id, eje.nombre) }) : t("results.topic")
-      );
+      if (eje && !state.filters.day && !state.filters.ahora) {
+        // don't force day — tema alone is fine
+      }
+      updateAll();
       return;
     }
 
     if (mode === "tipo") {
-      state.selection = value;
-      showResults(tipoLabel(value));
+      state.filters.tipo = value;
+      updateAll();
       return;
     }
 
     if (mode === "aula") {
-      state.selection = value;
-      showResults(value);
+      state.filters.sala = value;
+      updateAll();
       return;
     }
 
     if (mode === "disertante") {
-      state.selection = value;
-      showResults(value);
+      state.filters.persona = value;
+      updateAll();
+    }
+  }
+
+  function updateAll() {
+    updateModeButtons();
+    renderChips();
+    renderResults();
+    // Keep step open so user can refine or switch via botonera
+    if (state.mode !== "ahora") {
+      els.stepPanel.hidden = false;
+      renderStep();
     }
   }
 
   function refreshForLang() {
     if (!state.data) return;
-    if (state.mode === "ahora" || state.showResults) {
-      if (state.mode === "ahora") {
-        showAhora();
-      } else if (state.selection != null) {
-        // Re-run last selection label/results
-        if (state.mode === "horario" && state.selection.day) {
-          showResults(`${dayShort(state.selection.day)} · ${state.selection.inicio}`);
-        } else if (state.mode === "tema") {
-          const eje = state.data.ejes.find((e) => e.id === state.selection);
-          showResults(
-            eje ? t("results.axis", { name: ejeName(eje.id, eje.nombre) }) : t("results.topic")
-          );
-        } else if (state.mode === "tipo") {
-          showResults(tipoLabel(state.selection));
-        } else if (state.mode === "aula" || state.mode === "disertante") {
-          showResults(state.selection);
-        }
-      }
-      return;
-    }
-    renderStep();
+    updateModeButtons();
+    renderChips();
+    renderResults();
+    if (state.mode !== "ahora") renderStep();
   }
 
   function bindEvents() {
@@ -633,16 +805,19 @@
       onOptionClick(opt.dataset.value);
     });
 
-    els.backBtn.addEventListener("click", () => {
-      state.showResults = false;
-      state.selection = null;
-      if (state.mode === "ahora") {
-        setMode("horario");
-        return;
-      }
-      els.results.hidden = true;
-      els.stepPanel.hidden = false;
-      renderStep();
+    els.chipRow.addEventListener("click", (e) => {
+      const chip = e.target.closest("[data-remove]");
+      if (!chip) return;
+      clearFilterKey(chip.dataset.remove);
+      if (chip.dataset.remove === "horario") state.pickingDay = true;
+      updateAll();
+      if (!hasAnyFilter() && state.mode === "ahora") setMode("horario");
+    });
+
+    els.clearFilters.addEventListener("click", () => {
+      state.filters = emptyFilters();
+      state.pickingDay = true;
+      setMode(state.mode === "ahora" ? "horario" : state.mode);
     });
 
     let timer;
