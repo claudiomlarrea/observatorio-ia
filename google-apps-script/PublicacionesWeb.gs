@@ -1,6 +1,6 @@
 /**
  * Publicaciones OIA - API pública + panel privado con whitelist.
- * EDGE-PANEL-v3: panel con HtmlService (no ContentService: evita HTML crudo en /echo).
+ * EDGE-PANEL-v4: guardado con google.script.run (sin redirect /echo).
  *
  * Endpoints:
  * - GET  ?action=public (o sin action): JSON para la web pública.
@@ -315,7 +315,7 @@ function buildAdminPanelHtml_(apiUrl, defaultUnidad) {
   return (
     "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"utf-8\">" +
     "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">" +
-    "<title>Carga de Publicaciones</title>" +
+    "<title>Carga de Publicaciones · Panel v4</title>" +
     "<style>" +
     "body{font-family:Arial,sans-serif;max-width:900px;margin:24px auto;padding:0 16px;color:#1b1b1b}" +
     "h1{margin:0 0 16px}p.help{margin-top:0;color:#444}" +
@@ -327,22 +327,22 @@ function buildAdminPanelHtml_(apiUrl, defaultUnidad) {
     "button{background:#0b6b5d;color:#fff;border:0;border-radius:8px;padding:10px 14px;cursor:pointer}" +
     "button:disabled{opacity:.6;cursor:wait}#msg{min-height:24px;font-weight:600}.ok{color:#0c6b2f}.err{color:#8a1f1f}" +
     ".btn-sheet{display:inline-block;padding:10px 14px;border-radius:8px;border:2px solid #0b6b5d;color:#0b6b5d;background:#fff;font-weight:600;text-decoration:none}" +
+    ".ver{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;background:#e8f5f1;color:#0b6b5d;font-size:12px;font-weight:700}" +
     "@media(max-width:760px){form{grid-template-columns:1fr}}" +
     "</style></head><body>" +
-    "<h1>Carga de Publicaciones</h1>" +
+    "<h1>Carga de Publicaciones <span class=\"ver\">Panel v4</span></h1>" +
     "<p class=\"help\">Sesión: <strong>" +
     (email || "(sin correo detectado)") +
     "</strong>. Completá los datos y guardá.</p>" +
     "<p><a class=\"btn-sheet\" href=\"https://docs.google.com/spreadsheets/d/18xXPRok4kVF81hkEDDlfDf8Vx-KI2HeywZNFSXkozwU/edit#gid=0\" target=\"_blank\" rel=\"noopener noreferrer\">Abrir planilla en Google Sheets</a></p>" +
-    "<form id=\"f\" method=\"post\" action=\"" +
-    escapeHtml_(apiUrl) +
-    "\" target=\"_top\" accept-charset=\"UTF-8\">" +
-    "<input type=\"hidden\" name=\"action\" value=\"add\">" +
-    "<input type=\"hidden\" name=\"_panel\" value=\"1\">" +
+    "<form id=\"f\" action=\"#\" accept-charset=\"UTF-8\">" +
+    "<input type=\"hidden\" name=\"estado\" value=\"publicado\">" +
     "<div><label for=\"tipo\">Tipo *</label><select id=\"tipo\" name=\"tipo\" required>" +
     "<option value=\"Revista\">Revista</option><option value=\"Libro\">Libro</option>" +
     "<option value=\"Capítulo de libro\">Capítulo de libro</option><option value=\"Repositorio\">Informe</option>" +
-    "<option value=\"Evento\">Evento</option><option value=\"Diario\">Diario</option></select></div>" +
+    "<option value=\"Evento\">Evento</option><option value=\"Diario\">Diario</option>" +
+    "<option value=\"Paper\">Paper / artículo</option>" +
+    "<option value=\"Documento\">Documento de trabajo</option></select></div>" +
     "<div><label for=\"anio\">Año</label><input id=\"anio\" name=\"anio\" type=\"number\" min=\"1900\" max=\"2100\"></div>" +
     "<div class=\"full\"><label for=\"titulo\">Título *</label><input id=\"titulo\" name=\"titulo\" required></div>" +
     "<div class=\"full\"><label for=\"autores\">Autor/es</label><input id=\"autores\" name=\"autores\"></div>" +
@@ -359,17 +359,36 @@ function buildAdminPanelHtml_(apiUrl, defaultUnidad) {
     "<div><label for=\"evento\">Evento</label><input id=\"evento\" name=\"evento\"></div>" +
     "<div><label for=\"lugar\">Lugar</label><input id=\"lugar\" name=\"lugar\"></div>" +
     "<div><label for=\"fecha\">Fecha</label><input id=\"fecha\" name=\"fecha\"></div>" +
-    "<input type=\"hidden\" name=\"estado\" value=\"publicado\">" +
     "<div class=\"full\"><label for=\"resumen\">Resumen</label><textarea id=\"resumen\" name=\"resumen\"></textarea></div>" +
     "<div class=\"full\"><label for=\"repositorio\">Repositorio</label><input id=\"repositorio\" name=\"repositorio\"></div>" +
     "<div class=\"actions\"><button type=\"submit\" id=\"save-btn\">Guardar publicación</button><span id=\"msg\"></span></div>" +
     "</form>" +
-    "<script>(function(){var f=document.getElementById('f'),m=document.getElementById('msg'),b=document.getElementById('save-btn');" +
+    "<script>(function(){" +
+    "var f=document.getElementById('f'),m=document.getElementById('msg'),b=document.getElementById('save-btn');" +
+    "var defaultUnidad=" +
+    JSON.stringify(String(defaultUnidad || "")) +
+    ";" +
     "function setMsg(t,ok){m.textContent=t;m.className=ok?'ok':'err';}" +
-    "var p=new URLSearchParams(window.location.search);" +
-    "if(p.get('saved')==='1')setMsg('Guardado correctamente.',true);" +
-    "if(p.get('saved')==='0')setMsg('No se pudo guardar: '+(p.get('err')||'error'),false);" +
-    "f.addEventListener('submit',function(){if(!f.reportValidity())return;if(b)b.disabled=true;setMsg('Guardando…',true);});" +
+    "f.addEventListener('submit',function(ev){" +
+    "ev.preventDefault();" +
+    "if(!f.reportValidity())return;" +
+    "if(b)b.disabled=true;" +
+    "setMsg('Guardando…',true);" +
+    "var data={};" +
+    "var els=f.querySelectorAll('input,select,textarea');" +
+    "for(var i=0;i<els.length;i++){var el=els[i];if(!el.name)continue;data[el.name]=el.value;}" +
+    "if(typeof google==='undefined'||!google.script||!google.script.run){" +
+    "setMsg('Panel desactualizado. En Apps Script debe figurar «Panel v4» tras nueva implementación.',false);" +
+    "if(b)b.disabled=false;return;}" +
+    "google.script.run.withSuccessHandler(function(r){" +
+    "if(b)b.disabled=false;" +
+    "if(r&&r.ok){setMsg('Guardado correctamente.',true);f.reset();" +
+    "var u=document.getElementById('unidad');if(u&&defaultUnidad)u.value=defaultUnidad;}" +
+    "else{setMsg((r&&r.message)||'No se pudo guardar',false);}" +
+    "}).withFailureHandler(function(err){" +
+    "if(b)b.disabled=false;setMsg(String(err||'Error'),false);" +
+    "}).savePublicationAdmin_(data);" +
+    "});" +
     "})();</script></body></html>"
   );
 }

@@ -1,28 +1,19 @@
-# Reparar panel "Ingreso equipo · Cargar publicaciones"
+# Reparar panel de carga (si ves código al guardar)
 
-Síntoma 1: al abrir ?action=admin se ve el HTML como texto (código fuente).
-Síntoma 2: al guardar, se ve HTML de redirección como texto
-  ("Volviendo al sitio del Observatorio...") en /echo.
+Si al guardar aparece texto con panel-carga.html?saved=1:
+→ la implementación web TODAVÍA es la versión vieja.
+→ Igual el guardado suele haber funcionado (revisá la planilla).
 
-Causa: respuestas HTML con ContentService. Deben ir con HtmlService.
+## Cómo saber si ya está actualizado
+Al abrir el panel debe verse el sello verde **Panel v4** al lado del título.
+Si no está, la web sigue sirviendo código viejo.
 
-1) Abrí el proyecto Apps Script con investigacion@uccuyo.edu.ar
-   (Publicaciones Página Web).
+## Pasos (obligatorio: Nueva versión)
+1. script.google.com → proyecto Publicaciones Página Web
+2. Pegá TODO PublicacionesWeb.gs del repo (Cmd+A / Cmd+C / Cmd+V) → Guardar
+3. Implementar → Administrar implementaciones → ícono lápiz
+4. Versión: **Nueva versión** (no “Usar versión anterior”)
+5. Implementar
+6. Cerrá pestañas viejas del panel y abrí de nuevo desde el Observatorio
 
-2) Pegá el PublicacionesWeb.gs actual del repo:
-   observatorio-ia/google-apps-script/PublicacionesWeb.gs
-   Cmd+A → Cmd+C en Cursor → en Apps Script Cmd+A → Cmd+V → Guardar.
-
-3) Implementar → Administrar implementaciones → lápiz (la de /exec)
-   → Versión: Nueva versión → Implementar
-   Ejecutar como: tu cuenta
-   Quién tiene acceso: Cualquier usuario de Google
-
-4) Probar:
-   .../exec?action=admin
-   Debe verse el formulario. Completá un ítem y Guardar: debe volver
-   al formulario con “Guardado correctamente.” (no código fuente).
-
-5) Desde el Observatorio:
-   https://observatorio-ia.uccuyo.edu.ar/#publicaciones
-   → Ingreso equipo · Cargar publicaciones
+Si solo guardás el .gs sin “Nueva versión”, el /exec sigue con el código viejo.

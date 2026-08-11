@@ -17,6 +17,10 @@
           (<code>investigacion@uccuyo.edu.ar</code>, etc.).
         </p>
         <p id="panel-redirect">Redirigiendo…</p>
+        <p id="panel-saved" hidden style="color:#0c6b2f;font-weight:700">
+          La publicación se guardó. Si viste una pantalla con código, es solo la
+          redirección vieja: el dato ya está en la planilla.
+        </p>
         <p>
           <a id="panel-link" class="btn btn-primary" href="#">Abrir panel del equipo</a>
           ·
@@ -33,9 +37,17 @@
           : "index.html#publicaciones";
         var a = document.getElementById("panel-link");
         var msg = document.getElementById("panel-redirect");
+        var saved = document.getElementById("panel-saved");
+        var params = new URLSearchParams(window.location.search || "");
         if (a) a.href = url;
+        if (params.get("saved") === "1" && saved) {
+          saved.hidden = false;
+          if (msg) msg.textContent = "Redirigiendo al panel…";
+        }
         if (base) {
-          window.location.replace(url);
+          window.setTimeout(function () {
+            window.location.replace(url);
+          }, params.get("saved") === "1" ? 1200 : 0);
         } else if (msg) {
           msg.textContent = "Falta APPS_SCRIPT_URL en publicaciones-config.js";
         }
