@@ -168,15 +168,26 @@ function doPost(e) {
 }
 
 function panelAdminReturnUrl_(ok, message, payload) {
-  var base = "https://claudiomlarrea.github.io/observatorio-ia/panel-carga.html";
-  if (ok) return base + "?saved=1";
-  return base + "?saved=0&err=" + encodeURIComponent(String(message || "error"));
+  var base = "";
+  try {
+    base = ScriptApp.getService().getUrl() || "";
+  } catch (err) {
+    base = "";
+  }
+  if (!base) {
+    base = "https://claudiomlarrea.github.io/observatorio-ia/panel-carga.html";
+    if (ok) return base + "?saved=1";
+    return base + "?saved=0&err=" + encodeURIComponent(String(message || "error"));
+  }
+  var url = base + (base.indexOf("?") >= 0 ? "&" : "?") + "action=admin";
+  if (ok) return url + "&saved=1";
+  return url + "&saved=0&err=" + encodeURIComponent(String(message || "error"));
 }
 
 function panelSaveResponse_(ok, message, payload) {
-  return ContentService.createTextOutput(
-    contactRedirectHtml_(panelAdminReturnUrl_(ok, message, payload))
-  ).setMimeType(ContentService.MimeType.HTML);
+  return HtmlService.createHtmlOutput(contactRedirectHtml_(panelAdminReturnUrl_(ok, message, payload)))
+    .setTitle(ok ? "Guardado" : "Error al guardar")
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
 /** Llamado desde el panel HTML con google.script.run (no abre página en blanco). */

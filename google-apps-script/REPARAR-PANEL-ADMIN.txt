@@ -1,9 +1,10 @@
 # Reparar panel "Ingreso equipo · Cargar publicaciones"
 
-Síntoma: al abrir ?action=admin se ve el HTML como texto (código fuente),
-no el formulario. URL típica: script.googleusercontent.com/.../echo
+Síntoma 1: al abrir ?action=admin se ve el HTML como texto (código fuente).
+Síntoma 2: al guardar, se ve HTML de redirección como texto
+  ("Volviendo al sitio del Observatorio...") en /echo.
 
-Causa: renderAdmin_ devolvía ContentService (texto). Debe ser HtmlService.
+Causa: respuestas HTML con ContentService. Deben ir con HtmlService.
 
 1) Abrí el proyecto Apps Script con investigacion@uccuyo.edu.ar
    (Publicaciones Página Web).
@@ -19,7 +20,8 @@ Causa: renderAdmin_ devolvía ContentService (texto). Debe ser HtmlService.
 
 4) Probar:
    .../exec?action=admin
-   Debe verse el formulario "Carga de Publicaciones", no el código.
+   Debe verse el formulario. Completá un ítem y Guardar: debe volver
+   al formulario con “Guardado correctamente.” (no código fuente).
 
 5) Desde el Observatorio:
    https://observatorio-ia.uccuyo.edu.ar/#publicaciones
