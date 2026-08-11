@@ -16,11 +16,8 @@ LOGO = ROOT / "assets" / "logo-observatorio-ia-circle.png"
 PNG_OUT = ROOT / "assets" / "flayer-semillero-ia-2026-stories.png"
 PDF_OUT = ROOT / "assets" / "flayer-semillero-ia-2026.pdf"
 
-# Formulario público (no /edit)
-FORM_URL = (
-    "https://docs.google.com/forms/d/"
-    "1qHvn-2PLpb0zLi0j_g69Jv3CVsTcz7hZwHjl43bfq04/viewform"
-)
+# Formulario público de inscripción
+FORM_URL = "https://forms.gle/KEYoyYmZbxXZ5XWBA"
 
 W, H = 1080, 1920
 

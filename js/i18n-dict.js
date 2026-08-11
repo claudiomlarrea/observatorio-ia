@@ -47,6 +47,10 @@ window.I18N_DICT = {
     "es": "Jornadas de IA",
     "en": "AI Conference"
   },
+  "nav.semillero": {
+    "es": "Semillero de IA",
+    "en": "AI Seedbed"
+  },
   "nav.webinars": {
     "es": "Webinars",
     "en": "Webinars"
@@ -122,6 +126,10 @@ window.I18N_DICT = {
   "hero.cta.jornadas": {
     "es": "Jornadas de IA",
     "en": "AI Conference"
+  },
+  "hero.cta.semillero": {
+    "es": "Semillero de IA",
+    "en": "AI Seedbed"
   },
   "hero.cta.webinars": {
     "es": "Webinars",
@@ -569,6 +577,106 @@ window.I18N_DICT = {
   "sec.webinar.meetHint": {
     "es": "Google Meet · jueves 13 de agosto · 19:00 – 20:00 (Argentina)",
     "en": "Google Meet · Thursday, August 13 · 7:00 – 8:00 p.m. (Argentina)"
+  },
+  "sec.semillero.kicker": {
+    "es": "Programa institucional",
+    "en": "Institutional program"
+  },
+  "sec.semillero.title": {
+    "es": "Semillero de IA",
+    "en": "AI Seedbed"
+  },
+  "sec.semillero.intro": {
+    "es": "El <strong>Semillero de Inteligencia Artificial (SIA-UCCuyo)</strong> es el programa institucional permanente del Observatorio de IA para identificar, formar y acompañar a estudiantes de todas las carreras en proyectos de investigación, innovación y desarrollo tecnológico con Inteligencia Artificial.",
+    "en": "The <strong>Artificial Intelligence Seedbed (SIA-UCCuyo)</strong> is the Observatory’s permanent institutional program to identify, train, and mentor students from all degree programs in research, innovation, and technology projects with Artificial Intelligence."
+  },
+  "sec.semillero.flyer.aria": {
+    "es": "Abrir flayer PDF del Semillero de IA",
+    "en": "Open AI Seedbed flyer PDF"
+  },
+  "sec.semillero.flyer.download": {
+    "es": "Descargar flayer (PDF)",
+    "en": "Download flyer (PDF)"
+  },
+  "sec.semillero.badge": {
+    "es": "Convocatoria abierta",
+    "en": "Open call"
+  },
+  "sec.semillero.eventTitle": {
+    "es": "SIA-UCCuyo",
+    "en": "SIA-UCCuyo"
+  },
+  "sec.semillero.tagline": {
+    "es": "Formación · Mentoría · Proyectos reales con IA",
+    "en": "Training · Mentoring · Real AI projects"
+  },
+  "sec.semillero.facts.ariaLabel": {
+    "es": "Datos del Semillero",
+    "en": "Seedbed facts"
+  },
+  "sec.semillero.facts.para.label": {
+    "es": "Para quién",
+    "en": "Who"
+  },
+  "sec.semillero.facts.para.value": {
+    "es": "Estudiantes de pregrado, grado y posgrado · todas las carreras",
+    "en": "Undergraduate and graduate students · all degree programs"
+  },
+  "sec.semillero.facts.requisitos.label": {
+    "es": "Requisitos",
+    "en": "Requirements"
+  },
+  "sec.semillero.facts.requisitos.value": {
+    "es": "No se requieren conocimientos previos de programación ni de IA",
+    "en": "No prior programming or AI knowledge required"
+  },
+  "sec.semillero.facts.depende.label": {
+    "es": "Dependencia",
+    "en": "Affiliation"
+  },
+  "sec.semillero.facts.depende.value": {
+    "es": "Observatorio de IA · Secretaría de Investigación",
+    "en": "AI Observatory · Research Secretariat"
+  },
+  "sec.semillero.facts.enfoque.label": {
+    "es": "Enfoque",
+    "en": "Focus"
+  },
+  "sec.semillero.facts.enfoque.value": {
+    "es": "IA ética, interdisciplinaria y orientada al bien común",
+    "en": "Ethical, interdisciplinary AI for the common good"
+  },
+  "sec.semillero.about": {
+    "es": "Un espacio para transformar ideas estudiantiles en proyectos con potencial de investigación, desarrollo tecnológico y transferencia, con acompañamiento de mentores y un programa de formación progresivo.",
+    "en": "A space to turn student ideas into projects with research, technology development, and transfer potential, with mentor support and a progressive training pathway."
+  },
+  "sec.semillero.cta": {
+    "es": "Inscribirme al Semillero",
+    "en": "Apply to the Seedbed"
+  },
+  "sec.semillero.doc": {
+    "es": "Leer el proyecto (PDF)",
+    "en": "Read the project (PDF)"
+  },
+  "sec.semillero.form.title": {
+    "es": "Formulario de inscripción",
+    "en": "Enrollment form"
+  },
+  "sec.semillero.form.lead": {
+    "es": "Completá el formulario para postularte al Semillero de Inteligencia Artificial.",
+    "en": "Fill out the form to apply to the Artificial Intelligence Seedbed."
+  },
+  "sec.semillero.form.iframeTitle": {
+    "es": "Formulario de inscripción al Semillero de IA",
+    "en": "AI Seedbed enrollment form"
+  },
+  "sec.semillero.form.fallback": {
+    "es": "Si el formulario no se muestra,",
+    "en": "If the form does not load,"
+  },
+  "sec.semillero.form.open": {
+    "es": "abrilo en una pestaña nueva",
+    "en": "open it in a new tab"
   },
   "sec.galeria.kicker": {
     "es": "Archivo visual",
@@ -1241,6 +1349,10 @@ window.I18N_DICT = {
   "footer.jornadas": {
     "es": "Jornadas de IA",
     "en": "AI Conference"
+  },
+  "footer.semillero": {
+    "es": "Semillero de IA",
+    "en": "AI Seedbed"
   },
   "footer.webinars": {
     "es": "Webinars",

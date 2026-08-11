@@ -2965,6 +2965,89 @@ form.simple-form small {
   color: var(--color-muted, #5c4f54);
 }
 
+/* —— Semillero de IA —— */
+.section--semillero .text-intro {
+  max-width: 46rem;
+}
+
+.semillero-layout {
+  display: grid;
+  gap: 2rem;
+  align-items: start;
+  margin-bottom: 2.5rem;
+}
+
+@media (min-width: 860px) {
+  .semillero-layout {
+    grid-template-columns: minmax(14rem, 20rem) minmax(0, 1fr);
+    gap: 2.5rem;
+  }
+}
+
+.semillero-detail h3 {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  color: var(--color-institutional-dark);
+  line-height: 1.15;
+}
+
+.semillero-detail .tile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.semillero-form-block {
+  margin-top: 0.5rem;
+  padding: 1.5rem 1.25rem 1.25rem;
+  border-radius: 1rem;
+  background: var(--color-muted, #f4f0f1);
+  border: 1px solid rgba(var(--rgb-inst), 0.12);
+}
+
+.semillero-form-block h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1.35rem;
+  color: var(--color-institutional-dark);
+}
+
+.semillero-form-lead {
+  margin: 0 0 1.1rem;
+  color: var(--color-text-soft);
+  max-width: 40rem;
+}
+
+.semillero-form-frame {
+  position: relative;
+  width: 100%;
+  min-height: 42rem;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(40, 10, 20, 0.1);
+}
+
+.semillero-form-frame iframe {
+  display: block;
+  width: 100%;
+  min-height: 42rem;
+  height: 70vh;
+  max-height: 56rem;
+  border: 0;
+}
+
+.semillero-form-fallback {
+  margin: 0.85rem 0 0;
+  font-size: 0.92rem;
+  color: var(--color-text-soft);
+}
+
+.semillero-form-fallback a {
+  color: var(--color-institutional);
+  font-weight: 600;
+}
+
 /* —— Galería de Imágenes —— */
 .section--galeria .text-intro {
   max-width: 42rem;
