@@ -1,0 +1,73 @@
+================================================================================
+REPARAR proyecto Apps Script: «Publicaciones Página Web»
+================================================================================
+
+Diagnóstico de lo que pasó
+--------------------------
+Se pegó código .gs dentro de archivos equivocados:
+  • SyncLookerOpenAlex.gs  → tenía una copia VIEJA (v3) de PublicacionesWeb
+  • PublicacionesAdmin.html → tenía código .gs (debe ser HTML)
+
+En este proyecto, el servidor (doGet/doPost) vive en:
+  SyncLookerOpenAlex.gs
+(el nombre histórico del archivo; no hace falta crear otro .gs)
+
+Archivos correctos en tu Mac (repo observatorio-ia)
+----------------------------------------------------
+  google-apps-script/PublicacionesWeb.gs      ← pegar EN SyncLookerOpenAlex.gs
+  google-apps-script/PublicacionesAdmin.html  ← pegar EN PublicacionesAdmin.html
+  google-apps-script/EncuestaDocentesWeb.gs   ← solo si EncuestaDocentesWeb está roto
+
+PASO A — Restaurar SyncLookerOpenAlex.gs
+----------------------------------------
+1. En Cursor abrí:
+     /Users/claudiolarrea/Projects/observatorio-ia/google-apps-script/PublicacionesWeb.gs
+2. Cmd+A → Cmd+C
+3. En Apps Script: clic en SyncLookerOpenAlex.gs (o SyncLookerOpenAlex.gs.gs)
+4. Cmd+A → Cmd+V → Guardar (Cmd+S)
+5. Verificá que la línea 3 diga:  EDGE-PANEL-v4
+   (si dice v3 o v2, NO es el archivo bueno)
+
+PASO B — Restaurar PublicacionesAdmin.html
+------------------------------------------
+1. En Cursor abrí:
+     /Users/claudiolarrea/Projects/observatorio-ia/google-apps-script/PublicacionesAdmin.html
+2. Cmd+A → Cmd+C
+3. En Apps Script: clic en PublicacionesAdmin.html
+4. Cmd+A → Cmd+V → Guardar
+5. Debe empezar con <!DOCTYPE html>  (NO con "var SPREADSHEET_ID")
+
+PASO C — EncuestaDocentesWeb.gs (solo si hace falta)
+----------------------------------------------------
+Si ese archivo está vacío o con basura:
+1. Pegá google-apps-script/EncuestaDocentesWeb.gs completo ahí
+2. Guardá
+
+PASO D — NO crear un segundo PublicacionesWeb.gs
+------------------------------------------------
+Si en el panel izquierdo aparece un archivo nuevo «PublicacionesWeb»:
+  • o bien BORRALO,
+  • o bien vacialo,
+para no tener doGet/doPost duplicados (rompe el proyecto).
+
+PASO E — Nueva implementación (obligatorio)
+-------------------------------------------
+1. Implementar → Administrar implementaciones
+2. Lápiz (la implementación de tipo Aplicación web /exec)
+3. Versión: Nueva versión
+4. Quién tiene acceso: Cualquier usuario de Google
+5. Implementar
+
+PASO F — Probar
+---------------
+1. Abrí:
+   https://observatorio-ia.uccuyo.edu.ar/#publicaciones
+2. «Ingreso equipo · Cargar publicaciones»
+3. Debe verse el sello verde «Panel v4»
+4. Guardá una prueba: debe decir «Guardado correctamente» SIN pantalla de código
+
+Si algo falla
+-------------
+• ¿La línea 3 de SyncLookerOpenAlex dice EDGE-PANEL-v4? Si no → repetí PASO A.
+• ¿PublicacionesAdmin empieza con <!DOCTYPE html>? Si no → repetí PASO B.
+• ¿Hiciste «Nueva versión»? Solo Guardar no alcanza.
