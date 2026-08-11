@@ -105,9 +105,9 @@ body {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(1.85rem, 7vw, 2.6rem);
+  font-size: clamp(1.65rem, 6.5vw, 2.35rem);
   letter-spacing: -0.02em;
-  line-height: 1;
+  line-height: 1.05;
 }
 
 .brand-sub {
@@ -315,13 +315,22 @@ body {
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--navy);
-  width: 2rem;
+  min-width: 2rem;
   height: 2rem;
+  padding: 0 0.45rem;
   border-radius: 0.35rem;
   font-family: var(--font-display);
   font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.alpha-btn-all {
+  min-width: auto;
+  padding: 0 0.65rem;
 }
 
 .alpha-btn.is-active {

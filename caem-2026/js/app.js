@@ -500,7 +500,7 @@
         ${letters
           .map(
             (L) => `
-          <button type="button" class="alpha-btn${state.letter === L ? " is-active" : ""}" data-letter="${L}">
+          <button type="button" class="alpha-btn${L === "Todas" ? " alpha-btn-all" : ""}${state.letter === L ? " is-active" : ""}" data-letter="${L}">
             ${L === "Todas" ? "Todas" : L}
           </button>`
           )
