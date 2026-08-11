@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Programa académico CAEM 2026: buscá sala, horario y disertante del Congreso Argentino de Educación Médica."
+      content="Sistema de consulta CAEM 2026: encontrá horario, tema, tipo de exposición, disertante y aula."
     />
-    <title>Programa CAEM 2026 — Consulta rápida</title>
+    <meta name="theme-color" content="#0b1f4a" />
+    <title>CAEM 2026 — Encontrá tu sesión</title>
+    <link rel="icon" type="image/png" href="assets/logo-caem.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -21,54 +23,86 @@
 
     <header class="site-header">
       <div class="header-inner">
-        <p class="brand-kicker">AFACIMERA · Facultad de Medicina UBA</p>
-        <h1 class="brand-title">CAEM 2026</h1>
-        <p class="brand-sub">Programa académico · Encontrá sala, horario y disertante</p>
-        <p class="brand-dates">16 al 18 de septiembre de 2026</p>
+        <img
+          class="brand-logo"
+          src="assets/logo-caem.png"
+          width="96"
+          height="115"
+          alt="CAEM 2026 — 26° Congreso Argentino de Educación Médica"
+          decoding="async"
+        />
+        <div class="brand-copy">
+          <p class="brand-kicker">AFACIMERA · Facultad de Medicina UBA</p>
+          <h1 class="brand-title">CAEM 2026</h1>
+          <p class="brand-sub">¿Qué querés encontrar?</p>
+          <p class="brand-dates">16 al 18 de septiembre de 2026</p>
+        </div>
       </div>
     </header>
 
+    <nav class="botonera" aria-label="Cómo buscar" id="botonera">
+      <button type="button" class="mode-btn is-active" data-mode="horario">
+        <span class="mode-icon" aria-hidden="true">Hr</span>
+        Horario
+      </button>
+      <button type="button" class="mode-btn" data-mode="tema">
+        <span class="mode-icon" aria-hidden="true">Ej</span>
+        Tema
+      </button>
+      <button type="button" class="mode-btn" data-mode="tipo">
+        <span class="mode-icon" aria-hidden="true">Tp</span>
+        Tipo
+      </button>
+      <button type="button" class="mode-btn" data-mode="disertante">
+        <span class="mode-icon" aria-hidden="true">Di</span>
+        Disertante
+      </button>
+      <button type="button" class="mode-btn" data-mode="aula">
+        <span class="mode-icon" aria-hidden="true">Au</span>
+        Aula
+      </button>
+      <button type="button" class="mode-btn mode-btn-now" data-mode="ahora">
+        <span class="mode-icon" aria-hidden="true">Now</span>
+        Ahora
+      </button>
+    </nav>
+
     <main id="contenido" class="main">
-      <section class="now-block" id="now-block" aria-live="polite" hidden>
-        <h2 class="now-label" id="now-label">Ahora</h2>
-        <div id="now-content"></div>
-      </section>
-
-      <section class="search-block" aria-label="Buscar en el programa">
-        <label class="search-label" for="search-input">Buscar</label>
-        <input
-          id="search-input"
-          class="search-input"
-          type="search"
-          placeholder="Título, disertante, sala…"
-          autocomplete="off"
-          enterkeyhint="search"
-        />
-        <p class="search-hint" id="search-hint" hidden></p>
-      </section>
-
-      <section class="filters" aria-label="Filtros">
-        <div class="day-tabs" role="tablist" aria-label="Día del congreso" id="day-tabs"></div>
-        <div class="sala-filters" role="group" aria-label="Sala">
-          <button type="button" class="sala-chip is-active" data-sala="todas">Todas</button>
-          <button type="button" class="sala-chip" data-sala="Aula Magna">Aula Magna</button>
-          <button type="button" class="sala-chip" data-sala="Salón de Consejo">Salón de Consejo</button>
+      <section class="step-panel" id="step-panel" aria-live="polite">
+        <div class="step-head">
+          <h2 class="step-title" id="step-title">Elegí el día</h2>
+          <p class="step-help" id="step-help">Primero el día, después el horario.</p>
         </div>
+        <div class="step-tools" id="step-tools" hidden>
+          <label class="sr-only" for="person-filter">Filtrar nombres</label>
+          <input
+            id="person-filter"
+            class="person-filter"
+            type="search"
+            placeholder="Escribí un apellido o nombre…"
+            autocomplete="off"
+          />
+        </div>
+        <div class="option-grid" id="option-grid" role="listbox" aria-label="Opciones"></div>
       </section>
 
-      <section class="eje-banner" id="eje-banner" aria-live="polite"></section>
-
-      <section class="program" id="program" aria-label="Programa"></section>
+      <section class="results" id="results" aria-label="Resultados" hidden>
+        <div class="results-head">
+          <h2 class="results-title" id="results-title">Resultados</h2>
+          <button type="button" class="back-btn" id="back-btn">← Cambiar filtro</button>
+        </div>
+        <div id="results-body"></div>
+      </section>
     </main>
 
     <footer class="site-footer">
       <p>
         Fuente: Programa Académico CAEM 2026.
         <a href="https://caem.afacimera.org.ar/" target="_blank" rel="noopener noreferrer"
-          >Sitio oficial del congreso</a
+          >Sitio oficial</a
         >
       </p>
-      <p class="footer-note">Consulta rápida · Observatorio de IA · UCCuyo</p>
+      <p class="footer-note">Sistema de consulta · Observatorio de IA · UCCuyo</p>
     </footer>
 
     <script src="js/app.js" defer></script>
