@@ -186,6 +186,10 @@ window.I18N_DICT = {
     es: "No se pudo cargar el programa.",
     en: "Could not load the program."
   },
+  "results.retry": {
+    es: "Reintentar",
+    en: "Try again"
+  },
   "results.axis": {
     es: "Eje: {name}",
     en: "Track: {name}"

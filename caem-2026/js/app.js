@@ -35,6 +35,7 @@
     letter: "Todas",
     personQuery: "",
     filters: emptyFilters(),
+    eventsBound: false,
   };
 
   const els = {
@@ -785,6 +786,9 @@
   }
 
   function bindEvents() {
+    if (state.eventsBound) return;
+    state.eventsBound = true;
+
     els.botonera.addEventListener("click", (e) => {
       const btn = e.target.closest("[data-mode]");
       if (!btn) return;
@@ -805,7 +809,7 @@
       onOptionClick(opt.dataset.value);
     });
 
-    els.chipRow.addEventListener("click", (e) => {
+    els.chipRow?.addEventListener("click", (e) => {
       const chip = e.target.closest("[data-remove]");
       if (!chip) return;
       clearFilterKey(chip.dataset.remove);
@@ -814,14 +818,14 @@
       if (!hasAnyFilter() && state.mode === "ahora") setMode("horario");
     });
 
-    els.clearFilters.addEventListener("click", () => {
+    els.clearFilters?.addEventListener("click", () => {
       state.filters = emptyFilters();
       state.pickingDay = true;
       setMode(state.mode === "ahora" ? "horario" : state.mode);
     });
 
     let timer;
-    els.personFilter.addEventListener("input", () => {
+    els.personFilter?.addEventListener("input", () => {
       clearTimeout(timer);
       timer = setTimeout(() => {
         state.personQuery = els.personFilter.value.trim();
@@ -834,15 +838,38 @@
   }
 
   async function init() {
+    const showLoadError = (detail) => {
+      const msg = escapeHtml(t("results.loadError"));
+      const extra = detail ? `<br><small>${escapeHtml(detail)}</small>` : "";
+      els.optionGrid.innerHTML = `
+        <p class="empty">${msg}${extra}</p>
+        <button type="button" class="option-btn" id="retry-load">
+          <strong>${escapeHtml(t("results.retry"))}</strong>
+        </button>`;
+      const retry = document.getElementById("retry-load");
+      if (retry) retry.addEventListener("click", () => init());
+    };
+
     try {
-      const res = await fetch("data/programa.json", { cache: "no-store" });
+      const basePath = window.location.pathname.endsWith("/")
+        ? window.location.pathname
+        : `${window.location.pathname.replace(/\/?$/, "")}/`;
+      const url = new URL(`data/programa.json?v=2`, `${window.location.origin}${basePath}`);
+      let res;
+      try {
+        res = await fetch(url.href, { cache: "no-store" });
+      } catch (_net) {
+        // fallback relative
+        res = await fetch("data/programa.json?v=2", { cache: "no-store" });
+      }
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       state.data = await res.json();
+      if (!state.data?.sesiones?.length) throw new Error("empty program");
       bindEvents();
       setMode("horario");
     } catch (err) {
-      els.optionGrid.innerHTML = `<p class="empty">${escapeHtml(t("results.loadError"))}</p>`;
       console.error(err);
+      showLoadError(err && err.message ? err.message : String(err));
     }
   }
 
