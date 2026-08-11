@@ -60,6 +60,10 @@ window.I18N_DICT = {
     es: "16 al 18 de septiembre de 2026",
     en: "September 16–18, 2026"
   },
+  "pdf.download": {
+    es: "Descargar programa completo (PDF)",
+    en: "Download full program (PDF)"
+  },
 
   "mode.horario": { es: "Horario", en: "Schedule" },
   "mode.tema": { es: "Tema", en: "Topic" },
