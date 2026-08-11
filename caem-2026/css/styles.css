@@ -80,6 +80,7 @@ body {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .brand-logo {
@@ -90,6 +91,64 @@ body {
   background: #fff;
   padding: 0.35rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+.brand-copy {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
+.lang-switcher {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.2rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  margin-left: auto;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.18);
+  align-self: flex-start;
+}
+
+.lang-switcher__btn {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.32rem 0.55rem;
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.88);
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  line-height: 1;
+}
+
+.lang-switcher__flag {
+  font-size: 1.05rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.25));
+}
+
+.lang-switcher__code {
+  font-size: 0.7rem;
+}
+
+.lang-switcher__btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.lang-switcher__btn.is-active {
+  color: var(--navy);
+  background: #fff;
 }
 
 .brand-kicker {

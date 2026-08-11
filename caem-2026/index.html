@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
-    <a class="skip-link" href="#contenido">Ir al contenido</a>
+    <a class="skip-link" href="#contenido" data-i18n="a11y.skipLink">Ir al contenido</a>
 
     <header class="site-header">
       <div class="header-inner">
@@ -30,40 +30,43 @@
           height="115"
           alt="CAEM 2026 — 26° Congreso Argentino de Educación Médica"
           decoding="async"
+          data-i18n-attr="alt:a11y.logoAlt"
         />
         <div class="brand-copy">
-          <p class="brand-kicker">CAEM 2026 · AFACIMERA · Facultad de Medicina UBA</p>
-          <h1 class="brand-title">App de Consulta</h1>
-          <p class="brand-sub">¿Qué querés encontrar?</p>
-          <p class="brand-dates">16 al 18 de septiembre de 2026</p>
+          <p class="brand-kicker" data-i18n="brand.kicker">
+            CAEM 2026 · AFACIMERA · Facultad de Medicina UBA
+          </p>
+          <h1 class="brand-title" data-i18n="brand.title">App de Consulta</h1>
+          <p class="brand-sub" data-i18n="brand.sub">¿Qué querés encontrar?</p>
+          <p class="brand-dates" data-i18n="brand.dates">16 al 18 de septiembre de 2026</p>
         </div>
       </div>
     </header>
 
-    <nav class="botonera" aria-label="Cómo buscar" id="botonera">
+    <nav class="botonera" aria-label="Cómo buscar" id="botonera" data-i18n-attr="aria-label:a11y.botonera">
       <button type="button" class="mode-btn is-active" data-mode="horario">
         <span class="mode-icon" aria-hidden="true">Hr</span>
-        Horario
+        <span data-i18n="mode.horario">Horario</span>
       </button>
       <button type="button" class="mode-btn" data-mode="tema">
         <span class="mode-icon" aria-hidden="true">Ej</span>
-        Tema
+        <span data-i18n="mode.tema">Tema</span>
       </button>
       <button type="button" class="mode-btn" data-mode="tipo">
         <span class="mode-icon" aria-hidden="true">Tp</span>
-        Tipo
+        <span data-i18n="mode.tipo">Tipo</span>
       </button>
       <button type="button" class="mode-btn" data-mode="disertante">
         <span class="mode-icon" aria-hidden="true">Di</span>
-        Disertante
+        <span data-i18n="mode.disertante">Disertante</span>
       </button>
       <button type="button" class="mode-btn" data-mode="aula">
         <span class="mode-icon" aria-hidden="true">Au</span>
-        Aula
+        <span data-i18n="mode.aula">Aula</span>
       </button>
       <button type="button" class="mode-btn mode-btn-now" data-mode="ahora">
         <span class="mode-icon" aria-hidden="true">Now</span>
-        Ahora
+        <span data-i18n="mode.ahora">Ahora</span>
       </button>
     </nav>
 
@@ -74,22 +77,39 @@
           <p class="step-help" id="step-help">Primero el día, después el horario.</p>
         </div>
         <div class="step-tools" id="step-tools" hidden>
-          <label class="sr-only" for="person-filter">Filtrar nombres</label>
+          <label class="sr-only" for="person-filter" data-i18n="a11y.personFilter"
+            >Filtrar nombres</label
+          >
           <input
             id="person-filter"
             class="person-filter"
             type="search"
             placeholder="Escribí un apellido o nombre…"
             autocomplete="off"
+            data-i18n-attr="placeholder:person.filterPlaceholder"
           />
         </div>
-        <div class="option-grid" id="option-grid" role="listbox" aria-label="Opciones"></div>
+        <div
+          class="option-grid"
+          id="option-grid"
+          role="listbox"
+          aria-label="Opciones"
+          data-i18n-attr="aria-label:a11y.options"
+        ></div>
       </section>
 
-      <section class="results" id="results" aria-label="Resultados" hidden>
+      <section
+        class="results"
+        id="results"
+        aria-label="Resultados"
+        data-i18n-attr="aria-label:a11y.results"
+        hidden
+      >
         <div class="results-head">
-          <h2 class="results-title" id="results-title">Resultados</h2>
-          <button type="button" class="back-btn" id="back-btn">← Cambiar filtro</button>
+          <h2 class="results-title" id="results-title" data-i18n="results.title">Resultados</h2>
+          <button type="button" class="back-btn" id="back-btn" data-i18n="back.filter">
+            ← Cambiar filtro
+          </button>
         </div>
         <div id="results-body"></div>
       </section>
@@ -97,14 +117,22 @@
 
     <footer class="site-footer">
       <p>
-        Fuente: Programa Académico CAEM 2026.
-        <a href="https://caem.afacimera.org.ar/" target="_blank" rel="noopener noreferrer"
+        <span data-i18n="footer.source">Fuente: Programa Académico CAEM 2026.</span>
+        <a
+          href="https://caem.afacimera.org.ar/"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-i18n="footer.official"
           >Sitio oficial</a
         >
       </p>
-      <p class="footer-note">App de Consulta · Observatorio de IA · UCCuyo</p>
+      <p class="footer-note" data-i18n="footer.note">
+        App de Consulta · Observatorio de IA · UCCuyo
+      </p>
     </footer>
 
+    <script src="js/i18n-dict.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="js/app.js" defer></script>
   </body>
 </html>
