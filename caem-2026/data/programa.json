@@ -1,0 +1,703 @@
+{
+  "meta": {
+    "titulo": "XXVI Congreso Argentino de Educación Médica – CAEM 2026",
+    "subtitulo": "Nuevas Fronteras en Educación en Salud — Vocación e Innovación",
+    "fechas": ["2026-09-16", "2026-09-17", "2026-09-18"],
+    "sede": "Facultad de Medicina – Universidad de Buenos Aires",
+    "salas": ["Aula Magna", "Salón de Consejo"],
+    "sitioOficial": "https://caem.afacimera.org.ar/",
+    "fuente": "Programa Académico CAEM 2026"
+  },
+  "ejes": [
+    {
+      "id": "eje-1",
+      "dia": "2026-09-16",
+      "nombre": "Vocación, sentido y compromiso social en educación en salud"
+    },
+    {
+      "id": "eje-2",
+      "dia": "2026-09-17",
+      "nombre": "Innovación educativa basada en evidencia"
+    },
+    {
+      "id": "eje-3",
+      "dia": "2026-09-18",
+      "nombre": "Nuevas fronteras del rol docente y del estudiante"
+    }
+  ],
+  "sesiones": [
+    {
+      "id": "2026-09-16-1230-aula-magna",
+      "dia": "2026-09-16",
+      "inicio": "12:30",
+      "fin": "13:15",
+      "sala": "Aula Magna",
+      "tipo": "bienvenida",
+      "titulo": "Palabras de Bienvenida",
+      "disertantes": ["Autoridades de AFACIMERA y del Congreso"],
+      "moderadores": [],
+      "ejeId": "eje-1"
+    },
+    {
+      "id": "2026-09-16-1315-aula-magna",
+      "dia": "2026-09-16",
+      "inicio": "13:15",
+      "fin": "14:00",
+      "sala": "Aula Magna",
+      "tipo": "conferencia",
+      "titulo": "Periodismo Médico",
+      "disertantes": ["Dr. Claudio Zin", "Periodista Guillermo Lobos"],
+      "moderadores": ["Dr. Ignacio Brusco (UBA)"],
+      "ejeId": "eje-1"
+    },
+    {
+      "id": "2026-09-16-1400-aula-magna",
+      "dia": "2026-09-16",
+      "inicio": "14:00",
+      "fin": "14:45",
+      "sala": "Aula Magna",
+      "tipo": "plenaria",
+      "titulo": "Sesgos Cognitivos en la Educación Médica. ¿Cuánto afectan a la enseñanza actual?",
+      "disertantes": ["Dr. José Luis García (CEMIC)"],
+      "moderadores": ["Dr. Santiago Vidaurreta (CEMIC)"],
+      "ejeId": "eje-1"
+    },
+    {
+      "id": "2026-09-16-1400-salon-consejo",
+      "dia": "2026-09-16",
+      "inicio": "14:00",
+      "fin": "14:45",
+      "sala": "Salón de Consejo",
+      "tipo": "mesa",
+      "titulo": "El rol de la Formación Emocional en la identidad profesional - Una brújula interior",
+      "disertantes": [
+        "Lic. Graciela del Valle Ahumada (UCU)",
+        "Lic. María Lis Piter (UCU)",
+        "Mg. Claudia Calvo (UFASTA)"
+      ],
+      "moderadores": ["Dra. Fernanda Valenzuela (UFASTA)"],
+      "ejeId": "eje-1"
+    },
+    {
+      "id": "2026-09-16-1445-aula-magna",
+      "dia": "2026-09-16",
+      "inicio": "14:45",
+      "fin": "15:30",
+      "sala": "Aula Magna",
+      "tipo": "plenaria",
+      "titulo": "El rol de las universidades en el desarrollo de la vocación en la formación en salud: más allá del 'sacrificio' y del Burnout",
+      "disertantes": ["Mgter. Laura Elizabeth Leyes (UNNE)"],
+      "moderadores": ["Dr. Jorge Daniel Scheinkman (UNNE)"],
+      "ejeId": "eje-1"
+    },
+    {
+      "id": "2026-09-16-1445-salon-consejo",
+      "dia": "2026-09-16",
+      "inicio": "14:45",
+      "fin": "15:30",
+      "sala": "Salón de Consejo",
+      "tipo": "conversatorio",
+      "titulo": "La encrucijada de la enseñanza clínica: la identidad profesional docente. Lo que los médicos que enseñan creen, sienten y los sostiene",
+      "disertantes": ["Dr. Sergio Giannasi (UHIBA)"],
+      "moderadores": ["Dr. Diego Faingold (UHIBA)"],
+      "ejeId": "eje-1"
+    },
+    {
+      "id": "2026-09-16-1530-aula-magna",
+      "dia": "2026-09-16",
+      "inicio": "15:30",
+      "fin": "16:15",
+      "sala": "Aula Magna",
+      "tipo": "conversatorio",
+      "titulo": "El abordaje de la salud mental en el ámbito universitario",
+      "disertantes": [
+        "Dra. Liliana González (Directora Nacional de Abordaje Integral de Salud Mental y Consumos Problemáticos)",
+        "Dr. Ignacio Brusco (UBA)",
+        "Dr. Ángel Pellegrino (UdeA)",
+        "Dr. Ricardo Znaidak (UBarceló)"
+      ],
+      "moderadores": ["Dr. Gustavo Marín (UNLP)"],
+      "ejeId": "eje-1"
+    },
+    {
+      "id": "2026-09-16-1530-salon-consejo",
+      "dia": "2026-09-16",
+      "inicio": "15:30",
+      "fin": "16:15",
+      "sala": "Salón de Consejo",
+      "tipo": "mesa",
+      "titulo": "Educación en Salud y responsabilidad Social",
+      "disertantes": [
+        "Dra. María del Carmen Bacqué (USAL)",
+        "Dra. Larisa Carrera (UNL)",
+        "Dr. Jacques Girard (UNL)"
+      ],
+      "moderadores": ["Dr. Daniel Martínez (USAL)"],
+      "ejeId": "eje-1"
+    },
+    {
+      "id": "2026-09-16-1615-receso",
+      "dia": "2026-09-16",
+      "inicio": "16:15",
+      "fin": "17:00",
+      "sala": "",
+      "tipo": "receso",
+      "titulo": "Receso",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-1"
+    },
+    {
+      "id": "2026-09-16-1700-aula-magna",
+      "dia": "2026-09-16",
+      "inicio": "17:00",
+      "fin": "17:45",
+      "sala": "Aula Magna",
+      "tipo": "mesa",
+      "titulo": "Del aula al territorio: experiencias de formación médica con compromiso social",
+      "disertantes": [
+        "Dra. Estela Pereyra (UNT)",
+        "Dra. Liliana Tefaha (UNT)",
+        "Dr. Guillermo Mazzolini (Austral)",
+        "Lic. Zacarías Catriel Agüero (UCA)"
+      ],
+      "moderadores": ["Dr. Gregorio Etcheverry (UNER)"],
+      "ejeId": "eje-1"
+    },
+    {
+      "id": "2026-09-16-1700-salon-consejo",
+      "dia": "2026-09-16",
+      "inicio": "17:00",
+      "fin": "17:45",
+      "sala": "Salón de Consejo",
+      "tipo": "mesa",
+      "titulo": "Sistema Argentino de Créditos Académicos Universitarios (SACAU)",
+      "disertantes": [
+        "Lic. Matías Zubiria (DNGU)",
+        "Ing. Marcelo De Vincenzi (Presidente CONFEDI)"
+      ],
+      "moderadores": ["Dr. Ricardo Znaidak (UBarceló)"],
+      "ejeId": "eje-1"
+    },
+    {
+      "id": "2026-09-16-1745-aula-magna",
+      "dia": "2026-09-16",
+      "inicio": "17:45",
+      "fin": "18:45",
+      "sala": "Aula Magna",
+      "tipo": "acto",
+      "titulo": "Acto Inaugural",
+      "disertantes": ["Autoridades de AFACIMERA, del Congreso e Invitados especiales"],
+      "moderadores": [],
+      "ejeId": "eje-1"
+    },
+    {
+      "id": "2026-09-17-0830-aula-magna",
+      "dia": "2026-09-17",
+      "inicio": "08:30",
+      "fin": "09:15",
+      "sala": "Aula Magna",
+      "tipo": "mesa",
+      "titulo": "One Health",
+      "disertantes": [
+        "Dra. Rosa Contreras (UCCuyo sede San Juan)",
+        "Dra. Analía Tortosa (UMaimónides)",
+        "Dr. Rodrigo O. Marañón (UNT)"
+      ],
+      "moderadores": ["Dr. Sergio Albarracín (UCCuyo sede San Juan)"],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-17-0830-salon-consejo",
+      "dia": "2026-09-17",
+      "inicio": "08:30",
+      "fin": "09:15",
+      "sala": "Salón de Consejo",
+      "tipo": "mesa",
+      "titulo": "Experiencias y trayectoria del Área de Acreditación de carreras de Posgrado",
+      "disertantes": ["Dra. Tamara Pepe (UBA)", "Dr. Roberto Brain (UNC)"],
+      "moderadores": ["Dr. Matías Rojo (UBA)"],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-17-0915-aula-magna",
+      "dia": "2026-09-17",
+      "inicio": "09:15",
+      "fin": "10:00",
+      "sala": "Aula Magna",
+      "tipo": "mesa",
+      "titulo": "Innovación curricular",
+      "disertantes": [
+        "Dr. Eduardo Durante (UHIBA)",
+        "Dr. Ángel Pellegrino (UDA)",
+        "Dra. Liliana Tefaha (UNT)",
+        "Mgtr. Verónica Lupidi (UBarceló)",
+        "Dr. Alejandro Botbol (UAI)"
+      ],
+      "moderadores": ["Dr. Francisco Cutroni (UM)"],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-17-0915-salon-consejo",
+      "dia": "2026-09-17",
+      "inicio": "09:15",
+      "fin": "10:00",
+      "sala": "Salón de Consejo",
+      "tipo": "plenaria",
+      "titulo": "Historias que enseñan: Medicina narrativa - Una estrategia histórica, con un enfoque didáctico diferente",
+      "disertantes": ["Dr. Gastón Miguel Paltengh (UNER)"],
+      "moderadores": ["Dra. Silvia Sookian (UMaimónides)"],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-17-1000-aula-magna",
+      "dia": "2026-09-17",
+      "inicio": "10:00",
+      "fin": "10:45",
+      "sala": "Aula Magna",
+      "tipo": "mesa",
+      "titulo": "Herramientas de IA en Educación Médica",
+      "disertantes": [
+        "Dr. Enrique Majul (UCC)",
+        "Dr. Hernán Seoane (UCSE)",
+        "Mgtr. Silvia Andreoli (UBA)",
+        "Dr. Hugo Catalano (USAL)"
+      ],
+      "moderadores": ["Dr. Pablo Badr (UNS)"],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-17-1000-salon-consejo",
+      "dia": "2026-09-17",
+      "inicio": "10:00",
+      "fin": "10:45",
+      "sala": "Salón de Consejo",
+      "tipo": "mesa",
+      "titulo": "Calidad en simulación",
+      "disertantes": [
+        "Dr. Diego Vinciguerra (UBarceló)",
+        "Dra. Carla Prudencio (H. Garrahan)",
+        "Dra. Dolores Latugaye (UA)"
+      ],
+      "moderadores": ["Dra. Carolina Astoul Bonorino (UA)"],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-17-1045-receso",
+      "dia": "2026-09-17",
+      "inicio": "10:45",
+      "fin": "11:30",
+      "sala": "",
+      "tipo": "receso",
+      "titulo": "Receso",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-17-1130-aula-magna",
+      "dia": "2026-09-17",
+      "inicio": "11:30",
+      "fin": "12:15",
+      "sala": "Aula Magna",
+      "tipo": "mesa",
+      "titulo": "Casos de éxito en innovación de educación médica que han cambiado la política educativa (FEPAFEM)",
+      "disertantes": ["Dr. Luis Podestá (ASPEFAM)", "Dr. Ramón Esperón (AMFEM)"],
+      "moderadores": ["Dr. Ángel Pellegrino (UDA)"],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-17-1215-aula-magna",
+      "dia": "2026-09-17",
+      "inicio": "12:15",
+      "fin": "13:00",
+      "sala": "Aula Magna",
+      "tipo": "mesa",
+      "titulo": "El rol del médico del futuro",
+      "disertantes": [
+        "Dr. Ramón Esperón (AMFEM)",
+        "Dra. Ana María Moraga (ASOFAMECH)"
+      ],
+      "moderadores": ["Dr. Marcos Núñez Cuervo (UNIBE, FEPAFEM)"],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-17-1300-receso",
+      "dia": "2026-09-17",
+      "inicio": "13:00",
+      "fin": "14:30",
+      "sala": "",
+      "tipo": "receso",
+      "titulo": "Receso",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-17-1430-aula-magna",
+      "dia": "2026-09-17",
+      "inicio": "14:30",
+      "fin": "15:15",
+      "sala": "Aula Magna",
+      "tipo": "mesa",
+      "titulo": "Formación de posgrado y residencias médicas",
+      "disertantes": [
+        "Dr. Saúl Flores (MSAL)",
+        "Dr. Juan Pablo Vivas (MSAL)",
+        "Dr. Enrique Rifourcat (MSAL)"
+      ],
+      "moderadores": ["Dr. Ricardo Znaidak (UBarceló)"],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-17-1430-salon-consejo",
+      "dia": "2026-09-17",
+      "inicio": "14:30",
+      "fin": "15:15",
+      "sala": "Salón de Consejo",
+      "tipo": "mesa",
+      "titulo": "Estrategias educativas para una práctica profesional comprometida, reflexiva y socialmente responsable (AUAKYFA)",
+      "disertantes": [
+        "Mgtr. Laura Leyes (UNNE)",
+        "Lic. Marcela Rivarola (UNC)",
+        "Lic. Diego Castagnaro (UBarceló)"
+      ],
+      "moderadores": ["Dra. Karina Hernández (UCLP)"],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-17-1515-aula-magna",
+      "dia": "2026-09-17",
+      "inicio": "15:15",
+      "fin": "16:00",
+      "sala": "Aula Magna",
+      "tipo": "mesa",
+      "titulo": "Los mecanismos internos de aseguramiento de la calidad y la acreditación de las carreras de ciencias de la salud",
+      "disertantes": [
+        "Dr. Martín Strah (CONEAU)",
+        "Lic. Marcela Groppo (CONEAU)"
+      ],
+      "moderadores": ["Dr. Martín Donato (UBA)"],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-17-1515-salon-consejo",
+      "dia": "2026-09-17",
+      "inicio": "15:15",
+      "fin": "16:00",
+      "sala": "Salón de Consejo",
+      "tipo": "mesa",
+      "titulo": "Educación Interprofesional: de la teoría a la práctica",
+      "disertantes": [
+        "Dra. Larisa Carrera (UNL)",
+        "Dra. Yohana Diaz del Valle (OPS)"
+      ],
+      "moderadores": ["Dra. Patricia Gallardo (UCCuyo sede San Luis)"],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-17-1600-receso",
+      "dia": "2026-09-17",
+      "inicio": "16:00",
+      "fin": "16:45",
+      "sala": "",
+      "tipo": "receso",
+      "titulo": "Receso",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-17-1645-aula-magna",
+      "dia": "2026-09-17",
+      "inicio": "16:45",
+      "fin": "17:30",
+      "sala": "Aula Magna",
+      "tipo": "mesa",
+      "titulo": "El desafío de educar a Profesionales de la Salud del 2032: del estudiante tradicional al aumentado por IA",
+      "disertantes": [
+        "Dr. Enrique Majul (UCC)",
+        "Dr. Francisco Klein (UFavaloro)"
+      ],
+      "moderadores": ["Dra. Marta Fiol de Cúneo (UNC)"],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-17-1645-salon-consejo",
+      "dia": "2026-09-17",
+      "inicio": "16:45",
+      "fin": "17:30",
+      "sala": "Salón de Consejo",
+      "tipo": "mesa",
+      "titulo": "Investigación como estrategia educativa",
+      "disertantes": [
+        "Dra. Glenda Ernst (USAL)",
+        "Dr. Jorge Geffner (UBA)",
+        "Dra. Verónica D'Annunzio (UBA)",
+        "Dr. Ignacio Brusco (UBA)"
+      ],
+      "moderadores": ["Dra. Graciela Moya (UCA)"],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-17-1730-aula-magna",
+      "dia": "2026-09-17",
+      "inicio": "17:30",
+      "fin": "18:15",
+      "sala": "Aula Magna",
+      "tipo": "mesa",
+      "titulo": "Formación Médica en el paradigma de la seguridad del Paciente",
+      "disertantes": [
+        "Dr. Alejandro Botbol (UAI)",
+        "Dra. Claudia Ramírez (USAL)"
+      ],
+      "moderadores": ["Dr. Daniel Martínez (U. del Salvador)"],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-17-1730-salon-consejo",
+      "dia": "2026-09-17",
+      "inicio": "17:30",
+      "fin": "18:15",
+      "sala": "Salón de Consejo",
+      "tipo": "plenaria",
+      "titulo": "Gemelos digitales e Inteligencia Artificial",
+      "disertantes": ["Téc. Yusef Vladimir Bubica Bustos (UCCuyo sede San Juan)"],
+      "moderadores": ["Dra. Susana Salomón (UNC)"],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-17-1815-aula-magna",
+      "dia": "2026-09-17",
+      "inicio": "18:15",
+      "fin": "19:00",
+      "sala": "Aula Magna",
+      "tipo": "plenaria",
+      "titulo": "NEUFIN: Currículo espiralado, aprendizaje centrado en problemas y evaluación integrativa para la educación en neurociencias",
+      "disertantes": [
+        "Dr. Gabriel De Erausquin (University of Texas - San Antonio, Texas)"
+      ],
+      "moderadores": [
+        "Dr. Agustín Anastasia (IUCBC)",
+        "Dra. Viviana Navarro (UNNE)"
+      ],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-17-1815-salon-consejo",
+      "dia": "2026-09-17",
+      "inicio": "18:15",
+      "fin": "19:00",
+      "sala": "Salón de Consejo",
+      "tipo": "mesa",
+      "titulo": "Del aula al territorio: nuevos escenarios para la formación de profesionales de la salud",
+      "disertantes": [
+        "Dra. Mariana Bricchi (USAL)",
+        "Dra. Carolina Galarza (UBarceló)",
+        "Dra. Lisandra Viglione (UFASTA)"
+      ],
+      "moderadores": ["Dra. Liliana Tefaha (UNT)"],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "2026-09-18-0830-aula-magna",
+      "dia": "2026-09-18",
+      "inicio": "08:30",
+      "fin": "09:15",
+      "sala": "Aula Magna",
+      "tipo": "plenaria",
+      "titulo": "Identidad profesional médica frente a la IA: continuidad, cambio y nuevos dilemas",
+      "disertantes": ["Dr. Alejandro Cragno (UNS)"],
+      "moderadores": ["Dr. Sergio Rufino (UCCórdoba)"],
+      "ejeId": "eje-3"
+    },
+    {
+      "id": "2026-09-18-0830-salon-consejo",
+      "dia": "2026-09-18",
+      "inicio": "08:30",
+      "fin": "09:15",
+      "sala": "Salón de Consejo",
+      "tipo": "mesa",
+      "titulo": "Formación docente en residencias de profesionales de la salud: estrategias, desafíos y aprendizajes compartidos entre instituciones",
+      "disertantes": [
+        "Bioq. María Nardi (Hospital Italiano de Buenos Aires)",
+        "Dr. Pablo Young (Hospital Británico)",
+        "Dr. Hugo Catalano (Hospital Alemán)"
+      ],
+      "moderadores": ["Dra. Tamara Pepe (UBA)"],
+      "ejeId": "eje-3"
+    },
+    {
+      "id": "2026-09-18-0915-aula-magna",
+      "dia": "2026-09-18",
+      "inicio": "09:15",
+      "fin": "10:00",
+      "sala": "Aula Magna",
+      "tipo": "plenaria",
+      "titulo": "Pedagogía intergeneracional. ¿Comprendemos el cerebro de los estudiantes actuales?",
+      "disertantes": ["Dr. José Luis García (IUCEMIC)"],
+      "moderadores": ["Dr. Ignacio Brusco (UBA)"],
+      "ejeId": "eje-3"
+    },
+    {
+      "id": "2026-09-18-0915-salon-consejo",
+      "dia": "2026-09-18",
+      "inicio": "09:15",
+      "fin": "10:00",
+      "sala": "Salón de Consejo",
+      "tipo": "mesa",
+      "titulo": "Bienestar estudiantil",
+      "disertantes": [
+        "Dr. Daniel Heissenberg (UAP)",
+        "Lic. Rafael Fraile (UCLP)",
+        "Dr. Alfredo Muruago (UFLO)"
+      ],
+      "moderadores": ["Dra. Karina Hernández (UCLP)"],
+      "ejeId": "eje-3"
+    },
+    {
+      "id": "2026-09-18-1000-aula-magna",
+      "dia": "2026-09-18",
+      "inicio": "10:00",
+      "fin": "10:45",
+      "sala": "Aula Magna",
+      "tipo": "mesa",
+      "titulo": "Del aseguramiento a la mejora continua: aplicación práctica de un modelo de desarrollo de la calidad para carreras de medicina",
+      "disertantes": ["Dr. Eduardo Durante (UHIBA)"],
+      "moderadores": ["Dr. Guillermo Mazzolini (UA)"],
+      "ejeId": "eje-3"
+    },
+    {
+      "id": "2026-09-18-1000-salon-consejo",
+      "dia": "2026-09-18",
+      "inicio": "10:00",
+      "fin": "10:45",
+      "sala": "Salón de Consejo",
+      "tipo": "conversatorio",
+      "titulo": "Formar Profesionales de la Salud en la Era de la Tecnología",
+      "disertantes": [
+        "Dr. Antonio Orellana (ASOFAMECH)",
+        "Dr. Claudio Cavasotto (UA)",
+        "Lic. María Soledad Paladino (UA)",
+        "Dr. Ernesto Gil Deza (USAL)"
+      ],
+      "moderadores": ["Dr. Ricardo Znaidak (UBarceló)"],
+      "ejeId": "eje-3"
+    },
+    {
+      "id": "2026-09-18-1045-receso",
+      "dia": "2026-09-18",
+      "inicio": "10:45",
+      "fin": "11:30",
+      "sala": "",
+      "tipo": "receso",
+      "titulo": "Receso",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-3"
+    },
+    {
+      "id": "2026-09-18-1130-aula-magna",
+      "dia": "2026-09-18",
+      "inicio": "11:30",
+      "fin": "12:15",
+      "sala": "Aula Magna",
+      "tipo": "plenaria",
+      "titulo": "¿Qué vemos cuando evaluamos? Cognición y juicio del evaluador",
+      "disertantes": ["Dra. Marta del Valle (UNS)"],
+      "moderadores": ["Dra. Deborah Sylvestre Begnis (IUNIR)"],
+      "ejeId": "eje-3"
+    },
+    {
+      "id": "2026-09-18-1130-salon-consejo",
+      "dia": "2026-09-18",
+      "inicio": "11:30",
+      "fin": "12:15",
+      "sala": "Salón de Consejo",
+      "tipo": "conversatorio",
+      "titulo": "Las estudiantes toman la palabra",
+      "disertantes": [
+        "Estudiantes de Facultades de Ciencias de la Salud",
+        "Dra. Viviana Navarro (UNNE)",
+        "Dra. Karina Hernández (UCALP)"
+      ],
+      "moderadores": [
+        "Dra. Viviana Navarro (UNNE)",
+        "Dra. Karina Hernández (UCALP)"
+      ],
+      "ejeId": "eje-3"
+    },
+    {
+      "id": "2026-09-18-1215-aula-magna",
+      "dia": "2026-09-18",
+      "inicio": "12:15",
+      "fin": "13:00",
+      "sala": "Aula Magna",
+      "tipo": "mesa",
+      "titulo": "Foro Argentino de Facultades y Escuelas de Medicina Públicas (FAFEMP)",
+      "disertantes": [],
+      "moderadores": ["Dr. Ricardo Znaidak (Pte. AFACIMERA)"],
+      "ejeId": "eje-3"
+    },
+    {
+      "id": "2026-09-18-1215-salon-consejo",
+      "dia": "2026-09-18",
+      "inicio": "12:15",
+      "fin": "13:00",
+      "sala": "Salón de Consejo",
+      "tipo": "plenaria",
+      "titulo": "Vitalidad docente en contextos complejos: sostener el entusiasmo por enseñar",
+      "disertantes": ["Dr. Marcelo García Diéguez (UNS)"],
+      "moderadores": ["Dr. Matías Candioti Busaniche (UNL)"],
+      "ejeId": "eje-3"
+    },
+    {
+      "id": "2026-09-18-1300-receso",
+      "dia": "2026-09-18",
+      "inicio": "13:00",
+      "fin": "13:15",
+      "sala": "",
+      "tipo": "receso",
+      "titulo": "Receso",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-3"
+    },
+    {
+      "id": "2026-09-18-1315-aula-magna",
+      "dia": "2026-09-18",
+      "inicio": "13:15",
+      "fin": "13:45",
+      "sala": "Aula Magna",
+      "tipo": "plenaria",
+      "titulo": "La enseñanza de la emergentología en el grado",
+      "disertantes": ["Dr. Alberto Crescenti (Director SAME)"],
+      "moderadores": ["Dr. Ricardo Znaidak (UBarceló)"],
+      "ejeId": "eje-3"
+    },
+    {
+      "id": "2026-09-18-1345-aula-magna",
+      "dia": "2026-09-18",
+      "inicio": "13:45",
+      "fin": "14:30",
+      "sala": "Aula Magna",
+      "tipo": "conferencia",
+      "titulo": "Ámbitos de práctica en la enseñanza en ciencias de la salud",
+      "disertantes": ["Dr. Fernán Quirós (Ministro de Salud - CABA)"],
+      "moderadores": ["Dr. Daniel Martínez (U. del Salvador)"],
+      "ejeId": "eje-3"
+    },
+    {
+      "id": "2026-09-18-1430-aula-magna",
+      "dia": "2026-09-18",
+      "inicio": "14:30",
+      "fin": "15:30",
+      "sala": "Aula Magna",
+      "tipo": "acto",
+      "titulo": "Acto de cierre — Entrega de premios posters y trabajos a premio. Palabras finales",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-3"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Programa académico CAEM 2026: buscá sala, horario y disertante del Congreso Argentino de Educación Médica."
+    />
+    <title>Programa CAEM 2026 — Consulta rápida</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Ir al contenido</a>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <p class="brand-kicker">AFACIMERA · Facultad de Medicina UBA</p>
+        <h1 class="brand-title">CAEM 2026</h1>
+        <p class="brand-sub">Programa académico · Encontrá sala, horario y disertante</p>
+        <p class="brand-dates">16 al 18 de septiembre de 2026</p>
+      </div>
+    </header>
+
+    <main id="contenido" class="main">
+      <section class="now-block" id="now-block" aria-live="polite" hidden>
+        <h2 class="now-label" id="now-label">Ahora</h2>
+        <div id="now-content"></div>
+      </section>
+
+      <section class="search-block" aria-label="Buscar en el programa">
+        <label class="search-label" for="search-input">Buscar</label>
+        <input
+          id="search-input"
+          class="search-input"
+          type="search"
+          placeholder="Título, disertante, sala…"
+          autocomplete="off"
+          enterkeyhint="search"
+        />
+        <p class="search-hint" id="search-hint" hidden></p>
+      </section>
+
+      <section class="filters" aria-label="Filtros">
+        <div class="day-tabs" role="tablist" aria-label="Día del congreso" id="day-tabs"></div>
+        <div class="sala-filters" role="group" aria-label="Sala">
+          <button type="button" class="sala-chip is-active" data-sala="todas">Todas</button>
+          <button type="button" class="sala-chip" data-sala="Aula Magna">Aula Magna</button>
+          <button type="button" class="sala-chip" data-sala="Salón de Consejo">Salón de Consejo</button>
+        </div>
+      </section>
+
+      <section class="eje-banner" id="eje-banner" aria-live="polite"></section>
+
+      <section class="program" id="program" aria-label="Programa"></section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        Fuente: Programa Académico CAEM 2026.
+        <a href="https://caem.afacimera.org.ar/" target="_blank" rel="noopener noreferrer"
+          >Sitio oficial del congreso</a
+        >
+      </p>
+      <p class="footer-note">Consulta rápida · Observatorio de IA · UCCuyo</p>
+    </footer>
+
+    <script src="js/app.js" defer></script>
+  </body>
+</html>
