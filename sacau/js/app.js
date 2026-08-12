@@ -40,20 +40,46 @@
     progressBar.style.width = `${Math.max(3, Math.min(100, pct))}%`;
   }
 
-  function setStep(n) {
+  function hasMaterias() {
+    return Boolean(plan && plan.asignaturas && plan.asignaturas.length);
+  }
+
+  function updateExportState() {
+    const ready = hasMaterias();
+    ["btnDocx", "btnPdf", "btnCsv"].forEach((id) => {
+      const btn = document.getElementById(id);
+      if (btn) btn.disabled = !ready;
+    });
+    const hint = $("#exportHint");
+    if (hint) {
+      hint.textContent = ready
+        ? "Podés descargar el plan en créditos en cualquier momento."
+        : "Las descargas se habilitan cuando haya materias cargadas.";
+    }
+    const bar = $("#exportBar");
+    if (bar) bar.classList.toggle("is-ready", ready);
+  }
+
+  function setStep(n, opts = {}) {
     currentStep = Number(n) || 1;
     document.querySelectorAll(".step").forEach((el) => {
       const s = Number(el.dataset.step);
       el.classList.toggle("active", s === currentStep);
-      el.classList.toggle("done", Boolean(plan && plan.asignaturas && plan.asignaturas.length) && s < currentStep);
+      el.classList.toggle("done", hasMaterias() && s < currentStep);
       el.setAttribute("aria-current", s === currentStep ? "step" : "false");
     });
+    // Los tres apartados quedan siempre visibles; el paso solo desplaza la vista.
     for (let i = 1; i <= 3; i++) {
       const panel = document.getElementById(`panel-${i}`);
-      if (panel) panel.hidden = i !== currentStep;
+      if (panel) {
+        panel.hidden = false;
+        panel.classList.toggle("is-current", i === currentStep);
+      }
     }
-    const target = document.getElementById(`panel-${currentStep}`);
-    if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (opts.scroll !== false) {
+      const target = document.getElementById(`panel-${currentStep}`);
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   }
 
   async function loadJson(path) {
@@ -209,12 +235,13 @@
       )
       .join("");
 
-    const asigRows = conv.items
-      .map((item) => {
-        const a = item.asignatura;
-        const ovA = a.horas_autonomas_override == null ? "" : a.horas_autonomas_override;
-        const ovC = a.valor_cre_override == null ? "" : a.valor_cre_override;
-        return `<tr>
+    const asigRows =
+      conv.items
+        .map((item) => {
+          const a = item.asignatura;
+          const ovA = a.horas_autonomas_override == null ? "" : a.horas_autonomas_override;
+          const ovC = a.valor_cre_override == null ? "" : a.valor_cre_override;
+          return `<tr>
           <td><input data-f="codigo" value="${a.codigo || ""}" class="narrow" /></td>
           <td><input data-f="nombre" value="${String(a.nombre || "").replace(/"/g, "&quot;")}" style="min-width:14rem" /></td>
           <td><input data-f="anio" type="number" class="narrow" min="1" value="${a.anio}" /></td>
@@ -234,8 +261,15 @@
             <input type="hidden" data-f="notas" value="${String(a.notas || "").replace(/"/g, "&quot;")}" />
           </td>
         </tr>`;
-      })
-      .join("");
+        })
+        .join("") ||
+      `<tr class="empty-row"><td colspan="14">Sin materias todavía. Cargá un archivo arriba o usá «Agregar materia».</td></tr>`;
+
+    const resumenNota =
+      plan.metadata?.advertencia ||
+      (hasMaterias()
+        ? "Revisá tipología, horas y overrides. Las descargas están arriba en cualquier momento."
+        : "Todavía no hay materias. Subí un archivo arriba o usá «Agregar materia».");
 
     decideEl.classList.remove("loading");
     decideEl.innerHTML = `
@@ -253,7 +287,7 @@
         <section class="panel">
           <h2>Resumen rápido</h2>
           <p class="note" style="margin:0 0 0.5rem"><strong>${plan.asignaturas.length}</strong> materias · Interacción <strong>${t.horas_interaccion.toFixed(0)} h</strong> · CRE estimado <strong>${t.cre.toFixed(1)}</strong></p>
-          <p class="note">${plan.metadata?.advertencia || "Revisá tipología, horas y overrides. Después andá al paso 3 para descargar."}</p>
+          <p class="note">${resumenNota}</p>
         </section>
       </div>
       <section class="panel">
@@ -281,12 +315,12 @@
         <div class="metric"><div class="label">Autónomas</div><div class="value">${t.horas_autonomas.toLocaleString("es-AR", { maximumFractionDigits: 0 })} h</div></div>
         <div class="metric"><div class="label">Totales estudiante</div><div class="value">${t.horas_totales.toLocaleString("es-AR", { maximumFractionDigits: 0 })} h</div></div>
         <div class="metric"><div class="label">CRE totales</div><div class="value">${t.cre.toFixed(1)}</div></div>
-        <div class="metric"><div class="label">CRE / año</div><div class="value">${t.cre_promedio_anual.toFixed(1)}</div></div>
+        <div class="metric"><div class="label">CRE / año</div><div class="value">${Number.isFinite(t.cre_promedio_anual) ? t.cre_promedio_anual.toFixed(1) : "—"}</div></div>
       </div>
       <div class="grid-2">
         <section class="panel">
           <h2>Cumplimiento SACAU</h2>
-          <ul class="checks">${checkLis}</ul>
+          <ul class="checks">${checkLis || '<li class="warning">⚠️ Cargá un plan para evaluar el cumplimiento.</li>'}</ul>
         </section>
         <section class="panel">
           <h2>Por año</h2>
@@ -307,17 +341,26 @@
       </div>
       <footer class="site">
         Marco: Res. 788-CS-2026 (CRE UCCuyo) · RESOL-2025-556 (SACAU).
-        Hacé clic en «1. Cargar plan» si querés subir otro archivo.
+        Las descargas Word / PDF / CSV están siempre arriba.
       </footer>
     `;
+    updateExportState();
   }
 
-  function usePlan(next, message, step = 2) {
+  function usePlan(next, message, step = 2, opts = {}) {
     plan = ensureDuracion(next);
     showError("");
     showInfo(message || "");
     render({ skipSync: true });
-    setStep(step);
+    updateExportState();
+    setStep(step, opts);
+  }
+
+  function requireMaterias(actionLabel) {
+    if (hasMaterias()) return true;
+    showError(`No hay materias para ${actionLabel}. Cargá un plan o agregá materias.`);
+    setStep(1);
+    return false;
   }
 
   async function onFile(file) {
@@ -374,6 +417,7 @@
   }
 
   async function onExportDocx() {
+    if (!requireMaterias("descargar Word")) return;
     const result = currentConversion();
     if (!result) return;
     try {
@@ -385,6 +429,7 @@
   }
 
   function onExportPdf() {
+    if (!requireMaterias("descargar PDF")) return;
     const result = currentConversion();
     if (!result) return;
     try {
@@ -396,6 +441,7 @@
   }
 
   function onExportCsv() {
+    if (!requireMaterias("descargar CSV")) return;
     const result = currentConversion();
     if (!result) return;
     const blob = new Blob([SacauEngine.toCsv(result.conv)], { type: "text/csv;charset=utf-8" });
@@ -416,25 +462,14 @@
     document.querySelectorAll(".step").forEach((btn) => {
       btn.addEventListener("click", () => {
         const n = Number(btn.dataset.step);
-        // Siempre se puede volver al paso 1 (cargar otro archivo).
-        if (n === 1) {
-          showError("");
-          if (plan && plan.asignaturas && plan.asignaturas.length) {
-            showInfo(
-              `Tenés ${plan.asignaturas.length} materias cargadas. Subí otro archivo para reemplazarlas, o volvé al paso 2 para seguir editando.`
-            );
-          }
-          setStep(1);
-          return;
-        }
-        if (!plan || !plan.asignaturas.length) {
-          showError("Primero cargá un plan en el paso 1 (Word, PDF o CSV).");
-          setStep(1);
-          return;
-        }
-        if (n === 3) render({ skipSync: false });
-        setStep(n);
         showError("");
+        if (n === 3) render({ skipSync: false });
+        if (n === 1 && hasMaterias()) {
+          showInfo(
+            `Tenés ${plan.asignaturas.length} materias cargadas. Subí otro archivo para reemplazarlas o seguí editando abajo.`
+          );
+        }
+        setStep(n);
       });
     });
 
@@ -446,7 +481,7 @@
     $("#btnClearPlan").addEventListener("click", () => {
       usePlan(
         SacauParser.emptyPlan(),
-        "Plan borrado. Subí un archivo nuevo o agregá materias a mano en el paso 2.",
+        "Plan borrado. Los apartados quedan en blanco listos para un archivo nuevo.",
         1
       );
     });
@@ -454,20 +489,19 @@
     if (btnBack) {
       btnBack.addEventListener("click", () => {
         showError("");
-        showInfo("Podés subir otro archivo. El plan actual se mantiene hasta que cargues uno nuevo.");
+        showInfo("Subí un archivo arriba. El plan actual se mantiene hasta que cargues uno nuevo.");
         setStep(1);
       });
     }
     $("#btnAddRow").addEventListener("click", addRow);
     $("#btnRecalc").addEventListener("click", () => {
-      if (!plan || !plan.asignaturas.length) {
-        showError("No hay materias para calcular. Cargá un plan o agregá materias.");
-        setStep(1);
-        return;
-      }
       render({ skipSync: false });
       setStep(3);
-      showInfo("Créditos actualizados con tus ajustes.");
+      showInfo(
+        hasMaterias()
+          ? "Créditos actualizados. Podés descargar Word, PDF o CSV arriba."
+          : "Todavía no hay materias: cargá un archivo o agregá filas."
+      );
     });
     $("#valorCre").addEventListener("change", () => render({ skipSync: false }));
     $("#redondeo").addEventListener("change", () => render({ skipSync: false }));
@@ -477,8 +511,9 @@
 
     usePlan(
       SacauParser.emptyPlan(),
-      "Paso 1: elegí el archivo de tu plan de estudios (Word, PDF o CSV).",
-      1
+      "Elegí el archivo del plan. Abajo ya ves tipologías, tabla y totales en blanco.",
+      1,
+      { scroll: false }
     );
   } catch (e) {
     console.error(e);

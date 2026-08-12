@@ -655,29 +655,17 @@
   function emptyPlan() {
     return {
       id: "plan-nuevo",
-      nombre: "Plan de estudios (nuevo)",
+      nombre: "Materias del plan",
       titulo: "",
       institucion: "Universidad Católica de Cuyo",
       normativa: "",
       duracion_anios: 0,
       carrera_clave: "",
-      metadata: {},
-      asignaturas: [
-        {
-          codigo: "01",
-          nombre: "Asignatura ejemplo",
-          anio: 1,
-          area: "FB",
-          regimen: "S",
-          tipologia: "teorica",
-          horas_teoricas: 64,
-          horas_practicas: 0,
-          horas_autonomas_override: null,
-          valor_cre_override: null,
-          horas_estimadas: false,
-          notas: "",
-        },
-      ],
+      metadata: {
+        advertencia:
+          "Todavía no hay materias. Subí un archivo arriba o usá «Agregar materia».",
+      },
+      asignaturas: [],
     };
   }
 

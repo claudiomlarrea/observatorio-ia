@@ -15,7 +15,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/app.css?v=7" />
+    <link rel="stylesheet" href="css/app.css?v=8" />
   </head>
   <body>
     <div class="topbar">
@@ -29,7 +29,7 @@
         <p>
           Convertí un plan de estudios de <strong>horas</strong> a
           <strong>créditos CRE</strong> (UCCuyo: 1 CRE = 25 h, hasta 30 justificado).
-          Podés volver a cualquier paso cuando quieras.
+          Los apartados quedan a la vista desde el inicio; se completan al cargar el archivo.
         </p>
       </header>
 
@@ -45,6 +45,19 @@
         <button type="button" class="step" data-step="2" id="stepBtn2">2. Revisar y ajustar</button>
         <button type="button" class="step" data-step="3" id="stepBtn3">3. Ver créditos y descargar</button>
       </nav>
+
+      <!-- Descargas siempre visibles -->
+      <section class="toolbar export-bar" id="exportBar" aria-label="Descargas">
+        <span class="export-label">Descargar plan en créditos:</span>
+        <div class="actions" style="margin-left: 0">
+          <button type="button" class="btn-primary" id="btnDocx">Word (.docx)</button>
+          <button type="button" class="btn-primary" id="btnPdf">PDF</button>
+          <button type="button" class="btn-secondary" id="btnCsv">CSV</button>
+        </div>
+        <p class="note export-hint" id="exportHint">
+          Las descargas se habilitan cuando haya materias cargadas.
+        </p>
+      </section>
 
       <!-- PASO 1 -->
       <section id="panel-1" class="panel-step" aria-labelledby="stepBtn1">
@@ -69,15 +82,15 @@
             y completá las filas.
           </p>
           <div class="actions" style="margin-top:1rem">
-            <button type="button" class="btn-secondary" id="btnClearPlan" title="Borra el plan actual y deja una sola materia de ejemplo">
+            <button type="button" class="btn-secondary" id="btnClearPlan" title="Borra el plan actual">
               Borrar plan y empezar de nuevo
             </button>
           </div>
         </div>
       </section>
 
-      <!-- PASO 2 -->
-      <section id="panel-2" class="panel-step" hidden aria-labelledby="stepBtn2">
+      <!-- PASO 2: siempre visible (vacío hasta cargar) -->
+      <section id="panel-2" class="panel-step" aria-labelledby="stepBtn2">
         <div class="toolbar">
           <div class="field">
             <label for="valorCre">Horas por cada CRE</label>
@@ -92,34 +105,26 @@
             </select>
           </div>
           <div class="actions">
-            <button type="button" class="btn-secondary" id="btnBackToLoad" title="Volvé al paso 1 para subir otro archivo">
-              ← Volver a cargar archivo
+            <button type="button" class="btn-secondary" id="btnBackToLoad" title="Ir a la carga de archivo">
+              ← Ir a cargar archivo
             </button>
             <button type="button" class="btn-secondary" id="btnAddRow" title="Suma una materia nueva a la tabla">
               Agregar materia
             </button>
-            <button type="button" class="btn-primary" id="btnRecalc" title="Calcula los créditos con los cambios de la tabla">
-              Guardar ajustes y ver créditos
+            <button type="button" class="btn-primary" id="btnRecalc" title="Actualiza los totales de créditos">
+              Actualizar créditos
             </button>
           </div>
         </div>
         <p class="note">
-          Acá corregís tipologías y horas. «Agregar materia» suma una fila.
-          Cuando termines, usá «Guardar ajustes y ver créditos» o el paso 3.
+          Acá se ven tipologías y materias. Antes de cargar el archivo aparecen vacíos;
+          «Agregar materia» suma una fila a mano.
         </p>
         <div id="app-decidir" class="loading">Preparando editor…</div>
       </section>
 
-      <!-- PASO 3 -->
-      <section id="panel-3" class="panel-step" hidden aria-labelledby="stepBtn3">
-        <section class="toolbar export-bar" aria-label="Descargas">
-          <span class="export-label">Descargar plan en créditos:</span>
-          <div class="actions" style="margin-left: 0">
-            <button type="button" class="btn-primary" id="btnDocx">Word (.docx)</button>
-            <button type="button" class="btn-primary" id="btnPdf">PDF</button>
-            <button type="button" class="btn-secondary" id="btnCsv">CSV</button>
-          </div>
-        </section>
+      <!-- PASO 3: resultados siempre visibles -->
+      <section id="panel-3" class="panel-step" aria-labelledby="stepBtn3">
         <div id="app-resultado" class="loading">Preparando resultados…</div>
       </section>
     </div>
@@ -137,10 +142,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
-    <script src="js/engine.js?v=7"></script>
-    <script src="js/ocr.js?v=7"></script>
-    <script src="js/parser.js?v=7"></script>
-    <script src="js/export.js?v=7"></script>
-    <script src="js/app.js?v=7"></script>
+    <script src="js/engine.js?v=8"></script>
+    <script src="js/ocr.js?v=8"></script>
+    <script src="js/parser.js?v=8"></script>
+    <script src="js/export.js?v=8"></script>
+    <script src="js/app.js?v=8"></script>
   </body>
 </html>

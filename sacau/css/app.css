@@ -397,11 +397,41 @@ footer.site {
 
 .export-bar {
   align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
 
 .export-label {
   font-weight: 600;
   color: var(--inst-dark);
+}
+
+.export-hint {
+  flex: 1 1 100%;
+  margin: 0.15rem 0 0;
+}
+
+.export-bar.is-ready .export-hint {
+  color: var(--ok);
+}
+
+.export-bar button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.panel-step.is-current > .panel:first-child,
+.panel-step.is-current > .toolbar:first-child {
+  outline: 2px solid rgba(122, 21, 50, 0.25);
+  outline-offset: 2px;
+}
+
+.empty-row td {
+  text-align: center;
+  color: var(--soft);
+  font-style: italic;
+  padding: 1.25rem 0.75rem !important;
 }
 
 input[type="file"] {
