@@ -4,11 +4,11 @@
   "titulo": "Licenciado/a en Psicología",
   "institucion": "Universidad Católica de Cuyo",
   "normativa": "Resolución Nº 1098-CS-2013",
-  "duracion_anios": 6,
+  "duracion_anios": 5,
   "carrera_clave": "psicologia",
   "metadata": {
     "fuente": "Anexo I Res. 1098-CS-2013 (despliegue del plan)",
-    "nota": "Algunas asignaturas de 4º año marcan horas_estimadas=true porque el OCR del PDF escaneado no permitió leer todas las celdas; se ajustaron para respetar el total anual publicado (750 h).",
+    "nota": "La carrera dura 5 años. PPS y TIF integran el 5.º año (ciclo de egreso); no constituyen un 6.º año curricular. Algunas asignaturas de 4.º año marcan horas_estimadas=true porque el OCR del PDF escaneado no permitió leer todas las celdas; se ajustaron para respetar el total anual publicado (750 h).",
     "areas": {
       "FGC": "Formación General Complementaria",
       "FB": "Formación Básica",
@@ -608,7 +608,7 @@
     {
       "codigo": "50",
       "nombre": "Práctica Profesional Supervisada (PPS)",
-      "anio": 6,
+      "anio": 5,
       "area": "FP",
       "horas_teoricas": 30,
       "horas_practicas": 250,
@@ -620,7 +620,7 @@
     {
       "codigo": "51",
       "nombre": "Trabajo Integrador Final (TIF)",
-      "anio": 6,
+      "anio": 5,
       "area": "FP",
       "horas_teoricas": 50,
       "horas_practicas": 0,

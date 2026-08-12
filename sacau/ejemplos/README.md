@@ -11,5 +11,8 @@ Archivos en **texto** (no escaneados) del plan
 
 Convertidor: https://observatorio-ia.uccuyo.edu.ar/sacau/
 
+Duración del plan de Psicología: **5 años**. PPS y TIF forman parte del 5.º año
+(ciclo de egreso); no hay 6.º año curricular.
+
 > La Res. 911-CS-2026 es el **marco conceptual SACAU** de UCCuyo (no es un plan de
 > estudios). El plan de carrera que se carga al sistema es el de horas (p. ej. 1098).

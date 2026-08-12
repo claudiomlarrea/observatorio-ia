@@ -403,7 +403,7 @@
   }
 
   async function loadKnownPlanData(entry) {
-    const res = await fetch(`data/${entry.data_file}`);
+    const res = await fetch(`data/${entry.data_file}?v=21`);
     if (!res.ok) throw new Error(`No se pudo cargar el plan reconocido (${entry.data_file})`);
     const data = await res.json();
     data.metadata = {

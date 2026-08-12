@@ -100,12 +100,17 @@ def test_convert_simple(tipologias):
 
 def test_psicologia_totales_interaccion(plan_psico):
     assert len(plan_psico.asignaturas) == 51
+    assert plan_psico.duracion_anios == 5
+    assert max(a.anio for a in plan_psico.asignaturas) == 5
     inter = sum(a.horas_interaccion for a in plan_psico.asignaturas)
     assert inter == 3660
     prac = sum(a.horas_practicas for a in plan_psico.asignaturas)
     assert prac >= 500
     pps = next(a for a in plan_psico.asignaturas if a.codigo == "50")
     assert pps.horas_practicas == 250
+    assert pps.anio == 5
+    tif = next(a for a in plan_psico.asignaturas if a.codigo == "51")
+    assert tif.anio == 5
 
 
 def test_psicologia_conversion_y_sacau(plan_psico, tipologias, normas_uccuyo, normas_psico):
