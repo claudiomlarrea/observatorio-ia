@@ -90,8 +90,24 @@
 
   let tipologiasMap = {};
   let normasUccuyo = {};
+  let normasPsicologia = null;
   let knownCatalog = null;
   let plan = null;
+
+  function tipoCarreraActual() {
+    const el = $("#tipoCarrera");
+    return (el && el.value) || (plan && plan.tipo_carrera) || "grado";
+  }
+
+  function syncTipoCarreraFromPlan() {
+    const el = $("#tipoCarrera");
+    if (!el || !plan) return;
+    if (plan.tipo_carrera && el.querySelector(`option[value="${plan.tipo_carrera}"]`)) {
+      el.value = plan.tipo_carrera;
+      return;
+    }
+    if (plan.carrera_clave === "psicologia") el.value = "art43";
+  }
 
   function tipologiasFromRaw(raw) {
     const map = {};
@@ -178,8 +194,14 @@
     if (!opts.skipSync) syncPlanFromUi();
     if (!plan) return null;
     ensureDuracion(plan);
+    plan.tipo_carrera = tipoCarreraActual();
     const conv = SacauEngine.convertPlan(plan, optionsFromUi());
-    const val = SacauEngine.validatePlan(conv, normasUccuyo, null);
+    const val = SacauEngine.validatePlan(
+      conv,
+      normasUccuyo,
+      normasPsicologia,
+      plan.tipo_carrera
+    );
     window.__lastConv = conv;
     window.__lastVal = val;
     return { conv, val };
@@ -349,6 +371,10 @@
       <div class="grid-2">
         <section class="panel">
           <h2>Cumplimiento SACAU</h2>
+          <p class="note" style="margin-top:0">
+            Umbrales según tipo de carrera «${(normasUccuyo.tipos_carrera || {})[tipoCarreraActual()]?.label || tipoCarreraActual()}».
+            ${normasUccuyo.nota_autonomas ? `<br/><span class="muted-sm">${normasUccuyo.nota_autonomas}</span>` : ""}
+          </p>
           <ul class="checks">${checkLis || '<li class="warning">⚠️ Cargá un plan para evaluar el cumplimiento.</li>'}</ul>
         </section>
         <section class="panel">
@@ -369,7 +395,8 @@
         </section>
       </div>
       <footer class="site">
-        Marco: Res. 788-CS-2026 (CRE UCCuyo) · RESOL-2025-556 (SACAU).
+        Marco: Res. 788-CS-2026 (CRE UCCuyo) · Res. 911-CS-2026 · RESOL-2025-556 (SACAU).
+        Normativa disponible arriba en «Biblioteca normativa».
         Las descargas Word / PDF / CSV están siempre arriba.
       </footer>
     `;
@@ -378,6 +405,10 @@
 
   function usePlan(next, message, step = 2, opts = {}) {
     plan = ensureDuracion(next);
+    if (!plan.tipo_carrera) {
+      plan.tipo_carrera = plan.carrera_clave === "psicologia" ? "art43" : "grado";
+    }
+    syncTipoCarreraFromPlan();
     showError("");
     showInfo(message || "");
     render({ skipSync: true });
@@ -478,15 +509,29 @@
   }
 
   try {
-    const [tipsRaw, uccuyo, conocidos] = await Promise.all([
+    const [tipsRaw, uccuyo, conocidos, psico] = await Promise.all([
       loadJson("data/tipologias.json"),
       loadJson("data/normas_uccuyo.json"),
       loadJson("data/planes_reconocidos.json"),
+      loadJson("data/normas_psicologia.json"),
     ]);
     tipologiasMap = tipologiasFromRaw(tipsRaw);
     normasUccuyo = uccuyo;
+    normasPsicologia = psico;
     knownCatalog = conocidos;
     $("#valorCre").value = uccuyo.cre_default || 25;
+
+    const tipoEl = $("#tipoCarrera");
+    if (tipoEl && uccuyo.tipos_carrera) {
+      tipoEl.innerHTML = Object.entries(uccuyo.tipos_carrera)
+        .map(([id, cfg]) => `<option value="${id}">${cfg.label || id}</option>`)
+        .join("");
+      tipoEl.value = "grado";
+      tipoEl.addEventListener("change", () => {
+        if (plan) plan.tipo_carrera = tipoEl.value;
+        render({ skipSync: false });
+      });
+    }
 
     document.querySelectorAll(".step").forEach((btn) => {
       btn.addEventListener("click", () => {

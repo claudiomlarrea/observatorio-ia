@@ -511,6 +511,47 @@ footer.site {
   margin-right: 0.2rem;
 }
 
+.biblioteca-panel {
+  margin-bottom: 1.25rem;
+}
+
+.normativa-list {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.normativa-list li {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid rgba(122, 21, 50, 0.12);
+  border-radius: 8px;
+  background: #faf7f8;
+}
+
+.normativa-list a {
+  font-weight: 700;
+  color: var(--inst-dark);
+  text-decoration: none;
+}
+
+.normativa-list a:hover {
+  text-decoration: underline;
+}
+
+.normativa-list span {
+  color: var(--soft);
+  font-size: 0.9rem;
+}
+
+.muted-sm {
+  color: var(--soft);
+  font-size: 0.85rem;
+}
+
 input[type="file"] {
   font: inherit;
   max-width: 100%;

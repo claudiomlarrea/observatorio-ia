@@ -65,34 +65,75 @@ def _cmp(
     )
 
 
-def validate_sacau(plan_conv: PlanConvertido, normas: dict[str, Any]) -> list[CheckItem]:
+def validate_sacau(
+    plan_conv: PlanConvertido,
+    normas: dict[str, Any],
+    tipo_carrera: str | None = None,
+) -> list[CheckItem]:
     sacau = normas.get("sacau", {})
+    tipos = normas.get("tipos_carrera", {})
+    tipo = (
+        tipo_carrera
+        or getattr(plan_conv.plan, "tipo_carrera", None)
+        or ("art43" if plan_conv.plan.carrera_clave == "psicologia" else "grado")
+    )
+    cfg = tipos.get(tipo) or tipos.get("grado") or {}
+    label = cfg.get("label", "Grado")
     totales = plan_conv.totales
     checks: list[CheckItem] = []
 
-    min_cre = float(sacau.get("grado_min_cre", 240))
+    min_cre = float(cfg.get("min_cre", sacau.get("grado_min_cre", 240)))
     checks.append(
         _cmp(
             "sacau_min_cre",
             totales.cre,
             min_cre,
-            f"CRE totales ({totales.cre:.1f}) cumplen el mínimo de grado ({min_cre}).",
-            f"CRE totales ({totales.cre:.1f}) están por debajo del mínimo de grado ({min_cre}).",
+            f"CRE totales ({totales.cre:.1f}) cumplen el mínimo de {label} ({min_cre}).",
+            f"CRE totales ({totales.cre:.1f}) están por debajo del mínimo de {label} ({min_cre}).",
             "CRE",
         )
     )
 
-    min_inter = float(sacau.get("grado_min_horas_interaccion", 2100))
-    checks.append(
-        _cmp(
-            "sacau_min_interaccion",
-            totales.horas_interaccion,
-            min_inter,
-            f"Horas de interacción ({totales.horas_interaccion:.0f}) cumplen el mínimo ({min_inter:.0f}).",
-            f"Horas de interacción ({totales.horas_interaccion:.0f}) están por debajo del mínimo ({min_inter:.0f}).",
-            "h",
+    min_inter = cfg.get("min_horas_interaccion", sacau.get("grado_min_horas_interaccion"))
+    if min_inter is not None:
+        min_inter_f = float(min_inter)
+        checks.append(
+            _cmp(
+                "sacau_min_interaccion",
+                totales.horas_interaccion,
+                min_inter_f,
+                f"Horas de interacción ({totales.horas_interaccion:.0f}) cumplen el mínimo ({min_inter_f:.0f}).",
+                f"Horas de interacción ({totales.horas_interaccion:.0f}) están por debajo del mínimo ({min_inter_f:.0f}).",
+                "h",
+            )
         )
-    )
+    elif cfg.get("nota"):
+        checks.append(CheckItem("sacau_min_interaccion", "warning", str(cfg["nota"])))
+
+    exceso = float(sacau.get("exceso_max_sobre_minimo", 0.25))
+    max_cre_rec = min_cre * (1 + exceso)
+    if totales.cre > max_cre_rec:
+        checks.append(
+            CheckItem(
+                "sacau_max_cre_rec",
+                "warning",
+                f"CRE totales ({totales.cre:.1f}) exceden la recomendación de no superar +{exceso*100:.0f}% del mínimo ({max_cre_rec:.0f} CRE).",
+                totales.cre,
+                max_cre_rec,
+                "CRE",
+            )
+        )
+    else:
+        checks.append(
+            CheckItem(
+                "sacau_max_cre_rec",
+                "ok",
+                f"CRE totales ({totales.cre:.1f}) dentro de la recomendación (≤ {max_cre_rec:.0f} = mínimo + {exceso*100:.0f}%).",
+                totales.cre,
+                max_cre_rec,
+                "CRE",
+            )
+        )
 
     ref_anual = float(sacau.get("cre_promedio_anual", 60))
     tolerancia = float(sacau.get("cre_anual_tolerancia", 10))
@@ -121,13 +162,12 @@ def validate_sacau(plan_conv: PlanConvertido, normas: dict[str, Any]) -> list[Ch
                 )
             )
 
-    # Distinción interacción / autónomas presente
     if totales.horas_autonomas > 0 and totales.horas_interaccion > 0:
         checks.append(
             CheckItem(
                 "sacau_distincion_horas",
                 "ok",
-                "El plan distingue horas de interacción y de trabajo autónomo.",
+                "El plan distingue horas de interacción y de trabajo autónomo (las autónomas no se verifican en validez nacional).",
             )
         )
     else:
@@ -136,19 +176,6 @@ def validate_sacau(plan_conv: PlanConvertido, normas: dict[str, Any]) -> list[Ch
                 "sacau_distincion_horas",
                 "warning",
                 "Faltan horas autónomas estimadas: el SACAU requiere explicitar interacción y trabajo autónomo.",
-            )
-        )
-
-    recomendacion_max = float(sacau.get("grado_recomendacion_max_cre", min_cre * 1.25))
-    if totales.cre > recomendacion_max:
-        checks.append(
-            CheckItem(
-                "sacau_recomendacion_max",
-                "warning",
-                f"CRE totales ({totales.cre:.1f}) superan la recomendación de no exceder 25% sobre el mínimo ({recomendacion_max:.0f}).",
-                totales.cre,
-                recomendacion_max,
-                "CRE",
             )
         )
 
@@ -257,9 +284,16 @@ def validate_plan(
     plan_conv: PlanConvertido,
     normas_uccuyo: dict[str, Any],
     normas_carrera: dict[str, Any] | None = None,
+    tipo_carrera: str | None = None,
 ) -> ValidationResult:
-    checks = validate_sacau(plan_conv, normas_uccuyo)
-    carrera = plan_conv.plan.carrera_clave
-    if carrera == "psicologia" and normas_carrera:
+    tipo = (
+        tipo_carrera
+        or getattr(plan_conv.plan, "tipo_carrera", None)
+        or ("art43" if plan_conv.plan.carrera_clave == "psicologia" else "grado")
+    )
+    checks = validate_sacau(plan_conv, normas_uccuyo, tipo)
+    cfg = (normas_uccuyo.get("tipos_carrera") or {}).get(tipo) or {}
+    usar_art43 = bool(cfg.get("aplicar_art43")) or plan_conv.plan.carrera_clave == "psicologia"
+    if usar_art43 and normas_carrera:
         checks.extend(validate_psicologia(plan_conv, normas_carrera))
     return ValidationResult(checks=checks)

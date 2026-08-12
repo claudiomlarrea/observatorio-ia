@@ -103,32 +103,69 @@
     };
   }
 
-  function validateSacau(planConv, normas) {
+  function validateSacau(planConv, normas, tipoCarrera) {
     const sacau = normas.sacau || {};
+    const tipos = normas.tipos_carrera || {};
+    const tipo = tipoCarrera || planConv.plan.tipo_carrera || "grado";
+    const cfg = tipos[tipo] || tipos.grado || {};
     const t = planConv.totales;
     const checks = [];
-    const minCre = Number(sacau.grado_min_cre || 240);
+    const label = cfg.label || "Grado";
+    const minCre = Number(cfg.min_cre != null ? cfg.min_cre : sacau.grado_min_cre || 240);
     checks.push(
       cmp(
         "sacau_min_cre",
         t.cre,
         minCre,
-        `CRE totales (${t.cre.toFixed(1)}) cumplen el mínimo de grado (${minCre}).`,
-        `CRE totales (${t.cre.toFixed(1)}) están por debajo del mínimo de grado (${minCre}).`,
+        `CRE totales (${t.cre.toFixed(1)}) cumplen el mínimo de ${label} (${minCre}).`,
+        `CRE totales (${t.cre.toFixed(1)}) están por debajo del mínimo de ${label} (${minCre}).`,
         "CRE"
       )
     );
-    const minInter = Number(sacau.grado_min_horas_interaccion || 2100);
-    checks.push(
-      cmp(
-        "sacau_min_interaccion",
-        t.horas_interaccion,
-        minInter,
-        `Horas de interacción (${t.horas_interaccion.toFixed(0)}) cumplen el mínimo (${minInter}).`,
-        `Horas de interacción (${t.horas_interaccion.toFixed(0)}) están por debajo del mínimo (${minInter}).`,
-        "h"
-      )
-    );
+    const minInter = cfg.min_horas_interaccion;
+    if (minInter != null) {
+      checks.push(
+        cmp(
+          "sacau_min_interaccion",
+          t.horas_interaccion,
+          Number(minInter),
+          `Horas de interacción (${t.horas_interaccion.toFixed(0)}) cumplen el mínimo (${minInter}).`,
+          `Horas de interacción (${t.horas_interaccion.toFixed(0)}) están por debajo del mínimo (${minInter}).`,
+          "h"
+        )
+      );
+    } else if (cfg.nota) {
+      checks.push({
+        id: "sacau_min_interaccion",
+        nivel: "warning",
+        mensaje: cfg.nota,
+      });
+    }
+    const exceso = Number(sacau.exceso_max_sobre_minimo != null ? sacau.exceso_max_sobre_minimo : 0.25);
+    const maxCreRec = minCre * (1 + exceso);
+    if (t.cre > maxCreRec) {
+      checks.push({
+        id: "sacau_max_cre_rec",
+        nivel: "warning",
+        mensaje: `CRE totales (${t.cre.toFixed(1)}) exceden la recomendación de no superar +${Math.round(
+          exceso * 100
+        )}% del mínimo (${maxCreRec.toFixed(0)} CRE).`,
+        actual: t.cre,
+        esperado: maxCreRec,
+        unidad: "CRE",
+      });
+    } else {
+      checks.push({
+        id: "sacau_max_cre_rec",
+        nivel: "ok",
+        mensaje: `CRE totales (${t.cre.toFixed(1)}) dentro de la recomendación (≤ ${maxCreRec.toFixed(
+          0
+        )} = mínimo + ${Math.round(exceso * 100)}%).`,
+        actual: t.cre,
+        esperado: maxCreRec,
+        unidad: "CRE",
+      });
+    }
     const refAnual = Number(sacau.cre_promedio_anual || 60);
     const tol = Number(sacau.cre_anual_tolerancia || 10);
     if (t.anios) {
@@ -149,7 +186,8 @@
       checks.push({
         id: "sacau_distincion_horas",
         nivel: "ok",
-        mensaje: "El plan distingue horas de interacción y de trabajo autónomo.",
+        mensaje:
+          "El plan distingue horas de interacción y de trabajo autónomo (las autónomas no se verifican en validez nacional).",
       });
     } else {
       checks.push({
@@ -250,12 +288,19 @@
     return checks;
   }
 
-  function validatePlan(planConv, normasUccuyo, normasCarrera) {
-    const checks = validateSacau(planConv, normasUccuyo);
-    if (planConv.plan.carrera_clave === "psicologia" && normasCarrera) {
+  function validatePlan(planConv, normasUccuyo, normasCarrera, tipoCarrera) {
+    const tipo =
+      tipoCarrera ||
+      planConv.plan.tipo_carrera ||
+      (planConv.plan.carrera_clave === "psicologia" ? "art43" : "grado");
+    const checks = validateSacau(planConv, normasUccuyo, tipo);
+    const cfg = (normasUccuyo.tipos_carrera || {})[tipo] || {};
+    const usarArt43 =
+      Boolean(cfg.aplicar_art43) || planConv.plan.carrera_clave === "psicologia";
+    if (usarArt43 && normasCarrera) {
       checks.push(...validatePsicologia(planConv, normasCarrera));
     }
-    return { checks };
+    return { checks, tipo_carrera: tipo };
   }
 
   function toCsv(planConv) {

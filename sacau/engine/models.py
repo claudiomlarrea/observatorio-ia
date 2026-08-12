@@ -120,6 +120,7 @@ class PlanEstudios:
     normativa: str = ""
     duracion_anios: int = 0
     carrera_clave: str = ""  # psicologia | generica
+    tipo_carrera: str = ""  # grado | pregrado | pregrado_regulado | art43
     asignaturas: list[Asignatura] = field(default_factory=list)
     metadata: dict[str, Any] = field(default_factory=dict)
 
@@ -132,6 +133,7 @@ class PlanEstudios:
             "normativa": self.normativa,
             "duracion_anios": self.duracion_anios,
             "carrera_clave": self.carrera_clave,
+            "tipo_carrera": self.tipo_carrera,
             "metadata": self.metadata,
             "asignaturas": [a.to_dict() for a in self.asignaturas],
         }
@@ -146,6 +148,7 @@ class PlanEstudios:
             normativa=str(data.get("normativa", "")),
             duracion_anios=int(data.get("duracion_anios", 0) or 0),
             carrera_clave=str(data.get("carrera_clave", "")),
+            tipo_carrera=str(data.get("tipo_carrera", "")),
             asignaturas=[Asignatura.from_dict(a) for a in data.get("asignaturas", [])],
             metadata=dict(data.get("metadata", {}) or {}),
         )

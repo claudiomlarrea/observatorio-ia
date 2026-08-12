@@ -438,12 +438,13 @@ def nivel_emoji(nivel: str) -> str:
 
 def main() -> None:
     normas_uccuyo = load_json("normas_uccuyo.json")
+    normas_psico = load_json("normas_psicologia.json")
     tips_default = load_tipologias()
 
     st.title("Convertidor SACAU → CRE")
     st.caption(
         "Universidad Católica de Cuyo · Res. 788-CS-2026 (CRE = 25 h, hasta 30) · "
-        "Cargá un plan en horas (Word/PDF/CSV) y descargá el plan en créditos."
+        "Res. 911-CS-2026 · RESOL-2025-556 · Cargá un plan en horas y descargá créditos."
     )
 
     with st.sidebar:
@@ -460,6 +461,17 @@ def main() -> None:
 
         st.divider()
         st.header("2. Parámetros CRE")
+        tipos = normas_uccuyo.get("tipos_carrera") or {
+            "grado": {"label": "Grado (general)"},
+            "art43": {"label": "Carrera art. 43 LES"},
+        }
+        tipo_keys = list(tipos.keys())
+        tipo_carrera = st.selectbox(
+            "Tipo de carrera (umbrales SACAU)",
+            options=tipo_keys,
+            format_func=lambda k: tipos.get(k, {}).get("label", k),
+            index=tipo_keys.index("grado") if "grado" in tipo_keys else 0,
+        )
         valor_cre = st.number_input(
             "Valor CRE por defecto (horas)",
             min_value=float(normas_uccuyo["sacau"]["cre_rango_min"]),
@@ -550,7 +562,7 @@ def main() -> None:
         tipologias=tipologias,
     )
     convertido = convert_plan(plan, options)
-    validacion = validate_plan(convertido, normas_uccuyo, None)
+    validacion = validate_plan(convertido, normas_uccuyo, normas_psico if tipo_carrera == "art43" or convertido.plan.carrera_clave == "psicologia" else None, tipo_carrera)
 
     with tab_result:
         t = convertido.totales

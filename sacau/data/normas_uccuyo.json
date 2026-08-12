@@ -1,17 +1,46 @@
 {
   "cre_default": 25,
   "cre_maximo": 30,
-  "referencia": "Resolución Nº 788-CS-2026 UCCuyo; RESOL-2025-556-APN-SE#MCH",
+  "referencia": "Resolución Nº 788-CS-2026 UCCuyo; RESOL-2025-556-APN-SE#MCH; Res. 911-CS-2026 UCCuyo",
+  "nota_autonomas": "Las horas de trabajo autónomo se estiman para calcular CRE; no son objeto de verificación en validez nacional ni acreditación (RESOL-2025-556, punto 7).",
+  "vigencia_oficial": "La exigencia de CRE para nuevas solicitudes de reconocimiento oficial y validez nacional rige desde el 1 de enero de 2027 (RESOL-2025-556).",
   "sacau": {
     "cre_rango_min": 25,
     "cre_rango_max": 30,
     "cre_promedio_anual": 60,
     "cre_anual_tolerancia": 10,
-    "grado_min_cre": 240,
-    "grado_min_anios": 4,
-    "grado_min_horas_interaccion": 2100,
-    "grado_recomendacion_max_cre": 300,
-    "pregrado_min_cre": 120,
-    "pregrado_min_horas_interaccion": 1100
+    "exceso_max_sobre_minimo": 0.25
+  },
+  "tipos_carrera": {
+    "grado": {
+      "label": "Grado (general)",
+      "min_cre": 240,
+      "min_anios": 4,
+      "min_horas_interaccion": 2100,
+      "aplicar_art43": false
+    },
+    "pregrado": {
+      "label": "Pregrado (general)",
+      "min_cre": 120,
+      "min_anios": 2,
+      "min_horas_interaccion": 1100,
+      "aplicar_art43": false
+    },
+    "pregrado_regulado": {
+      "label": "Pregrado regulado por el Estado",
+      "min_cre": 180,
+      "min_anios": 3,
+      "min_horas_interaccion": null,
+      "aplicar_art43": false,
+      "nota": "La interacción mínima sigue la regulación específica de la carrera."
+    },
+    "art43": {
+      "label": "Carrera art. 43 LES (p. ej. Psicología)",
+      "min_cre": 240,
+      "min_anios": 4,
+      "min_horas_interaccion": 2100,
+      "aplicar_art43": true,
+      "nota": "Además de SACAU, se contrastan estándares de la carrera (interacción/prácticas)."
+    }
   }
 }

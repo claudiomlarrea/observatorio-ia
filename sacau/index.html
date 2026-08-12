@@ -15,7 +15,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/app.css?v=13" />
+    <link rel="stylesheet" href="css/app.css?v=14" />
   </head>
   <body>
     <div class="topbar">
@@ -46,8 +46,46 @@
             target="_blank"
             rel="noopener"
           >Instructivo completo de funcionamiento (PDF)</a>
+          <a class="btn-instructivo" href="#biblioteca-normativa">Biblioteca normativa</a>
         </p>
       </header>
+
+      <section id="biblioteca-normativa" class="panel biblioteca-panel" aria-label="Biblioteca normativa">
+        <h2>Biblioteca normativa</h2>
+        <p class="note">
+          Documentos enviados por el Vicerrectorado y marco nacional. El convertidor ya aplica
+          los parámetros operativos (25–30 h/CRE, 60 CRE/año, mínimos de pregrado/grado).
+        </p>
+        <ul class="normativa-list">
+          <li>
+            <a href="docs/normativa/RESOL-2025-556-SACAU.pdf" target="_blank" rel="noopener"
+              >RESOL-2025-556 (SACAU nacional)</a
+            >
+            <span>Definición de CRE, 25–30 h, 60 CRE/año, mínimos de carrera.</span>
+          </li>
+          <li>
+            <a href="docs/normativa/Res-788-CS-2026-CRE-UCCuyo.pdf" target="_blank" rel="noopener"
+              >Res. 788-CS-2026 UCCuyo</a
+            >
+            <span>1 CRE = 25 h (hasta 30 justificado).</span>
+          </li>
+          <li>
+            <a
+              href="docs/normativa/Res-911-CS-2026-Marco-Conceptual-SACAU-UCCuyo.pdf"
+              target="_blank"
+              rel="noopener"
+              >Res. 911-CS-2026 UCCuyo</a
+            >
+            <span>Marco conceptual de implementación y adecuación curricular.</span>
+          </li>
+          <li>
+            <a href="docs/normativa/Informe-SACAU-CRE-CONFEDI-2026.pdf" target="_blank" rel="noopener"
+              >Informe SACAU/CRE CONFEDI 2026</a
+            >
+            <span>Estado de avance en ingenierías (referencia comparativa).</span>
+          </li>
+        </ul>
+      </section>
 
       <div id="error" class="err-banner" hidden></div>
       <div id="info" class="info-banner" hidden></div>
@@ -109,6 +147,15 @@
       <section id="panel-2" class="panel-step" aria-labelledby="stepBtn2">
         <div class="toolbar">
           <div class="field">
+            <label for="tipoCarrera">Tipo de carrera (umbrales SACAU)</label>
+            <select id="tipoCarrera">
+              <option value="grado">Grado (general)</option>
+              <option value="pregrado">Pregrado (general)</option>
+              <option value="pregrado_regulado">Pregrado regulado por el Estado</option>
+              <option value="art43">Carrera art. 43 LES (p. ej. Psicología)</option>
+            </select>
+          </div>
+          <div class="field">
             <label for="valorCre">Horas por cada CRE</label>
             <input id="valorCre" type="number" min="25" max="30" step="1" value="25" />
           </div>
@@ -158,10 +205,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
-    <script src="js/engine.js?v=13"></script>
-    <script src="js/ocr.js?v=13"></script>
-    <script src="js/parser.js?v=13"></script>
-    <script src="js/export.js?v=13"></script>
-    <script src="js/app.js?v=13"></script>
+    <script src="js/engine.js?v=14"></script>
+    <script src="js/ocr.js?v=14"></script>
+    <script src="js/parser.js?v=14"></script>
+    <script src="js/export.js?v=14"></script>
+    <script src="js/app.js?v=14"></script>
   </body>
 </html>

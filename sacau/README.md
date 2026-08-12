@@ -2,6 +2,12 @@
 
 Transformá un **plan de estudios en horas** al **SACAU / CRE**.
 
+## Normativa
+
+Los PDF oficiales están en [`docs/normativa/`](docs/normativa/): RESOL-2025-556, Res. 788-CS-2026, Res. 911-CS-2026 e Informe CONFEDI 2026.
+
+En la UI web: selector de **tipo de carrera** (grado / pregrado / art. 43) para los umbrales SACAU.
+
 ## Usar en el navegador
 
 **https://observatorio-ia.uccuyo.edu.ar/sacau/**
