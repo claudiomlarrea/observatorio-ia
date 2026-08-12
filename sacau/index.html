@@ -15,7 +15,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/app.css?v=3" />
+    <link rel="stylesheet" href="css/app.css?v=4" />
   </head>
   <body>
     <div class="topbar">
@@ -52,6 +52,12 @@
         <div class="field grow">
           <label for="filePlan">Plan de estudios (Word .docx / PDF / CSV)</label>
           <input id="filePlan" type="file" accept=".docx,.pdf,.csv,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+          <p class="note" style="margin:0.35rem 0 0">
+            ¿PDF escaneado? Podés usar este plan en texto (carga limpia):
+            <a href="ejemplos/Plan_Psicologia_1098-CS-2013_HORAS.docx">Word</a> ·
+            <a href="ejemplos/Plan_Psicologia_1098-CS-2013_HORAS.pdf">PDF</a> ·
+            <a href="ejemplos/Plan_Psicologia_1098-CS-2013_HORAS.csv">CSV</a>
+          </p>
         </div>
         <div class="field">
           <label for="valorCre">Valor CRE (h)</label>
@@ -100,8 +106,8 @@
 
     <script src="js/engine.js?v=3"></script>
     <script src="js/ocr.js?v=3"></script>
-    <script src="js/parser.js?v=3"></script>
+    <script src="js/parser.js?v=4"></script>
     <script src="js/export.js?v=3"></script>
-    <script src="js/app.js?v=3"></script>
+    <script src="js/app.js?v=4"></script>
   </body>
 </html>

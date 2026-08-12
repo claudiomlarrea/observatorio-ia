@@ -204,12 +204,46 @@
         if (!cells.length) continue;
         const joined = cells.join(" ");
         const anioMatch = joined.match(/(\d{1,2})\s*[°ºo.]?\s*a[nñ]o/i);
-        if (anioMatch) {
+        if (anioMatch && !/^\d{1,3}$/.test(cells[0] || "")) {
           currentAnio = Number(anioMatch[1]);
           continue;
         }
-        if (/asignatura|materia|unidad curricular|h\.?\s*totales|te[oó]ricas/i.test(joined) && cells.length <= 8) {
+        if (/asignatura|materia|unidad curricular|h\.?\s*totales|te[oó]ricas|c[oó]digo/i.test(joined) && cells.length <= 8) {
           continue;
+        }
+
+        // Formato ejemplo UCCuyo: código | área | asignatura | teo | prac | régimen | año
+        if (
+          cells.length >= 5 &&
+          /^\d{1,3}$/.test(cells[0] || "") &&
+          /[A-Za-zÁÉÍÓÚáéíóúñÑ]/.test(cells[2] || cells[1] || "")
+        ) {
+          const hasArea = /^(FB|FP|FGC|FCI|OTRA)$/i.test(cells[1] || "");
+          const nombre = hasArea ? cells[2] : cells[1];
+          const area = hasArea ? cells[1].toUpperCase() : guessArea(nombre);
+          const teoIdx = hasArea ? 3 : 2;
+          const pracIdx = hasArea ? 4 : 3;
+          const teo = Number(String(cells[teoIdx] || "0").replace(",", "."));
+          const prac = Number(String(cells[pracIdx] || "0").replace(",", "."));
+          const regimen = (cells[hasArea ? 5 : 4] || "S").toUpperCase().slice(0, 1);
+          const anioCell = cells[hasArea ? 6 : 5];
+          const anio = /^\d{1,2}$/.test(anioCell || "") ? Number(anioCell) : currentAnio;
+          if (Number.isFinite(teo) && Number.isFinite(prac) && (teo > 0 || prac > 0) && nombre) {
+            const asig = makeAsignatura(
+              {
+                codigo: cells[0],
+                nombre,
+                anio,
+                area,
+                regimen: regimen === "A" ? "A" : "S",
+                horas_teoricas: teo,
+                horas_practicas: prac,
+              },
+              found.length
+            );
+            if (asig) found.push(asig);
+            continue;
+          }
         }
 
         // Prefer cells: código, nombre, teo, prac
@@ -228,12 +262,10 @@
         let teo = 0;
         let prac = 0;
         if (nums.length >= 2) {
-          // Heurística: últimos dos enteros razonables como teo/prac
           const hourNums = nums.filter((x) => x.n <= 800);
           if (hourNums.length >= 2) {
             teo = hourNums[hourNums.length - 2].n;
             prac = hourNums[hourNums.length - 1].n;
-            // Si el "prac" parece un total (teo+prac), ajustar
             if (hourNums.length >= 3) {
               const maybeTeo = hourNums[hourNums.length - 3].n;
               const maybePrac = hourNums[hourNums.length - 2].n;

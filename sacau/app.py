@@ -297,10 +297,44 @@ def load_uploaded_plan(uploaded) -> PlanEstudios:
 
         doc = Document(BytesIO(data))
         text = "\n".join(p.text for p in doc.paragraphs)
+        asignaturas_from_tables: list[Asignatura] = []
         for table in doc.tables:
-            for row in table.rows:
-                text += "\n" + " ".join(c.text.strip() for c in row.cells)
-        # known plan from docx text
+            rows = [[c.text.strip() for c in row.cells] for row in table.rows]
+            if not rows:
+                continue
+            header = " ".join(rows[0]).lower()
+            # Detect curriculum tables
+            if not any(k in header for k in ("asignatura", "código", "codigo", "teóric", "teoric", "área", "area")):
+                # still try data rows that look like codes
+                pass
+            for row in rows[1:]:
+                if len(row) < 5:
+                    continue
+                codigo, area, nombre = row[0], row[1], row[2]
+                if not nombre or not re.match(r"^\d{1,3}$", codigo or ""):
+                    continue
+                try:
+                    teo = float(str(row[3]).replace(",", ".") or 0)
+                    prac = float(str(row[4]).replace(",", ".") or 0)
+                except ValueError:
+                    continue
+                regimen = row[5] if len(row) > 5 else "S"
+                anio = int(row[6]) if len(row) > 6 and str(row[6]).isdigit() else 1
+                asignaturas_from_tables.append(
+                    Asignatura(
+                        codigo=codigo,
+                        nombre=nombre,
+                        anio=anio,
+                        area=area or "OTRA",
+                        horas_teoricas=teo,
+                        horas_practicas=prac,
+                        regimen=regimen or "S",
+                        tipologia=guess_tipologia(nombre),
+                    )
+                )
+            for row in rows:
+                text += "\n" + " ".join(row)
+
         for entry in known.get("planes", []):
             hits = sum(1 for p in entry.get("patterns", []) if p.lower() in text.lower())
             if hits >= entry.get("min_hits", 2):
@@ -311,7 +345,8 @@ def load_uploaded_plan(uploaded) -> PlanEstudios:
                     "advertencia": "Plan reconocido a partir del documento cargado.",
                 }
                 return curated
-        asignaturas = parse_text_to_asignaturas(text)
+
+        asignaturas = asignaturas_from_tables or parse_text_to_asignaturas(text)
         base.asignaturas = asignaturas or empty_plan().asignaturas
         base.metadata["advertencia"] = (
             "Revisá las asignaturas detectadas desde Word y completá tipologías/horas si hace falta."
