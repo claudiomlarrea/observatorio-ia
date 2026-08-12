@@ -572,6 +572,9 @@
         msg = `Se cargaron ${n} materias (${sinHoras} sin horas). Completá las faltantes antes de calcular CRE.`;
       }
       usePlan(loaded, msg, 2);
+      if (window.SacauUsage && typeof window.SacauUsage.recordPlanLoad === "function") {
+        window.SacauUsage.recordPlanLoad({ name: file.name, size: file.size });
+      }
     } catch (e) {
       console.error(e);
       showInfo("");

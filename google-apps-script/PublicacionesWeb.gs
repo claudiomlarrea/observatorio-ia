@@ -9,6 +9,8 @@
  * - GET  ?action=visitgeo&site=observatorio|secretaria|agua|aura&country=AR&countryName=Argentina&region=San Juan:
  *       +1 a contador agregado de origen (sin IP).
  * - GET  ?action=visitmap&site=observatorio|secretaria|agua|aura: JSON de países/regiones para el mapa público.
+ * - GET  ?action=sacau_plan: +1 plan cargado en el Convertidor SACAU → CRE (devuelve total).
+ * - GET  ?action=sacau_stats: consulta el total de planes cargados (sin incrementar).
  * - POST ?action=add: agrega publicación (solo emails autorizados).
  * - POST ?action=contact: envía consulta del formulario web (público).
  */
@@ -102,6 +104,12 @@ function doGet(e) {
     }
     if (action === "visitmap") {
       return jsonOrJsonp_(obtenerMapaVisitas_(param_(e, "site", "observatorio")), e);
+    }
+    if (action === "sacau_plan") {
+      return jsonOrJsonp_(registrarPlanSacau_(), e);
+    }
+    if (action === "sacau_stats") {
+      return jsonOrJsonp_(obtenerStatsSacau_(), e);
     }
     if (action === "noticias") {
       return jsonOrJsonp_(obtenerNoticiasMedios_(), e);
@@ -822,6 +830,31 @@ function registrarVisita_(site) {
       agua: "https://claudiomlarrea.github.io/observatorio-ia/instituto-del-agua/",
       aura: "https://plan-aura.com.ar/"
     }
+  };
+}
+
+/** Contador de planes cargados en /sacau/ (Convertidor SACAU → CRE). */
+function obtenerStatsSacau_() {
+  var props = PropertiesService.getScriptProperties();
+  var planes = parseInt(props.getProperty("sacau_planes_cargados") || "0", 10) || 0;
+  return {
+    ok: true,
+    tipo: "sacau_convertidor",
+    planes_cargados: planes,
+    url: "https://observatorio-ia.uccuyo.edu.ar/sacau/"
+  };
+}
+
+function registrarPlanSacau_() {
+  var props = PropertiesService.getScriptProperties();
+  var planes = parseInt(props.getProperty("sacau_planes_cargados") || "0", 10) || 0;
+  planes++;
+  props.setProperty("sacau_planes_cargados", String(planes));
+  return {
+    ok: true,
+    tipo: "sacau_convertidor",
+    planes_cargados: planes,
+    url: "https://observatorio-ia.uccuyo.edu.ar/sacau/"
   };
 }
 

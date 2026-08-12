@@ -1,0 +1,28 @@
+PARCHE — Contador de planes cargados (Convertidor SACAU → CRE)
+==============================================================
+
+El frontend en sacau/ ya llama:
+  ?action=sacau_stats   → lee el total
+  ?action=sacau_plan    → +1 al cargar un plan con materias
+
+Hay que publicar una nueva versión de Apps Script o el contador
+solo funcionará en modo local (este navegador).
+
+1. Abrí en Cursor: google-apps-script/PublicacionesWeb.gs
+2. Copiá todo el archivo
+3. Proyecto Apps Script «Publicaciones Página Web»
+   https://script.google.com/home/projects/19z0bOktBiOQ0b8tA8EByQEm-oP9jNHFzvlyniDZmN-pSpdyXo1bc52ps/edit
+4. Pegá sobre PublicacionesWeb.gs → Guardar
+5. Implementar → Administrar implementaciones → lápiz (/exec)
+   → Nueva versión → Implementar
+
+Probar (no debe incrementar):
+  .../exec?action=sacau_stats
+
+Probar (+1):
+  .../exec?action=sacau_plan
+
+Luego:
+  https://observatorio-ia.uccuyo.edu.ar/sacau/
+
+No afecta los contadores de visitas observatorio / secretaria / agua / aura.
