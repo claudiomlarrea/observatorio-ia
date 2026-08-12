@@ -147,7 +147,7 @@
         (f) => `<div class="anexo-field">
           <label for="anexo-${f.id}">${f.label}</label>
           <span class="ayuda">${f.ayuda || ""}</span>
-          <textarea id="anexo-${f.id}" data-anexo="${f.id}" rows="5"></textarea>
+          <textarea id="anexo-${f.id}" data-anexo="${f.id}" rows="10"></textarea>
         </div>`
       )
       .join("");

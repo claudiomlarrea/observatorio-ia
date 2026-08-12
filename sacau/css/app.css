@@ -573,7 +573,7 @@ footer.site {
 
 .anexo-field textarea {
   width: 100%;
-  min-height: 6.5rem;
+  min-height: 11rem;
   resize: vertical;
   font: inherit;
   padding: 0.55rem 0.65rem;
@@ -581,7 +581,7 @@ footer.site {
   border-radius: 8px;
   background: #fff;
   color: var(--text);
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .check-inline {
