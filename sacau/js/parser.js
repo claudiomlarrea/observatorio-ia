@@ -503,7 +503,7 @@
           if (named) return loadKnownPlanData(named);
         }
         throw new Error(
-          `No se pudo leer el Word (${err.message || err}). Probá el CSV del ejemplo o «Cargar ejemplo Psicología».`
+          `No se pudo leer el Word (${err.message || err}). Probá un CSV con columnas nombre, horas_teoricas y horas_practicas, o la plantilla vacía.`
         );
       }
     }
@@ -588,7 +588,7 @@
       plan.metadata.texto_extraido = cleaned.slice(0, 25000);
       if (!plan.asignaturas.length) {
         plan.metadata.advertencia =
-          "El OCR no pudo armar filas confiables. Usá el CSV del ejemplo o «Cargar ejemplo Psicología».";
+          "El OCR no pudo armar filas confiables. Probá un Word/PDF en texto o un CSV con las columnas de la plantilla.";
       } else if (usedOcr) {
         plan.metadata.advertencia =
           `OCR aplicado: se detectaron ${plan.asignaturas.length} asignaturas. Revisá tipologías, años y horas.`;

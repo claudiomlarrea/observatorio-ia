@@ -382,6 +382,11 @@ footer.site {
   color: #fff;
 }
 
+.step.done:not(.active) {
+  background: #e8f2ea;
+  color: #1f6b3a;
+}
+
 .panel-step[hidden] {
   display: none !important;
 }

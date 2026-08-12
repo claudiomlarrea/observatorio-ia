@@ -43,7 +43,10 @@
   function setStep(n) {
     currentStep = Number(n) || 1;
     document.querySelectorAll(".step").forEach((el) => {
-      el.classList.toggle("active", Number(el.dataset.step) === currentStep);
+      const s = Number(el.dataset.step);
+      el.classList.toggle("active", s === currentStep);
+      el.classList.toggle("done", Boolean(plan && plan.asignaturas && plan.asignaturas.length) && s < currentStep);
+      el.setAttribute("aria-current", s === currentStep ? "step" : "false");
     });
     for (let i = 1; i <= 3; i++) {
       const panel = document.getElementById(`panel-${i}`);
@@ -432,12 +435,25 @@
     $("#btnClearPlan").addEventListener("click", () => {
       usePlan(
         SacauParser.emptyPlan(),
-        "Plan vacío listo. Subí un archivo o agregá materias a mano en el paso 2.",
+        "Plan borrado. Subí un archivo nuevo o agregá materias a mano en el paso 2.",
         1
       );
     });
+    const btnBack = $("#btnBackToLoad");
+    if (btnBack) {
+      btnBack.addEventListener("click", () => {
+        showError("");
+        showInfo("Podés subir otro archivo. El plan actual se mantiene hasta que cargues uno nuevo.");
+        setStep(1);
+      });
+    }
     $("#btnAddRow").addEventListener("click", addRow);
     $("#btnRecalc").addEventListener("click", () => {
+      if (!plan || !plan.asignaturas.length) {
+        showError("No hay materias para calcular. Cargá un plan o agregá materias.");
+        setStep(1);
+        return;
+      }
       render({ skipSync: false });
       setStep(3);
       showInfo("Créditos actualizados con tus ajustes.");
