@@ -1,16 +1,28 @@
 /**
- * UI Convertidor SACAU (estático / GitHub Pages)
+ * UI Convertidor SACAU — carga Word/PDF y exportación CRE
  */
 (async function () {
   "use strict";
 
   const $ = (sel) => document.querySelector(sel);
   const errEl = $("#error");
+  const infoEl = $("#info");
   const appEl = $("#app");
 
   function showError(msg) {
-    errEl.hidden = false;
-    errEl.textContent = msg;
+    errEl.hidden = !msg;
+    errEl.textContent = msg || "";
+  }
+
+  function showInfo(msg) {
+    infoEl.hidden = !msg;
+    infoEl.textContent = msg || "";
+  }
+
+  function setStep(n) {
+    document.querySelectorAll(".step").forEach((el) => {
+      el.classList.toggle("active", Number(el.dataset.step) === n);
+    });
   }
 
   async function loadJson(path) {
@@ -21,7 +33,6 @@
 
   let tipologiasMap = {};
   let normasUccuyo = {};
-  let normasPsico = {};
   let plan = null;
 
   function tipologiasFromRaw(raw) {
@@ -36,6 +47,15 @@
       redondeo_cre: Number($("#redondeo").value),
       tipologias: tipologiasMap,
     };
+  }
+
+  function ensureDuracion(p) {
+    if (!p.asignaturas.length) {
+      p.duracion_anios = 0;
+      return p;
+    }
+    p.duracion_anios = Math.max(...p.asignaturas.map((a) => Number(a.anio || 1)));
+    return p;
   }
 
   function readAsignaturasFromTable() {
@@ -60,15 +80,12 @@
         horas_estimadas: g("horas_estimadas") === "1",
         notas: g("notas"),
       };
-    });
+    }).filter((a) => (a.nombre || "").trim());
   }
 
   function tipologiaOptions(selected) {
     return Object.keys(tipologiasMap)
-      .map(
-        (id) =>
-          `<option value="${id}" ${id === selected ? "selected" : ""}>${id}</option>`
-      )
+      .map((id) => `<option value="${id}" ${id === selected ? "selected" : ""}>${id}</option>`)
       .join("");
   }
 
@@ -78,10 +95,29 @@
       .join("");
   }
 
-  function render(planConv, validation) {
-    const t = planConv.totales;
-    const byAnio = SacauEngine.groupBy(planConv.items, (i) => i.asignatura.anio);
-    const byArea = SacauEngine.groupBy(planConv.items, (i) => i.asignatura.area || "—");
+  function syncPlanFromUi() {
+    if (!plan) return null;
+    plan.asignaturas = readAsignaturasFromTable();
+    return ensureDuracion(plan);
+  }
+
+  function currentConversion() {
+    const p = syncPlanFromUi();
+    if (!p) return null;
+    const conv = SacauEngine.convertPlan(p, optionsFromUi());
+    const val = SacauEngine.validatePlan(conv, normasUccuyo, null);
+    window.__lastConv = conv;
+    window.__lastVal = val;
+    return { conv, val };
+  }
+
+  function render() {
+    const result = currentConversion();
+    if (!result) return;
+    const { conv, val } = result;
+    const t = conv.totales;
+    const byAnio = SacauEngine.groupBy(conv.items, (i) => i.asignatura.anio);
+    const byArea = SacauEngine.groupBy(conv.items, (i) => i.asignatura.area || "—");
 
     const anioRows = Object.keys(byAnio)
       .sort((a, b) => Number(a) - Number(b))
@@ -99,8 +135,11 @@
       })
       .join("");
 
-    const checkLis = validation.checks
-      .map((c) => `<li class="${c.nivel}">${c.nivel === "ok" ? "✅" : c.nivel === "warning" ? "⚠️" : "❌"} ${c.mensaje}</li>`)
+    const checkLis = val.checks
+      .map(
+        (c) =>
+          `<li class="${c.nivel}">${c.nivel === "ok" ? "✅" : c.nivel === "warning" ? "⚠️" : "❌"} ${c.mensaje}</li>`
+      )
       .join("");
 
     const tipRows = Object.values(tipologiasMap)
@@ -114,33 +153,35 @@
       )
       .join("");
 
-    const asigRows = planConv.items
+    const asigRows = conv.items
       .map((item) => {
         const a = item.asignatura;
-        const ovA =
-          a.horas_autonomas_override == null ? "" : a.horas_autonomas_override;
+        const ovA = a.horas_autonomas_override == null ? "" : a.horas_autonomas_override;
         const ovC = a.valor_cre_override == null ? "" : a.valor_cre_override;
         return `<tr>
           <td><input data-f="codigo" value="${a.codigo || ""}" class="narrow" /></td>
           <td><input data-f="nombre" value="${String(a.nombre || "").replace(/"/g, "&quot;")}" style="min-width:14rem" /></td>
-          <td><input data-f="anio" type="number" class="narrow" value="${a.anio}" /></td>
+          <td><input data-f="anio" type="number" class="narrow" min="1" value="${a.anio}" /></td>
           <td><select data-f="area">${areaOptions(a.area)}</select></td>
-          <td><select data-f="regimen"><option ${a.regimen === "A" ? "selected" : ""}>A</option><option ${a.regimen === "S" ? "selected" : ""}>S</option></select></td>
+          <td><select data-f="regimen"><option ${a.regimen === "A" ? "selected" : ""}>A</option><option ${a.regimen !== "A" ? "selected" : ""}>S</option></select></td>
           <td><select data-f="tipologia">${tipologiaOptions(a.tipologia)}</select></td>
-          <td><input data-f="horas_teoricas" type="number" class="narrow" value="${a.horas_teoricas}" /></td>
-          <td><input data-f="horas_practicas" type="number" class="narrow" value="${a.horas_practicas}" /></td>
-          <td><input data-f="horas_autonomas_override" type="number" class="narrow" value="${ovA}" placeholder="auto" /></td>
+          <td><input data-f="horas_teoricas" type="number" class="narrow" min="0" value="${a.horas_teoricas}" /></td>
+          <td><input data-f="horas_practicas" type="number" class="narrow" min="0" value="${a.horas_practicas}" /></td>
+          <td><input data-f="horas_autonomas_override" type="number" class="narrow" min="0" value="${ovA}" placeholder="auto" /></td>
           <td><input data-f="valor_cre_override" type="number" class="narrow" min="25" max="30" value="${ovC}" placeholder="25" /></td>
           <td>${item.horas_interaccion.toFixed(0)}</td>
           <td>${item.horas_autonomas.toFixed(0)}</td>
           <td><strong>${item.cre.toFixed(1)}</strong></td>
-          <td><input type="hidden" data-f="horas_estimadas" value="${a.horas_estimadas ? "1" : "0"}" />
-              <input type="hidden" data-f="notas" value="${String(a.notas || "").replace(/"/g, "&quot;")}" />
-              ${a.horas_estimadas ? "≈" : ""}</td>
+          <td>
+            <button type="button" class="btn-secondary btn-del" title="Eliminar">×</button>
+            <input type="hidden" data-f="horas_estimadas" value="${a.horas_estimadas ? "1" : "0"}" />
+            <input type="hidden" data-f="notas" value="${String(a.notas || "").replace(/"/g, "&quot;")}" />
+          </td>
         </tr>`;
       })
       .join("");
 
+    appEl.classList.remove("loading");
     appEl.innerHTML = `
       <div class="metrics">
         <div class="metric"><div class="label">Interacción</div><div class="value">${t.horas_interaccion.toLocaleString("es-AR", { maximumFractionDigits: 0 })} h</div></div>
@@ -152,18 +193,18 @@
 
       <div class="grid-2">
         <section class="panel">
-          <h2>Cumplimiento normativo</h2>
+          <h2>Cumplimiento SACAU</h2>
           <ul class="checks">${checkLis}</ul>
         </section>
         <section class="panel">
-          <h2>Coeficientes autónomos</h2>
+          <h2>Coeficientes de trabajo autónomo</h2>
           <div class="table-wrap" style="max-height:14rem">
             <table>
               <thead><tr><th>Id</th><th>Nombre</th><th>Ratio</th><th>Fijas</th></tr></thead>
               <tbody>${tipRows}</tbody>
             </table>
           </div>
-          <p class="note">Autónomas ≈ interacción × ratio + fijas (salvo override por materia).</p>
+          <p class="note">Autónomas ≈ interacción × ratio + fijas, salvo override por materia. Ajustá según el criterio de la carrera.</p>
         </section>
       </div>
 
@@ -173,7 +214,7 @@
           <div class="table-wrap" style="max-height:12rem">
             <table>
               <thead><tr><th>Año</th><th>Interacción</th><th>Autónomas</th><th>CRE</th></tr></thead>
-              <tbody>${anioRows}</tbody>
+              <tbody>${anioRows || '<tr><td colspan="4">Sin datos</td></tr>'}</tbody>
             </table>
           </div>
         </section>
@@ -182,7 +223,7 @@
           <div class="table-wrap" style="max-height:12rem">
             <table>
               <thead><tr><th>Área</th><th>Interacción</th><th>Prácticas</th><th>CRE</th></tr></thead>
-              <tbody>${areaRows}</tbody>
+              <tbody>${areaRows || '<tr><td colspan="4">Sin datos</td></tr>'}</tbody>
             </table>
           </div>
         </section>
@@ -190,7 +231,7 @@
 
       <section class="panel">
         <h2>${plan.nombre || "Plan de estudios"}</h2>
-        <p class="note">${plan.normativa || ""} ${plan.metadata && plan.metadata.nota ? "· " + plan.metadata.nota : ""}</p>
+        <p class="note">${plan.metadata?.advertencia || "Editá tipología, horas autónomas y valor CRE por asignatura según tus criterios curriculares."}</p>
         <div class="table-wrap">
           <table id="tablaAsig">
             <thead>
@@ -206,81 +247,147 @@
       </section>
 
       <footer class="site">
-        Res. 788-CS-2026 (CRE UCCuyo) · RESOL-2025-556 (SACAU) ·
-        También disponible como app Streamlit: <code>streamlit run sacau/app.py</code>
+        Marco: Res. 788-CS-2026 (CRE UCCuyo) · RESOL-2025-556 (SACAU).
+        Los PDF escaneados pueden requerir carga manual o CSV.
       </footer>
     `;
 
-    // tipología listeners
     appEl.querySelectorAll(".tip-ratio, .tip-fijas").forEach((el) => {
       el.addEventListener("change", () => {
         const id = el.getAttribute("data-tip");
         if (!tipologiasMap[id]) return;
-        if (el.classList.contains("tip-ratio")) {
-          tipologiasMap[id].ratio_autonomo = Number(el.value || 0);
-        } else {
-          tipologiasMap[id].autonomas_fijas = Number(el.value || 0);
-        }
-        recalcular();
+        if (el.classList.contains("tip-ratio")) tipologiasMap[id].ratio_autonomo = Number(el.value || 0);
+        else tipologiasMap[id].autonomas_fijas = Number(el.value || 0);
+        setStep(2);
+        render();
+      });
+    });
+
+    appEl.querySelectorAll(".btn-del").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        btn.closest("tr")?.remove();
+        setStep(2);
+        render();
       });
     });
   }
 
-  function recalcular() {
-    if (!plan) return;
-    plan.asignaturas = readAsignaturasFromTable();
-    const validar = $("#validarPsico").checked;
-    const planRun = {
-      ...plan,
-      carrera_clave: validar ? "psicologia" : "",
-    };
-    const conv = SacauEngine.convertPlan(planRun, optionsFromUi());
-    const val = SacauEngine.validatePlan(
-      conv,
-      normasUccuyo,
-      validar ? normasPsico : null
-    );
-    window.__lastConv = conv;
-    render(conv, val);
+  function usePlan(next, message, step = 2) {
+    plan = ensureDuracion(next);
+    showError("");
+    showInfo(message || "");
+    setStep(step);
+    render();
   }
 
-  function downloadCsv() {
-    const conv = window.__lastConv;
-    if (!conv) return;
-    const blob = new Blob([SacauEngine.toCsv(conv)], {
-      type: "text/csv;charset=utf-8",
+  async function onFile(file) {
+    if (!file) return;
+    showError("");
+    showInfo("Leyendo archivo…");
+    setStep(1);
+    try {
+      const loaded = await SacauParser.loadPlanFromFile(file);
+      const n = loaded.asignaturas.length;
+      usePlan(
+        loaded,
+        n
+          ? `Se detectaron ${n} asignaturas en «${file.name}». Revisá tipologías, años y horas; luego descargá Word o PDF.`
+          : `No se detectaron filas automáticamente en «${file.name}». Usá «+ Asignatura» o cargá un CSV con columnas nombre, horas_teoricas, horas_practicas.`
+      );
+    } catch (e) {
+      console.error(e);
+      showInfo("");
+      showError(e.message || String(e));
+    }
+  }
+
+  function addRow() {
+    syncPlanFromUi();
+    const n = plan.asignaturas.length + 1;
+    plan.asignaturas.push({
+      codigo: String(n).padStart(2, "0"),
+      nombre: "Nueva asignatura",
+      anio: plan.duracion_anios || 1,
+      area: "OTRA",
+      regimen: "S",
+      tipologia: "teorica",
+      horas_teoricas: 0,
+      horas_practicas: 0,
+      horas_autonomas_override: null,
+      valor_cre_override: null,
+      horas_estimadas: false,
+      notas: "",
     });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = `${plan.id || "plan"}_cre.csv`;
-    a.click();
-    URL.revokeObjectURL(a.href);
+    setStep(2);
+    render();
+  }
+
+  async function onExportDocx() {
+    const result = currentConversion();
+    if (!result) return;
+    try {
+      const blob = await SacauExport.exportDocx(result.conv, result.val);
+      SacauExport.downloadBlob(blob, `${plan.id || "plan"}_CRE.docx`);
+      setStep(3);
+    } catch (e) {
+      showError(e.message || String(e));
+    }
+  }
+
+  function onExportPdf() {
+    const result = currentConversion();
+    if (!result) return;
+    try {
+      const blob = SacauExport.exportPdf(result.conv, result.val);
+      SacauExport.downloadBlob(blob, `${plan.id || "plan"}_CRE.pdf`);
+      setStep(3);
+    } catch (e) {
+      showError(e.message || String(e));
+    }
+  }
+
+  function onExportCsv() {
+    const result = currentConversion();
+    if (!result) return;
+    const blob = new Blob([SacauEngine.toCsv(result.conv)], { type: "text/csv;charset=utf-8" });
+    SacauExport.downloadBlob(blob, `${plan.id || "plan"}_CRE.csv`);
   }
 
   try {
-    const [tipsRaw, uccuyo, psico, psicoPlan] = await Promise.all([
+    const [tipsRaw, uccuyo] = await Promise.all([
       loadJson("data/tipologias.json"),
       loadJson("data/normas_uccuyo.json"),
-      loadJson("data/normas_psicologia.json"),
-      loadJson("data/psicologia_1098.json"),
     ]);
     tipologiasMap = tipologiasFromRaw(tipsRaw);
     normasUccuyo = uccuyo;
-    normasPsico = psico;
-    plan = psicoPlan;
-
     $("#valorCre").value = uccuyo.cre_default || 25;
-    $("#btnRecalc").addEventListener("click", recalcular);
-    $("#btnCsv").addEventListener("click", downloadCsv);
-    $("#valorCre").addEventListener("change", recalcular);
-    $("#redondeo").addEventListener("change", recalcular);
-    $("#validarPsico").addEventListener("change", recalcular);
 
-    // Primera render: sin leer tabla (aún no existe)
-    const conv = SacauEngine.convertPlan(plan, optionsFromUi());
-    const val = SacauEngine.validatePlan(conv, normasUccuyo, normasPsico);
-    window.__lastConv = conv;
-    render(conv, val);
+    $("#filePlan").addEventListener("change", (ev) => {
+      const f = ev.target.files && ev.target.files[0];
+      onFile(f);
+    });
+    $("#btnBlank").addEventListener("click", () => {
+      $("#filePlan").value = "";
+      usePlan(SacauParser.emptyPlan(), "Plan en blanco: cargá un archivo o agregá asignaturas a mano.");
+      setStep(1);
+    });
+    $("#btnAddRow").addEventListener("click", addRow);
+    $("#btnRecalc").addEventListener("click", () => {
+      setStep(2);
+      render();
+      setStep(3);
+    });
+    $("#valorCre").addEventListener("change", render);
+    $("#redondeo").addEventListener("change", render);
+    $("#btnDocx").addEventListener("click", onExportDocx);
+    $("#btnPdf").addEventListener("click", onExportPdf);
+    $("#btnCsv").addEventListener("click", onExportCsv);
+
+    usePlan(
+      SacauParser.emptyPlan(),
+      "Cargá un Word (.docx) o PDF con tu plan en horas para comenzar.",
+      1
+    );
   } catch (e) {
     console.error(e);
     showError(e.message || String(e));

@@ -1,4 +1,4 @@
-"""Exportación CSV / Excel del plan convertido."""
+"""Exportación CSV / Excel / Word / PDF del plan convertido."""
 
 from __future__ import annotations
 
@@ -126,3 +126,123 @@ def to_excel_bytes(
         if validacion is not None:
             validacion_df(validacion).to_excel(writer, sheet_name="Validacion", index=False)
     return buffer.getvalue()
+
+
+def to_docx_bytes(
+    plan_conv: PlanConvertido,
+    validacion: ValidationResult | None = None,
+) -> bytes:
+    from docx import Document
+    from docx.shared import Pt
+
+    doc = Document()
+    doc.add_heading("Plan de estudios en créditos CRE (SACAU)", level=1)
+    doc.add_paragraph(plan_conv.plan.nombre or "Plan de estudios")
+    t = plan_conv.totales
+    doc.add_paragraph(
+        f"{plan_conv.plan.institucion} · CRE default {plan_conv.opciones.valor_cre_default} h"
+    )
+    doc.add_heading("Totales", level=2)
+    doc.add_paragraph(
+        f"Interacción: {t.horas_interaccion:.0f} h · Autónomas: {t.horas_autonomas:.0f} h · "
+        f"Totales: {t.horas_totales:.0f} h · CRE: {t.cre:.1f} · CRE/año: {t.cre_promedio_anual:.1f}"
+    )
+    doc.add_heading("Asignaturas", level=2)
+    table = doc.add_table(rows=1, cols=8)
+    hdr = table.rows[0].cells
+    headers = ["Cód.", "Asignatura", "Año", "Área", "Inter.", "Autón.", "Total", "CRE"]
+    for i, h in enumerate(headers):
+        hdr[i].text = h
+    for item in plan_conv.items:
+        a = item.asignatura
+        row = table.add_row().cells
+        row[0].text = str(a.codigo)
+        row[1].text = str(a.nombre)
+        row[2].text = str(a.anio)
+        row[3].text = str(a.area)
+        row[4].text = f"{item.horas_interaccion:.0f}"
+        row[5].text = f"{item.horas_autonomas:.0f}"
+        row[6].text = f"{item.horas_totales:.0f}"
+        row[7].text = f"{item.cre:.1f}"
+
+    if validacion is not None:
+        doc.add_heading("Cumplimiento SACAU", level=2)
+        for c in validacion.checks:
+            mark = {"ok": "[OK]", "warning": "[AVISO]", "error": "[REVISAR]"}.get(c.nivel, "[·]")
+            p = doc.add_paragraph(f"{mark} {c.mensaje}")
+            for run in p.runs:
+                run.font.size = Pt(10)
+
+    doc.add_paragraph(
+        "Nota: las horas autónomas son estimaciones editables; no son objeto de verificación "
+        "en validez nacional (RESOL-2025-556)."
+    )
+    buf = BytesIO()
+    doc.save(buf)
+    return buf.getvalue()
+
+
+def to_pdf_bytes(
+    plan_conv: PlanConvertido,
+    validacion: ValidationResult | None = None,
+) -> bytes:
+    from reportlab.lib import colors
+    from reportlab.lib.pagesizes import A4, landscape
+    from reportlab.lib.styles import getSampleStyleSheet
+    from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
+
+    buf = BytesIO()
+    doc = SimpleDocTemplate(buf, pagesize=landscape(A4), leftMargin=36, rightMargin=36, topMargin=36, bottomMargin=36)
+    styles = getSampleStyleSheet()
+    story = []
+    t = plan_conv.totales
+    story.append(Paragraph("Plan de estudios en créditos CRE (SACAU)", styles["Title"]))
+    story.append(Paragraph(plan_conv.plan.nombre or "Plan de estudios", styles["Heading2"]))
+    story.append(
+        Paragraph(
+            f"{plan_conv.plan.institucion} · CRE default {plan_conv.opciones.valor_cre_default} h · "
+            f"Interacción {t.horas_interaccion:.0f} h · Autónomas {t.horas_autonomas:.0f} h · "
+            f"Totales {t.horas_totales:.0f} h · CRE {t.cre:.1f} · CRE/año {t.cre_promedio_anual:.1f}",
+            styles["Normal"],
+        )
+    )
+    story.append(Spacer(1, 12))
+
+    data = [["Cód.", "Asignatura", "Año", "Área", "Inter.", "Autón.", "Total", "CRE"]]
+    for item in plan_conv.items:
+        a = item.asignatura
+        data.append(
+            [
+                str(a.codigo),
+                str(a.nombre)[:60],
+                str(a.anio),
+                str(a.area),
+                f"{item.horas_interaccion:.0f}",
+                f"{item.horas_autonomas:.0f}",
+                f"{item.horas_totales:.0f}",
+                f"{item.cre:.1f}",
+            ]
+        )
+    table = Table(data, repeatRows=1)
+    table.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, 0), colors.Color(122 / 255, 21 / 255, 50 / 255)),
+                ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+                ("FONTSIZE", (0, 0), (-1, -1), 8),
+                ("GRID", (0, 0), (-1, -1), 0.25, colors.grey),
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+            ]
+        )
+    )
+    story.append(table)
+
+    if validacion is not None:
+        story.append(Spacer(1, 14))
+        story.append(Paragraph("Cumplimiento SACAU", styles["Heading2"]))
+        for c in validacion.checks:
+            mark = {"ok": "[OK]", "warning": "[AVISO]", "error": "[REVISAR]"}.get(c.nivel, "[·]")
+            story.append(Paragraph(f"{mark} {c.mensaje}", styles["Normal"]))
+
+    doc.build(story)
+    return buf.getvalue()

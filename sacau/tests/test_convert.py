@@ -123,6 +123,8 @@ def test_psicologia_conversion_y_sacau(plan_psico, tipologias, normas_uccuyo, no
 
 
 def test_export_formats(plan_psico, tipologias, normas_uccuyo, normas_psico):
+    from engine.export import to_docx_bytes, to_pdf_bytes
+
     opts = ConvertOptions(valor_cre_default=25, redondeo_cre=0.5, tipologias=tipologias)
     conv = convert_plan(plan_psico, opts)
     val = validate_plan(conv, normas_uccuyo, normas_psico)
@@ -133,3 +135,7 @@ def test_export_formats(plan_psico, tipologias, normas_uccuyo, normas_psico):
     assert csv_bytes.startswith(b"\xef\xbb\xbf") or b"codigo" in csv_bytes
     xlsx = to_excel_bytes(conv, val)
     assert xlsx[:2] == b"PK"
+    docx = to_docx_bytes(conv, val)
+    assert docx[:2] == b"PK"
+    pdf = to_pdf_bytes(conv, val)
+    assert pdf.startswith(b"%PDF")

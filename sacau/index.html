@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Convertidor SACAU UCCuyo: transforma planes de estudio en horas a créditos CRE."
+      content="Convertidor SACAU UCCuyo: cargá un plan en Word o PDF y transformalo a créditos CRE."
     />
     <title>Convertidor SACAU → CRE | Universidad Católica de Cuyo</title>
     <link rel="icon" type="image/png" href="../assets/logo-observatorio-ia.png" />
@@ -15,7 +15,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="css/app.css?v=2" />
   </head>
   <body>
     <div class="topbar">
@@ -27,21 +27,26 @@
       <header class="hero">
         <h1>Convertidor SACAU → CRE</h1>
         <p>
-          Pasá un plan de estudios de <strong>horas</strong> a
-          <strong>Créditos de Referencia del Estudiante</strong> (CRE = 25 h,
-          hasta 30 justificado). Incluye validaciones SACAU y el caso precargado
-          de Licenciatura en Psicología.
+          Cargá tu <strong>plan de estudios en horas</strong> (Word o PDF), revisá las
+          asignaturas detectadas, definí tipologías y trabajo autónomo, y descargá el
+          plan en <strong>créditos CRE</strong> (Word o PDF). Valor CRE UCCuyo:
+          <strong>25 h</strong> (hasta 30 justificado).
         </p>
       </header>
 
       <div id="error" class="err-banner" hidden></div>
+      <div id="info" class="info-banner" hidden></div>
 
-      <section class="toolbar" aria-label="Parámetros">
+      <section class="steps" aria-label="Pasos">
+        <div class="step active" data-step="1">1. Cargar</div>
+        <div class="step" data-step="2">2. Decidir</div>
+        <div class="step" data-step="3">3. Resultado</div>
+      </section>
+
+      <section class="toolbar" aria-label="Carga y parámetros">
         <div class="field grow">
-          <label for="fuente">Plan</label>
-          <select id="fuente">
-            <option value="psicologia">Lic. Psicología (Res. 1098-CS-2013)</option>
-          </select>
+          <label for="filePlan">Plan de estudios (Word .docx / PDF / CSV)</label>
+          <input id="filePlan" type="file" accept=".docx,.pdf,.csv,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
         </div>
         <div class="field">
           <label for="valorCre">Valor CRE (h)</label>
@@ -55,22 +60,41 @@
             <option value="0">Sin redondeo</option>
           </select>
         </div>
-        <div class="field">
-          <label for="validarPsico">
-            <input id="validarPsico" type="checkbox" checked />
-            Validar Psicología
-          </label>
-        </div>
         <div class="actions">
+          <button type="button" class="btn-secondary" id="btnBlank">Plan en blanco</button>
+          <button type="button" class="btn-secondary" id="btnAddRow">+ Asignatura</button>
           <button type="button" class="btn-secondary" id="btnRecalc">Recalcular</button>
-          <button type="button" class="btn-primary" id="btnCsv">Descargar CSV</button>
         </div>
       </section>
 
-      <div id="app" class="loading">Cargando plan y normas…</div>
+      <section class="toolbar export-bar" aria-label="Descargas">
+        <span class="export-label">Descargar plan en créditos:</span>
+        <div class="actions" style="margin-left: 0">
+          <button type="button" class="btn-primary" id="btnDocx">Word (.docx)</button>
+          <button type="button" class="btn-primary" id="btnPdf">PDF</button>
+          <button type="button" class="btn-secondary" id="btnCsv">CSV</button>
+        </div>
+      </section>
+
+      <div id="app" class="loading">Preparando convertidor…</div>
     </div>
 
-    <script src="js/engine.js"></script>
-    <script src="js/app.js"></script>
+    <!-- CDNs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+      if (window.pdfjsLib) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+      }
+    </script>
+    <script src="https://unpkg.com/mammoth@1.8.0/mammoth.browser.min.js"></script>
+    <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+    <script src="js/engine.js?v=2"></script>
+    <script src="js/parser.js?v=2"></script>
+    <script src="js/export.js?v=2"></script>
+    <script src="js/app.js?v=2"></script>
   </body>
 </html>
