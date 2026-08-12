@@ -445,51 +445,90 @@
   async function loadPlanFromFile(file, options = {}) {
     const name = file.name || "plan";
     const lower = name.toLowerCase();
+    const onProgress = options.onProgress;
+    const knownCatalog = options.knownCatalog || null;
+
+    // Reconocimiento temprano por nombre (docx/pdf/csv)
+    if (knownCatalog) {
+      const named =
+        /1098/.test(lower) && /psicolog/.test(lower)
+          ? (knownCatalog.planes || []).find((p) => p.id.includes("psicologia"))
+          : null;
+      if (named) {
+        if (onProgress) {
+          onProgress({
+            phase: "known",
+            message: `Plan reconocido: ${named.nombre}. Cargando grilla…`,
+          });
+        }
+        return loadKnownPlanData(named);
+      }
+    }
+
     const buf = await file.arrayBuffer();
     const meta = {
       id: "plan-" + Date.now(),
       nombre: `Plan cargado (${name})`,
       fuente: name,
     };
-    const onProgress = options.onProgress;
-    const knownCatalog = options.knownCatalog || null;
+
+    if (lower.endsWith(".csv") || lower.endsWith(".txt")) {
+      const text = new TextDecoder("utf-8").decode(buf);
+      if (/nombre|asignatura|horas/i.test(text.split(/\n/)[0] || "")) {
+        return parseCsvPlan(text, meta);
+      }
+      return parsePlanFromText(text, meta);
+    }
 
     if (lower.endsWith(".docx")) {
-      const html = await extractDocxHtml(buf);
-      return parsePlanFromHtml(html, meta);
+      try {
+        const html = await extractDocxHtml(buf);
+        const plan = parsePlanFromHtml(html, meta);
+        if (knownCatalog) {
+          const match = matchKnownPlan(
+            (plan.metadata && plan.metadata.texto_extraido) || html,
+            knownCatalog
+          );
+          if (match?.entry && plan.asignaturas.length < 10) {
+            return loadKnownPlanData(match.entry);
+          }
+        }
+        return plan;
+      } catch (err) {
+        // Si Mammoth falla, intentar reconocimiento / mensaje claro
+        if (knownCatalog) {
+          const named = (knownCatalog.planes || []).find((p) =>
+            /1098/.test(lower)
+          );
+          if (named) return loadKnownPlanData(named);
+        }
+        throw new Error(
+          `No se pudo leer el Word (${err.message || err}). Probá el CSV del ejemplo o «Cargar ejemplo Psicología».`
+        );
+      }
     }
     if (lower.endsWith(".doc")) {
       throw new Error(
-        "Los .doc antiguos no se pueden leer en el navegador. Guardá el archivo como .docx o PDF e intentá de nuevo."
+        "Los .doc antiguos no se pueden leer en el navegador. Guardá el archivo como .docx, PDF o CSV."
       );
     }
     if (lower.endsWith(".pdf")) {
-      // Atajo: nombre de archivo de un plan ya digitalizado
+      // Atajo adicional por patrones de nombre
       if (knownCatalog) {
-        const byName = (knownCatalog.planes || []).find((p) => {
-          const idBits = String(p.id || "").split(/[-_]/);
-          return idBits.some((b) => b.length > 3 && lower.includes(b.toLowerCase())) &&
-            (/1098/.test(lower) || /plan/.test(lower));
-        });
-        // Más explícito para resoluciones conocidas
         const explicit = (knownCatalog.planes || []).find((p) =>
           (p.patterns || []).some((pat) => {
             const token = String(pat).replace(/\s+/g, "").toLowerCase();
             return token.length >= 8 && lower.replace(/\s+/g, "").includes(token.slice(0, 12));
           })
         );
-        const named =
-          /1098/.test(lower) && /psicolog/.test(lower)
-            ? (knownCatalog.planes || []).find((p) => p.id.includes("psicologia"))
-            : explicit || null;
-        if (named) {
+        if (explicit) {
           if (onProgress) {
             onProgress({
               phase: "known",
-              message: `Plan reconocido por el archivo: ${named.nombre}. Cargando grilla…`,
+              message: `Plan reconocido por el archivo: ${explicit.nombre}. Cargando grilla…`,
             });
           }
-          return loadKnownPlanData(named);
+          return loadKnownPlanData(explicit);
         }
       }
 
@@ -503,7 +542,6 @@
         text = await extractPdfText(buf);
       }
 
-      // Si no hay texto útil, OCR (puede demorar en PDFs largos)
       if (needsOcr || parseTextLines(text).length < 3) {
         if (!global.SacauOcr) {
           throw new Error(
@@ -511,7 +549,6 @@
           );
         }
         usedOcr = true;
-        // Primero OCR de pocas páginas para reconocer el plan; si matchea, no OCR-ear todo
         const preview = await global.SacauOcr.ocrPdfArrayBuffer(buf, {
           onProgress,
           maxPages: Math.min(6, options.maxOcrPages || 40),
@@ -532,7 +569,6 @@
           }
         }
 
-        // No reconocido: OCR del resto de páginas
         if (preview.totalPages > preview.pages) {
           const full = await global.SacauOcr.ocrPdfArrayBuffer(buf, {
             onProgress,
@@ -552,19 +588,12 @@
       plan.metadata.texto_extraido = cleaned.slice(0, 25000);
       if (!plan.asignaturas.length) {
         plan.metadata.advertencia =
-          "El OCR no pudo armar filas confiables (tabla muy densa o imagen borrosa). Agregá asignaturas a mano o usá CSV.";
+          "El OCR no pudo armar filas confiables. Usá el CSV del ejemplo o «Cargar ejemplo Psicología».";
       } else if (usedOcr) {
         plan.metadata.advertencia =
-          `OCR aplicado: se detectaron ${plan.asignaturas.length} asignaturas. Revisá tipologías, años y horas (el OCR de tablas escaneadas puede omitir o partir filas).`;
+          `OCR aplicado: se detectaron ${plan.asignaturas.length} asignaturas. Revisá tipologías, años y horas.`;
       }
       return plan;
-    }
-    if (lower.endsWith(".csv") || lower.endsWith(".txt")) {
-      const text = new TextDecoder("utf-8").decode(buf);
-      if (/nombre|asignatura|horas/i.test(text.split(/\n/)[0] || "")) {
-        return parseCsvPlan(text, meta);
-      }
-      return parsePlanFromText(text, meta);
     }
     throw new Error("Formato no soportado. Usá PDF, Word (.docx) o CSV.");
   }

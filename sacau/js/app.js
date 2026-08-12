@@ -116,22 +116,26 @@
 
   function syncPlanFromUi() {
     if (!plan) return null;
+    const table = document.querySelector("#tablaAsig tbody");
+    // Si aún no hay tabla en el DOM, no pisar el plan en memoria.
+    if (!table) return ensureDuracion(plan);
     plan.asignaturas = readAsignaturasFromTable();
     return ensureDuracion(plan);
   }
 
-  function currentConversion() {
-    const p = syncPlanFromUi();
-    if (!p) return null;
-    const conv = SacauEngine.convertPlan(p, optionsFromUi());
+  function currentConversion(opts = {}) {
+    if (!opts.skipSync) syncPlanFromUi();
+    if (!plan) return null;
+    ensureDuracion(plan);
+    const conv = SacauEngine.convertPlan(plan, optionsFromUi());
     const val = SacauEngine.validatePlan(conv, normasUccuyo, null);
     window.__lastConv = conv;
     window.__lastVal = val;
     return { conv, val };
   }
 
-  function render() {
-    const result = currentConversion();
+  function render(opts = {}) {
+    const result = currentConversion(opts);
     if (!result) return;
     const { conv, val } = result;
     const t = conv.totales;
@@ -296,14 +300,15 @@
     showError("");
     showInfo(message || "");
     setStep(step);
-    render();
+    // Importante: no leer la tabla vieja del DOM al aplicar un plan nuevo.
+    render({ skipSync: true });
   }
 
   async function onFile(file) {
     if (!file) return;
     showError("");
-    showInfo("Leyendo archivo…");
-    showProgress({ phase: "start", message: "Analizando documento…", current: 0, total: 1 });
+    showInfo(`Leyendo «${file.name}»…`);
+    showProgress({ phase: "start", message: `Analizando «${file.name}»…`, current: 0, total: 1 });
     setStep(1);
     try {
       const loaded = await SacauParser.loadPlanFromFile(file, {
@@ -311,22 +316,46 @@
         onProgress: showProgress,
         maxOcrPages: 40,
       });
-      const n = loaded.asignaturas.length;
+      const n = (loaded.asignaturas || []).length;
+      if (!n) {
+        throw new Error(
+          `No se pudieron leer asignaturas de «${file.name}». Probá el CSV del ejemplo o el botón «Cargar ejemplo Psicología».`
+        );
+      }
       const reconocido = loaded.metadata?.reconocido;
       usePlan(
         loaded,
         reconocido
-          ? `Plan escaneado reconocido (${loaded.nombre}). Se cargaron ${n} asignaturas digitalizadas. Revisá tipologías y descargá en créditos.`
-          : n
-            ? `Se detectaron ${n} asignaturas en «${file.name}». Revisá tipologías, años y horas; luego descargá Word o PDF.`
-            : `No se detectaron filas automáticamente en «${file.name}». Usá «+ Asignatura» o cargá un CSV.`
+          ? `Plan reconocido (${loaded.nombre}). Se cargaron ${n} asignaturas. Revisá tipologías y descargá en créditos.`
+          : `Se cargaron ${n} asignaturas desde «${file.name}». Revisá tipologías, años y horas; luego descargá Word o PDF.`
       );
+      setStep(3);
     } catch (e) {
       console.error(e);
       showInfo("");
       showError(e.message || String(e));
     } finally {
       showProgress(null);
+    }
+  }
+
+  async function loadExamplePlan() {
+    showError("");
+    showInfo("Cargando ejemplo Psicología…");
+    try {
+      const data = await loadJson("data/psicologia_1098.json");
+      data.metadata = {
+        ...(data.metadata || {}),
+        reconocido: true,
+        advertencia: "Ejemplo precargado (Res. 1098-CS-2013) listo para convertir a CRE.",
+      };
+      usePlan(
+        data,
+        `Ejemplo cargado: ${data.asignaturas.length} asignaturas del plan Psicología 1098-CS-2013.`
+      );
+      setStep(3);
+    } catch (e) {
+      showError(e.message || String(e));
     }
   }
 
@@ -348,7 +377,7 @@
       notas: "",
     });
     setStep(2);
-    render();
+    render({ skipSync: true });
   }
 
   async function onExportDocx() {
@@ -396,6 +425,8 @@
     $("#filePlan").addEventListener("change", (ev) => {
       const f = ev.target.files && ev.target.files[0];
       onFile(f);
+      // Permite volver a elegir el mismo archivo más tarde
+      ev.target.value = "";
     });
     $("#btnBlank").addEventListener("click", () => {
       $("#filePlan").value = "";
@@ -405,21 +436,22 @@
         1
       );
     });
+    $("#btnExample").addEventListener("click", loadExamplePlan);
     $("#btnAddRow").addEventListener("click", addRow);
     $("#btnRecalc").addEventListener("click", () => {
       setStep(2);
-      render();
+      render({ skipSync: false });
       setStep(3);
     });
-    $("#valorCre").addEventListener("change", render);
-    $("#redondeo").addEventListener("change", render);
+    $("#valorCre").addEventListener("change", () => render({ skipSync: false }));
+    $("#redondeo").addEventListener("change", () => render({ skipSync: false }));
     $("#btnDocx").addEventListener("click", onExportDocx);
     $("#btnPdf").addEventListener("click", onExportPdf);
     $("#btnCsv").addEventListener("click", onExportCsv);
 
     usePlan(
       SacauParser.emptyPlan(),
-      "Cargá un Word (.docx) o PDF con tu plan en horas para comenzar.",
+      "Cargá un Word (.docx), PDF o CSV — o usá «Cargar ejemplo Psicología».",
       1
     );
   } catch (e) {
