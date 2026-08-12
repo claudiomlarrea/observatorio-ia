@@ -188,15 +188,16 @@ button,
 
 .btn-instructivo,
 a.btn-instructivo {
-  background: #c62828;
+  background: var(--inst);
   color: #fff;
-  border: 1px solid #b71c1c;
+  border: 1px solid var(--inst);
 }
 
 .btn-instructivo:hover,
 a.btn-instructivo:hover {
-  background: #b71c1c;
+  background: var(--inst-dark);
   color: #fff;
+  border-color: var(--inst-dark);
 }
 
 .topbar .btn-instructivo {
