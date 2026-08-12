@@ -269,6 +269,25 @@ def load_uploaded_plan(uploaded) -> PlanEstudios:
         metadata={"fuente": name},
     )
 
+    # Planes ya digitalizados (PDF escaneados reconocibles)
+    known = load_json("planes_reconocidos.json")
+    probe = name.lower()
+    for entry in known.get("planes", []):
+        hits = sum(1 for p in entry.get("patterns", []) if p.lower() in probe)
+        if hits >= 1 and entry.get("data_file"):
+            # Confirm later with text; filename hint is enough for 1098 Psicología
+            if "1098" in probe or hits >= 2:
+                curated = PlanEstudios.from_dict(load_json(entry["data_file"]))
+                curated.metadata = {
+                    **(curated.metadata or {}),
+                    "reconocido": True,
+                    "advertencia": (
+                        "Plan escaneado reconocido. Se cargó la grilla digitalizada "
+                        "porque el OCR de tablas densas suele fragmentar filas."
+                    ),
+                }
+                return curated
+
     if lower.endswith(".csv"):
         df = pd.read_csv(BytesIO(data))
         return import_csv_to_plan(df, base)
@@ -281,6 +300,17 @@ def load_uploaded_plan(uploaded) -> PlanEstudios:
         for table in doc.tables:
             for row in table.rows:
                 text += "\n" + " ".join(c.text.strip() for c in row.cells)
+        # known plan from docx text
+        for entry in known.get("planes", []):
+            hits = sum(1 for p in entry.get("patterns", []) if p.lower() in text.lower())
+            if hits >= entry.get("min_hits", 2):
+                curated = PlanEstudios.from_dict(load_json(entry["data_file"]))
+                curated.metadata = {
+                    **(curated.metadata or {}),
+                    "reconocido": True,
+                    "advertencia": "Plan reconocido a partir del documento cargado.",
+                }
+                return curated
         asignaturas = parse_text_to_asignaturas(text)
         base.asignaturas = asignaturas or empty_plan().asignaturas
         base.metadata["advertencia"] = (
@@ -289,14 +319,25 @@ def load_uploaded_plan(uploaded) -> PlanEstudios:
         return base
 
     if lower.endswith(".pdf"):
-        from pypdf import PdfReader
-
-        reader = PdfReader(BytesIO(data))
-        text = "\n".join((page.extract_text() or "") for page in reader.pages)
+        text = extract_pdf_text_or_ocr(data)
+        for entry in known.get("planes", []):
+            hits = sum(1 for p in entry.get("patterns", []) if p.lower() in text.lower())
+            if hits >= entry.get("min_hits", 2) or (
+                "1098" in name.lower() and hits >= 1
+            ):
+                curated = PlanEstudios.from_dict(load_json(entry["data_file"]))
+                curated.metadata = {
+                    **(curated.metadata or {}),
+                    "reconocido": True,
+                    "advertencia": (
+                        "Plan escaneado reconocido. Se cargó la grilla digitalizada."
+                    ),
+                }
+                return curated
         asignaturas = parse_text_to_asignaturas(text)
         base.asignaturas = asignaturas or empty_plan().asignaturas
         base.metadata["advertencia"] = (
-            "Revisá el plan detectado desde PDF. Los PDF escaneados pueden requerir carga manual o CSV."
+            "Revisá el plan detectado desde PDF/OCR. Las tablas escaneadas pueden requerir correcciones."
         )
         return base
 
@@ -304,6 +345,35 @@ def load_uploaded_plan(uploaded) -> PlanEstudios:
         raise ValueError("Los .doc antiguos no están soportados. Guardá como .docx o PDF.")
 
     raise ValueError("Formato no soportado. Usá PDF, Word (.docx) o CSV.")
+
+
+def extract_pdf_text_or_ocr(data: bytes) -> str:
+    from pypdf import PdfReader
+
+    reader = PdfReader(BytesIO(data))
+    text = "\n".join((page.extract_text() or "") for page in reader.pages)
+    if len(text.strip()) >= 80:
+        return text
+
+    # PDF escaneado → OCR con pytesseract/pymupdf si está disponible
+    try:
+        import pymupdf as fitz
+        import pytesseract
+        from PIL import Image
+        import io as bio
+    except ImportError as exc:
+        raise ValueError(
+            "PDF escaneado: instalá pytesseract + pymupdf + tesseract-ocr para OCR, "
+            "o cargá un CSV / plan digitalizado."
+        ) from exc
+
+    doc = fitz.open(stream=data, filetype="pdf")
+    parts = []
+    for i, page in enumerate(doc):
+        pix = page.get_pixmap(dpi=180)
+        img = Image.open(bio.BytesIO(pix.tobytes("png"))).convert("L")
+        parts.append(pytesseract.image_to_string(img, lang="spa"))
+    return "\n".join(parts)
 
 
 def import_csv_to_plan(df: pd.DataFrame, base: PlanEstudios) -> PlanEstudios:

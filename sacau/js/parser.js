@@ -91,8 +91,34 @@
       }
       if (SKIP_LINE.test(line) && !/\d{2,}/.test(line)) continue;
 
-      // código + nombre + 2 horas
+      // código + nombre + 2 horas (+ posibles h/semana y régimen OCR)
       let m = line.match(
+        /^(\d{1,3}|[A-Z]{1,4}\d{0,3})[).\-\s]+(.+?)\s+(\d{1,4})\s+(\d{1,4})(?:\s+(\d{1,2})\s*([ASas])?)?/
+      );
+      if (m && /[A-Za-zÁÉÍÓÚáéíóúñÑ]/.test(m[2])) {
+        const nombre = m[2]
+          .replace(/\b(FB|FP|FGC|FCI)\b/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+        found.push(
+          makeAsignatura(
+            {
+              codigo: m[1],
+              nombre,
+              anio: currentAnio,
+              area: /\bFB\b/.test(line) ? "FB" : /\bFP\b/.test(line) ? "FP" : /\bFGC\b/.test(line) ? "FGC" : /\bFCI\b/.test(line) ? "FCI" : "",
+              horas_teoricas: Number(m[3]),
+              horas_practicas: Number(m[4]),
+              regimen: (m[6] || "S").toUpperCase(),
+            },
+            found.length
+          )
+        );
+        continue;
+      }
+
+      // código + nombre + 2 horas (ancla fin de línea)
+      m = line.match(
         /^(\d{1,3}|[A-Z]{0,4}\d{1,3})[).\-\s]+(.+?)\s+(\d{1,4})(?:[.,](\d+))?\s+(\d{1,4})(?:[.,](\d+))?\s*$/
       );
       if (m) {
@@ -298,6 +324,66 @@
     };
   }
 
+  /**
+   * Une líneas rotas típicas de OCR de tablas (nombre partido + horas en la siguiente).
+   */
+  function preprocessOcrText(text) {
+    const raw = String(text || "")
+      .replace(/\u00a0/g, " ")
+      .split(/\r?\n/)
+      .map((l) => l.replace(/[|_[\]{}]+/g, " ").replace(/\s+/g, " ").trim())
+      .filter(Boolean);
+
+    const out = [];
+    for (let i = 0; i < raw.length; i++) {
+      let line = raw[i];
+      // Si la línea parece nombre sin horas y la siguiente trae horas, fusionar
+      const hasHours = /\b\d{2,4}\b/.test(line);
+      const looksName = /[A-Za-zÁÉÍÓÚáéíóúñÑ]{4,}/.test(line) && !/^=====/.test(line);
+      if (looksName && !hasHours && i + 1 < raw.length) {
+        const next = raw[i + 1];
+        if (/\b\d{2,4}\b/.test(next) || /[A-Za-zÁÉÍÓÚáéíóúñÑ]/.test(next)) {
+          line = `${line} ${next}`;
+          i += 1;
+          // A veces el nombre sigue en una tercera línea antes de las horas
+          if (!/\b\d{2,4}\b/.test(line) && i + 1 < raw.length && /\b\d{2,4}\b/.test(raw[i + 1])) {
+            line = `${line} ${raw[i + 1]}`;
+            i += 1;
+          }
+        }
+      }
+      out.push(line);
+    }
+    return out.join("\n");
+  }
+
+  function matchKnownPlan(text, catalog) {
+    const hay = String(text || "");
+    for (const entry of catalog?.planes || []) {
+      const hits = (entry.patterns || []).filter((p) =>
+        hay.toLowerCase().includes(String(p).toLowerCase())
+      );
+      if (hits.length >= (entry.min_hits || 2)) {
+        return { entry, hits };
+      }
+    }
+    return null;
+  }
+
+  async function loadKnownPlanData(entry) {
+    const res = await fetch(`data/${entry.data_file}`);
+    if (!res.ok) throw new Error(`No se pudo cargar el plan reconocido (${entry.data_file})`);
+    const data = await res.json();
+    data.metadata = {
+      ...(data.metadata || {}),
+      reconocido: true,
+      fuente_reconocimiento: entry.id,
+      advertencia:
+        "Plan escaneado reconocido. Se cargó la grilla digitalizada porque el OCR de tablas densas suele fragmentar filas. Revisá y editá lo que necesites.",
+    };
+    return data;
+  }
+
   async function extractPdfText(arrayBuffer) {
     if (!global.pdfjsLib) throw new Error("PDF.js no está disponible");
     const pdf = await global.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
@@ -305,9 +391,6 @@
     for (let i = 1; i <= pdf.numPages; i++) {
       const page = await pdf.getPage(i);
       const content = await page.getTextContent();
-      const line = content.items.map((it) => it.str).join(" ");
-      parts.push(line);
-      // Also rebuild roughly by Y position for better line breaks
       const byY = {};
       for (const it of content.items) {
         const y = Math.round(it.transform[5]);
@@ -327,7 +410,7 @@
     return result.value || "";
   }
 
-  async function loadPlanFromFile(file) {
+  async function loadPlanFromFile(file, options = {}) {
     const name = file.name || "plan";
     const lower = name.toLowerCase();
     const buf = await file.arrayBuffer();
@@ -336,6 +419,8 @@
       nombre: `Plan cargado (${name})`,
       fuente: name,
     };
+    const onProgress = options.onProgress;
+    const knownCatalog = options.knownCatalog || null;
 
     if (lower.endsWith(".docx")) {
       const html = await extractDocxHtml(buf);
@@ -347,17 +432,103 @@
       );
     }
     if (lower.endsWith(".pdf")) {
-      const text = await extractPdfText(buf);
-      const plan = parsePlanFromText(text, meta);
+      // Atajo: nombre de archivo de un plan ya digitalizado
+      if (knownCatalog) {
+        const byName = (knownCatalog.planes || []).find((p) => {
+          const idBits = String(p.id || "").split(/[-_]/);
+          return idBits.some((b) => b.length > 3 && lower.includes(b.toLowerCase())) &&
+            (/1098/.test(lower) || /plan/.test(lower));
+        });
+        // Más explícito para resoluciones conocidas
+        const explicit = (knownCatalog.planes || []).find((p) =>
+          (p.patterns || []).some((pat) => {
+            const token = String(pat).replace(/\s+/g, "").toLowerCase();
+            return token.length >= 8 && lower.replace(/\s+/g, "").includes(token.slice(0, 12));
+          })
+        );
+        const named =
+          /1098/.test(lower) && /psicolog/.test(lower)
+            ? (knownCatalog.planes || []).find((p) => p.id.includes("psicologia"))
+            : explicit || null;
+        if (named) {
+          if (onProgress) {
+            onProgress({
+              phase: "known",
+              message: `Plan reconocido por el archivo: ${named.nombre}. Cargando grilla…`,
+            });
+          }
+          return loadKnownPlanData(named);
+        }
+      }
+
+      let text = "";
+      let usedOcr = false;
+      const needsOcr = global.SacauOcr
+        ? await global.SacauOcr.pdfNeedsOcr(buf)
+        : true;
+
+      if (!needsOcr) {
+        text = await extractPdfText(buf);
+      }
+
+      // Si no hay texto útil, OCR (puede demorar en PDFs largos)
+      if (needsOcr || parseTextLines(text).length < 3) {
+        if (!global.SacauOcr) {
+          throw new Error(
+            "Este PDF parece escaneado y el motor OCR no está disponible. Probá recargar la página."
+          );
+        }
+        usedOcr = true;
+        // Primero OCR de pocas páginas para reconocer el plan; si matchea, no OCR-ear todo
+        const preview = await global.SacauOcr.ocrPdfArrayBuffer(buf, {
+          onProgress,
+          maxPages: Math.min(6, options.maxOcrPages || 40),
+          scale: options.ocrScale || 1.6,
+        });
+        text = preview.text;
+
+        if (knownCatalog) {
+          const match = matchKnownPlan(text, knownCatalog);
+          if (match?.entry) {
+            if (onProgress) {
+              onProgress({
+                phase: "known",
+                message: `Plan reconocido: ${match.entry.nombre}. Cargando grilla digitalizada…`,
+              });
+            }
+            return loadKnownPlanData(match.entry);
+          }
+        }
+
+        // No reconocido: OCR del resto de páginas
+        if (preview.totalPages > preview.pages) {
+          const full = await global.SacauOcr.ocrPdfArrayBuffer(buf, {
+            onProgress,
+            maxPages: options.maxOcrPages || 40,
+            scale: options.ocrScale || 1.6,
+          });
+          text = full.text;
+        }
+      } else if (knownCatalog) {
+        const match = matchKnownPlan(text, knownCatalog);
+        if (match?.entry) return loadKnownPlanData(match.entry);
+      }
+
+      const cleaned = preprocessOcrText(text);
+      const plan = parsePlanFromText(cleaned, meta);
+      plan.metadata.ocr = usedOcr;
+      plan.metadata.texto_extraido = cleaned.slice(0, 25000);
       if (!plan.asignaturas.length) {
         plan.metadata.advertencia =
-          "No se detectaron asignaturas automáticamente (PDF escaneado o formato no tabular). Agregá filas manualmente o pegá una tabla en CSV.";
+          "El OCR no pudo armar filas confiables (tabla muy densa o imagen borrosa). Agregá asignaturas a mano o usá CSV.";
+      } else if (usedOcr) {
+        plan.metadata.advertencia =
+          `OCR aplicado: se detectaron ${plan.asignaturas.length} asignaturas. Revisá tipologías, años y horas (el OCR de tablas escaneadas puede omitir o partir filas).`;
       }
       return plan;
     }
     if (lower.endsWith(".csv") || lower.endsWith(".txt")) {
       const text = new TextDecoder("utf-8").decode(buf);
-      // CSV with headers?
       if (/nombre|asignatura|horas/i.test(text.split(/\n/)[0] || "")) {
         return parseCsvPlan(text, meta);
       }
@@ -457,5 +628,7 @@
     emptyPlan,
     guessArea,
     guessTipologia,
+    preprocessOcrText,
+    matchKnownPlan,
   };
 })(window);

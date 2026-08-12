@@ -8,6 +8,9 @@
   const errEl = $("#error");
   const infoEl = $("#info");
   const appEl = $("#app");
+  const progressEl = $("#progress");
+  const progressLabel = $("#progressLabel");
+  const progressBar = $("#progressBar");
 
   function showError(msg) {
     errEl.hidden = !msg;
@@ -17,6 +20,21 @@
   function showInfo(msg) {
     infoEl.hidden = !msg;
     infoEl.textContent = msg || "";
+  }
+
+  function showProgress(payload) {
+    if (!payload) {
+      progressEl.hidden = true;
+      return;
+    }
+    progressEl.hidden = false;
+    progressLabel.textContent = payload.message || "Procesando…";
+    let pct = 0;
+    if (payload.total && payload.current) pct = (payload.current / payload.total) * 100;
+    else if (payload.progress != null) pct = payload.progress * 100;
+    else if (payload.phase === "done" || payload.phase === "known") pct = 100;
+    else if (payload.phase === "ocr") pct = 5;
+    progressBar.style.width = `${Math.max(3, Math.min(100, pct))}%`;
   }
 
   function setStep(n) {
@@ -33,6 +51,7 @@
 
   let tipologiasMap = {};
   let normasUccuyo = {};
+  let knownCatalog = null;
   let plan = null;
 
   function tipologiasFromRaw(raw) {
@@ -284,20 +303,30 @@
     if (!file) return;
     showError("");
     showInfo("Leyendo archivo…");
+    showProgress({ phase: "start", message: "Analizando documento…", current: 0, total: 1 });
     setStep(1);
     try {
-      const loaded = await SacauParser.loadPlanFromFile(file);
+      const loaded = await SacauParser.loadPlanFromFile(file, {
+        knownCatalog,
+        onProgress: showProgress,
+        maxOcrPages: 40,
+      });
       const n = loaded.asignaturas.length;
+      const reconocido = loaded.metadata?.reconocido;
       usePlan(
         loaded,
-        n
-          ? `Se detectaron ${n} asignaturas en «${file.name}». Revisá tipologías, años y horas; luego descargá Word o PDF.`
-          : `No se detectaron filas automáticamente en «${file.name}». Usá «+ Asignatura» o cargá un CSV con columnas nombre, horas_teoricas, horas_practicas.`
+        reconocido
+          ? `Plan escaneado reconocido (${loaded.nombre}). Se cargaron ${n} asignaturas digitalizadas. Revisá tipologías y descargá en créditos.`
+          : n
+            ? `Se detectaron ${n} asignaturas en «${file.name}». Revisá tipologías, años y horas; luego descargá Word o PDF.`
+            : `No se detectaron filas automáticamente en «${file.name}». Usá «+ Asignatura» o cargá un CSV.`
       );
     } catch (e) {
       console.error(e);
       showInfo("");
       showError(e.message || String(e));
+    } finally {
+      showProgress(null);
     }
   }
 
@@ -354,12 +383,14 @@
   }
 
   try {
-    const [tipsRaw, uccuyo] = await Promise.all([
+    const [tipsRaw, uccuyo, conocidos] = await Promise.all([
       loadJson("data/tipologias.json"),
       loadJson("data/normas_uccuyo.json"),
+      loadJson("data/planes_reconocidos.json"),
     ]);
     tipologiasMap = tipologiasFromRaw(tipsRaw);
     normasUccuyo = uccuyo;
+    knownCatalog = conocidos;
     $("#valorCre").value = uccuyo.cre_default || 25;
 
     $("#filePlan").addEventListener("change", (ev) => {

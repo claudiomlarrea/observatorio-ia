@@ -316,6 +316,35 @@ footer.site {
   margin-bottom: 1rem;
 }
 
+.progress-banner {
+  background: #fff8e8;
+  border: 1px solid #e6d3a0;
+  color: #6a4b00;
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.progress-label {
+  font-weight: 600;
+  margin-bottom: 0.45rem;
+  font-size: 0.95rem;
+}
+
+.progress-track {
+  height: 0.55rem;
+  background: #f1e6c8;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #9a6700, #c48a12);
+  transition: width 0.2s ease;
+}
+
 .steps {
   display: flex;
   gap: 0.5rem;

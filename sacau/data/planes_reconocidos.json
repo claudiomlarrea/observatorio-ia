@@ -1,0 +1,17 @@
+{
+  "planes": [
+    {
+      "id": "psicologia-1098-cs-2013",
+      "nombre": "Licenciatura en Psicología — Res. 1098-CS-2013",
+      "data_file": "psicologia_1098.json",
+      "patterns": [
+        "1098-CS-2013",
+        "1098 - CS - 2013",
+        "1098 – CS – 2013",
+        "DESPLIEGUE DE LA PROPUESTA DE PLAN DE ESTUDIOS",
+        "Licenciatura en Psicología"
+      ],
+      "min_hits": 2
+    }
+  ]
+}
