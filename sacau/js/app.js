@@ -368,8 +368,11 @@
     });
     $("#btnBlank").addEventListener("click", () => {
       $("#filePlan").value = "";
-      usePlan(SacauParser.emptyPlan(), "Plan en blanco: cargá un archivo o agregá asignaturas a mano.");
-      setStep(1);
+      usePlan(
+        SacauParser.emptyPlan(),
+        "Plan en blanco: cargá un archivo o agregá asignaturas a mano.",
+        1
+      );
     });
     $("#btnAddRow").addEventListener("click", addRow);
     $("#btnRecalc").addEventListener("click", () => {
