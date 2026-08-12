@@ -362,11 +362,32 @@ footer.site {
   color: var(--soft);
   font-weight: 600;
   font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.step:hover {
+  background: #ddd3d7;
+  color: var(--inst-dark);
 }
 
 .step.active {
   background: var(--inst);
   color: #fff;
+}
+
+.step.active:hover {
+  background: var(--inst-dark);
+  color: #fff;
+}
+
+.panel-step[hidden] {
+  display: none !important;
+}
+
+.panel-step {
+  margin-bottom: 1.25rem;
 }
 
 .export-bar {

@@ -7,10 +7,13 @@
   const $ = (sel) => document.querySelector(sel);
   const errEl = $("#error");
   const infoEl = $("#info");
-  const appEl = $("#app");
+  const decideEl = $("#app-decidir");
+  const resultEl = $("#app-resultado");
   const progressEl = $("#progress");
   const progressLabel = $("#progressLabel");
   const progressBar = $("#progressBar");
+
+  let currentStep = 1;
 
   function showError(msg) {
     errEl.hidden = !msg;
@@ -38,9 +41,16 @@
   }
 
   function setStep(n) {
+    currentStep = Number(n) || 1;
     document.querySelectorAll(".step").forEach((el) => {
-      el.classList.toggle("active", Number(el.dataset.step) === n);
+      el.classList.toggle("active", Number(el.dataset.step) === currentStep);
     });
+    for (let i = 1; i <= 3; i++) {
+      const panel = document.getElementById(`panel-${i}`);
+      if (panel) panel.hidden = i !== currentStep;
+    }
+    const target = document.getElementById(`panel-${currentStep}`);
+    if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   async function loadJson(path) {
@@ -79,27 +89,29 @@
 
   function readAsignaturasFromTable() {
     const rows = [...document.querySelectorAll("#tablaAsig tbody tr")];
-    return rows.map((tr) => {
-      const g = (name) => {
-        const el = tr.querySelector(`[data-f="${name}"]`);
-        return el ? el.value : "";
-      };
-      const numOrNull = (v) => (v === "" || v == null ? null : Number(v));
-      return {
-        codigo: g("codigo"),
-        nombre: g("nombre"),
-        anio: Number(g("anio") || 1),
-        area: g("area"),
-        regimen: g("regimen"),
-        tipologia: g("tipologia"),
-        horas_teoricas: Number(g("horas_teoricas") || 0),
-        horas_practicas: Number(g("horas_practicas") || 0),
-        horas_autonomas_override: numOrNull(g("horas_autonomas_override")),
-        valor_cre_override: numOrNull(g("valor_cre_override")),
-        horas_estimadas: g("horas_estimadas") === "1",
-        notas: g("notas"),
-      };
-    }).filter((a) => (a.nombre || "").trim());
+    return rows
+      .map((tr) => {
+        const g = (name) => {
+          const el = tr.querySelector(`[data-f="${name}"]`);
+          return el ? el.value : "";
+        };
+        const numOrNull = (v) => (v === "" || v == null ? null : Number(v));
+        return {
+          codigo: g("codigo"),
+          nombre: g("nombre"),
+          anio: Number(g("anio") || 1),
+          area: g("area"),
+          regimen: g("regimen"),
+          tipologia: g("tipologia"),
+          horas_teoricas: Number(g("horas_teoricas") || 0),
+          horas_practicas: Number(g("horas_practicas") || 0),
+          horas_autonomas_override: numOrNull(g("horas_autonomas_override")),
+          valor_cre_override: numOrNull(g("valor_cre_override")),
+          horas_estimadas: g("horas_estimadas") === "1",
+          notas: g("notas"),
+        };
+      })
+      .filter((a) => (a.nombre || "").trim());
   }
 
   function tipologiaOptions(selected) {
@@ -117,7 +129,6 @@
   function syncPlanFromUi() {
     if (!plan) return null;
     const table = document.querySelector("#tablaAsig tbody");
-    // Si aún no hay tabla en el DOM, no pisar el plan en memoria.
     if (!table) return ensureDuracion(plan);
     plan.asignaturas = readAsignaturasFromTable();
     return ensureDuracion(plan);
@@ -132,6 +143,25 @@
     window.__lastConv = conv;
     window.__lastVal = val;
     return { conv, val };
+  }
+
+  function bindEditorHandlers(root) {
+    root.querySelectorAll(".tip-ratio, .tip-fijas").forEach((el) => {
+      el.addEventListener("change", () => {
+        const id = el.getAttribute("data-tip");
+        if (!tipologiasMap[id]) return;
+        syncPlanFromUi();
+        if (el.classList.contains("tip-ratio")) tipologiasMap[id].ratio_autonomo = Number(el.value || 0);
+        else tipologiasMap[id].autonomas_fijas = Number(el.value || 0);
+        render({ skipSync: true });
+      });
+    });
+    root.querySelectorAll(".btn-del").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        btn.closest("tr")?.remove();
+        render({ skipSync: false });
+      });
+    });
   }
 
   function render(opts = {}) {
@@ -196,7 +226,7 @@
           <td>${item.horas_autonomas.toFixed(0)}</td>
           <td><strong>${item.cre.toFixed(1)}</strong></td>
           <td>
-            <button type="button" class="btn-secondary btn-del" title="Eliminar">×</button>
+            <button type="button" class="btn-secondary btn-del" title="Quitar esta materia">Quitar</button>
             <input type="hidden" data-f="horas_estimadas" value="${a.horas_estimadas ? "1" : "0"}" />
             <input type="hidden" data-f="notas" value="${String(a.notas || "").replace(/"/g, "&quot;")}" />
           </td>
@@ -204,63 +234,33 @@
       })
       .join("");
 
-    appEl.classList.remove("loading");
-    appEl.innerHTML = `
-      <div class="metrics">
-        <div class="metric"><div class="label">Interacción</div><div class="value">${t.horas_interaccion.toLocaleString("es-AR", { maximumFractionDigits: 0 })} h</div></div>
-        <div class="metric"><div class="label">Autónomas</div><div class="value">${t.horas_autonomas.toLocaleString("es-AR", { maximumFractionDigits: 0 })} h</div></div>
-        <div class="metric"><div class="label">Totales estudiante</div><div class="value">${t.horas_totales.toLocaleString("es-AR", { maximumFractionDigits: 0 })} h</div></div>
-        <div class="metric"><div class="label">CRE totales</div><div class="value">${t.cre.toFixed(1)}</div></div>
-        <div class="metric"><div class="label">CRE / año</div><div class="value">${t.cre_promedio_anual.toFixed(1)}</div></div>
-      </div>
-
+    decideEl.classList.remove("loading");
+    decideEl.innerHTML = `
       <div class="grid-2">
         <section class="panel">
-          <h2>Cumplimiento SACAU</h2>
-          <ul class="checks">${checkLis}</ul>
-        </section>
-        <section class="panel">
-          <h2>Coeficientes de trabajo autónomo</h2>
+          <h2>Cómo estimar el trabajo autónomo</h2>
           <div class="table-wrap" style="max-height:14rem">
             <table>
-              <thead><tr><th>Id</th><th>Nombre</th><th>Ratio</th><th>Fijas</th></tr></thead>
+              <thead><tr><th>Tipo</th><th>Descripción</th><th>Ratio</th><th>Horas fijas</th></tr></thead>
               <tbody>${tipRows}</tbody>
             </table>
           </div>
-          <p class="note">Autónomas ≈ interacción × ratio + fijas, salvo override por materia. Ajustá según el criterio de la carrera.</p>
-        </section>
-      </div>
-
-      <div class="grid-2">
-        <section class="panel">
-          <h2>Por año</h2>
-          <div class="table-wrap" style="max-height:12rem">
-            <table>
-              <thead><tr><th>Año</th><th>Interacción</th><th>Autónomas</th><th>CRE</th></tr></thead>
-              <tbody>${anioRows || '<tr><td colspan="4">Sin datos</td></tr>'}</tbody>
-            </table>
-          </div>
+          <p class="note">Horas autónomas ≈ horas de clase × ratio + horas fijas. Podés corregir materia por materia en la tabla.</p>
         </section>
         <section class="panel">
-          <h2>Por área</h2>
-          <div class="table-wrap" style="max-height:12rem">
-            <table>
-              <thead><tr><th>Área</th><th>Interacción</th><th>Prácticas</th><th>CRE</th></tr></thead>
-              <tbody>${areaRows || '<tr><td colspan="4">Sin datos</td></tr>'}</tbody>
-            </table>
-          </div>
+          <h2>Resumen rápido</h2>
+          <p class="note" style="margin:0 0 0.5rem"><strong>${plan.asignaturas.length}</strong> materias · Interacción <strong>${t.horas_interaccion.toFixed(0)} h</strong> · CRE estimado <strong>${t.cre.toFixed(1)}</strong></p>
+          <p class="note">${plan.metadata?.advertencia || "Revisá tipología, horas y overrides. Después andá al paso 3 para descargar."}</p>
         </section>
       </div>
-
       <section class="panel">
-        <h2>${plan.nombre || "Plan de estudios"}</h2>
-        <p class="note">${plan.metadata?.advertencia || "Editá tipología, horas autónomas y valor CRE por asignatura según tus criterios curriculares."}</p>
+        <h2>${plan.nombre || "Materias del plan"}</h2>
         <div class="table-wrap">
           <table id="tablaAsig">
             <thead>
               <tr>
-                <th>Cód.</th><th>Asignatura</th><th>Año</th><th>Área</th><th>Rég.</th><th>Tipo</th>
-                <th>Teó.</th><th>Prác.</th><th>Aut. ov.</th><th>CRE ov.</th>
+                <th>Cód.</th><th>Materia</th><th>Año</th><th>Área</th><th>Rég.</th><th>Tipo</th>
+                <th>Teó.</th><th>Prác.</th><th>Aut. manual</th><th>CRE h</th>
                 <th>Inter.</th><th>Aut.</th><th>CRE</th><th></th>
               </tr>
             </thead>
@@ -268,41 +268,53 @@
           </table>
         </div>
       </section>
+    `;
+    bindEditorHandlers(decideEl);
 
+    resultEl.classList.remove("loading");
+    resultEl.innerHTML = `
+      <div class="metrics">
+        <div class="metric"><div class="label">Interacción</div><div class="value">${t.horas_interaccion.toLocaleString("es-AR", { maximumFractionDigits: 0 })} h</div></div>
+        <div class="metric"><div class="label">Autónomas</div><div class="value">${t.horas_autonomas.toLocaleString("es-AR", { maximumFractionDigits: 0 })} h</div></div>
+        <div class="metric"><div class="label">Totales estudiante</div><div class="value">${t.horas_totales.toLocaleString("es-AR", { maximumFractionDigits: 0 })} h</div></div>
+        <div class="metric"><div class="label">CRE totales</div><div class="value">${t.cre.toFixed(1)}</div></div>
+        <div class="metric"><div class="label">CRE / año</div><div class="value">${t.cre_promedio_anual.toFixed(1)}</div></div>
+      </div>
+      <div class="grid-2">
+        <section class="panel">
+          <h2>Cumplimiento SACAU</h2>
+          <ul class="checks">${checkLis}</ul>
+        </section>
+        <section class="panel">
+          <h2>Por año</h2>
+          <div class="table-wrap" style="max-height:14rem">
+            <table>
+              <thead><tr><th>Año</th><th>Interacción</th><th>Autónomas</th><th>CRE</th></tr></thead>
+              <tbody>${anioRows || '<tr><td colspan="4">Sin datos</td></tr>'}</tbody>
+            </table>
+          </div>
+          <h2 style="margin-top:1rem">Por área</h2>
+          <div class="table-wrap" style="max-height:14rem">
+            <table>
+              <thead><tr><th>Área</th><th>Interacción</th><th>Prácticas</th><th>CRE</th></tr></thead>
+              <tbody>${areaRows || '<tr><td colspan="4">Sin datos</td></tr>'}</tbody>
+            </table>
+          </div>
+        </section>
+      </div>
       <footer class="site">
         Marco: Res. 788-CS-2026 (CRE UCCuyo) · RESOL-2025-556 (SACAU).
-        Los PDF escaneados pueden requerir carga manual o CSV.
+        Hacé clic en «1. Cargar plan» si querés subir otro archivo.
       </footer>
     `;
-
-    appEl.querySelectorAll(".tip-ratio, .tip-fijas").forEach((el) => {
-      el.addEventListener("change", () => {
-        const id = el.getAttribute("data-tip");
-        if (!tipologiasMap[id]) return;
-        syncPlanFromUi();
-        if (el.classList.contains("tip-ratio")) tipologiasMap[id].ratio_autonomo = Number(el.value || 0);
-        else tipologiasMap[id].autonomas_fijas = Number(el.value || 0);
-        setStep(2);
-        render({ skipSync: true });
-      });
-    });
-
-    appEl.querySelectorAll(".btn-del").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        btn.closest("tr")?.remove();
-        setStep(2);
-        render({ skipSync: false });
-      });
-    });
   }
 
   function usePlan(next, message, step = 2) {
     plan = ensureDuracion(next);
     showError("");
     showInfo(message || "");
-    setStep(step);
-    // Importante: no leer la tabla vieja del DOM al aplicar un plan nuevo.
     render({ skipSync: true });
+    setStep(step);
   }
 
   async function onFile(file) {
@@ -310,7 +322,6 @@
     showError("");
     showInfo(`Leyendo «${file.name}»…`);
     showProgress({ phase: "start", message: `Analizando «${file.name}»…`, current: 0, total: 1 });
-    setStep(1);
     try {
       const loaded = await SacauParser.loadPlanFromFile(file, {
         knownCatalog,
@@ -320,43 +331,21 @@
       const n = (loaded.asignaturas || []).length;
       if (!n) {
         throw new Error(
-          `No se pudieron leer asignaturas de «${file.name}». Probá el CSV del ejemplo o el botón «Cargar ejemplo Psicología».`
+          `No se pudieron leer materias de «${file.name}». Probá un CSV con columnas nombre, horas_teoricas, horas_practicas.`
         );
       }
-      const reconocido = loaded.metadata?.reconocido;
       usePlan(
         loaded,
-        reconocido
-          ? `Plan reconocido (${loaded.nombre}). Se cargaron ${n} asignaturas. Revisá tipologías y descargá en créditos.`
-          : `Se cargaron ${n} asignaturas desde «${file.name}». Revisá tipologías, años y horas; luego descargá Word o PDF.`
+        `Se cargaron ${n} materias desde «${file.name}». Revisá tipologías y horas; después pasá a «Ver créditos y descargar».`,
+        2
       );
-      setStep(3);
     } catch (e) {
       console.error(e);
       showInfo("");
       showError(e.message || String(e));
+      setStep(1);
     } finally {
       showProgress(null);
-    }
-  }
-
-  async function loadExamplePlan() {
-    showError("");
-    showInfo("Cargando ejemplo Psicología…");
-    try {
-      const data = await loadJson("data/psicologia_1098.json");
-      data.metadata = {
-        ...(data.metadata || {}),
-        reconocido: true,
-        advertencia: "Ejemplo precargado (Res. 1098-CS-2013) listo para convertir a CRE.",
-      };
-      usePlan(
-        data,
-        `Ejemplo cargado: ${data.asignaturas.length} asignaturas del plan Psicología 1098-CS-2013.`
-      );
-      setStep(3);
-    } catch (e) {
-      showError(e.message || String(e));
     }
   }
 
@@ -365,7 +354,7 @@
     const n = plan.asignaturas.length + 1;
     plan.asignaturas.push({
       codigo: String(n).padStart(2, "0"),
-      nombre: "Nueva asignatura",
+      nombre: "Nueva materia",
       anio: plan.duracion_anios || 1,
       area: "OTRA",
       regimen: "S",
@@ -377,8 +366,8 @@
       horas_estimadas: false,
       notas: "",
     });
-    setStep(2);
     render({ skipSync: true });
+    setStep(2);
   }
 
   async function onExportDocx() {
@@ -387,7 +376,6 @@
     try {
       const blob = await SacauExport.exportDocx(result.conv, result.val);
       SacauExport.downloadBlob(blob, `${plan.id || "plan"}_CRE.docx`);
-      setStep(3);
     } catch (e) {
       showError(e.message || String(e));
     }
@@ -399,7 +387,6 @@
     try {
       const blob = SacauExport.exportPdf(result.conv, result.val);
       SacauExport.downloadBlob(blob, `${plan.id || "plan"}_CRE.pdf`);
-      setStep(3);
     } catch (e) {
       showError(e.message || String(e));
     }
@@ -423,26 +410,37 @@
     knownCatalog = conocidos;
     $("#valorCre").value = uccuyo.cre_default || 25;
 
+    document.querySelectorAll(".step").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const n = Number(btn.dataset.step);
+        if (n >= 2 && (!plan || !plan.asignaturas.length)) {
+          showError("Primero cargá un plan en el paso 1.");
+          setStep(1);
+          return;
+        }
+        if (n === 3) render({ skipSync: false });
+        setStep(n);
+        showError("");
+      });
+    });
+
     $("#filePlan").addEventListener("change", (ev) => {
       const f = ev.target.files && ev.target.files[0];
       onFile(f);
-      // Permite volver a elegir el mismo archivo más tarde
       ev.target.value = "";
     });
-    $("#btnBlank").addEventListener("click", () => {
-      $("#filePlan").value = "";
+    $("#btnClearPlan").addEventListener("click", () => {
       usePlan(
         SacauParser.emptyPlan(),
-        "Plan en blanco: cargá un archivo o agregá asignaturas a mano.",
+        "Plan vacío listo. Subí un archivo o agregá materias a mano en el paso 2.",
         1
       );
     });
-    $("#btnExample").addEventListener("click", loadExamplePlan);
     $("#btnAddRow").addEventListener("click", addRow);
     $("#btnRecalc").addEventListener("click", () => {
-      setStep(2);
       render({ skipSync: false });
       setStep(3);
+      showInfo("Créditos actualizados con tus ajustes.");
     });
     $("#valorCre").addEventListener("change", () => render({ skipSync: false }));
     $("#redondeo").addEventListener("change", () => render({ skipSync: false }));
@@ -452,12 +450,13 @@
 
     usePlan(
       SacauParser.emptyPlan(),
-      "Cargá un Word (.docx), PDF o CSV — o usá «Cargar ejemplo Psicología».",
+      "Paso 1: elegí el archivo de tu plan de estudios (Word, PDF o CSV).",
       1
     );
   } catch (e) {
     console.error(e);
     showError(e.message || String(e));
-    appEl.textContent = "No se pudo iniciar el convertidor.";
+    decideEl.textContent = "No se pudo iniciar el convertidor.";
+    resultEl.textContent = "";
   }
 })();

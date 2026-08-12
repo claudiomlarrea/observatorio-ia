@@ -15,7 +15,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/app.css?v=5" />
+    <link rel="stylesheet" href="css/app.css?v=6" />
   </head>
   <body>
     <div class="topbar">
@@ -27,11 +27,9 @@
       <header class="hero">
         <h1>Convertidor SACAU → CRE</h1>
         <p>
-          Cargá tu <strong>plan de estudios en horas</strong> (Word o PDF, incluso
-          <strong>escaneado</strong>). El sistema lee el documento con OCR si hace falta,
-          vos ajustás tipologías y trabajo autónomo, y descargás el plan en
-          <strong>créditos CRE</strong> (Word o PDF). Valor CRE UCCuyo:
-          <strong>25 h</strong> (hasta 30 justificado).
+          Convertí un plan de estudios de <strong>horas</strong> a
+          <strong>créditos CRE</strong> (UCCuyo: 1 CRE = 25 h, hasta 30 justificado).
+          Podés volver a cualquier paso cuando quieras.
         </p>
       </header>
 
@@ -42,56 +40,83 @@
         <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
       </div>
 
-      <section class="steps" aria-label="Pasos">
-        <div class="step active" data-step="1">1. Cargar</div>
-        <div class="step" data-step="2">2. Decidir</div>
-        <div class="step" data-step="3">3. Resultado</div>
-      </section>
+      <nav class="steps" aria-label="Pasos del convertidor">
+        <button type="button" class="step active" data-step="1" id="stepBtn1">1. Cargar plan</button>
+        <button type="button" class="step" data-step="2" id="stepBtn2">2. Revisar y ajustar</button>
+        <button type="button" class="step" data-step="3" id="stepBtn3">3. Ver créditos y descargar</button>
+      </nav>
 
-      <section class="toolbar" aria-label="Carga y parámetros">
-        <div class="field grow">
-          <label for="filePlan">Plan de estudios (Word .docx / PDF / CSV)</label>
-          <input id="filePlan" type="file" accept=".docx,.pdf,.csv,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
-          <p class="note" style="margin:0.35rem 0 0">
-            ¿PDF escaneado? Podés usar este plan en texto (carga limpia):
-            <a href="ejemplos/Plan_Psicologia_1098-CS-2013_HORAS.docx">Word</a> ·
-            <a href="ejemplos/Plan_Psicologia_1098-CS-2013_HORAS.pdf">PDF</a> ·
-            <a href="ejemplos/Plan_Psicologia_1098-CS-2013_HORAS.csv">CSV</a>
+      <!-- PASO 1 -->
+      <section id="panel-1" class="panel-step" aria-labelledby="stepBtn1">
+        <div class="panel">
+          <h2>Cargar tu plan de estudios</h2>
+          <p class="note">
+            Subí un archivo Word (.docx), PDF (también escaneado) o CSV con las materias y sus horas.
           </p>
-        </div>
-        <div class="field">
-          <label for="valorCre">Valor CRE (h)</label>
-          <input id="valorCre" type="number" min="25" max="30" step="1" value="25" />
-        </div>
-        <div class="field">
-          <label for="redondeo">Redondeo CRE</label>
-          <select id="redondeo">
-            <option value="0.5" selected>0.5</option>
-            <option value="0.25">0.25</option>
-            <option value="0">Sin redondeo</option>
-          </select>
-        </div>
-        <div class="actions">
-          <button type="button" class="btn-primary" id="btnExample">Cargar ejemplo Psicología</button>
-          <button type="button" class="btn-secondary" id="btnBlank">Plan en blanco</button>
-          <button type="button" class="btn-secondary" id="btnAddRow">+ Asignatura</button>
-          <button type="button" class="btn-secondary" id="btnRecalc">Recalcular</button>
-        </div>
-      </section>
-
-      <section class="toolbar export-bar" aria-label="Descargas">
-        <span class="export-label">Descargar plan en créditos:</span>
-        <div class="actions" style="margin-left: 0">
-          <button type="button" class="btn-primary" id="btnDocx">Word (.docx)</button>
-          <button type="button" class="btn-primary" id="btnPdf">PDF</button>
-          <button type="button" class="btn-secondary" id="btnCsv">CSV</button>
+          <div class="toolbar" style="box-shadow:none;border:none;padding:0;margin:0">
+            <div class="field grow">
+              <label for="filePlan">Archivo del plan</label>
+              <input
+                id="filePlan"
+                type="file"
+                accept=".docx,.pdf,.csv,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              />
+            </div>
+          </div>
+          <p class="note">
+            Si todavía no tenés el archivo armado, descargá una
+            <a href="ejemplos/plantilla_plan_horas.csv">plantilla CSV vacía</a>
+            y completá las filas.
+          </p>
+          <div class="actions" style="margin-top:1rem">
+            <button type="button" class="btn-secondary" id="btnClearPlan" title="Borra el plan actual y deja una sola materia de ejemplo">
+              Borrar plan y empezar de nuevo
+            </button>
+          </div>
         </div>
       </section>
 
-      <div id="app" class="loading">Preparando convertidor…</div>
+      <!-- PASO 2 -->
+      <section id="panel-2" class="panel-step" hidden aria-labelledby="stepBtn2">
+        <div class="toolbar">
+          <div class="field">
+            <label for="valorCre">Horas por cada CRE</label>
+            <input id="valorCre" type="number" min="25" max="30" step="1" value="25" />
+          </div>
+          <div class="field">
+            <label for="redondeo">Redondeo de créditos</label>
+            <select id="redondeo">
+              <option value="0.5" selected>0.5</option>
+              <option value="0.25">0.25</option>
+              <option value="0">Sin redondeo</option>
+            </select>
+          </div>
+          <div class="actions">
+            <button type="button" class="btn-secondary" id="btnAddRow" title="Suma una materia nueva a la tabla">
+              Agregar materia
+            </button>
+            <button type="button" class="btn-primary" id="btnRecalc" title="Recalcula los créditos con los cambios de la tabla">
+              Guardar ajustes y ver créditos
+            </button>
+          </div>
+        </div>
+        <div id="app-decidir" class="loading">Preparando editor…</div>
+      </section>
+
+      <!-- PASO 3 -->
+      <section id="panel-3" class="panel-step" hidden aria-labelledby="stepBtn3">
+        <section class="toolbar export-bar" aria-label="Descargas">
+          <span class="export-label">Descargar plan en créditos:</span>
+          <div class="actions" style="margin-left: 0">
+            <button type="button" class="btn-primary" id="btnDocx">Word (.docx)</button>
+            <button type="button" class="btn-primary" id="btnPdf">PDF</button>
+            <button type="button" class="btn-secondary" id="btnCsv">CSV</button>
+          </div>
+        </section>
+        <div id="app-resultado" class="loading">Preparando resultados…</div>
+      </section>
     </div>
 
-    <!-- CDNs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
       if (window.pdfjsLib) {
@@ -105,10 +130,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
-    <script src="js/engine.js?v=5"></script>
-    <script src="js/ocr.js?v=5"></script>
-    <script src="js/parser.js?v=5"></script>
-    <script src="js/export.js?v=5"></script>
-    <script src="js/app.js?v=5"></script>
+    <script src="js/engine.js?v=6"></script>
+    <script src="js/ocr.js?v=6"></script>
+    <script src="js/parser.js?v=6"></script>
+    <script src="js/export.js?v=6"></script>
+    <script src="js/app.js?v=6"></script>
   </body>
 </html>
