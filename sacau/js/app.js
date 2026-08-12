@@ -417,8 +417,13 @@
           <p class="note">${resumenNota}</p>
         </section>
       </div>
-      <section class="panel">
-        <h2>${plan.nombre || "Asignaturas del plan"}</h2>
+      <section class="panel panel-asignaturas">
+        <div class="panel-head">
+          <h2>${plan.nombre || "Asignaturas del plan"}</h2>
+          <button type="button" class="btn-primary" id="btnRecalcTable" title="Recalcula los totales de créditos con los ajustes de la tabla">
+            Actualizar créditos
+          </button>
+        </div>
         <p class="note legend-areas" title="Áreas de formación del plan de estudios">
           <strong>Área:</strong>
           <span><abbr title="Formación Básica">FB</abbr> Formación Básica</span>
@@ -443,6 +448,8 @@
       </section>
     `;
     bindEditorHandlers(decideEl);
+    const btnTable = $("#btnRecalcTable");
+    if (btnTable) btnTable.addEventListener("click", actualizarCreditos);
 
     resultEl.classList.remove("loading");
     resultEl.innerHTML = `
@@ -556,6 +563,25 @@
     } finally {
       showProgress(null);
     }
+  }
+
+  function actualizarCreditos() {
+    const result = currentConversion({ skipSync: false });
+    render({ skipSync: true });
+    if (result && plan?.metadata?.anexo_911) {
+      plan.metadata.anexo_911 = SacauAnexo911.refreshDespliegue(
+        plan.metadata.anexo_911,
+        plan,
+        result.conv
+      );
+      renderAnexo();
+    }
+    setStep(3);
+    showInfo(
+      hasMaterias()
+        ? "Créditos actualizados. Revisá el anexo 911 y descargá Word/PDF arriba."
+        : "Todavía no hay materias: cargá un archivo o agregá filas."
+    );
   }
 
   function addRow() {
@@ -699,24 +725,7 @@
       });
     }
     $("#btnAddRow").addEventListener("click", addRow);
-    $("#btnRecalc").addEventListener("click", () => {
-      const result = currentConversion({ skipSync: false });
-      render({ skipSync: true });
-      if (result && plan?.metadata?.anexo_911) {
-        plan.metadata.anexo_911 = SacauAnexo911.refreshDespliegue(
-          plan.metadata.anexo_911,
-          plan,
-          result.conv
-        );
-        renderAnexo();
-      }
-      setStep(3);
-      showInfo(
-        hasMaterias()
-          ? "Créditos actualizados. Revisá el anexo 911 y descargá Word/PDF arriba."
-          : "Todavía no hay materias: cargá un archivo o agregá filas."
-      );
-    });
+    $("#btnRecalc").addEventListener("click", actualizarCreditos);
     $("#valorCre").addEventListener("change", () => render({ skipSync: false }));
     $("#redondeo").addEventListener("change", () => render({ skipSync: false }));
     $("#btnDocx").addEventListener("click", onExportDocx);

@@ -103,8 +103,9 @@ a.btn-primary {
 }
 
 .btn-sm {
-  padding: 0.35rem 0.7rem;
+  padding: 0.35rem 0.75rem;
   font-size: 0.85rem;
+  border-radius: 999px;
 }
 
 .toolbar {
@@ -155,17 +156,28 @@ a.btn-primary {
 }
 
 button,
-.btn {
+.btn,
+.btn-primary,
+.btn-secondary {
   font: inherit;
   font-weight: 600;
   border: none;
-  border-radius: 8px;
-  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  padding: 0.55rem 0.95rem;
   cursor: pointer;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+}
+
+.panel-asignaturas .panel-head {
+  margin-bottom: 0.65rem;
+}
+
+.panel-asignaturas .panel-head .btn-primary {
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .btn-primary {
