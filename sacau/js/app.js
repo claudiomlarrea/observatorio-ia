@@ -554,14 +554,24 @@
       const n = (loaded.asignaturas || []).length;
       if (!n) {
         throw new Error(
-          `No se pudieron leer materias de «${file.name}». Probá un CSV con columnas nombre, horas_teoricas, horas_practicas.`
+          `No se pudieron leer materias de «${file.name}». ` +
+            "El convertidor acepta planes de cualquier universidad, pero necesita una tabla o listado con horas " +
+            "(o al menos nombres de materias). Si el PDF solo trae correlatividades sin carga horaria, " +
+            "usá la plantilla CSV o un plan que informe horas por asignatura."
         );
       }
-      usePlan(
-        loaded,
-        `Se cargaron ${n} materias desde «${file.name}». Revisá tipologías y horas; después pasá a «Ver créditos y descargar».`,
-        2
-      );
+      const sinHoras = loaded.asignaturas.filter(
+        (a) => Number(a.horas_teoricas || 0) + Number(a.horas_practicas || 0) <= 0
+      ).length;
+      let msg = `Se cargaron ${n} materias desde «${file.name}». Revisá tipologías y horas; después pasá a «Ver créditos y descargar».`;
+      if (sinHoras === n) {
+        msg =
+          `Se importaron ${n} materias desde «${file.name}», pero el archivo no informa horas. ` +
+          "Completá horas teóricas/prácticas en la tabla (o cargá un CSV) para poder calcular CRE.";
+      } else if (sinHoras > 0) {
+        msg = `Se cargaron ${n} materias (${sinHoras} sin horas). Completá las faltantes antes de calcular CRE.`;
+      }
+      usePlan(loaded, msg, 2);
     } catch (e) {
       console.error(e);
       showInfo("");

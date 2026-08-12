@@ -5,7 +5,24 @@
   "use strict";
 
   const SKIP_LINE =
-    /^(universidad|facultad|resoluci[oó]n|anexo|p[aá]gina|total|horas\s*$|n[ºo°]|correlativ|perfil|alcance|certifico|dada en|resuelve|visto|considerando)/i;
+    /^(universidad|facultad|resoluci[oó]n|anexo|p[aá]gina|total|horas\s*$|n[ºo°]|correlativ|perfil|alcance|certifico|dada en|resuelve|visto|considerando|plan de estudios?|materia\s+r[eé]gimen|carga horaria|modalidad|para cursarla|para rendir|aprobadas?:|regular:)/i;
+
+  const ANIO_ORDINAL = {
+    primer: 1,
+    primero: 1,
+    segundo: 2,
+    tercer: 3,
+    tercero: 3,
+    cuarto: 4,
+    quinto: 5,
+    sexto: 6,
+    septimo: 7,
+    séptimo: 7,
+    octavo: 8,
+  };
+
+  const REGIMEN_WORD =
+    /(anual|cuatrimestral|bimestral|semestral|trimestral|m[oó]dulo(?:\s*\d+)?)/i;
 
   const AREA_HINTS = [
     { re: /\bFGC\b|formaci[oó]n general/i, area: "FGC" },
@@ -70,29 +87,165 @@
     };
   }
 
+  function regimenFromWord(word) {
+    const w = String(word || "").toLowerCase();
+    if (w.startsWith("anual")) return "A";
+    return "S";
+  }
+
+  function detectAnioFromLine(line) {
+    const ordinal = line.match(
+      /(?:^|\b)(primer[oa]?|segundo|tercer[oa]?|cuarto|quinto|sexto|s[eé]ptimo|octavo)\s+a[nñ]o\b/i
+    );
+    if (ordinal) {
+      const key = ordinal[1]
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+      const mapped = ANIO_ORDINAL[key] || ANIO_ORDINAL[key.replace(/o$/, "")];
+      if (mapped) return mapped;
+    }
+    const anioMatch = line.match(/(?:^|\b)(\d{1,2})\s*[°ºo.]?\s*a[nñ]o\b/i);
+    if (anioMatch && Number(anioMatch[1]) >= 1 && Number(anioMatch[1]) <= 12) {
+      return Number(anioMatch[1]);
+    }
+    return null;
+  }
+
+  function isLikelySubjectName(nombre) {
+    const n = cleanNombre(nombre);
+    if (!n || n.length < 4 || n.length > 120) return false;
+    if (SKIP_LINE.test(n)) return false;
+    if (/^(para |se |la materia|ciclo |cbc|especialidades|materias?\b|final\b)/i.test(n)) return false;
+    if (/para cursar|para rendir|aprobad|regular:|se requer|excepto de|inscribir|correlativa de/i.test(n)) {
+      return false;
+    }
+    if (/\b(es correlativa)\b/i.test(n)) return false;
+    if (!/[A-Za-zÁÉÍÓÚáéíóúñÑ]{3,}/.test(n)) return false;
+    if (/^\d+$/.test(n)) return false;
+    // fragmentos basura del PDF de correlatividades
+    if (/^(final materias|materias|para cursarla|para rendir final)$/i.test(n)) return false;
+    return true;
+  }
+
+  function extractPlanMeta(text, meta) {
+    const raw = String(text || "");
+    const out = { ...meta };
+    const inst =
+      raw.match(/\bUniversidad\s+Nacional\s+de\s+[^\n.]{3,40}/i) ||
+      raw.match(/\bUniversidad\s+Cat[oó]lica\s+de\s+Cuyo\b/i) ||
+      raw.match(/\bUniversidad\s+[A-ZÁÉÍÓÚÑ][^\n.]{3,50}/) ||
+      raw.match(/\bFacultad\s+de\s+[A-ZÁÉÍÓÚÑ][^\n.]{3,50}/) ||
+      raw.match(/\b(UBA|UCCuyo)\b/);
+    if (inst && !out.institucion) out.institucion = normalizeSpaces(inst[0] || inst[1]);
+    const carrera = raw.match(
+      /(?:carrera|licenciatura)\s+de\s+([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚáéíóúñÑ\s]{3,40})/i
+    ) || raw.match(/Plan de Estudios?\s+de(?:\s+la\s+Carrera\s+de)?\s+([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚáéíóúñÑ\s]{3,40})/i);
+    if (carrera && !out.nombre) {
+      out.nombre = normalizeSpaces(carrera[1]).replace(/\s*\(.*?\)\s*/g, " ").replace(/\s+CS\s*\d.*$/i, "").trim();
+    }
+    return out;
+  }
+
   /**
    * Detecta filas tipo: [código] Nombre … teo prac
    * o Nombre … totalHoras
+   * o Nombre Anual/Cuatrimestral 250 Obligatoria (planes de otras facultades)
    */
   function parseTextLines(text) {
-    const lines = String(text || "")
+    const rawLines = String(text || "")
       .split(/\r?\n/)
       .map(normalizeSpaces)
       .filter(Boolean);
 
+    // Une cortes típicos de PDF: "... Módulo" + "1 Bimestral 50 ..."
+    // o título partido + "Cuatrimestral 64 Optativa"
+    const lines = [];
+    for (let i = 0; i < rawLines.length; i++) {
+      let cur = rawLines[i]
+        .replace(/HorariaModalidad/gi, "Horaria Modalidad")
+        // Solo separar si el régimen empieza con mayúscula (evita partir «Cuatrimestral»)
+        .replace(
+          /([a-záéíóúñ])(Anual|Cuatrimestral|Bimestral|Semestral|Trimestral)\b/g,
+          "$1 $2"
+        );
+      const next = rawLines[i + 1];
+      if (
+        next &&
+        !detectAnioFromLine(cur) &&
+        (/m[oó]dulo\s*$/i.test(cur) ||
+          (/[a-záéíóúñ]$/i.test(cur) &&
+            /^(?:\d+\s+)?(?:Anual|Cuatrimestral|Bimestral|Semestral|Trimestral)\b/i.test(next) &&
+            !detectAnioFromLine(next)) ||
+          (/[a-záéíóúñ]$/i.test(cur) &&
+            /\b(?:Anual|Cuatrimestral|Bimestral|Semestral|Trimestral)\s+\d{2,4}\b/i.test(next) &&
+            !/\d{2,4}/.test(cur) &&
+            !detectAnioFromLine(next) &&
+            next.length < 80))
+      ) {
+        cur = `${cur} ${next}`.replace(/\s+/g, " ").trim();
+        i += 1;
+      }
+      lines.push(cur);
+    }
+
     let currentAnio = 1;
+    let inCurriculum = false;
     const found = [];
 
     for (const line of lines) {
-      const anioMatch = line.match(/(?:^|\b)(\d{1,2})\s*[°ºo.]?\s*a[nñ]o\b/i);
-      if (anioMatch && Number(anioMatch[1]) >= 1 && Number(anioMatch[1]) <= 12) {
-        currentAnio = Number(anioMatch[1]);
+
+      const anioDetected = detectAnioFromLine(line);
+      if (anioDetected != null) {
+        currentAnio = anioDetected;
+        inCurriculum = true;
+        // Si la línea solo es el encabezado de año, seguir
+        if (/^(.{0,20})?(primer|segundo|tercer|cuarto|quinto|sexto|\d{1,2}).{0,10}a[nñ]o.{0,20}$/i.test(line)) {
+          continue;
+        }
+      }
+
+      if (/^(cbc|ciclo |especialidades b[aá]sicas|asignaturas electivas)/i.test(line)) {
+        inCurriculum = true;
         continue;
       }
+
       if (SKIP_LINE.test(line) && !/\d{2,}/.test(line)) continue;
+      if (/^materia\b.*r[eé]gimen/i.test(line)) continue;
+
+      // Nombre + régimen + carga (+ modalidad) — típico Medicina / FCM
+      let m = line.match(
+        new RegExp(
+          `^(.{4,100}?)\\s+${REGIMEN_WORD.source}\\s+(\\d{2,4})\\s*(Obligatoria|Optativa|Electiva)?\\s*$`,
+          "i"
+        )
+      );
+      if (m && isLikelySubjectName(m[1])) {
+        const tipologia = /optativa|electiva/i.test(m[4] || "")
+          ? "optativa"
+          : /pr[aá]ctica final|pfo/i.test(m[1])
+            ? "pps"
+            : guessTipologia(m[1]);
+        found.push(
+          makeAsignatura(
+            {
+              nombre: m[1],
+              anio: currentAnio,
+              regimen: regimenFromWord(m[2]),
+              horas_teoricas: Number(m[3]),
+              horas_practicas: 0,
+              tipologia,
+              notas: m[4] ? `Modalidad: ${m[4]}` : "",
+            },
+            found.length
+          )
+        );
+        inCurriculum = true;
+        continue;
+      }
 
       // código + nombre + 2 horas (+ posibles h/semana y régimen OCR)
-      let m = line.match(
+      m = line.match(
         /^(\d{1,3}|[A-Z]{1,4}\d{0,3})[).\-\s]+(.+?)\s+(\d{1,4})\s+(\d{1,4})(?:\s+(\d{1,2})\s*([ASas])?)?/
       );
       if (m && /[A-Za-zÁÉÍÓÚáéíóúñÑ]/.test(m[2])) {
@@ -114,6 +267,7 @@
             found.length
           )
         );
+        inCurriculum = true;
         continue;
       }
 
@@ -134,12 +288,13 @@
             found.length
           )
         );
+        inCurriculum = true;
         continue;
       }
 
       // nombre + teo + prac (sin código)
       m = line.match(/^(.{8,120}?)\s+(\d{2,4})\s+(\d{1,4})\s*$/);
-      if (m && !/^(total|suma|carga)/i.test(m[1])) {
+      if (m && !/^(total|suma|carga)/i.test(m[1]) && isLikelySubjectName(m[1])) {
         found.push(
           makeAsignatura(
             {
@@ -151,6 +306,7 @@
             found.length
           )
         );
+        inCurriculum = true;
         continue;
       }
 
@@ -169,11 +325,12 @@
             found.length
           )
         );
+        inCurriculum = true;
         continue;
       }
 
       m = line.match(/^(.{10,120}?)\s+(\d{2,4})\s*(?:h(?:oras?)?)?\s*$/i);
-      if (m && /[A-Za-zÁÉÍÓÚáéíóúñÑ]/.test(m[1]) && !/^(total|suma|carga|año)/i.test(m[1])) {
+      if (m && /[A-Za-zÁÉÍÓÚáéíóúñÑ]/.test(m[1]) && !/^(total|suma|carga|año)/i.test(m[1]) && isLikelySubjectName(m[1])) {
         found.push(
           makeAsignatura(
             {
@@ -181,6 +338,45 @@
               anio: currentAnio,
               horas_teoricas: Number(m[2]),
               horas_practicas: 0,
+            },
+            found.length
+          )
+        );
+        inCurriculum = true;
+        continue;
+      }
+
+      // Planes tipo listado de materias sin horas (p. ej. correlatividades):
+      // importar nombres para completar horas a mano.
+      if (
+        inCurriculum &&
+        isLikelySubjectName(line) &&
+        !/\d{3,}/.test(line) &&
+        line.split(" ").length <= 12 &&
+        /^[A-ZÁÉÍÓÚÑ]/.test(line) &&
+        !/[.,;:]$/.test(line) &&
+        !/^(MEDICINA|TOCOGINECOLOG[IÍ]A|PEDIATR[IÍ]A)\s*(\([A-Z]\))?\s*$/i.test(line) &&
+        !/cursando|haber curs|estar curs|para cursarla|para rendir/i.test(line) &&
+        !/;/.test(line) &&
+        !/\b(y|de|el|la|los|las)$/i.test(line) &&
+        line.length >= 6
+      ) {
+        const nombreLimpio = line
+          .replace(/\s*\(Es correlativa[^)]*\)\s*/gi, " ")
+          .replace(/\*+$/g, "")
+          .replace(/\s+/g, " ")
+          .trim();
+        if (!isLikelySubjectName(nombreLimpio)) continue;
+        found.push(
+          makeAsignatura(
+            {
+              nombre: nombreLimpio,
+              anio: currentAnio,
+              horas_teoricas: 0,
+              horas_practicas: 0,
+              allowZero: true,
+              horas_estimadas: true,
+              notas: "Horas no informadas en el PDF; completar manualmente.",
             },
             found.length
           )
@@ -315,21 +511,36 @@
 
   function parsePlanFromText(text, meta) {
     const fromLines = parseTextLines(text);
+    const asignaturas = dedupeAsignaturas(fromLines);
+    const enriched = extractPlanMeta(text, meta || {});
+    const conHoras = asignaturas.filter((a) => a.horas_teoricas + a.horas_practicas > 0).length;
+    const sinHoras = asignaturas.length - conHoras;
+    let advertencia =
+      "Revisá y corregí las asignaturas detectadas. Los PDF escaneados o tablas complejas pueden requerir edición manual.";
+    if (asignaturas.length && sinHoras > 0 && conHoras === 0) {
+      advertencia =
+        `Se detectaron ${asignaturas.length} materias sin carga horaria en el archivo (p. ej. plan de correlatividades). ` +
+        "Completá horas teóricas/prácticas en la tabla o usá un PDF/CSV que informe horas.";
+    } else if (sinHoras > 0) {
+      advertencia =
+        `Se cargaron ${asignaturas.length} materias (${sinHoras} sin horas en el origen). Revisá tipologías y completá horas faltantes.`;
+    } else if (asignaturas.length) {
+      advertencia = `Se detectaron ${asignaturas.length} materias. Revisá tipologías, años y horas antes de calcular CRE.`;
+    }
     return {
-      id: meta.id || "plan-cargado",
-      nombre: meta.nombre || "Plan cargado",
-      titulo: meta.titulo || "",
-      institucion: meta.institucion || "Universidad Católica de Cuyo",
-      normativa: meta.normativa || "",
+      id: enriched.id || "plan-cargado",
+      nombre: enriched.nombre || "Plan cargado",
+      titulo: enriched.titulo || "",
+      institucion: enriched.institucion || "",
+      normativa: enriched.normativa || "",
       duracion_anios: 0,
       carrera_clave: "",
       metadata: {
-        fuente: meta.fuente || "archivo",
-        advertencia:
-          "Revisá y corregí las asignaturas detectadas. Los PDF escaneados o tablas complejas pueden requerir edición manual.",
+        fuente: enriched.fuente || "archivo",
+        advertencia,
         texto_extraido: String(text || "").slice(0, 20000),
       },
-      asignaturas: dedupeAsignaturas(fromLines),
+      asignaturas,
     };
   }
 
@@ -338,16 +549,17 @@
     const text = new DOMParser().parseFromString(html, "text/html").body.textContent || "";
     const fromLines = parseTextLines(text);
     const merged = dedupeAsignaturas([...fromTables, ...fromLines]);
+    const enriched = extractPlanMeta(text, meta || {});
     return {
-      id: meta.id || "plan-cargado",
-      nombre: meta.nombre || "Plan cargado",
+      id: enriched.id || "plan-cargado",
+      nombre: enriched.nombre || "Plan cargado",
       titulo: "",
-      institucion: "Universidad Católica de Cuyo",
+      institucion: enriched.institucion || "",
       normativa: "",
       duracion_anios: 0,
       carrera_clave: "",
       metadata: {
-        fuente: meta.fuente || "word",
+        fuente: enriched.fuente || "word",
         advertencia:
           "Revisá el plan detectado desde Word. Completá tipologías, años y horas si hace falta.",
         texto_extraido: text.slice(0, 20000),

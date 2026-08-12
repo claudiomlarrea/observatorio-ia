@@ -1,0 +1,74 @@
+Plan de Estudio
+Materia Régimen Carga HorariaModalidad
+Primer Año
+Anatomía Anual 250 Obligatoria
+Biologia Anual 60 Obligatoria
+Ciencias Sociales y Medicina Cuatrimestral 60 Obligatoria
+Citología, Histología y Embriología Anual 190 Obligatoria
+Informática Básica Bimestral 50 Obligatoria
+Ciencias Exactas Cuatrimestral 60 Optativa
+Seminario en Investigación Científica Cuatrimestral 50 Optativa
+Segundo Año
+Bioquímica y Biología Molecular Anual 250 Obligatoria
+Epidemiología Bimestral 50 Obligatoria
+Fisiología y Física Biológica Anual 250 Obligatoria
+Psicología Médica Bimestral 60 Obligatoria
+Ecología Humana y Promoción de la SaludBimestral 50 Optativa
+Historia de la Medicina Bimestral 60 Optativa
+Tercer Año
+Farmacología Básica Anual 140 Obligatoria
+Informatica Médica  Bimestral 50 Obligatoria
+Microbiología y Parasitología Anual 150 Obligatoria
+Patología Anual 210 Obligatoria
+Salud y Medicina Comunitaria Cuatrimestral 40 Obligatoria
+Semiología Anual 200 Obligatoria
+Inglés Médico  Anual 60 Obligatoria 
+Genética Bimestral 50 Optativa
+Inmunología Bimestral 50 Optativa
+Salud Ambiental Bimestral 50 Optativa
+Estadística Aplicada a Ciencias de la SaludCuatrimestral 60 Optativa
+Neuroanatomía Semiológica Trimestral 60 Optativa
+Materia Régimen Carga HorariaModalidad
+Cuarto Año
+Cirugía I Bimestral 130 Obligatoria
+Dermatología Bimestral 40 Obligatoria
+Diagnóstico y Terapéutica por Imágenes Módulo
+1 Bimestral 50 Obligatoria
+Farmacología Aplicada Cuatrimestral 100 Obligatoria
+Infectología Bimestral 80 Obligatoria
+Medicina Interna I Anual 210 Obligatoria
+Neurología Bimestral 40 Obligatoria
+Oftalmología  Bimestral 40  Obligatoria
+Ortopedia y Traumatología Bimestral 40 Obligatoria
+Otorrinolaringología Bimestral 40 Obligatoria
+Psiquiatría Módulo 1 Bimestral 60 Obligatoria
+Salud Pública Módulo 1 Cuatrimestral 60 Obligatoria
+Urología Bimestral 40 Obligatoria
+Bioquímica Clínica I Bimestral 50 Optativa
+Filosofía Médica Bimestral 50 Optativa
+Nutrición Clínica Cuatrimestral 30 Optativa
+Quinto Año
+Cirugía II Bimestral 130 Obligatoria
+Deontología y Medicina Legal Bimestral 60 Obligatoria
+Diagnóstico y Terapéutica por Imágenes Módulo
+2 Bimestral 45 Obligatoria
+Ginecología Cuatrimestral 80 Obligatoria
+Medicina Interna II Anual 210 Obligatoria
+Obstetricia Bimestral 60 Obligatoria
+Pediatría Anual 200 Obligatoria
+Psiquiatría Módulo 2 Bimestral 60 Obligatoria
+Salud Pública Módulo 2 Cuatrimestral 60 Obligatoria
+Materia Régimen Carga HorariaModalidad
+Terapia Intensiva Cuatrimestral 60 Obligatoria
+Toxicología Bimestral 35 Obligatoria
+Bioética Bimestral 50 Optativa
+Bioquímica Clínica II Bimestral 50 Optativa
+Cirugía de Tórax Bimestral 60 Optativa
+Discapacidad Intelectual Cuatrimestral 60 Optativa
+Trasplante de Órganos Semestral 100 Optativa
+Calidad de la Atención Médica Cuatrimestral 64 Optativa
+El paciente con enfermedad crónica de alto
+impacto familiar Cuatrimestral 64 Optativa
+Enfermedades poco frecuentes en medicinaCuatrimestral 50 Optativa
+Sexto año
+Práctica Final Obligatoria Anual 1400 Obligatoria

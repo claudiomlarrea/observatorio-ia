@@ -15,7 +15,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/app.css?v=21" />
+    <link rel="stylesheet" href="css/app.css?v=22" />
   </head>
   <body>
     <div class="topbar">
@@ -119,6 +119,8 @@
           <h2>Cargar tu plan de estudios</h2>
           <p class="note">
             Subí un archivo Word (.docx), PDF (también escaneado) o CSV con las materias y sus horas.
+            Sirve para planes de <strong>cualquier universidad</strong>: hace falta una grilla o listado
+            con carga horaria (no solo correlatividades).
           </p>
           <div class="toolbar" style="box-shadow:none;border:none;padding:0;margin:0">
             <div class="field grow">
@@ -133,7 +135,8 @@
           <p class="note">
             Si todavía no tenés el archivo armado, descargá una
             <a href="ejemplos/plantilla_plan_horas.csv">plantilla CSV vacía</a>
-            y completá las filas.
+            y completá las filas. Los PDF sin horas (solo materias y correlativas) se importan
+            como listado vacío de horas para completar a mano.
           </p>
           <div class="actions" style="margin-top:1rem">
             <button type="button" class="btn-secondary" id="btnClearPlan" title="Borra el plan actual">
@@ -241,11 +244,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
-    <script src="js/engine.js?v=21"></script>
-    <script src="js/anexo911.js?v=21"></script>
-    <script src="js/ocr.js?v=21"></script>
-    <script src="js/parser.js?v=21"></script>
-    <script src="js/export.js?v=21"></script>
-    <script src="js/app.js?v=21"></script>
+    <script src="js/engine.js?v=22"></script>
+    <script src="js/anexo911.js?v=22"></script>
+    <script src="js/ocr.js?v=22"></script>
+    <script src="js/parser.js?v=22"></script>
+    <script src="js/export.js?v=22"></script>
+    <script src="js/app.js?v=22"></script>
   </body>
 </html>
