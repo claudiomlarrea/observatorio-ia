@@ -289,7 +289,7 @@
           <div class="panel-head">
             <h2>Cómo estimar el trabajo autónomo</h2>
             <a
-              class="btn-secondary btn-sm"
+              class="btn-instructivo btn-sm"
               href="docs/instructivo_trabajo_autonomo.pdf"
               target="_blank"
               rel="noopener"

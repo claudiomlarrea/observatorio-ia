@@ -77,7 +77,7 @@ header.hero p {
   margin-top: 0.85rem !important;
 }
 
-.hero-actions .btn-secondary {
+.hero-actions .btn-instructivo {
   display: inline-flex;
   text-decoration: none;
 }
@@ -184,6 +184,27 @@ button,
 
 .btn-secondary:hover {
   background: #ddd3d7;
+}
+
+.btn-instructivo,
+a.btn-instructivo {
+  background: #c62828;
+  color: #fff;
+  border: 1px solid #b71c1c;
+}
+
+.btn-instructivo:hover,
+a.btn-instructivo:hover {
+  background: #b71c1c;
+  color: #fff;
+}
+
+.topbar .btn-instructivo {
+  margin-left: 0.35rem;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.8rem;
+  border-radius: 999px;
+  vertical-align: middle;
 }
 
 .metrics {
