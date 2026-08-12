@@ -286,7 +286,16 @@
     decideEl.innerHTML = `
       <div class="grid-2">
         <section class="panel">
-          <h2>Cómo estimar el trabajo autónomo</h2>
+          <div class="panel-head">
+            <h2>Cómo estimar el trabajo autónomo</h2>
+            <a
+              class="btn-secondary btn-sm"
+              href="docs/instructivo_trabajo_autonomo.pdf"
+              target="_blank"
+              rel="noopener"
+              title="Abrir instructivo PDF sobre tipologías y ratios"
+            >Instructivo PDF</a>
+          </div>
           <div class="table-wrap" style="max-height:14rem">
             <table>
               <thead><tr><th>Tipo</th><th>Descripción</th><th>Ratio</th><th>Horas fijas</th></tr></thead>

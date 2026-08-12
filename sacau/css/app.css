@@ -73,6 +73,40 @@ header.hero p {
   max-width: 52rem;
 }
 
+.hero-actions {
+  margin-top: 0.85rem !important;
+}
+
+.hero-actions .btn-secondary {
+  display: inline-flex;
+  text-decoration: none;
+}
+
+.panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.65rem;
+}
+
+.panel-head h2 {
+  margin: 0;
+}
+
+a.btn-secondary,
+a.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.btn-sm {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.85rem;
+}
+
 .toolbar {
   display: flex;
   flex-wrap: wrap;
