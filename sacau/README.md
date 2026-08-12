@@ -1,8 +1,16 @@
 # Convertidor SACAU (UCCuyo)
 
-Herramienta Streamlit para transformar un **plan de estudios en horas** al
+Herramienta para transformar un **plan de estudios en horas** al
 **Sistema Argentino de Créditos Académicos Universitarios (SACAU)**, usando el
 **Crédito de Referencia del Estudiante (CRE)** definido por la UCCuyo.
+
+## Usar en el navegador (sin terminal)
+
+**URL institucional:** https://observatorio-ia.uccuyo.edu.ar/sacau/
+
+**Espejo GitHub Pages:** https://claudiomlarrea.github.io/observatorio-ia/sacau/
+
+Abrí el enlace, ajustá coeficientes o materias y descargá el CSV.
 
 ## Qué hace
 
@@ -10,7 +18,7 @@ Herramienta Streamlit para transformar un **plan de estudios en horas** al
 - Calcula **CRE** por asignatura: `(interacción + autónomas) / valor_CRE`.
 - Valida mínimos **SACAU** (Res. 556/2025) y, si aplica, estándares de
   **Psicología** (3.000 h, prácticas, PPS).
-- Exporta **CSV** y **Excel** para comisiones curriculares.
+- Exporta **CSV** (web) y también **Excel** desde la app Streamlit.
 
 ## Requisitos institucionales embebidos
 
@@ -20,7 +28,7 @@ Herramienta Streamlit para transformar un **plan de estudios en horas** al
 | RESOL-2025-556 | Grado ≥ **240 CRE**, ≥ **2.100 h** interacción, ~**60 CRE/año** |
 | Anexos Psicología | ≥ **3.000 h** interacción; ≥ **500 h** práctica (≥ **250** PPS) |
 
-## Cómo ejecutar
+## Alternativa local (Streamlit)
 
 ```bash
 cd sacau
@@ -39,16 +47,6 @@ Algunas asignaturas de 4º año tienen `horas_estimadas: true` porque el PDF
 escaneado no permitió leer todas las celdas; se ajustaron para respetar el
 **total anual publicado (750 h)**. Corregilas en el editor si tenés el dato exacto.
 
-## Importar otro plan (CSV)
-
-Columnas reconocidas (mínimo: `nombre`, `horas_teoricas`; recomendadas todas):
-
-```text
-codigo,nombre,anio,area,regimen,tipologia,horas_teoricas,horas_practicas,horas_autonomas_override,valor_cre_override,horas_estimadas,notas
-```
-
-Áreas sugeridas: `FB`, `FP`, `FGC`, `FCI`. Tipologías: ver `data/tipologias.json`.
-
 ## Tests
 
 ```bash
@@ -61,14 +59,10 @@ pytest -q
 
 ```text
 sacau/
-  app.py                 # UI Streamlit
-  engine/                # motor de conversión y validación
+  index.html             # UI web (GitHub Pages)
+  css/ js/               # front estático
+  app.py                 # UI Streamlit (opcional)
+  engine/                # motor Python
   data/                  # normas + plan Psicología precargado
   tests/
 ```
-
-## Fuera de alcance (v1)
-
-- OCR / parsing automático de PDF.
-- Matrices de tributación del Marco Res. 911-CS-2026.
-- Publicación en el sitio público del Observatorio (se corre en local).
