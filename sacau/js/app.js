@@ -256,20 +256,20 @@
           <td>${item.horas_autonomas.toFixed(0)}</td>
           <td><strong>${item.cre.toFixed(1)}</strong></td>
           <td>
-            <button type="button" class="btn-secondary btn-del" title="Quitar esta materia">Quitar</button>
+            <button type="button" class="btn-secondary btn-del" title="Quitar esta asignatura">Quitar</button>
             <input type="hidden" data-f="horas_estimadas" value="${a.horas_estimadas ? "1" : "0"}" />
             <input type="hidden" data-f="notas" value="${String(a.notas || "").replace(/"/g, "&quot;")}" />
           </td>
         </tr>`;
         })
         .join("") ||
-      `<tr class="empty-row"><td colspan="14">Sin materias todavía. Cargá un archivo arriba o usá «Agregar materia».</td></tr>`;
+      `<tr class="empty-row"><td colspan="14">Sin asignaturas todavía. Cargá un archivo arriba o usá «Agregar asignatura».</td></tr>`;
 
     const resumenNota =
       plan.metadata?.advertencia ||
       (hasMaterias()
         ? "Revisá tipología, horas y overrides. Las descargas están arriba en cualquier momento."
-        : "Todavía no hay materias. Subí un archivo arriba o usá «Agregar materia».");
+        : "Todavía no hay asignaturas. Subí un archivo arriba o usá «Agregar asignatura».");
 
     decideEl.classList.remove("loading");
     decideEl.innerHTML = `
@@ -400,7 +400,7 @@
     const n = plan.asignaturas.length + 1;
     plan.asignaturas.push({
       codigo: String(n).padStart(2, "0"),
-      nombre: "Nueva materia",
+      nombre: "Nueva asignatura",
       anio: plan.duracion_anios || 1,
       area: "OTRA",
       regimen: "S",

@@ -663,7 +663,7 @@
       carrera_clave: "",
       metadata: {
         advertencia:
-          "Todavía no hay materias. Subí un archivo arriba o usá «Agregar materia».",
+          "Todavía no hay asignaturas. Subí un archivo arriba o usá «Agregar asignatura».",
       },
       asignaturas: [],
     };
