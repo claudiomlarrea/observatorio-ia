@@ -279,10 +279,11 @@
       el.addEventListener("change", () => {
         const id = el.getAttribute("data-tip");
         if (!tipologiasMap[id]) return;
+        syncPlanFromUi();
         if (el.classList.contains("tip-ratio")) tipologiasMap[id].ratio_autonomo = Number(el.value || 0);
         else tipologiasMap[id].autonomas_fijas = Number(el.value || 0);
         setStep(2);
-        render();
+        render({ skipSync: true });
       });
     });
 
@@ -290,7 +291,7 @@
       btn.addEventListener("click", () => {
         btn.closest("tr")?.remove();
         setStep(2);
-        render();
+        render({ skipSync: false });
       });
     });
   }
