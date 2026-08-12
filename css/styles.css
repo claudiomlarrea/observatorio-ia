@@ -2950,12 +2950,14 @@ form.simple-form small {
 }
 
 .webinar-cta--meet {
-  border-color: var(--color-inst, #064a38);
-  color: var(--color-inst, #064a38);
+  border-color: var(--color-institutional, #7a1532);
+  color: #fff;
+  background: var(--color-institutional, #7a1532);
 }
 
 .webinar-cta--meet:hover {
-  background: var(--color-inst, #064a38);
+  background: var(--color-institutional-dark, #4a0c1f);
+  border-color: var(--color-institutional-dark, #4a0c1f);
   color: #fff;
 }
 
