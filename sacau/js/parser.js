@@ -630,7 +630,10 @@
 
   async function extractPdfText(arrayBuffer) {
     if (!global.pdfjsLib) throw new Error("PDF.js no está disponible");
-    const pdf = await global.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    // PDF.js puede detachar el buffer: trabajar siempre sobre una copia.
+    const data =
+      arrayBuffer instanceof Uint8Array ? arrayBuffer.slice() : arrayBuffer.slice(0);
+    const pdf = await global.pdfjsLib.getDocument({ data }).promise;
     const parts = [];
     for (let i = 1; i <= pdf.numPages; i++) {
       const page = await pdf.getPage(i);
@@ -678,6 +681,8 @@
     }
 
     const buf = await file.arrayBuffer();
+    // Copia estable: PDF.js / workers pueden detachar el ArrayBuffer original.
+    const pdfBytes = new Uint8Array(buf.slice(0));
     const meta = {
       id: "plan-" + Date.now(),
       nombre: `Plan cargado (${name})`,
@@ -746,12 +751,22 @@
 
       let text = "";
       let usedOcr = false;
-      const needsOcr = global.SacauOcr
-        ? await global.SacauOcr.pdfNeedsOcr(buf)
-        : true;
+      let needsOcr = true;
+      try {
+        needsOcr = global.SacauOcr ? await global.SacauOcr.pdfNeedsOcr(pdfBytes) : true;
+      } catch (err) {
+        console.warn("pdfNeedsOcr falló, se intenta extracción de texto", err);
+        needsOcr = false;
+      }
 
       if (!needsOcr) {
-        text = await extractPdfText(buf);
+        try {
+          text = await extractPdfText(pdfBytes);
+        } catch (err) {
+          console.warn("extractPdfText falló", err);
+          text = "";
+          needsOcr = true;
+        }
       }
 
       if (needsOcr || parseTextLines(text).length < 3) {
@@ -761,7 +776,7 @@
           );
         }
         usedOcr = true;
-        const preview = await global.SacauOcr.ocrPdfArrayBuffer(buf, {
+        const preview = await global.SacauOcr.ocrPdfArrayBuffer(pdfBytes, {
           onProgress,
           maxPages: Math.min(6, options.maxOcrPages || 40),
           scale: options.ocrScale || 1.6,
@@ -782,7 +797,7 @@
         }
 
         if (preview.totalPages > preview.pages) {
-          const full = await global.SacauOcr.ocrPdfArrayBuffer(buf, {
+          const full = await global.SacauOcr.ocrPdfArrayBuffer(pdfBytes, {
             onProgress,
             maxPages: options.maxOcrPages || 40,
             scale: options.ocrScale || 1.6,
@@ -800,7 +815,7 @@
       plan.metadata.texto_extraido = cleaned.slice(0, 25000);
       if (!plan.asignaturas.length) {
         plan.metadata.advertencia =
-          "El OCR no pudo armar filas confiables. Probá un Word/PDF en texto o un CSV con las columnas de la plantilla.";
+          "No se pudieron armar filas confiables desde el PDF. Probá un Word/PDF en texto o un CSV con las columnas de la plantilla.";
       } else if (usedOcr) {
         plan.metadata.advertencia =
           `OCR aplicado: se detectaron ${plan.asignaturas.length} asignaturas. Revisá tipologías, años y horas.`;

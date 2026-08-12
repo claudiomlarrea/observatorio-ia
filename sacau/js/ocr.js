@@ -4,6 +4,15 @@
 (function (global) {
   "use strict";
 
+  /** PDF.js puede transferir/detachar el ArrayBuffer; siempre pasarle una copia. */
+  function copyPdfData(arrayBuffer) {
+    if (!arrayBuffer) return arrayBuffer;
+    if (arrayBuffer instanceof Uint8Array) {
+      return arrayBuffer.slice();
+    }
+    return arrayBuffer.slice(0);
+  }
+
   function setProgress(cb, payload) {
     if (typeof cb === "function") cb(payload);
   }
@@ -84,7 +93,7 @@
     const onProgress = options.onProgress;
     if (!global.pdfjsLib) throw new Error("PDF.js no está disponible");
 
-    const pdf = await global.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const pdf = await global.pdfjsLib.getDocument({ data: copyPdfData(arrayBuffer) }).promise;
     const maxPages = Math.min(pdf.numPages, options.maxPages || 40);
     const scale = options.scale || 1.8;
 
@@ -144,7 +153,7 @@
    */
   async function pdfNeedsOcr(arrayBuffer, samplePages = 3) {
     if (!global.pdfjsLib) return true;
-    const pdf = await global.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const pdf = await global.pdfjsLib.getDocument({ data: copyPdfData(arrayBuffer) }).promise;
     let chars = 0;
     const n = Math.min(pdf.numPages, samplePages);
     for (let i = 1; i <= n; i++) {

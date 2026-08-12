@@ -575,7 +575,11 @@
     } catch (e) {
       console.error(e);
       showInfo("");
-      showError(e.message || String(e));
+      const raw = e && e.message ? String(e.message) : String(e);
+      const msg = /detached ArrayBuffer/i.test(raw)
+        ? `No se pudo leer «${file.name}» (error interno del lector PDF). Recargá la página e intentá de nuevo; si sigue, usá la plantilla CSV.`
+        : raw;
+      showError(msg);
       setStep(1);
     } finally {
       showProgress(null);
