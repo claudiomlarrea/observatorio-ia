@@ -173,6 +173,33 @@ def to_docx_bytes(
             for run in p.runs:
                 run.font.size = Pt(10)
 
+    anexo = (plan_conv.plan.metadata or {}).get("anexo_911")
+    if anexo and (plan_conv.plan.metadata or {}).get("incluir_anexo_911", True):
+        labels = {
+            "perfil_egreso": "Perfil de egreso",
+            "competencias_genericas": "Competencias genéricas (transversales)",
+            "competencias_especificas": "Competencias específicas",
+            "resultados_aprendizaje": "Resultados de aprendizaje",
+            "despliegue_horas": "Despliegue de horas y créditos",
+            "flexibilidad_curricular": "Flexibilidad curricular",
+            "reconocimiento_trayectos": "Reconocimiento de trayectos formativos",
+            "movilidad": "Movilidad estudiantil e interinstitucional",
+            "matriz_tributacion": "Matriz de tributación (orientación)",
+            "notas_unidad_academica": "Notas de la unidad académica",
+        }
+        doc.add_heading("Anexo curricular (Res. 911-CS-2026 UCCuyo)", level=2)
+        doc.add_paragraph(
+            "Borrador editable generado por el Convertidor SACAU. Adaptar a la especificidad de la carrera."
+        )
+        for key, label in labels.items():
+            text = anexo.get(key)
+            if not text or not str(text).strip():
+                continue
+            doc.add_heading(label, level=3)
+            for line in str(text).splitlines():
+                if line.strip():
+                    doc.add_paragraph(line.strip())
+
     doc.add_paragraph(
         "Nota: las horas autónomas son estimaciones editables; no son objeto de verificación "
         "en validez nacional (RESOL-2025-556)."

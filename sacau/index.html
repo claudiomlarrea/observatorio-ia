@@ -15,7 +15,7 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/app.css?v=14" />
+    <link rel="stylesheet" href="css/app.css?v=15" />
   </head>
   <body>
     <div class="topbar">
@@ -186,6 +186,41 @@
         <div id="app-decidir" class="loading">Preparando editor…</div>
       </section>
 
+      <!-- Anexo curricular Res. 911 (editable) -->
+      <section id="panel-anexo-911" class="panel-step" aria-label="Anexo curricular Res. 911">
+        <div class="panel anexo-911">
+          <div class="panel-head">
+            <h2>Anexo curricular (Res. 911-CS-2026)</h2>
+            <a
+              class="btn-instructivo btn-sm"
+              href="docs/normativa/Res-911-CS-2026-Marco-Conceptual-SACAU-UCCuyo.pdf"
+              target="_blank"
+              rel="noopener"
+              >Ver Res. 911</a
+            >
+          </div>
+          <p class="note">
+            El sistema propone un <strong>borrador</strong> con perfil de egreso, competencias,
+            resultados de aprendizaje, flexibilidad, reconocimiento y movilidad, vinculado al
+            despliegue de horas/CRE. <strong>Podés modificar todo</strong> según tu carrera y
+            universidad. Se incluye en la descarga Word/PDF.
+          </p>
+          <div class="actions" style="margin: 0.75rem 0 1rem">
+            <button type="button" class="btn-primary" id="btnGenAnexo911">
+              Generar / regenerar borrador 911
+            </button>
+            <button type="button" class="btn-secondary" id="btnClearAnexo911">
+              Vaciar anexo
+            </button>
+            <label class="check-inline">
+              <input type="checkbox" id="incluirAnexo911" checked />
+              Incluir anexo en descargas
+            </label>
+          </div>
+          <div id="app-anexo-911" class="anexo-fields"></div>
+        </div>
+      </section>
+
       <!-- PASO 3: resultados siempre visibles -->
       <section id="panel-3" class="panel-step" aria-labelledby="stepBtn3">
         <div id="app-resultado" class="loading">Preparando resultados…</div>
@@ -205,10 +240,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
-    <script src="js/engine.js?v=14"></script>
-    <script src="js/ocr.js?v=14"></script>
-    <script src="js/parser.js?v=14"></script>
-    <script src="js/export.js?v=14"></script>
-    <script src="js/app.js?v=14"></script>
+    <script src="js/engine.js?v=15"></script>
+    <script src="js/anexo911.js?v=15"></script>
+    <script src="js/ocr.js?v=15"></script>
+    <script src="js/parser.js?v=15"></script>
+    <script src="js/export.js?v=15"></script>
+    <script src="js/app.js?v=15"></script>
   </body>
 </html>

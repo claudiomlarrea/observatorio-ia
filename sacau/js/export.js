@@ -34,7 +34,66 @@
     });
   }
 
-  async function exportDocx(planConv, validation) {
+  function paragraphsFromText(text, Paragraph, TextRun, size = 18) {
+    const chunks = String(text || "")
+      .split(/\n+/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+    if (!chunks.length) {
+      return [
+        new Paragraph({
+          children: [new TextRun({ text: "—", italics: true, size })],
+          spacing: { after: 80 },
+        }),
+      ];
+    }
+    return chunks.map(
+      (line) =>
+        new Paragraph({
+          children: [new TextRun({ text: line, size })],
+          spacing: { after: 80 },
+        })
+    );
+  }
+
+  function anexoChildren(anexo911, campos911, Paragraph, TextRun, HeadingLevel) {
+    if (!anexo911) return [];
+    const fields =
+      campos911 ||
+      SacauAnexo911?.FIELD_ORDER?.map((id) => ({ id, label: id })) ||
+      [];
+    const out = [
+      new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        children: [new TextRun("Anexo curricular (Res. 911-CS-2026 UCCuyo)")],
+        spacing: { before: 300 },
+      }),
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: "Borrador editable generado por el Convertidor SACAU. La unidad académica debe adaptarlo a la especificidad de la carrera.",
+            italics: true,
+            size: 16,
+          }),
+        ],
+        spacing: { after: 160 },
+      }),
+    ];
+    for (const f of fields) {
+      const val = anexo911[f.id];
+      if (val == null || String(val).trim() === "") continue;
+      out.push(
+        new Paragraph({
+          heading: HeadingLevel.HEADING_3,
+          children: [new TextRun(f.label || f.id)],
+        })
+      );
+      out.push(...paragraphsFromText(val, Paragraph, TextRun));
+    }
+    return out;
+  }
+
+  async function exportDocx(planConv, validation, opts = {}) {
     if (!global.docx) throw new Error("Librería docx no disponible");
     const {
       Document,
@@ -164,6 +223,7 @@
               spacing: { before: 300 },
             }),
             ...checks,
+            ...anexoChildren(opts.anexo911, opts.campos911, Paragraph, TextRun, HeadingLevel),
             new Paragraph({
               children: [
                 new TextRun({
@@ -183,7 +243,7 @@
     return blob;
   }
 
-  function exportPdf(planConv, validation) {
+  function exportPdf(planConv, validation, opts = {}) {
     if (!global.jspdf || !global.jspdf.jsPDF) throw new Error("jsPDF no disponible");
     const { jsPDF } = global.jspdf;
     const doc = new jsPDF({ orientation: "landscape", unit: "pt", format: "a4" });
@@ -237,6 +297,47 @@
         if (y > 560) {
           doc.addPage();
           y = 40;
+        }
+      }
+
+      const anexo = opts.anexo911;
+      const campos = opts.campos911 || [];
+      if (anexo && campos.length) {
+        doc.addPage();
+        y = 40;
+        doc.setFontSize(14);
+        doc.text("Anexo curricular (Res. 911-CS-2026 UCCuyo)", 40, y);
+        y += 18;
+        doc.setFontSize(8);
+        doc.text(
+          "Borrador editable. Adaptar a la especificidad de la carrera y universidad.",
+          40,
+          y
+        );
+        y += 16;
+        for (const f of campos) {
+          const val = anexo[f.id];
+          if (val == null || String(val).trim() === "") continue;
+          if (y > 520) {
+            doc.addPage();
+            y = 40;
+          }
+          doc.setFont(undefined, "bold");
+          doc.setFontSize(10);
+          doc.text(f.label || f.id, 40, y);
+          y += 12;
+          doc.setFont(undefined, "normal");
+          doc.setFontSize(8);
+          const lines = doc.splitTextToSize(String(val), 760);
+          for (const line of lines) {
+            if (y > 560) {
+              doc.addPage();
+              y = 40;
+            }
+            doc.text(line, 40, y);
+            y += 10;
+          }
+          y += 8;
         }
       }
     } else {

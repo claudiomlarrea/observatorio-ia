@@ -9,11 +9,19 @@
   const infoEl = $("#info");
   const decideEl = $("#app-decidir");
   const resultEl = $("#app-resultado");
+  const anexoEl = $("#app-anexo-911");
   const progressEl = $("#progress");
   const progressLabel = $("#progressLabel");
   const progressBar = $("#progressBar");
 
   let currentStep = 1;
+  let tipologiasMap = {};
+  let normasUccuyo = {};
+  let normasPsicologia = null;
+  let knownCatalog = null;
+  let plantillas911 = null;
+  let plan = null;
+  let anexoUiBound = false;
 
   function showError(msg) {
     errEl.hidden = !msg;
@@ -88,12 +96,6 @@
     return res.json();
   }
 
-  let tipologiasMap = {};
-  let normasUccuyo = {};
-  let normasPsicologia = null;
-  let knownCatalog = null;
-  let plan = null;
-
   function tipoCarreraActual() {
     const el = $("#tipoCarrera");
     return (el && el.value) || (plan && plan.tipo_carrera) || "grado";
@@ -113,6 +115,86 @@
     const map = {};
     for (const t of raw.tipologias || []) map[t.id] = t;
     return map;
+  }
+
+  function ensureAnexo() {
+    if (!plan) return null;
+    plan.metadata = plan.metadata || {};
+    if (!plan.metadata.anexo_911) {
+      plan.metadata.anexo_911 = SacauAnexo911.emptyAnexo(plantillas911);
+    }
+    return plan.metadata.anexo_911;
+  }
+
+  function syncAnexoFromUi() {
+    if (!plan || !anexoEl) return;
+    const anexo = ensureAnexo();
+    anexoEl.querySelectorAll("textarea[data-anexo]").forEach((ta) => {
+      anexo[ta.getAttribute("data-anexo")] = ta.value;
+    });
+    anexo._meta = anexo._meta || {};
+    anexo._meta.editado_por_usuario = true;
+    const incl = $("#incluirAnexo911");
+    plan.metadata.incluir_anexo_911 = !incl || incl.checked;
+  }
+
+  function renderAnexo() {
+    if (!anexoEl || !plantillas911) return;
+    const anexo = ensureAnexo();
+    const fields = SacauAnexo911.fields(plantillas911);
+    anexoEl.innerHTML = fields
+      .map(
+        (f) => `<div class="anexo-field">
+          <label for="anexo-${f.id}">${f.label}</label>
+          <span class="ayuda">${f.ayuda || ""}</span>
+          <textarea id="anexo-${f.id}" data-anexo="${f.id}" rows="5"></textarea>
+        </div>`
+      )
+      .join("");
+    fields.forEach((f) => {
+      const ta = anexoEl.querySelector(`#anexo-${f.id}`);
+      if (ta) ta.value = anexo[f.id] || "";
+    });
+    const incl = $("#incluirAnexo911");
+    if (incl) incl.checked = plan.metadata.incluir_anexo_911 !== false;
+    if (!anexoUiBound) {
+      anexoEl.addEventListener("change", () => syncAnexoFromUi());
+      anexoEl.addEventListener("input", () => {
+        if (plan?.metadata?.anexo_911?._meta) plan.metadata.anexo_911._meta.editado_por_usuario = true;
+      });
+      anexoUiBound = true;
+    }
+  }
+
+  function generarAnexo911(force) {
+    if (!plan || !plantillas911) {
+      showError("Cargá un plan antes de generar el anexo 911.");
+      return;
+    }
+    syncAnexoFromUi();
+    const existing = plan.metadata?.anexo_911;
+    if (
+      !force &&
+      existing &&
+      existing._meta?.editado_por_usuario &&
+      Object.values(existing).some((v) => typeof v === "string" && v.trim())
+    ) {
+      const ok = window.confirm(
+        "El anexo ya tiene texto editado. ¿Regenerar el borrador y reemplazar el contenido actual?"
+      );
+      if (!ok) return;
+    }
+    const conv = SacauEngine.convertPlan(plan, optionsFromUi());
+    plan.metadata = plan.metadata || {};
+    plan.metadata.anexo_911 = SacauAnexo911.buildDraft(
+      plantillas911,
+      plan,
+      conv,
+      tipoCarreraActual()
+    );
+    plan.metadata.incluir_anexo_911 = true;
+    renderAnexo();
+    showInfo("Borrador del anexo 911 generado. Revisalo y adaptalo a tu carrera.");
   }
 
   function optionsFromUi() {
@@ -191,7 +273,10 @@
   }
 
   function currentConversion(opts = {}) {
-    if (!opts.skipSync) syncPlanFromUi();
+    if (!opts.skipSync) {
+      syncPlanFromUi();
+      syncAnexoFromUi();
+    }
     if (!plan) return null;
     ensureDuracion(plan);
     plan.tipo_carrera = tipoCarreraActual();
@@ -401,6 +486,7 @@
       </footer>
     `;
     updateExportState();
+    renderAnexo();
   }
 
   function usePlan(next, message, step = 2, opts = {}) {
@@ -408,10 +494,27 @@
     if (!plan.tipo_carrera) {
       plan.tipo_carrera = plan.carrera_clave === "psicologia" ? "art43" : "grado";
     }
+    plan.metadata = plan.metadata || {};
     syncTipoCarreraFromPlan();
     showError("");
     showInfo(message || "");
     render({ skipSync: true });
+    // Generar borrador 911 si aún no hay texto
+    const anexo = plan.metadata.anexo_911;
+    const hasText =
+      anexo &&
+      SacauAnexo911.FIELD_ORDER.some((id) => String(anexo[id] || "").trim());
+    if (!hasText && plantillas911 && hasMaterias()) {
+      const conv = SacauEngine.convertPlan(plan, optionsFromUi());
+      plan.metadata.anexo_911 = SacauAnexo911.buildDraft(
+        plantillas911,
+        plan,
+        conv,
+        tipoCarreraActual()
+      );
+      plan.metadata.incluir_anexo_911 = true;
+    }
+    renderAnexo();
     updateExportState();
     setStep(step, opts);
   }
@@ -478,10 +581,14 @@
 
   async function onExportDocx() {
     if (!requireMaterias("descargar Word")) return;
+    syncAnexoFromUi();
     const result = currentConversion();
     if (!result) return;
     try {
-      const blob = await SacauExport.exportDocx(result.conv, result.val);
+      const blob = await SacauExport.exportDocx(result.conv, result.val, {
+        anexo911: plan.metadata?.incluir_anexo_911 !== false ? plan.metadata?.anexo_911 : null,
+        campos911: plantillas911?.campos,
+      });
       SacauExport.downloadBlob(blob, `${plan.id || "plan"}_CRE.docx`);
     } catch (e) {
       showError(e.message || String(e));
@@ -490,10 +597,14 @@
 
   function onExportPdf() {
     if (!requireMaterias("descargar PDF")) return;
+    syncAnexoFromUi();
     const result = currentConversion();
     if (!result) return;
     try {
-      const blob = SacauExport.exportPdf(result.conv, result.val);
+      const blob = SacauExport.exportPdf(result.conv, result.val, {
+        anexo911: plan.metadata?.incluir_anexo_911 !== false ? plan.metadata?.anexo_911 : null,
+        campos911: plantillas911?.campos,
+      });
       SacauExport.downloadBlob(blob, `${plan.id || "plan"}_CRE.pdf`);
     } catch (e) {
       showError(e.message || String(e));
@@ -509,16 +620,18 @@
   }
 
   try {
-    const [tipsRaw, uccuyo, conocidos, psico] = await Promise.all([
+    const [tipsRaw, uccuyo, conocidos, psico, plantillas] = await Promise.all([
       loadJson("data/tipologias.json"),
       loadJson("data/normas_uccuyo.json"),
       loadJson("data/planes_reconocidos.json"),
       loadJson("data/normas_psicologia.json"),
+      loadJson("data/anexo_911_plantillas.json"),
     ]);
     tipologiasMap = tipologiasFromRaw(tipsRaw);
     normasUccuyo = uccuyo;
     normasPsicologia = psico;
     knownCatalog = conocidos;
+    plantillas911 = plantillas;
     $("#valorCre").value = uccuyo.cre_default || 25;
 
     const tipoEl = $("#tipoCarrera");
@@ -530,8 +643,26 @@
       tipoEl.addEventListener("change", () => {
         if (plan) plan.tipo_carrera = tipoEl.value;
         render({ skipSync: false });
+        renderAnexo();
       });
     }
+
+    $("#btnGenAnexo911")?.addEventListener("click", () => generarAnexo911(false));
+    $("#btnClearAnexo911")?.addEventListener("click", () => {
+      if (!plan) return;
+      plan.metadata = plan.metadata || {};
+      plan.metadata.anexo_911 = SacauAnexo911.emptyAnexo(plantillas911);
+      plan.metadata.incluir_anexo_911 = false;
+      const incl = $("#incluirAnexo911");
+      if (incl) incl.checked = false;
+      renderAnexo();
+      showInfo("Anexo 911 vaciado.");
+    });
+    $("#incluirAnexo911")?.addEventListener("change", (ev) => {
+      if (!plan) return;
+      plan.metadata = plan.metadata || {};
+      plan.metadata.incluir_anexo_911 = ev.target.checked;
+    });
 
     document.querySelectorAll(".step").forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -569,11 +700,21 @@
     }
     $("#btnAddRow").addEventListener("click", addRow);
     $("#btnRecalc").addEventListener("click", () => {
-      render({ skipSync: false });
+      const result = currentConversion({ skipSync: false });
+      if (result && plan?.metadata?.anexo_911) {
+        plan.metadata.anexo_911 = SacauAnexo911.refreshDespliegue(
+          plan.metadata.anexo_911,
+          plan,
+          result.conv
+        );
+        renderAnexo();
+      } else {
+        render({ skipSync: true });
+      }
       setStep(3);
       showInfo(
         hasMaterias()
-          ? "Créditos actualizados. Podés descargar Word, PDF o CSV arriba."
+          ? "Créditos actualizados. Revisá el anexo 911 y descargá Word/PDF arriba."
           : "Todavía no hay materias: cargá un archivo o agregá filas."
       );
     });
