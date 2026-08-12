@@ -19,7 +19,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="css/styles.css?v=3" />
+    <link rel="stylesheet" href="css/styles.css?v=5" />
   </head>
   <body>
     <a class="skip-link" href="#contenido" data-i18n="a11y.skipLink">Ir al contenido</a>
@@ -83,19 +83,6 @@
     </nav>
 
     <main id="contenido" class="main">
-      <section class="active-filters" id="active-filters" hidden aria-live="polite">
-        <div class="active-filters-head">
-          <h2 class="active-filters-title" data-i18n="filters.activeTitle">Filtros activos</h2>
-          <button type="button" class="clear-btn" id="clear-filters" data-i18n="filters.clear">
-            Limpiar
-          </button>
-        </div>
-        <div class="chip-row" id="chip-row"></div>
-        <p class="combine-hint" data-i18n="filters.combineHint">
-          Podés combinar: tocá otro botón (por ejemplo Aula + Horario).
-        </p>
-      </section>
-
       <section class="step-panel" id="step-panel" aria-live="polite">
         <div class="step-head">
           <h2 class="step-title" id="step-title">Elegí el día</h2>
@@ -132,6 +119,9 @@
       >
         <div class="results-head">
           <h2 class="results-title" id="results-title" data-i18n="results.title">Resultados</h2>
+          <button type="button" class="back-btn" id="back-btn" data-i18n="back.filter">
+            ← Cambiar filtro
+          </button>
         </div>
         <div id="results-body"></div>
       </section>
@@ -164,8 +154,8 @@
       </p>
     </footer>
 
-    <script src="js/i18n-dict.js?v=4"></script>
-    <script src="js/i18n.js?v=4"></script>
-    <script src="js/app.js?v=4" defer></script>
+    <script src="js/i18n-dict.js?v=5"></script>
+    <script src="js/i18n.js?v=5"></script>
+    <script src="js/app.js?v=5" defer></script>
   </body>
 </html>
