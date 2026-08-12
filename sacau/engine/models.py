@@ -95,7 +95,7 @@ class AsignaturaConvertida:
 @dataclass
 class ConvertOptions:
     valor_cre_default: float = 25.0
-    redondeo_cre: float = 0.5  # 0.25 | 0.5 | 0 (sin redondeo)
+    redondeo_cre: float = 0.5  # 0.25 | 0.5 | 1 (enteros) | 0 (exacto)
     tipologias: dict[str, Tipologia] = field(default_factory=dict)
 
 

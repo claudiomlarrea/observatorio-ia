@@ -47,6 +47,8 @@ def test_round_to_step():
     assert round_to_step(3.3, 0.5) == 3.5
     assert round_to_step(3.24, 0.25) == 3.25
     assert round_to_step(3.24, 0) == 3.24
+    assert round_to_step(3.24, 1) == 3.0
+    assert round_to_step(3.6, 1) == 4.0
 
 
 def test_estimate_autonomous_override(tipologias):

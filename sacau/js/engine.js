@@ -6,7 +6,27 @@
 
   function roundToStep(value, step) {
     if (!step || step <= 0) return Number(value);
-    return Math.round(value / step) * step;
+    const rounded = Math.round(Number(value) / step) * step;
+    // Evitar residuos de coma flotante (p. ej. 49.0000000002)
+    const decimals = step >= 1 ? 0 : String(step).includes(".") ? String(step).split(".")[1].length : 0;
+    return Number(rounded.toFixed(Math.min(6, decimals + 2)));
+  }
+
+  /** Cantidad de decimales a mostrar según el paso de redondeo. */
+  function creDecimals(step) {
+    const s = Number(step);
+    if (!s || s <= 0) return 2; // exacto: hasta 2 decimales útiles
+    if (s >= 1) return 0;
+    if (s >= 0.5) return 1;
+    return 2;
+  }
+
+  function formatCre(value, step) {
+    const d = creDecimals(step);
+    return Number(value || 0).toLocaleString("es-AR", {
+      minimumFractionDigits: d,
+      maximumFractionDigits: d,
+    });
   }
 
   function estimateAutonomous(asig, tipologias) {
@@ -109,6 +129,8 @@
     const tipo = tipoCarrera || planConv.plan.tipo_carrera || "grado";
     const cfg = tipos[tipo] || tipos.grado || {};
     const t = planConv.totales;
+    const step = planConv.opciones?.redondeo_cre;
+    const creTxt = (n) => formatCre(n, step);
     const checks = [];
     const label = cfg.label || "Grado";
     const minCre = Number(cfg.min_cre != null ? cfg.min_cre : sacau.grado_min_cre || 240);
@@ -117,8 +139,8 @@
         "sacau_min_cre",
         t.cre,
         minCre,
-        `CRE totales (${t.cre.toFixed(1)}) cumplen el mínimo de ${label} (${minCre}).`,
-        `CRE totales (${t.cre.toFixed(1)}) están por debajo del mínimo de ${label} (${minCre}).`,
+        `CRE totales (${creTxt(t.cre)}) cumplen el mínimo de ${label} (${minCre}).`,
+        `CRE totales (${creTxt(t.cre)}) están por debajo del mínimo de ${label} (${minCre}).`,
         "CRE"
       )
     );
@@ -147,7 +169,7 @@
       checks.push({
         id: "sacau_max_cre_rec",
         nivel: "warning",
-        mensaje: `CRE totales (${t.cre.toFixed(1)}) exceden la recomendación de no superar +${Math.round(
+        mensaje: `CRE totales (${creTxt(t.cre)}) exceden la recomendación de no superar +${Math.round(
           exceso * 100
         )}% del mínimo (${maxCreRec.toFixed(0)} CRE).`,
         actual: t.cre,
@@ -158,7 +180,7 @@
       checks.push({
         id: "sacau_max_cre_rec",
         nivel: "ok",
-        mensaje: `CRE totales (${t.cre.toFixed(1)}) dentro de la recomendación (≤ ${maxCreRec.toFixed(
+        mensaje: `CRE totales (${creTxt(t.cre)}) dentro de la recomendación (≤ ${maxCreRec.toFixed(
           0
         )} = mínimo + ${Math.round(exceso * 100)}%).`,
         actual: t.cre,
@@ -175,8 +197,8 @@
         nivel: diff <= tol ? "ok" : "warning",
         mensaje:
           diff <= tol
-            ? `Promedio anual ${t.cre_promedio_anual.toFixed(1)} CRE ≈ ${refAnual} (±${tol}).`
-            : `Promedio anual ${t.cre_promedio_anual.toFixed(1)} CRE se aleja de ${refAnual} (±${tol}). Revisar redistribución.`,
+            ? `Promedio anual ${creTxt(t.cre_promedio_anual)} CRE ≈ ${refAnual} (±${tol}).`
+            : `Promedio anual ${creTxt(t.cre_promedio_anual)} CRE se aleja de ${refAnual} (±${tol}). Revisar redistribución.`,
         actual: t.cre_promedio_anual,
         esperado: refAnual,
         unidad: "CRE/año",
@@ -351,5 +373,7 @@
     groupBy,
     toCsv,
     roundToStep,
+    creDecimals,
+    formatCre,
   };
 })(window);

@@ -16,6 +16,11 @@
   }
 
   function buildRows(planConv) {
+    const step = planConv.opciones?.redondeo_cre;
+    const fmtCre =
+      global.SacauEngine && global.SacauEngine.formatCre
+        ? (n) => global.SacauEngine.formatCre(n, step)
+        : (n) => fmt(n, 1);
     return planConv.items.map((item) => {
       const a = item.asignatura;
       return {
@@ -28,7 +33,7 @@
         inter: fmt0(item.horas_interaccion),
         auto: fmt0(item.horas_autonomas),
         total: fmt0(item.horas_totales),
-        cre: fmt(item.cre, 1),
+        cre: fmtCre(item.cre),
         valorCre: fmt0(item.valor_cre),
       };
     });
@@ -204,7 +209,15 @@
             new Paragraph({
               children: [
                 new TextRun(
-                  `Interacción: ${fmt0(t.horas_interaccion)} h · Autónomas: ${fmt0(t.horas_autonomas)} h · Totales: ${fmt0(t.horas_totales)} h · CRE: ${fmt(t.cre, 1)} · CRE/año: ${fmt(t.cre_promedio_anual, 1)}`
+                  `Interacción: ${fmt0(t.horas_interaccion)} h · Autónomas: ${fmt0(t.horas_autonomas)} h · Totales: ${fmt0(t.horas_totales)} h · CRE: ${
+                    global.SacauEngine?.formatCre
+                      ? global.SacauEngine.formatCre(t.cre, planConv.opciones?.redondeo_cre)
+                      : fmt(t.cre, 1)
+                  } · CRE/año: ${
+                    global.SacauEngine?.formatCre
+                      ? global.SacauEngine.formatCre(t.cre_promedio_anual, planConv.opciones?.redondeo_cre)
+                      : fmt(t.cre_promedio_anual, 1)
+                  }`
                 ),
               ],
               spacing: { after: 200 },
@@ -259,7 +272,15 @@
       72
     );
     doc.text(
-      `Interacción ${fmt0(t.horas_interaccion)} h | Autónomas ${fmt0(t.horas_autonomas)} h | Totales ${fmt0(t.horas_totales)} h | CRE ${fmt(t.cre, 1)} | CRE/año ${fmt(t.cre_promedio_anual, 1)}`,
+      `Interacción ${fmt0(t.horas_interaccion)} h | Autónomas ${fmt0(t.horas_autonomas)} h | Totales ${fmt0(t.horas_totales)} h | CRE ${
+        global.SacauEngine?.formatCre
+          ? global.SacauEngine.formatCre(t.cre, planConv.opciones?.redondeo_cre)
+          : fmt(t.cre, 1)
+      } | CRE/año ${
+        global.SacauEngine?.formatCre
+          ? global.SacauEngine.formatCre(t.cre_promedio_anual, planConv.opciones?.redondeo_cre)
+          : fmt(t.cre_promedio_anual, 1)
+      }`,
       40,
       88
     );

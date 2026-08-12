@@ -481,8 +481,13 @@ def main() -> None:
         )
         redondeo = st.selectbox(
             "Redondeo de CRE",
-            options=[0.5, 0.25, 0.0],
-            format_func=lambda x: "Sin redondeo" if x == 0 else f"Múltiplos de {x}",
+            options=[0.5, 0.25, 1.0, 0.0],
+            format_func=lambda x: {
+                0.5: "Medios (0.5)",
+                0.25: "Cuartos (0.25)",
+                1.0: "Enteros (sin decimales)",
+                0.0: "Exacto (con decimales)",
+            }.get(x, str(x)),
             index=0,
         )
 

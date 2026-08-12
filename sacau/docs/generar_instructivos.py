@@ -335,7 +335,8 @@ def make_completo():
         Paragraph(
             "1) Interacción = horas teóricas + horas prácticas.<br/>"
             "2) Autónomas = (interacción × ratio de tipología) + horas fijas, salvo override manual.<br/>"
-            "3) CRE asignatura = (interacción + autónomas) ÷ CRE h, con el redondeo elegido (0.5 / 0.25 / sin redondeo).<br/>"
+            "3) CRE asignatura = (interacción + autónomas) ÷ CRE h, con el redondeo elegido "
+            "(medios 0.5 / cuartos 0.25 / enteros / exacto con decimales).<br/>"
             "4) CRE totales = suma de las asignaturas.",
             st["body"],
         )

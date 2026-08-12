@@ -42,13 +42,22 @@
       .sort()
       .map((k) => `${k}: ${areas[k]} asignaturas`)
       .join("; ");
+    const step = conv?.opciones?.redondeo_cre;
+    const creTxt =
+      global.SacauEngine && global.SacauEngine.formatCre
+        ? global.SacauEngine.formatCre(cre, step)
+        : cre.toFixed(1);
+    const creAnualTxt =
+      global.SacauEngine && global.SacauEngine.formatCre
+        ? global.SacauEngine.formatCre(creAnual, step)
+        : creAnual.toFixed(1);
     return (
       `Síntesis automática del despliegue de horas del plan «${plan.nombre || "Plan"}»:\n` +
       `• Asignaturas: ${n}\n` +
       `• Interacción pedagógica: ${inter.toLocaleString("es-AR")} h\n` +
       `• Trabajo autónomo estimado: ${auto.toLocaleString("es-AR")} h\n` +
       `• Trabajo total del estudiante: ${tot.toLocaleString("es-AR")} h\n` +
-      `• CRE totales: ${cre.toFixed(1)} · CRE/año: ${creAnual.toFixed(1)} · Duración: ${anios || "—"} año(s)\n` +
+      `• CRE totales: ${creTxt} · CRE/año: ${creAnualTxt} · Duración: ${anios || "—"} año(s)\n` +
       `• Distribución por área (conteo): ${areaTxt || "sin datos"}\n` +
       `Esta síntesis se puede editar: no reemplaza el análisis pedagógico de la unidad académica.`
     );

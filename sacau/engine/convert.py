@@ -17,10 +17,12 @@ from .models import (
 
 
 def round_to_step(value: float, step: float) -> float:
-    """Redondea al múltiplo de `step` más cercano (0 = sin redondeo)."""
+    """Redondea al múltiplo de `step` más cercano (0 = exacto, con decimales)."""
     if not step or step <= 0:
         return float(value)
-    return round(value / step) * step
+    rounded = round(value / step) * step
+    decimals = 0 if step >= 1 else len(str(step).split(".")[-1]) if "." in str(step) else 0
+    return round(rounded, min(6, decimals + 2))
 
 
 def estimate_autonomous_hours(
