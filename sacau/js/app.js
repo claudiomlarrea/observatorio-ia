@@ -282,7 +282,7 @@
               <tbody>${tipRows}</tbody>
             </table>
           </div>
-          <p class="note">Horas autónomas ≈ horas de clase × ratio + horas fijas. Podés corregir materia por materia en la tabla.</p>
+          <p class="note">Horas autónomas ≈ horas de clase × ratio + horas fijas. Podés corregir asignatura por asignatura en la tabla.</p>
         </section>
         <section class="panel">
           <h2>Resumen rápido</h2>
