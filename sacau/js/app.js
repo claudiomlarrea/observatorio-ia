@@ -701,6 +701,7 @@
     $("#btnAddRow").addEventListener("click", addRow);
     $("#btnRecalc").addEventListener("click", () => {
       const result = currentConversion({ skipSync: false });
+      render({ skipSync: true });
       if (result && plan?.metadata?.anexo_911) {
         plan.metadata.anexo_911 = SacauAnexo911.refreshDespliegue(
           plan.metadata.anexo_911,
@@ -708,8 +709,6 @@
           result.conv
         );
         renderAnexo();
-      } else {
-        render({ skipSync: true });
       }
       setStep(3);
       showInfo(

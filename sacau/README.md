@@ -2,6 +2,16 @@
 
 Transformá un **plan de estudios en horas** al **SACAU / CRE**.
 
+## Anexo curricular Res. 911
+
+Debajo de la tabla de asignaturas hay un **Anexo curricular (Res. 911-CS-2026)** editable:
+
+1. El sistema genera un borrador (perfil, competencias, resultados, flexibilidad, reconocimiento, movilidad y despliegue de horas).
+2. El usuario lo adapta a su carrera/universidad.
+3. Se incluye en la descarga Word/PDF.
+
+Plantillas en `data/anexo_911_plantillas.json`.
+
 ## Normativa
 
 Los PDF oficiales están en [`docs/normativa/`](docs/normativa/): RESOL-2025-556, Res. 788-CS-2026, Res. 911-CS-2026 e Informe CONFEDI 2026.
