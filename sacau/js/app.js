@@ -416,8 +416,19 @@
     document.querySelectorAll(".step").forEach((btn) => {
       btn.addEventListener("click", () => {
         const n = Number(btn.dataset.step);
-        if (n >= 2 && (!plan || !plan.asignaturas.length)) {
-          showError("Primero cargá un plan en el paso 1.");
+        // Siempre se puede volver al paso 1 (cargar otro archivo).
+        if (n === 1) {
+          showError("");
+          if (plan && plan.asignaturas && plan.asignaturas.length) {
+            showInfo(
+              `Tenés ${plan.asignaturas.length} materias cargadas. Subí otro archivo para reemplazarlas, o volvé al paso 2 para seguir editando.`
+            );
+          }
+          setStep(1);
+          return;
+        }
+        if (!plan || !plan.asignaturas.length) {
+          showError("Primero cargá un plan en el paso 1 (Word, PDF o CSV).");
           setStep(1);
           return;
         }
