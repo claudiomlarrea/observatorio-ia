@@ -1,0 +1,13 @@
+{
+  "carrera": "Licenciatura en Psicología / Psicología",
+  "referencia": "Anexos IF-2024 carga horaria y formación práctica (estándares art. 43 LES)",
+  "min_horas_interaccion": 3000,
+  "min_horas_formacion_basica": 1100,
+  "min_horas_formacion_profesional": 1900,
+  "min_horas_practica": 500,
+  "min_horas_practica_profesional": 400,
+  "min_horas_pps": 250,
+  "pps_codigos": ["50", "PPS"],
+  "areas_basica": ["FB", "FGC"],
+  "areas_profesional": ["FP"]
+}

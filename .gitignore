@@ -2,3 +2,10 @@
 local-lab/datos/
 local-lab/salida/
 .DS_Store
+
+# Convertidor SACAU
+sacau/.venv/
+sacau/__pycache__/
+sacau/**/__pycache__/
+sacau/.pytest_cache/
+*.pyc

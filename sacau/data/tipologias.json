@@ -1,0 +1,46 @@
+{
+  "tipologias": [
+    {
+      "id": "teorica",
+      "nombre": "Teórica / teórico-práctica áulica",
+      "ratio_autonomo": 1.0,
+      "autonomas_fijas": 0,
+      "descripcion": "Lectura, estudio, trabajos y evaluación fuera del aula. Ratio sugerido 1:1 sobre interacción."
+    },
+    {
+      "id": "taller",
+      "nombre": "Taller / seminario",
+      "ratio_autonomo": 0.5,
+      "autonomas_fijas": 0,
+      "descripcion": "Actividades con mayor peso presencial; trabajo autónomo moderado."
+    },
+    {
+      "id": "practica_supervisada",
+      "nombre": "Práctica supervisada en asignatura",
+      "ratio_autonomo": 0.5,
+      "autonomas_fijas": 0,
+      "descripcion": "Prácticas insertas en materias; preparación de informes y registros."
+    },
+    {
+      "id": "pps",
+      "nombre": "Práctica Profesional Supervisada (PPS)",
+      "ratio_autonomo": 0.25,
+      "autonomas_fijas": 0,
+      "descripcion": "Intensiva en terreno; el grueso del tiempo es interacción/práctica."
+    },
+    {
+      "id": "tif",
+      "nombre": "Trabajo integrador final / tesis de grado",
+      "ratio_autonomo": 2.0,
+      "autonomas_fijas": 50,
+      "descripcion": "Alta carga autónoma de investigación y escritura; hours fijas adicionales editables."
+    },
+    {
+      "id": "optativa",
+      "nombre": "Optativa / electiva",
+      "ratio_autonomo": 1.0,
+      "autonomas_fijas": 0,
+      "descripcion": "Misma lógica que teórica salvo criterio de la unidad académica."
+    }
+  ]
+}

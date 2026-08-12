@@ -1,0 +1,17 @@
+{
+  "cre_default": 25,
+  "cre_maximo": 30,
+  "referencia": "Resolución Nº 788-CS-2026 UCCuyo; RESOL-2025-556-APN-SE#MCH",
+  "sacau": {
+    "cre_rango_min": 25,
+    "cre_rango_max": 30,
+    "cre_promedio_anual": 60,
+    "cre_anual_tolerancia": 10,
+    "grado_min_cre": 240,
+    "grado_min_anios": 4,
+    "grado_min_horas_interaccion": 2100,
+    "grado_recomendacion_max_cre": 300,
+    "pregrado_min_cre": 120,
+    "pregrado_min_horas_interaccion": 1100
+  }
+}
