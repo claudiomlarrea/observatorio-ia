@@ -434,6 +434,27 @@ footer.site {
   padding: 1.25rem 0.75rem !important;
 }
 
+.legend-areas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+  align-items: baseline;
+  margin: 0 0 0.75rem;
+  padding: 0.65rem 0.85rem;
+  background: #f7f4f5;
+  border: 1px solid rgba(122, 21, 50, 0.1);
+  border-radius: 8px;
+  font-size: 0.88rem;
+  line-height: 1.35;
+}
+
+.legend-areas abbr {
+  font-weight: 700;
+  color: var(--inst-dark);
+  text-decoration: none;
+  margin-right: 0.2rem;
+}
+
 input[type="file"] {
   font: inherit;
   max-width: 100%;

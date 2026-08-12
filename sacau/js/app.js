@@ -149,9 +149,20 @@
       .join("");
   }
 
+  const AREA_LABELS = {
+    FB: "Formación Básica",
+    FP: "Formación Profesional",
+    FGC: "Formación General Complementaria",
+    FCI: "Formación Complementaria Institucional",
+    OTRA: "Otra / sin clasificar",
+  };
+
   function areaOptions(selected) {
-    return ["FB", "FP", "FGC", "FCI", "OTRA"]
-      .map((a) => `<option value="${a}" ${a === selected ? "selected" : ""}>${a}</option>`)
+    return Object.keys(AREA_LABELS)
+      .map(
+        (a) =>
+          `<option value="${a}" ${a === selected ? "selected" : ""}>${a} — ${AREA_LABELS[a]}</option>`
+      )
       .join("");
   }
 
@@ -246,7 +257,7 @@
           <td><input data-f="nombre" value="${String(a.nombre || "").replace(/"/g, "&quot;")}" style="min-width:14rem" /></td>
           <td><input data-f="anio" type="number" class="narrow" min="1" value="${a.anio}" /></td>
           <td><select data-f="area">${areaOptions(a.area)}</select></td>
-          <td><select data-f="regimen"><option ${a.regimen === "A" ? "selected" : ""}>A</option><option ${a.regimen !== "A" ? "selected" : ""}>S</option></select></td>
+          <td><select data-f="regimen"><option value="A" ${a.regimen === "A" ? "selected" : ""}>A — Anual</option><option value="S" ${a.regimen !== "A" ? "selected" : ""}>S — Semestral</option></select></td>
           <td><select data-f="tipologia">${tipologiaOptions(a.tipologia)}</select></td>
           <td><input data-f="horas_teoricas" type="number" class="narrow" min="0" value="${a.horas_teoricas}" /></td>
           <td><input data-f="horas_practicas" type="number" class="narrow" min="0" value="${a.horas_practicas}" /></td>
@@ -291,12 +302,21 @@
         </section>
       </div>
       <section class="panel">
-        <h2>${plan.nombre || "Materias del plan"}</h2>
+        <h2>${plan.nombre || "Asignaturas del plan"}</h2>
+        <p class="note legend-areas" title="Áreas de formación del plan de estudios">
+          <strong>Área:</strong>
+          <span><abbr title="Formación Básica">FB</abbr> Formación Básica</span>
+          <span><abbr title="Formación Profesional">FP</abbr> Formación Profesional</span>
+          <span><abbr title="Formación General Complementaria">FGC</abbr> Formación General Complementaria</span>
+          <span><abbr title="Formación Complementaria Institucional">FCI</abbr> Formación Complementaria Institucional</span>
+          <span><abbr title="Otra">OTRA</abbr> sin clasificar</span>
+          · <strong>Rég.:</strong> <abbr title="Semestral">S</abbr> Semestral · <abbr title="Anual">A</abbr> Anual
+        </p>
         <div class="table-wrap">
           <table id="tablaAsig">
             <thead>
               <tr>
-                <th>Cód.</th><th>Materia</th><th>Año</th><th>Área</th><th>Rég.</th><th>Tipo</th>
+                <th>Cód.</th><th>Asignatura</th><th>Año</th><th title="Área de formación">Área</th><th title="Régimen">Rég.</th><th>Tipo</th>
                 <th>Teó.</th><th>Prác.</th><th>Aut. manual</th><th>CRE h</th>
                 <th>Inter.</th><th>Aut.</th><th>CRE</th><th></th>
               </tr>
