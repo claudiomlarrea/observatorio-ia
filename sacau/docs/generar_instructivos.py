@@ -222,43 +222,99 @@ def make_completo():
     )
     story = []
     story.append(Paragraph("Instructivo completo — Convertidor SACAU → CRE", st["title"]))
-    story.append(Paragraph("Universidad Católica de Cuyo · Observatorio IA · Uso del sistema web", st["small"]))
+    story.append(
+        Paragraph(
+            "Universidad Católica de Cuyo · Observatorio IA · Uso del sistema web · "
+            "Actualizado con biblioteca normativa, tipo de carrera y anexo curricular Res. 911.",
+            st["small"],
+        )
+    )
+
     story.append(Paragraph("1. ¿Qué hace el sistema?", st["h2"]))
     story.append(
         Paragraph(
             "Convierte un plan de estudios expresado en <b>horas</b> a un plan en <b>créditos CRE</b>, "
             "según el marco SACAU (RESOL-2025-556) y la definición institucional de UCCuyo "
-            "(Res. 788-CS-2026: <b>1 CRE = 25 horas</b>, hasta 30 justificado). "
-            "Permite cargar Word, PDF (también escaneado) o CSV, revisar tipologías y horas, "
-            "y descargar el plan resultante en Word, PDF o CSV.",
+            "(Res. 788-CS-2026: <b>1 CRE = 25 horas</b>, hasta 30 justificado; Res. 911-CS-2026: marco conceptual). "
+            "Permite cargar Word, PDF (también escaneado) o CSV; revisar tipologías y horas; "
+            "evaluar cumplimiento según tipo de carrera; redactar un <b>anexo curricular editable</b> "
+            "(perfil, competencias, resultados de aprendizaje, flexibilidad, reconocimiento, movilidad); "
+            "y descargar el plan en Word, PDF o CSV incluyendo ese anexo.",
             st["body"],
         )
     )
+
     story.append(Paragraph("2. Recorrido recomendado", st["h2"]))
     story.append(
         bullets(
             [
-                "<b>1. Cargar plan</b>: subí el archivo del plan en horas (Word .docx, PDF o CSV). Si no tenés archivo, descargá la plantilla CSV vacía y completá las filas.",
-                "<b>2. Revisar y ajustar</b>: corregí tipologías, áreas, horas teóricas/prácticas y overrides. Usá «Agregar asignatura» si falta alguna fila.",
-                "<b>3. Ver créditos y descargar</b>: controlá totales, cumplimiento SACAU y bajá Word / PDF / CSV. Las descargas están siempre visibles arriba.",
+                "<b>Biblioteca normativa</b> (arriba): consultá RESOL-2025-556, Res. 788, Res. 911 e Informe CONFEDI.",
+                "<b>1. Cargar plan</b>: subí Word (.docx), PDF o CSV. Si no tenés archivo, usá la plantilla CSV vacía.",
+                "<b>2. Revisar y ajustar</b>: elegí <b>tipo de carrera</b> (grado / pregrado / pregrado regulado / art. 43), "
+                "corregí tipologías, áreas, horas y overrides. Usá «Agregar asignatura» si falta una fila.",
+                "<b>Anexo curricular (Res. 911)</b>: generá el borrador, editá cada punto a gusto de tu carrera/universidad "
+                "y dejá marcado «Incluir anexo en descargas».",
+                "<b>3. Ver créditos y descargar</b>: controlá totales y cumplimiento; bajá Word / PDF / CSV. "
+                "Las descargas están siempre visibles arriba.",
             ],
             st,
         )
     )
-    story.append(Paragraph("3. Botones principales", st["h2"]))
+
+    story.append(Paragraph("3. Biblioteca normativa", st["h2"]))
+    story.append(
+        Paragraph(
+            "Reúne los documentos oficiales de referencia. No reemplazan el dictamen académico, "
+            "pero permiten consultar la fuente mientras se trabaja el plan.",
+            st["body"],
+        )
+    )
     story.append(
         bullets(
             [
-                "<b>Borrar plan y empezar de nuevo</b>: vacía el plan cargado.",
-                "<b>Agregar asignatura</b>: suma una fila editable a la tabla.",
-                "<b>Actualizar créditos</b>: recalcula totales con los cambios hechos.",
-                "<b>Word / PDF / CSV</b>: exportan el plan ya convertido a créditos.",
-                "<b>Instructivo de trabajo autónomo</b>: PDF corto sobre ratios y tipologías.",
+                "<b>RESOL-2025-556</b>: SACAU nacional (CRE = interacción + autónomo; 25–30 h; ~60 CRE/año; mínimos de carrera).",
+                "<b>Res. 788-CS-2026 UCCuyo</b>: 1 CRE = 25 h (hasta 30 justificado).",
+                "<b>Res. 911-CS-2026 UCCuyo</b>: marco conceptual de adecuación curricular (competencias, perfil, RA, flexibilidad, reconocimiento, movilidad).",
+                "<b>Informe SACAU/CRE CONFEDI 2026</b>: referencia comparativa de avance en ingenierías.",
             ],
             st,
         )
     )
-    story.append(Paragraph("4. Columnas de la tabla", st["h2"]))
+
+    story.append(Paragraph("4. Tipo de carrera y cumplimiento", st["h2"]))
+    story.append(
+        bullets(
+            [
+                "<b>Grado</b>: mín. orientativo 240 CRE · 4 años · 2.100 h de interacción.",
+                "<b>Pregrado</b>: mín. 120 CRE · 2 años · 1.100 h de interacción.",
+                "<b>Pregrado regulado</b>: mín. 180 CRE · 3 años; la interacción sigue la regulación específica.",
+                "<b>Art. 43 LES</b> (p. ej. Psicología): umbrales SACAU de grado + controles del estándar de la carrera (práctica, PPS, etc.).",
+                "También se informa la <b>recomendación de no exceder +25%</b> sobre el mínimo de CRE.",
+                "Las <b>horas autónomas se estiman</b> para calcular CRE; <b>no se verifican</b> en validez nacional (sí la interacción).",
+            ],
+            st,
+        )
+    )
+
+    story.append(Paragraph("5. Botones y acciones principales", st["h2"]))
+    story.append(
+        bullets(
+            [
+                "<b>Instructivo completo / Biblioteca normativa</b>: acceso a guías y PDF oficiales.",
+                "<b>Borrar plan y empezar de nuevo</b>: vacía el plan cargado.",
+                "<b>Agregar asignatura</b>: suma una fila editable.",
+                "<b>Actualizar créditos</b>: recalcula totales (y refresca la síntesis de horas del anexo si corresponde).",
+                "<b>Generar / regenerar borrador 911</b>: propone textos desarrollados del anexo curricular.",
+                "<b>Vaciar anexo</b>: limpia los campos del anexo.",
+                "<b>Incluir anexo en descargas</b>: si está marcado, Word/PDF llevan el anexo.",
+                "<b>Word / PDF / CSV</b>: exportan el plan en créditos (Word/PDF pueden incluir el anexo 911).",
+                "<b>Instructivo PDF</b> (en tipologías): guía corta de trabajo autónomo.",
+            ],
+            st,
+        )
+    )
+
+    story.append(Paragraph("6. Columnas de la tabla de asignaturas", st["h2"]))
     story.append(
         bullets(
             [
@@ -273,7 +329,8 @@ def make_completo():
             st,
         )
     )
-    story.append(Paragraph("5. Cálculo de créditos", st["h2"]))
+
+    story.append(Paragraph("7. Cálculo de créditos", st["h2"]))
     story.append(
         Paragraph(
             "1) Interacción = horas teóricas + horas prácticas.<br/>"
@@ -285,34 +342,60 @@ def make_completo():
     )
     story.append(
         Paragraph(
-            "Ejemplo: si una teórica tiene 70 h de clase, ratio 1 y CRE h = 25 → autónomas 70 → total 140 h → CRE = 140/25 = 5.6 → con redondeo 0.5 queda 5.5. "
-            "Si pasás CRE h a 30, CRE = 140/30 ≈ 4.67 → 4.5. Por eso «subir CRE h» disminuye créditos.",
+            "Ejemplo: teórica con 70 h de clase, ratio 1 y CRE h = 25 → autónomas 70 → total 140 h → "
+            "CRE = 140/25 = 5.6 → con redondeo 0.5 queda 5.5. Si CRE h = 30 → ≈ 4.5. "
+            "Por eso «subir CRE h» disminuye créditos.",
             st["body"],
         )
     )
-    story.append(Paragraph("6. Cumplimiento SACAU (referencia)", st["h2"]))
+
+    story.append(Paragraph("8. Anexo curricular (Res. 911-CS-2026)", st["h2"]))
+    story.append(
+        Paragraph(
+            "La Res. 911 es un <b>marco conceptual</b> de adecuación curricular: no se “calcula” como el CRE, "
+            "se <b>documenta y adapta</b>. El sistema propone un borrador desarrollado; la unidad académica lo edita.",
+            st["body"],
+        )
+    )
     story.append(
         bullets(
             [
-                "Grado: orientativamente ≥ 240 CRE y ≥ 2.100 h de interacción.",
-                "Promedio anual de referencia: ~60 CRE/año (±10).",
-                "Los avisos del panel «Cumplimiento SACAU» son orientativos; no reemplazan el dictamen académico-normativo.",
+                "<b>Perfil de egreso</b>: identidad formativa, saberes, desempeños y contextos.",
+                "<b>Competencias genéricas</b>: transversales (crítica, comunicación, ética, tecnologías, autonomía…).",
+                "<b>Competencias específicas</b>: disciplinares/profesionales derivadas del perfil.",
+                "<b>Resultados de aprendizaje</b>: qué se demuestra por tramos y al egreso; evidencias sugeridas.",
+                "<b>Despliegue de horas y créditos</b>: el sistema completa totales IP/TA/CRE; vos explicás tipologías y coherencia pedagógica.",
+                "<b>Flexibilidad curricular</b>: optativas, itinerarios, modalidades, correlatividades.",
+                "<b>Reconocimiento de trayectos</b>: convalidaciones por CRE y resultados de aprendizaje (no solo nombres).",
+                "<b>Movilidad</b>: intercambios, articulación interinstitucional, internacionalización.",
+                "<b>Matriz de tributación</b>: escala A / M / B / NT (Res. 911).",
+                "<b>Notas de la unidad académica</b>: gobernanza, cronograma y anexos locales.",
             ],
             st,
         )
     )
-    story.append(Paragraph("7. Consejos para PDF escaneados", st["h2"]))
+    story.append(
+        Paragraph(
+            "Flujo: cargar plan → (opcional) el sistema puede armar borrador al detectar materias → "
+            "revisar/editar cada campo → marcar inclusión en descargas → exportar Word/PDF. "
+            "Si regenerás el borrador habiendo editado, el sistema pide confirmación.",
+            st["body"],
+        )
+    )
+
+    story.append(Paragraph("9. Consejos para PDF escaneados", st["h2"]))
     story.append(
         bullets(
             [
                 "Preferí Word o PDF en texto cuando sea posible.",
-                "Si el OCR falla en tablas densas, usá la plantilla CSV o un PDF/Word limpio.",
+                "Si el OCR falla en tablas densas, usá la plantilla CSV o un archivo limpio.",
                 "Siempre revisá tipologías y horas después de la carga automática.",
             ],
             st,
         )
     )
-    story.append(Paragraph("8. Contacto / sitio", st["h2"]))
+
+    story.append(Paragraph("10. Sitio", st["h2"]))
     story.append(
         Paragraph(
             "Sistema publicado en <b>https://observatorio-ia.uccuyo.edu.ar/sacau/</b> "
@@ -320,7 +403,12 @@ def make_completo():
             st["body"],
         )
     )
-    story.append(Paragraph("Marco: Res. 788-CS-2026 UCCuyo · RESOL-2025-556 (SACAU).", st["center"]))
+    story.append(
+        Paragraph(
+            "Marco: Res. 788-CS-2026 · Res. 911-CS-2026 · RESOL-2025-556 (SACAU).",
+            st["center"],
+        )
+    )
     doc.build(story, onFirstPage=header_footer, onLaterPages=header_footer)
     print("wrote", path)
 

@@ -191,6 +191,13 @@ a.btn-instructivo {
   background: var(--inst);
   color: #fff;
   border: 1px solid var(--inst);
+  border-radius: 999px;
+  padding: 0.55rem 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .btn-instructivo:hover,
@@ -200,9 +207,15 @@ a.btn-instructivo:hover {
   border-color: var(--inst-dark);
 }
 
+.btn-instructivo.btn-sm,
+a.btn-instructivo.btn-sm {
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+}
+
 .topbar .btn-instructivo {
   margin-left: 0.35rem;
-  padding: 0.2rem 0.65rem;
+  padding: 0.25rem 0.75rem;
   font-size: 0.8rem;
   border-radius: 999px;
   vertical-align: middle;
