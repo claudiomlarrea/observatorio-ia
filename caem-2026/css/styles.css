@@ -227,6 +227,14 @@ body {
   filter: brightness(1.05);
 }
 
+.install-guide-link-qr {
+  background: #5c1526;
+}
+
+.install-guide-link-qr:hover {
+  background: #7a1f32;
+}
+
 .pdf-download-footer {
   font-weight: 700;
 }

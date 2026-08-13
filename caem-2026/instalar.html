@@ -16,8 +16,8 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="css/styles.css?v=6" />
-    <link rel="stylesheet" href="css/instalar.css?v=6" />
+    <link rel="stylesheet" href="css/styles.css?v=8" />
+    <link rel="stylesheet" href="css/instalar.css?v=8" />
   </head>
   <body class="install-page">
     <header class="site-header install-header">
@@ -38,6 +38,26 @@
         <span data-i18n="install.openFirst">1. Abrí esta dirección en el celular:</span><br />
         <a href="./">https://observatorio-ia.uccuyo.edu.ar/caem-2026/</a>
       </p>
+
+      <section class="install-card install-qr-card" id="qr">
+        <h2 data-i18n="install.qrTitle">QR para compartir</h2>
+        <p class="install-qr-help" data-i18n="install.qrHelp">
+          Escaneá o descargá este código para abrir la App de Consulta.
+        </p>
+        <img
+          class="install-qr"
+          src="assets/qr-caem-2026.png"
+          width="444"
+          height="444"
+          alt="Código QR App de Consulta CAEM 2026"
+        />
+        <p class="install-video-note">
+          <a href="assets/qr-caem-2026-print.png" download="QR-CAEM-2026.png" data-i18n="install.qrDownload"
+            >Descargar QR</a
+          >
+          · carteles, WhatsApp, diapositivas
+        </p>
+      </section>
 
       <section class="install-card">
         <h2 data-i18n="install.videoTitle">Video rápido (16 s)</h2>
@@ -96,7 +116,7 @@
       <p class="footer-note" data-i18n="footer.note">App de Consulta · Observatorio de IA · UCCuyo</p>
     </footer>
 
-    <script src="js/i18n-dict.js?v=6"></script>
-    <script src="js/i18n.js?v=6"></script>
+    <script src="js/i18n-dict.js?v=8"></script>
+    <script src="js/i18n.js?v=8"></script>
   </body>
 </html>

@@ -54,6 +54,24 @@
   line-height: 1.45;
 }
 
+.install-qr-card {
+  text-align: center;
+}
+
+.install-qr-help {
+  margin: 0 0 0.85rem;
+  color: var(--text-muted);
+}
+
+.install-qr {
+  width: min(100%, 16rem);
+  height: auto;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  background: #fff;
+  padding: 0.65rem;
+}
+
 .install-video {
   width: 100%;
   max-width: 22rem;

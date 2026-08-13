@@ -68,6 +68,22 @@ window.I18N_DICT = {
     es: "Agregar a la pantalla del celular",
     en: "Add to your phone home screen"
   },
+  "install.qrShort": {
+    es: "QR para compartir",
+    en: "QR to share"
+  },
+  "install.qrTitle": {
+    es: "QR para compartir",
+    en: "QR to share"
+  },
+  "install.qrHelp": {
+    es: "Escaneá o descargá este código para abrir la App de Consulta.",
+    en: "Scan or download this code to open the Consultation App."
+  },
+  "install.qrDownload": {
+    es: "Descargar QR",
+    en: "Download QR"
+  },
   "install.barText": {
     es: "Agregá la app a tu pantalla de inicio",
     en: "Add the app to your home screen"
