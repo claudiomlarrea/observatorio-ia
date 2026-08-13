@@ -246,9 +246,21 @@
       .filter((a) => (a.nombre || "").trim());
   }
 
+  const TIPOLOGIA_SHORT = {
+    teorica: "Teórica",
+    taller: "Taller",
+    practica_supervisada: "Práctica",
+    pps: "PPS",
+    tif: "TIF",
+    optativa: "Optativa",
+  };
+
   function tipologiaOptions(selected) {
     return Object.keys(tipologiasMap)
-      .map((id) => `<option value="${id}" ${id === selected ? "selected" : ""}>${id}</option>`)
+      .map((id) => {
+        const label = TIPOLOGIA_SHORT[id] || tipologiasMap[id]?.nombre || id;
+        return `<option value="${id}" ${id === selected ? "selected" : ""}>${label}</option>`;
+      })
       .join("");
   }
 
@@ -311,6 +323,28 @@
   let autoRecalcTimer = null;
   let decideDelegatesBound = false;
 
+  function isTipologiaPractica(tip) {
+    const t = String(tip || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+    return (
+      t === "practica_supervisada" ||
+      t === "pps" ||
+      t.startsWith("practic") ||
+      t.includes("practica")
+    );
+  }
+
+  function sumCrePracticas(items) {
+    return (items || []).reduce((acc, item) => {
+      if (isTipologiaPractica(item.asignatura?.tipologia)) {
+        return acc + Number(item.cre || 0);
+      }
+      return acc;
+    }, 0);
+  }
+
   function buildResultsHtml(conv, val) {
     const t = conv.totales;
     const byAnio = SacauEngine.groupBy(conv.items, (i) => Number(i.asignatura.anio || 1));
@@ -327,8 +361,10 @@
     const areaRows = Object.keys(byArea)
       .sort()
       .map((area) => {
-        const tot = SacauEngine.computeTotales(byArea[area]);
-        return `<tr data-area="${area}"><td>${area}</td><td>${tot.horas_interaccion.toFixed(0)}</td><td>${tot.horas_practicas.toFixed(0)}</td><td class="cre-cell">${fmtCre(tot.cre)}</td></tr>`;
+        const items = byArea[area];
+        const tot = SacauEngine.computeTotales(items);
+        const crePrac = Math.round(sumCrePracticas(items));
+        return `<tr data-area="${area}"><td>${area}</td><td>${tot.horas_interaccion.toFixed(0)}</td><td class="cre-cell">${fmtCre(crePrac)}</td><td class="cre-cell">${fmtCre(tot.cre)}</td></tr>`;
       })
       .join("");
 
@@ -361,10 +397,21 @@
           <h2>Por área</h2>
           <div class="table-wrap" style="max-height:16rem">
             <table id="tablaPorArea">
-              <thead><tr><th>Área</th><th>Interacción</th><th>Prácticas</th><th>CRE</th></tr></thead>
+              <thead>
+                <tr>
+                  <th>Área</th>
+                  <th>Interacción</th>
+                  <th title="Suma de CRE de asignaturas con tipología práctica supervisada o PPS">CRE prácticas</th>
+                  <th>CRE</th>
+                </tr>
+              </thead>
               <tbody id="bodyPorArea">${areaRows || '<tr><td colspan="4">Sin datos</td></tr>'}</tbody>
             </table>
           </div>
+          <p class="note" style="margin:0.5rem 0 0">
+            <strong>CRE prácticas</strong> = créditos de materias con tipología
+            «práctica supervisada» o «PPS» (no las horas de la columna Prác. de la tabla).
+          </p>
         </section>
       </div>
       <section class="panel" style="margin-top:1rem">
