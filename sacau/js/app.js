@@ -322,8 +322,10 @@
 
   let autoRecalcTimer = null;
   let decideDelegatesBound = false;
-  const CRE_FLASH_MS = 3500;
-  const creFlashTimers = new WeakMap();
+  const CRE_FLASH_MS = 4000;
+  /** Flashes activos por clave estable (sobreviven a repaints del DOM). */
+  const creFlashActive = new Map();
+  let creFlashSweepTimer = null;
 
   function isTipologiaPractica(tip) {
     const t = String(tip || "")
@@ -372,35 +374,85 @@
     };
   }
 
-  function flashCreDelta(el, oldVal, newVal) {
-    if (!el) return;
+  function registerCreFlash(key, oldVal, newVal) {
     const prev = Number(oldVal);
     const next = Number(newVal);
     if (!Number.isFinite(prev) || !Number.isFinite(next) || prev === next) return;
-    el.classList.remove("cre-delta-up", "cre-delta-down");
-    void el.offsetWidth;
-    el.classList.add(next > prev ? "cre-delta-up" : "cre-delta-down");
-    const existing = creFlashTimers.get(el);
-    if (existing) clearTimeout(existing);
-    const tid = window.setTimeout(() => {
-      el.classList.remove("cre-delta-up", "cre-delta-down");
-      creFlashTimers.delete(el);
-    }, CRE_FLASH_MS);
-    creFlashTimers.set(el, tid);
+    creFlashActive.set(key, {
+      dir: next > prev ? "up" : "down",
+      until: Date.now() + CRE_FLASH_MS,
+    });
   }
 
-  function applyCreFlashes(conv, prev) {
+  function resolveFlashEl(key) {
+    if (key === "metric:total") return document.getElementById("metricCreTotal");
+    if (key === "metric:anual") return document.getElementById("metricCreAnual");
+    if (key === "resumen") return document.querySelector("#resumenRapido .cre-flash");
+    if (key.startsWith("row:")) {
+      const i = Number(key.slice(4));
+      const rows = document.querySelectorAll("#tablaAsig tbody tr:not(.empty-row)");
+      return rows[i]?.querySelector(".cell-cre") || null;
+    }
+    if (key.startsWith("anio:")) {
+      const anio = key.slice(5);
+      return document.querySelector(`#tablaPorAnio tr[data-anio="${anio}"] .cre-cell`);
+    }
+    if (key.startsWith("area-prac:")) {
+      const area = key.slice(10);
+      return document.querySelectorAll(`#tablaPorArea tr[data-area="${area}"] .cre-cell`)[0] || null;
+    }
+    if (key.startsWith("area-cre:")) {
+      const area = key.slice(9);
+      return document.querySelectorAll(`#tablaPorArea tr[data-area="${area}"] .cre-cell`)[1] || null;
+    }
+    return null;
+  }
+
+  function pruneExpiredCreFlashes() {
+    const now = Date.now();
+    for (const [key, info] of creFlashActive) {
+      if (!info || info.until <= now) creFlashActive.delete(key);
+    }
+  }
+
+  function paintActiveCreFlashes() {
+    pruneExpiredCreFlashes();
+    const now = Date.now();
+    let remainingMs = 0;
+    for (const [key, info] of creFlashActive) {
+      const el = resolveFlashEl(key);
+      if (!el) continue;
+      el.classList.remove("cre-delta-up", "cre-delta-down");
+      el.classList.add(info.dir === "up" ? "cre-delta-up" : "cre-delta-down");
+      remainingMs = Math.max(remainingMs, info.until - now);
+    }
+    if (creFlashSweepTimer) clearTimeout(creFlashSweepTimer);
+    if (remainingMs > 0) {
+      creFlashSweepTimer = window.setTimeout(() => {
+        creFlashSweepTimer = null;
+        // Quitar clases vencidas y reaplicar las que sigan activas.
+        document
+          .querySelectorAll(".cre-delta-up, .cre-delta-down")
+          .forEach((el) => el.classList.remove("cre-delta-up", "cre-delta-down"));
+        paintActiveCreFlashes();
+      }, remainingMs + 30);
+    }
+  }
+
+  function registerCreFlashesFromDelta(conv, prev) {
     if (!conv || !prev) return;
-    const metricTotal = document.getElementById("metricCreTotal");
-    const metricAnual = document.getElementById("metricCreAnual");
-    flashCreDelta(metricTotal, prev.total, conv.totales.cre);
-    flashCreDelta(metricAnual, prev.anual, conv.totales.cre_promedio_anual);
+    registerCreFlash("metric:total", prev.total, conv.totales.cre);
+    registerCreFlash("metric:anual", prev.anual, conv.totales.cre_promedio_anual);
+    registerCreFlash("resumen", prev.total, conv.totales.cre);
+
+    conv.items.forEach((item, i) => {
+      registerCreFlash(`row:${i}`, prev.rows[i], item.cre);
+    });
 
     const byAnio = SacauEngine.groupBy(conv.items, (i) => Number(i.asignatura.anio || 1));
     for (const anio of Object.keys(byAnio)) {
       const cre = SacauEngine.computeTotales(byAnio[anio], 1).cre;
-      const cell = document.querySelector(`#tablaPorAnio tr[data-anio="${anio}"] .cre-cell`);
-      flashCreDelta(cell, prev.byAnio[anio], cre);
+      registerCreFlash(`anio:${anio}`, prev.byAnio[anio], cre);
     }
 
     const byArea = SacauEngine.groupBy(conv.items, (i) => String(i.asignatura.area || "—"));
@@ -408,10 +460,8 @@
       const items = byArea[area];
       const cre = SacauEngine.computeTotales(items).cre;
       const crePrac = Math.round(sumCrePracticas(items));
-      const cells = document.querySelectorAll(`#tablaPorArea tr[data-area="${area}"] .cre-cell`);
-      // Orden: CRE prácticas, CRE total
-      flashCreDelta(cells[0], prev.byArea[area]?.crePrac, crePrac);
-      flashCreDelta(cells[1], prev.byArea[area]?.cre, cre);
+      registerCreFlash(`area-prac:${area}`, prev.byArea[area]?.crePrac, crePrac);
+      registerCreFlash(`area-cre:${area}`, prev.byArea[area]?.cre, cre);
     }
   }
 
@@ -507,7 +557,8 @@
     root.innerHTML = buildResultsHtml(conv, val);
     root.dataset.creTotal = String(conv.totales.cre);
     root.dataset.updatedAt = String(Date.now());
-    if (prevCre) applyCreFlashes(conv, prevCre);
+    if (prevCre) registerCreFlashesFromDelta(conv, prevCre);
+    paintActiveCreFlashes();
   }
 
   /** Recalcula CRE y refresca totales sin recrear los inputs de la tabla. */
@@ -529,6 +580,8 @@
       window.__lastConv = conv;
       window.__lastVal = val;
 
+      if (prevCre) registerCreFlashesFromDelta(conv, prevCre);
+
       const rows = [...document.querySelectorAll("#tablaAsig tbody tr:not(.empty-row)")];
       conv.items.forEach((item, i) => {
         const tr = rows[i];
@@ -538,22 +591,17 @@
         const cre = tr.querySelector(".cell-cre");
         if (inter) inter.textContent = item.horas_interaccion.toFixed(0);
         if (aut) aut.textContent = item.horas_autonomas.toFixed(0);
-        if (cre) {
-          cre.innerHTML = `<strong>${fmtCre(item.cre)}</strong>`;
-          if (prevCre) flashCreDelta(cre, prevCre.rows[i], item.cre);
-        }
+        if (cre) cre.innerHTML = `<strong>${fmtCre(item.cre)}</strong>`;
       });
 
       const resumen = document.getElementById("resumenRapido");
       if (resumen) {
         const t = conv.totales;
         resumen.innerHTML = `<strong>${plan.asignaturas.length}</strong> materias · Interacción <strong>${t.horas_interaccion.toFixed(0)} h</strong> · CRE estimado <strong class="cre-flash">${fmtCre(t.cre)}</strong>`;
-        const flashEl = resumen.querySelector(".cre-flash");
-        if (prevCre) flashCreDelta(flashEl, prevCre.total, t.cre);
       }
 
-      // Siempre reconsultar el nodo: evita actualizar un #app-resultado desconectado del DOM.
-      paintResults(conv, val, prevCre);
+      // Reaplica flashes activos tras regenerar el HTML de resultados.
+      paintResults(conv, val, null);
 
       if (plan.metadata?.anexo_911) {
         plan.metadata.anexo_911 = SacauAnexo911.refreshDespliegue(
