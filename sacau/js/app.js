@@ -322,6 +322,8 @@
 
   let autoRecalcTimer = null;
   let decideDelegatesBound = false;
+  const CRE_FLASH_MS = 3500;
+  const creFlashTimers = new WeakMap();
 
   function isTipologiaPractica(tip) {
     const t = String(tip || "")
@@ -343,6 +345,74 @@
       }
       return acc;
     }, 0);
+  }
+
+  function snapshotCreState(conv) {
+    if (!conv) return null;
+    const byAnio = {};
+    const groupedAnio = SacauEngine.groupBy(conv.items, (i) => Number(i.asignatura.anio || 1));
+    for (const anio of Object.keys(groupedAnio)) {
+      byAnio[anio] = SacauEngine.computeTotales(groupedAnio[anio], 1).cre;
+    }
+    const byArea = {};
+    const groupedArea = SacauEngine.groupBy(conv.items, (i) => String(i.asignatura.area || "—"));
+    for (const area of Object.keys(groupedArea)) {
+      const items = groupedArea[area];
+      byArea[area] = {
+        cre: SacauEngine.computeTotales(items).cre,
+        crePrac: Math.round(sumCrePracticas(items)),
+      };
+    }
+    return {
+      total: Number(conv.totales.cre),
+      anual: Number(conv.totales.cre_promedio_anual),
+      byAnio,
+      byArea,
+      rows: conv.items.map((i) => Number(i.cre)),
+    };
+  }
+
+  function flashCreDelta(el, oldVal, newVal) {
+    if (!el) return;
+    const prev = Number(oldVal);
+    const next = Number(newVal);
+    if (!Number.isFinite(prev) || !Number.isFinite(next) || prev === next) return;
+    el.classList.remove("cre-delta-up", "cre-delta-down");
+    void el.offsetWidth;
+    el.classList.add(next > prev ? "cre-delta-up" : "cre-delta-down");
+    const existing = creFlashTimers.get(el);
+    if (existing) clearTimeout(existing);
+    const tid = window.setTimeout(() => {
+      el.classList.remove("cre-delta-up", "cre-delta-down");
+      creFlashTimers.delete(el);
+    }, CRE_FLASH_MS);
+    creFlashTimers.set(el, tid);
+  }
+
+  function applyCreFlashes(conv, prev) {
+    if (!conv || !prev) return;
+    const metricTotal = document.getElementById("metricCreTotal");
+    const metricAnual = document.getElementById("metricCreAnual");
+    flashCreDelta(metricTotal, prev.total, conv.totales.cre);
+    flashCreDelta(metricAnual, prev.anual, conv.totales.cre_promedio_anual);
+
+    const byAnio = SacauEngine.groupBy(conv.items, (i) => Number(i.asignatura.anio || 1));
+    for (const anio of Object.keys(byAnio)) {
+      const cre = SacauEngine.computeTotales(byAnio[anio], 1).cre;
+      const cell = document.querySelector(`#tablaPorAnio tr[data-anio="${anio}"] .cre-cell`);
+      flashCreDelta(cell, prev.byAnio[anio], cre);
+    }
+
+    const byArea = SacauEngine.groupBy(conv.items, (i) => String(i.asignatura.area || "—"));
+    for (const area of Object.keys(byArea)) {
+      const items = byArea[area];
+      const cre = SacauEngine.computeTotales(items).cre;
+      const crePrac = Math.round(sumCrePracticas(items));
+      const cells = document.querySelectorAll(`#tablaPorArea tr[data-area="${area}"] .cre-cell`);
+      // Orden: CRE prácticas, CRE total
+      flashCreDelta(cells[0], prev.byArea[area]?.crePrac, crePrac);
+      flashCreDelta(cells[1], prev.byArea[area]?.cre, cre);
+    }
   }
 
   function buildResultsHtml(conv, val) {
@@ -430,18 +500,14 @@
     `;
   }
 
-  function paintResults(conv, val) {
+  function paintResults(conv, val, prevCre) {
     const root = document.getElementById("app-resultado");
     if (!root) return;
     root.classList.remove("loading");
     root.innerHTML = buildResultsHtml(conv, val);
     root.dataset.creTotal = String(conv.totales.cre);
     root.dataset.updatedAt = String(Date.now());
-    root.classList.remove("is-updating");
-    // Forzar reflow para el destello visual
-    void root.offsetWidth;
-    root.classList.add("is-updating");
-    window.setTimeout(() => root.classList.remove("is-updating"), 700);
+    if (prevCre) applyCreFlashes(conv, prevCre);
   }
 
   /** Recalcula CRE y refresca totales sin recrear los inputs de la tabla. */
@@ -452,6 +518,7 @@
       if (!plan) return null;
       ensureDuracion(plan);
       plan.tipo_carrera = tipoCarreraActual();
+      const prevCre = snapshotCreState(window.__lastConv);
       const conv = SacauEngine.convertPlan(plan, optionsFromUi());
       const val = SacauEngine.validatePlan(
         conv,
@@ -471,17 +538,22 @@
         const cre = tr.querySelector(".cell-cre");
         if (inter) inter.textContent = item.horas_interaccion.toFixed(0);
         if (aut) aut.textContent = item.horas_autonomas.toFixed(0);
-        if (cre) cre.innerHTML = `<strong>${fmtCre(item.cre)}</strong>`;
+        if (cre) {
+          cre.innerHTML = `<strong>${fmtCre(item.cre)}</strong>`;
+          if (prevCre) flashCreDelta(cre, prevCre.rows[i], item.cre);
+        }
       });
 
       const resumen = document.getElementById("resumenRapido");
       if (resumen) {
         const t = conv.totales;
-        resumen.innerHTML = `<strong>${plan.asignaturas.length}</strong> materias · Interacción <strong>${t.horas_interaccion.toFixed(0)} h</strong> · CRE estimado <strong>${fmtCre(t.cre)}</strong>`;
+        resumen.innerHTML = `<strong>${plan.asignaturas.length}</strong> materias · Interacción <strong>${t.horas_interaccion.toFixed(0)} h</strong> · CRE estimado <strong class="cre-flash">${fmtCre(t.cre)}</strong>`;
+        const flashEl = resumen.querySelector(".cre-flash");
+        if (prevCre) flashCreDelta(flashEl, prevCre.total, t.cre);
       }
 
       // Siempre reconsultar el nodo: evita actualizar un #app-resultado desconectado del DOM.
-      paintResults(conv, val);
+      paintResults(conv, val, prevCre);
 
       if (plan.metadata?.anexo_911) {
         plan.metadata.anexo_911 = SacauAnexo911.refreshDespliegue(
@@ -631,7 +703,7 @@
         </section>
         <section class="panel">
           <h2>Resumen rápido</h2>
-          <p id="resumenRapido" class="note" style="margin:0 0 0.5rem"><strong>${plan.asignaturas.length}</strong> materias · Interacción <strong>${t.horas_interaccion.toFixed(0)} h</strong> · CRE estimado <strong>${fmtCre(t.cre)}</strong></p>
+          <p id="resumenRapido" class="note" style="margin:0 0 0.5rem"><strong>${plan.asignaturas.length}</strong> materias · Interacción <strong>${t.horas_interaccion.toFixed(0)} h</strong> · CRE estimado <strong class="cre-flash">${fmtCre(t.cre)}</strong></p>
           <p class="note">${resumenNota}</p>
         </section>
       </div>
