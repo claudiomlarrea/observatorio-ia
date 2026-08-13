@@ -297,6 +297,68 @@
     return { conv, val };
   }
 
+  function captureEditorFocus() {
+    const el = document.activeElement;
+    if (!el || !el.closest("#tablaAsig")) return null;
+    const tr = el.closest("tr");
+    const rows = [...document.querySelectorAll("#tablaAsig tbody tr")];
+    const rowIdx = rows.indexOf(tr);
+    if (rowIdx < 0) return null;
+    return {
+      rowIdx,
+      field: el.getAttribute("data-f") || "",
+      selStart: typeof el.selectionStart === "number" ? el.selectionStart : null,
+      selEnd: typeof el.selectionEnd === "number" ? el.selectionEnd : null,
+    };
+  }
+
+  function restoreEditorFocus(snap) {
+    if (!snap || !snap.field) return;
+    const rows = [...document.querySelectorAll("#tablaAsig tbody tr")];
+    const el = rows[snap.rowIdx]?.querySelector(`[data-f="${snap.field}"]`);
+    if (!el) return;
+    el.focus();
+    if (snap.selStart != null && typeof el.setSelectionRange === "function") {
+      try {
+        el.setSelectionRange(snap.selStart, snap.selEnd ?? snap.selStart);
+      } catch (_) {
+        /* ignore */
+      }
+    }
+  }
+
+  const CRE_AFFECTING_FIELDS = new Set([
+    "anio",
+    "area",
+    "regimen",
+    "tipologia",
+    "horas_teoricas",
+    "horas_practicas",
+    "horas_autonomas_override",
+    "valor_cre_override",
+  ]);
+
+  let autoRecalcTimer = null;
+
+  function scheduleAutoRecalc() {
+    if (autoRecalcTimer) clearTimeout(autoRecalcTimer);
+    autoRecalcTimer = setTimeout(() => {
+      autoRecalcTimer = null;
+      const snap = captureEditorFocus();
+      const scrollY = window.scrollY;
+      const tableWrap = document.querySelector(".panel-asignaturas .table-wrap");
+      const scrollLeft = tableWrap ? tableWrap.scrollLeft : 0;
+      const scrollTop = tableWrap ? tableWrap.scrollTop : 0;
+      actualizarCreditos({ silent: true, keepStep: true });
+      restoreEditorFocus(snap);
+      window.scrollTo(0, scrollY);
+      if (tableWrap) {
+        tableWrap.scrollLeft = scrollLeft;
+        tableWrap.scrollTop = scrollTop;
+      }
+    }, 180);
+  }
+
   function bindEditorHandlers(root) {
     root.querySelectorAll(".tip-ratio, .tip-fijas").forEach((el) => {
       el.addEventListener("change", () => {
@@ -305,14 +367,24 @@
         syncPlanFromUi();
         if (el.classList.contains("tip-ratio")) tipologiasMap[id].ratio_autonomo = Number(el.value || 0);
         else tipologiasMap[id].autonomas_fijas = Number(el.value || 0);
-        render({ skipSync: true });
+        scheduleAutoRecalc();
       });
     });
     root.querySelectorAll(".btn-del").forEach((btn) => {
       btn.addEventListener("click", () => {
         btn.closest("tr")?.remove();
-        render({ skipSync: false });
+        actualizarCreditos({ silent: true, keepStep: true });
       });
+    });
+    root.querySelectorAll("#tablaAsig [data-f]").forEach((el) => {
+      const field = el.getAttribute("data-f");
+      if (!CRE_AFFECTING_FIELDS.has(field)) {
+        el.addEventListener("change", () => syncPlanFromUi());
+        return;
+      }
+      const onEdit = () => scheduleAutoRecalc();
+      el.addEventListener("change", onEdit);
+      el.addEventListener("input", onEdit);
     });
   }
 
@@ -425,7 +497,7 @@
       <section class="panel panel-asignaturas">
         <div class="panel-head">
           <h2>${plan.nombre || "Asignaturas del plan"}</h2>
-          <button type="button" class="btn-primary" id="btnRecalcTable" title="Recalcula los totales de créditos con los ajustes de la tabla">
+          <button type="button" class="btn-primary" id="btnRecalcTable" title="Los créditos se recalculan solos al editar; este botón fuerza una actualización">
             Actualizar créditos
           </button>
         </div>
@@ -587,7 +659,9 @@
     }
   }
 
-  function actualizarCreditos() {
+  function actualizarCreditos(opts = {}) {
+    const silent = Boolean(opts.silent);
+    const keepStep = Boolean(opts.keepStep);
     const result = currentConversion({ skipSync: false });
     render({ skipSync: true });
     if (result && plan?.metadata?.anexo_911) {
@@ -598,12 +672,14 @@
       );
       renderAnexo();
     }
-    setStep(3);
-    showInfo(
-      hasMaterias()
-        ? "Créditos actualizados. Revisá el anexo 911 y descargá Word/PDF arriba."
-        : "Todavía no hay materias: cargá un archivo o agregá filas."
-    );
+    if (!keepStep) setStep(3);
+    if (!silent) {
+      showInfo(
+        hasMaterias()
+          ? "Créditos actualizados. Revisá el anexo 911 y descargá Word/PDF arriba."
+          : "Todavía no hay materias: cargá un archivo o agregá filas."
+      );
+    }
   }
 
   function addRow() {
@@ -747,8 +823,9 @@
       });
     }
     $("#btnAddRow").addEventListener("click", addRow);
-    $("#btnRecalc").addEventListener("click", actualizarCreditos);
-    $("#valorCre").addEventListener("change", () => render({ skipSync: false }));
+    $("#btnRecalc").addEventListener("click", () => actualizarCreditos());
+    $("#valorCre").addEventListener("change", () => scheduleAutoRecalc());
+    $("#valorCre").addEventListener("input", () => scheduleAutoRecalc());
     $("#btnDocx").addEventListener("click", onExportDocx);
     $("#btnPdf").addEventListener("click", onExportPdf);
     $("#btnCsv").addEventListener("click", onExportCsv);
