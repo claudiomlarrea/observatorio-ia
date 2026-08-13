@@ -297,36 +297,6 @@
     return { conv, val };
   }
 
-  function captureEditorFocus() {
-    const el = document.activeElement;
-    if (!el || !el.closest("#tablaAsig")) return null;
-    const tr = el.closest("tr");
-    const rows = [...document.querySelectorAll("#tablaAsig tbody tr")];
-    const rowIdx = rows.indexOf(tr);
-    if (rowIdx < 0) return null;
-    return {
-      rowIdx,
-      field: el.getAttribute("data-f") || "",
-      selStart: typeof el.selectionStart === "number" ? el.selectionStart : null,
-      selEnd: typeof el.selectionEnd === "number" ? el.selectionEnd : null,
-    };
-  }
-
-  function restoreEditorFocus(snap) {
-    if (!snap || !snap.field) return;
-    const rows = [...document.querySelectorAll("#tablaAsig tbody tr")];
-    const el = rows[snap.rowIdx]?.querySelector(`[data-f="${snap.field}"]`);
-    if (!el) return;
-    el.focus();
-    if (snap.selStart != null && typeof el.setSelectionRange === "function") {
-      try {
-        el.setSelectionRange(snap.selStart, snap.selEnd ?? snap.selStart);
-      } catch (_) {
-        /* ignore */
-      }
-    }
-  }
-
   const CRE_AFFECTING_FIELDS = new Set([
     "anio",
     "area",
@@ -339,59 +309,9 @@
   ]);
 
   let autoRecalcTimer = null;
+  let decideDelegatesBound = false;
 
-  function scheduleAutoRecalc() {
-    if (autoRecalcTimer) clearTimeout(autoRecalcTimer);
-    autoRecalcTimer = setTimeout(() => {
-      autoRecalcTimer = null;
-      const snap = captureEditorFocus();
-      const scrollY = window.scrollY;
-      const tableWrap = document.querySelector(".panel-asignaturas .table-wrap");
-      const scrollLeft = tableWrap ? tableWrap.scrollLeft : 0;
-      const scrollTop = tableWrap ? tableWrap.scrollTop : 0;
-      actualizarCreditos({ silent: true, keepStep: true });
-      restoreEditorFocus(snap);
-      window.scrollTo(0, scrollY);
-      if (tableWrap) {
-        tableWrap.scrollLeft = scrollLeft;
-        tableWrap.scrollTop = scrollTop;
-      }
-    }, 180);
-  }
-
-  function bindEditorHandlers(root) {
-    root.querySelectorAll(".tip-ratio, .tip-fijas").forEach((el) => {
-      el.addEventListener("change", () => {
-        const id = el.getAttribute("data-tip");
-        if (!tipologiasMap[id]) return;
-        syncPlanFromUi();
-        if (el.classList.contains("tip-ratio")) tipologiasMap[id].ratio_autonomo = Number(el.value || 0);
-        else tipologiasMap[id].autonomas_fijas = Number(el.value || 0);
-        scheduleAutoRecalc();
-      });
-    });
-    root.querySelectorAll(".btn-del").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        btn.closest("tr")?.remove();
-        actualizarCreditos({ silent: true, keepStep: true });
-      });
-    });
-    root.querySelectorAll("#tablaAsig [data-f]").forEach((el) => {
-      const field = el.getAttribute("data-f");
-      if (!CRE_AFFECTING_FIELDS.has(field)) {
-        el.addEventListener("change", () => syncPlanFromUi());
-        return;
-      }
-      const onEdit = () => scheduleAutoRecalc();
-      el.addEventListener("change", onEdit);
-      el.addEventListener("input", onEdit);
-    });
-  }
-
-  function render(opts = {}) {
-    const result = currentConversion(opts);
-    if (!result) return;
-    const { conv, val } = result;
+  function buildResultsHtml(conv, val) {
     const t = conv.totales;
     const byAnio = SacauEngine.groupBy(conv.items, (i) => i.asignatura.anio);
     const byArea = SacauEngine.groupBy(conv.items, (i) => i.asignatura.area || "—");
@@ -419,117 +339,7 @@
       )
       .join("");
 
-    const tipRows = Object.values(tipologiasMap)
-      .map(
-        (tip) => `<tr>
-          <td>${tip.id}</td>
-          <td>${tip.nombre || ""}</td>
-          <td><input class="narrow tip-ratio" data-tip="${tip.id}" type="number" step="0.05" min="0" value="${tip.ratio_autonomo}" /></td>
-          <td><input class="narrow tip-fijas" data-tip="${tip.id}" type="number" step="1" min="0" value="${tip.autonomas_fijas || 0}" /></td>
-        </tr>`
-      )
-      .join("");
-
-    const asigRows =
-      conv.items
-        .map((item) => {
-          const a = item.asignatura;
-          const ovA = a.horas_autonomas_override == null ? "" : a.horas_autonomas_override;
-          const ovC = a.valor_cre_override == null ? "" : a.valor_cre_override;
-          return `<tr>
-          <td><input data-f="codigo" value="${a.codigo || ""}" class="narrow" /></td>
-          <td><input data-f="nombre" value="${String(a.nombre || "").replace(/"/g, "&quot;")}" style="min-width:14rem" /></td>
-          <td><input data-f="anio" type="number" class="narrow" min="1" value="${a.anio}" /></td>
-          <td><select data-f="area">${areaOptions(a.area)}</select></td>
-          <td><select data-f="regimen"><option value="A" ${a.regimen === "A" ? "selected" : ""}>A — Anual</option><option value="S" ${a.regimen !== "A" ? "selected" : ""}>S — Semestral</option></select></td>
-          <td><select data-f="tipologia">${tipologiaOptions(a.tipologia)}</select></td>
-          <td><input data-f="horas_teoricas" type="number" class="narrow" min="0" value="${a.horas_teoricas}" /></td>
-          <td><input data-f="horas_practicas" type="number" class="narrow" min="0" value="${a.horas_practicas}" /></td>
-          <td><input data-f="horas_autonomas_override" type="number" class="narrow" min="0" value="${ovA}" placeholder="auto" /></td>
-          <td><input data-f="valor_cre_override" type="number" class="narrow" min="25" max="30" value="${ovC}" placeholder="25" /></td>
-          <td>${item.horas_interaccion.toFixed(0)}</td>
-          <td>${item.horas_autonomas.toFixed(0)}</td>
-          <td><strong>${fmtCre(item.cre)}</strong></td>
-          <td>
-            <button type="button" class="btn-secondary btn-del" title="Quitar esta asignatura">Quitar</button>
-            <input type="hidden" data-f="horas_estimadas" value="${a.horas_estimadas ? "1" : "0"}" />
-            <input type="hidden" data-f="notas" value="${String(a.notas || "").replace(/"/g, "&quot;")}" />
-          </td>
-        </tr>`;
-        })
-        .join("") ||
-      `<tr class="empty-row"><td colspan="14">Sin asignaturas todavía. Cargá un archivo arriba o usá «Agregar asignatura».</td></tr>`;
-
-    const resumenNota =
-      plan.metadata?.advertencia ||
-      (hasMaterias()
-        ? "Revisá tipología, horas y overrides. Las descargas están arriba en cualquier momento."
-        : "Todavía no hay asignaturas. Subí un archivo arriba o usá «Agregar asignatura».");
-
-    decideEl.classList.remove("loading");
-    decideEl.innerHTML = `
-      <div class="grid-2">
-        <section class="panel">
-          <div class="panel-head">
-            <h2>Cómo estimar el trabajo autónomo</h2>
-            <a
-              class="btn-instructivo btn-sm"
-              href="docs/instructivo_trabajo_autonomo.pdf"
-              target="_blank"
-              rel="noopener"
-              title="Abrir instructivo PDF sobre tipologías y ratios"
-            >Instructivo PDF</a>
-          </div>
-          <div class="table-wrap" style="max-height:14rem">
-            <table>
-              <thead><tr><th>Tipo</th><th>Descripción</th><th>Ratio</th><th>Horas fijas</th></tr></thead>
-              <tbody>${tipRows}</tbody>
-            </table>
-          </div>
-          <p class="note">Horas autónomas ≈ horas de clase × ratio + horas fijas. Podés corregir asignatura por asignatura en la tabla.</p>
-        </section>
-        <section class="panel">
-          <h2>Resumen rápido</h2>
-          <p class="note" style="margin:0 0 0.5rem"><strong>${plan.asignaturas.length}</strong> materias · Interacción <strong>${t.horas_interaccion.toFixed(0)} h</strong> · CRE estimado <strong>${fmtCre(t.cre)}</strong></p>
-          <p class="note">${resumenNota}</p>
-        </section>
-      </div>
-      <section class="panel panel-asignaturas">
-        <div class="panel-head">
-          <h2>${plan.nombre || "Asignaturas del plan"}</h2>
-          <button type="button" class="btn-primary" id="btnRecalcTable" title="Los créditos se recalculan solos al editar; este botón fuerza una actualización">
-            Actualizar créditos
-          </button>
-        </div>
-        <p class="note legend-areas" title="Áreas de formación del plan de estudios">
-          <strong>Área:</strong>
-          <span><abbr title="Formación Básica">FB</abbr> Formación Básica</span>
-          <span><abbr title="Formación Profesional">FP</abbr> Formación Profesional</span>
-          <span><abbr title="Formación General Complementaria">FGC</abbr> Formación General Complementaria</span>
-          <span><abbr title="Formación Complementaria Institucional">FCI</abbr> Formación Complementaria Institucional</span>
-          <span><abbr title="Otra">OTRA</abbr> sin clasificar</span>
-          · <strong>Rég.:</strong> <abbr title="Semestral">S</abbr> Semestral · <abbr title="Anual">A</abbr> Anual
-        </p>
-        <div class="table-wrap">
-          <table id="tablaAsig">
-            <thead>
-              <tr>
-                <th>Cód.</th><th>Asignatura</th><th>Año</th><th title="Área de formación">Área</th><th title="Régimen">Rég.</th><th>Tipo</th>
-                <th>Teó.</th><th>Prác.</th><th>Aut. manual</th><th>CRE h</th>
-                <th>Inter.</th><th>Aut.</th><th>CRE</th><th></th>
-              </tr>
-            </thead>
-            <tbody>${asigRows}</tbody>
-          </table>
-        </div>
-      </section>
-    `;
-    bindEditorHandlers(decideEl);
-    const btnTable = $("#btnRecalcTable");
-    if (btnTable) btnTable.addEventListener("click", actualizarCreditos);
-
-    resultEl.classList.remove("loading");
-    resultEl.innerHTML = `
+    return `
       <div class="metrics">
         <div class="metric"><div class="label">Interacción</div><div class="value">${t.horas_interaccion.toLocaleString("es-AR", { maximumFractionDigits: 0 })} h</div></div>
         <div class="metric"><div class="label">Autónomas</div><div class="value">${t.horas_autonomas.toLocaleString("es-AR", { maximumFractionDigits: 0 })} h</div></div>
@@ -569,6 +379,225 @@
         Las descargas Word / PDF / CSV están siempre arriba.
       </footer>
     `;
+  }
+
+  /** Recalcula CRE y refresca totales sin recrear los inputs de la tabla. */
+  function refreshComputedViews() {
+    syncPlanFromUi();
+    syncAnexoFromUi();
+    if (!plan) return null;
+    ensureDuracion(plan);
+    plan.tipo_carrera = tipoCarreraActual();
+    const conv = SacauEngine.convertPlan(plan, optionsFromUi());
+    const val = SacauEngine.validatePlan(
+      conv,
+      normasUccuyo,
+      normasPsicologia,
+      plan.tipo_carrera
+    );
+    window.__lastConv = conv;
+    window.__lastVal = val;
+
+    const rows = [...document.querySelectorAll("#tablaAsig tbody tr:not(.empty-row)")];
+    conv.items.forEach((item, i) => {
+      const tr = rows[i];
+      if (!tr) return;
+      const inter = tr.querySelector(".cell-inter");
+      const aut = tr.querySelector(".cell-aut");
+      const cre = tr.querySelector(".cell-cre");
+      if (inter) inter.textContent = item.horas_interaccion.toFixed(0);
+      if (aut) aut.textContent = item.horas_autonomas.toFixed(0);
+      if (cre) cre.innerHTML = `<strong>${fmtCre(item.cre)}</strong>`;
+    });
+
+    const resumen = document.getElementById("resumenRapido");
+    if (resumen) {
+      const t = conv.totales;
+      resumen.innerHTML = `<strong>${plan.asignaturas.length}</strong> materias · Interacción <strong>${t.horas_interaccion.toFixed(0)} h</strong> · CRE estimado <strong>${fmtCre(t.cre)}</strong>`;
+    }
+
+    resultEl.classList.remove("loading");
+    resultEl.innerHTML = buildResultsHtml(conv, val);
+
+    if (plan.metadata?.anexo_911) {
+      plan.metadata.anexo_911 = SacauAnexo911.refreshDespliegue(
+        plan.metadata.anexo_911,
+        plan,
+        conv
+      );
+      renderAnexo();
+    }
+    updateExportState();
+    return { conv, val };
+  }
+
+  function scheduleAutoRecalc() {
+    if (autoRecalcTimer) clearTimeout(autoRecalcTimer);
+    autoRecalcTimer = setTimeout(() => {
+      autoRecalcTimer = null;
+      refreshComputedViews();
+    }, 120);
+  }
+
+  function bindDecideDelegates() {
+    if (decideDelegatesBound) return;
+    decideDelegatesBound = true;
+
+    decideEl.addEventListener("input", (ev) => {
+      const el = ev.target;
+      if (!(el instanceof HTMLElement)) return;
+      if (el.matches(".tip-ratio, .tip-fijas")) {
+        const id = el.getAttribute("data-tip");
+        if (id && tipologiasMap[id]) {
+          if (el.classList.contains("tip-ratio")) tipologiasMap[id].ratio_autonomo = Number(el.value || 0);
+          else tipologiasMap[id].autonomas_fijas = Number(el.value || 0);
+        }
+        scheduleAutoRecalc();
+        return;
+      }
+      const field = el.getAttribute("data-f");
+      if (field && CRE_AFFECTING_FIELDS.has(field)) scheduleAutoRecalc();
+    });
+
+    decideEl.addEventListener("change", (ev) => {
+      const el = ev.target;
+      if (!(el instanceof HTMLElement)) return;
+      if (el.matches(".tip-ratio, .tip-fijas")) {
+        const id = el.getAttribute("data-tip");
+        if (id && tipologiasMap[id]) {
+          if (el.classList.contains("tip-ratio")) tipologiasMap[id].ratio_autonomo = Number(el.value || 0);
+          else tipologiasMap[id].autonomas_fijas = Number(el.value || 0);
+        }
+        scheduleAutoRecalc();
+        return;
+      }
+      const field = el.getAttribute("data-f");
+      if (!field) return;
+      if (CRE_AFFECTING_FIELDS.has(field)) scheduleAutoRecalc();
+      else syncPlanFromUi();
+    });
+
+    decideEl.addEventListener("click", (ev) => {
+      const btn = ev.target instanceof Element ? ev.target.closest(".btn-del") : null;
+      if (!btn || !decideEl.contains(btn)) return;
+      btn.closest("tr")?.remove();
+      syncPlanFromUi();
+      render({ skipSync: true });
+    });
+  }
+
+  function render(opts = {}) {
+    const result = currentConversion(opts);
+    if (!result) return;
+    const { conv, val } = result;
+    const t = conv.totales;
+
+    const tipRows = Object.values(tipologiasMap)
+      .map(
+        (tip) => `<tr>
+          <td>${tip.id}</td>
+          <td>${tip.nombre || ""}</td>
+          <td><input class="narrow tip-ratio" data-tip="${tip.id}" type="number" step="0.05" min="0" value="${tip.ratio_autonomo}" /></td>
+          <td><input class="narrow tip-fijas" data-tip="${tip.id}" type="number" step="1" min="0" value="${tip.autonomas_fijas || 0}" /></td>
+        </tr>`
+      )
+      .join("");
+
+    const asigRows =
+      conv.items
+        .map((item) => {
+          const a = item.asignatura;
+          const ovA = a.horas_autonomas_override == null ? "" : a.horas_autonomas_override;
+          const ovC = a.valor_cre_override == null ? "" : a.valor_cre_override;
+          return `<tr>
+          <td><input data-f="codigo" value="${a.codigo || ""}" class="narrow" /></td>
+          <td><input data-f="nombre" value="${String(a.nombre || "").replace(/"/g, "&quot;")}" style="min-width:14rem" /></td>
+          <td><input data-f="anio" type="number" class="narrow" min="1" value="${a.anio}" /></td>
+          <td><select data-f="area">${areaOptions(a.area)}</select></td>
+          <td><select data-f="regimen"><option value="A" ${a.regimen === "A" ? "selected" : ""}>A — Anual</option><option value="S" ${a.regimen !== "A" ? "selected" : ""}>S — Semestral</option></select></td>
+          <td><select data-f="tipologia">${tipologiaOptions(a.tipologia)}</select></td>
+          <td><input data-f="horas_teoricas" type="number" class="narrow" min="0" value="${a.horas_teoricas}" /></td>
+          <td><input data-f="horas_practicas" type="number" class="narrow" min="0" value="${a.horas_practicas}" /></td>
+          <td><input data-f="horas_autonomas_override" type="number" class="narrow" min="0" value="${ovA}" placeholder="auto" /></td>
+          <td><input data-f="valor_cre_override" type="number" class="narrow" min="25" max="30" value="${ovC}" placeholder="25" /></td>
+          <td class="cell-inter">${item.horas_interaccion.toFixed(0)}</td>
+          <td class="cell-aut">${item.horas_autonomas.toFixed(0)}</td>
+          <td class="cell-cre"><strong>${fmtCre(item.cre)}</strong></td>
+          <td>
+            <button type="button" class="btn-secondary btn-del" title="Quitar esta asignatura">Quitar</button>
+            <input type="hidden" data-f="horas_estimadas" value="${a.horas_estimadas ? "1" : "0"}" />
+            <input type="hidden" data-f="notas" value="${String(a.notas || "").replace(/"/g, "&quot;")}" />
+          </td>
+        </tr>`;
+        })
+        .join("") ||
+      `<tr class="empty-row"><td colspan="14">Sin asignaturas todavía. Cargá un archivo arriba o usá «Agregar asignatura».</td></tr>`;
+
+    const resumenNota =
+      plan.metadata?.advertencia ||
+      (hasMaterias()
+        ? "Los créditos se recalculan solos al editar. Las descargas están arriba en cualquier momento."
+        : "Todavía no hay asignaturas. Subí un archivo arriba o usá «Agregar asignatura».");
+
+    decideEl.classList.remove("loading");
+    decideEl.innerHTML = `
+      <div class="grid-2">
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Cómo estimar el trabajo autónomo</h2>
+            <a
+              class="btn-instructivo btn-sm"
+              href="docs/instructivo_trabajo_autonomo.pdf"
+              target="_blank"
+              rel="noopener"
+              title="Abrir instructivo PDF sobre tipologías y ratios"
+            >Instructivo PDF</a>
+          </div>
+          <div class="table-wrap" style="max-height:14rem">
+            <table>
+              <thead><tr><th>Tipo</th><th>Descripción</th><th>Ratio</th><th>Horas fijas</th></tr></thead>
+              <tbody>${tipRows}</tbody>
+            </table>
+          </div>
+          <p class="note">Horas autónomas ≈ horas de clase × ratio + horas fijas. Podés corregir asignatura por asignatura en la tabla.</p>
+        </section>
+        <section class="panel">
+          <h2>Resumen rápido</h2>
+          <p id="resumenRapido" class="note" style="margin:0 0 0.5rem"><strong>${plan.asignaturas.length}</strong> materias · Interacción <strong>${t.horas_interaccion.toFixed(0)} h</strong> · CRE estimado <strong>${fmtCre(t.cre)}</strong></p>
+          <p class="note">${resumenNota}</p>
+        </section>
+      </div>
+      <section class="panel panel-asignaturas">
+        <div class="panel-head">
+          <h2>${plan.nombre || "Asignaturas del plan"}</h2>
+        </div>
+        <p class="note legend-areas" title="Áreas de formación del plan de estudios">
+          <strong>Área:</strong>
+          <span><abbr title="Formación Básica">FB</abbr> Formación Básica</span>
+          <span><abbr title="Formación Profesional">FP</abbr> Formación Profesional</span>
+          <span><abbr title="Formación General Complementaria">FGC</abbr> Formación General Complementaria</span>
+          <span><abbr title="Formación Complementaria Institucional">FCI</abbr> Formación Complementaria Institucional</span>
+          <span><abbr title="Otra">OTRA</abbr> sin clasificar</span>
+          · <strong>Rég.:</strong> <abbr title="Semestral">S</abbr> Semestral · <abbr title="Anual">A</abbr> Anual
+        </p>
+        <div class="table-wrap">
+          <table id="tablaAsig">
+            <thead>
+              <tr>
+                <th>Cód.</th><th>Asignatura</th><th>Año</th><th title="Área de formación">Área</th><th title="Régimen">Rég.</th><th>Tipo</th>
+                <th>Teó.</th><th>Prác.</th><th>Aut. manual</th><th>CRE h</th>
+                <th>Inter.</th><th>Aut.</th><th>CRE</th><th></th>
+              </tr>
+            </thead>
+            <tbody>${asigRows}</tbody>
+          </table>
+        </div>
+      </section>
+    `;
+    bindDecideDelegates();
+
+    resultEl.classList.remove("loading");
+    resultEl.innerHTML = buildResultsHtml(conv, val);
     updateExportState();
     renderAnexo();
   }
@@ -659,27 +688,8 @@
     }
   }
 
-  function actualizarCreditos(opts = {}) {
-    const silent = Boolean(opts.silent);
-    const keepStep = Boolean(opts.keepStep);
-    const result = currentConversion({ skipSync: false });
-    render({ skipSync: true });
-    if (result && plan?.metadata?.anexo_911) {
-      plan.metadata.anexo_911 = SacauAnexo911.refreshDespliegue(
-        plan.metadata.anexo_911,
-        plan,
-        result.conv
-      );
-      renderAnexo();
-    }
-    if (!keepStep) setStep(3);
-    if (!silent) {
-      showInfo(
-        hasMaterias()
-          ? "Créditos actualizados. Revisá el anexo 911 y descargá Word/PDF arriba."
-          : "Todavía no hay materias: cargá un archivo o agregá filas."
-      );
-    }
+  function actualizarCreditos() {
+    refreshComputedViews();
   }
 
   function addRow() {
@@ -823,7 +833,6 @@
       });
     }
     $("#btnAddRow").addEventListener("click", addRow);
-    $("#btnRecalc").addEventListener("click", () => actualizarCreditos());
     $("#valorCre").addEventListener("change", () => scheduleAutoRecalc());
     $("#valorCre").addEventListener("input", () => scheduleAutoRecalc());
     $("#btnDocx").addEventListener("click", onExportDocx);
