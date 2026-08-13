@@ -11,6 +11,9 @@
   --border: #d5deea;
   --magna: #16356e;
   --consejo: #0d5c4d;
+  --prof1: #6b3d12;
+  --prof2: #4a2f6b;
+  --aula-taller: #7a1f32;
   --accent: #2f6fed;
   --font-display: "Montserrat", system-ui, sans-serif;
   --font-body: "Open Sans", system-ui, sans-serif;
@@ -214,14 +217,6 @@ body {
 .pdf-download-talleres:hover {
   background: #ead5dc;
   filter: none;
-}
-
-.install-guide-link-talleres-web {
-  background: #0d5c4d;
-}
-
-.install-guide-link-talleres-web:hover {
-  background: #0f7a63;
 }
 
 .install-guide-link {
@@ -571,6 +566,22 @@ body {
   border-left-color: var(--consejo);
 }
 
+.session[data-sala="Sala Profesores 1"] {
+  border-left-color: var(--prof1);
+}
+
+.session[data-sala="Sala Profesores 2"] {
+  border-left-color: var(--prof2);
+}
+
+.session[data-sala="Aula"] {
+  border-left-color: var(--aula-taller);
+}
+
+.session.is-taller {
+  background: color-mix(in srgb, #7a1f32 4%, white);
+}
+
 .session.is-receso {
   border-left-color: var(--text-muted);
   background: color-mix(in srgb, var(--bg-soft) 70%, white);
@@ -613,6 +624,26 @@ body {
 .badge-sala.consejo {
   background: color-mix(in srgb, var(--consejo) 12%, white);
   color: var(--consejo);
+}
+
+.badge-sala.prof1 {
+  background: color-mix(in srgb, var(--prof1) 12%, white);
+  color: var(--prof1);
+}
+
+.badge-sala.prof2 {
+  background: color-mix(in srgb, var(--prof2) 12%, white);
+  color: var(--prof2);
+}
+
+.badge-sala.aula {
+  background: color-mix(in srgb, var(--aula-taller) 12%, white);
+  color: var(--aula-taller);
+}
+
+.badge-taller {
+  background: color-mix(in srgb, #7a1f32 14%, white);
+  color: #7a1f32;
 }
 
 .badge-time {

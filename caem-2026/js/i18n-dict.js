@@ -7,8 +7,8 @@ window.I18N_DICT = {
     en: "Consultation App · CAEM 2026"
   },
   "meta.description": {
-    es: "App de Consulta CAEM 2026: encontrá horario, tema, tipo de exposición, disertante y aula.",
-    en: "CAEM 2026 Consultation App: find schedule, topic, session type, speaker, and room."
+    es: "App de Consulta CAEM 2026: encontrá horario, tema, tipo (talleres, mesas, clases), disertante y aula.",
+    en: "CAEM 2026 Consultation App: find schedule, topic, type (workshops, panels, lectures), speaker, and room."
   },
 
   "a11y.skipLink": {
@@ -67,10 +67,6 @@ window.I18N_DICT = {
   "pdf.talleres": {
     es: "Descargar grilla de talleres (PDF)",
     en: "Download workshops grid (PDF)"
-  },
-  "talleres.web": {
-    es: "Ver talleres online",
-    en: "View workshops online"
   },
   "install.howToShort": {
     es: "Agregar a la pantalla del celular",
@@ -186,28 +182,40 @@ window.I18N_DICT = {
   "mode.ahora": { es: "Ahora", en: "Now" },
 
   "step.talleres.title": {
-    es: "Talleres CAEM 2026",
-    en: "CAEM 2026 Workshops"
+    es: "Elegí el día del taller",
+    en: "Choose the workshop day"
   },
   "step.talleres.help": {
-    es: "Descargá la grilla o mirá los talleres en el sitio oficial.",
-    en: "Download the grid or browse workshops on the official site."
+    es: "Buscá por día y horario. También podés usar Horario, Tipo, Aula o Disertante.",
+    en: "Search by day and time. You can also use Schedule, Type, Room, or Speaker."
   },
-  "talleres.pdfOption": {
-    es: "Descargar grilla de talleres (PDF)",
-    en: "Download workshops grid (PDF)"
+  "step.talleres.dayTitle": {
+    es: "Elegí el día del taller",
+    en: "Choose the workshop day"
   },
-  "talleres.pdfOptionSub": {
-    es: "Horarios, aulas y responsables",
-    en: "Schedules, rooms, and facilitators"
+  "step.talleres.dayHelp": {
+    es: "Después vas a ver los horarios de talleres de ese día.",
+    en: "Next you will see that day's workshop time slots."
   },
-  "talleres.webOption": {
-    es: "Ver talleres online",
-    en: "View workshops online"
+  "step.talleres.slotTitle": {
+    es: "Elegí el horario del taller",
+    en: "Choose the workshop time"
   },
-  "talleres.webOptionSub": {
-    es: "Sitio oficial CAEM / AFACIMERA",
-    en: "Official CAEM / AFACIMERA site"
+  "talleres.daySub": {
+    es: "Solo talleres",
+    en: "Workshops only"
+  },
+  "talleres.allDay": {
+    es: "Todos los talleres del día",
+    en: "All workshops that day"
+  },
+  "talleres.allDayHelp": {
+    es: "Sin fijar una franja horaria",
+    en: "Without locking a time slot"
+  },
+  "taller.number": {
+    es: "Taller {n}",
+    en: "Workshop {n}"
   },
 
   "step.horario.dayTitle": {
@@ -408,6 +416,7 @@ window.I18N_DICT = {
   "tipo.plenaria": { es: "Conferencia plenaria", en: "Plenary lecture" },
   "tipo.mesa": { es: "Mesa redonda", en: "Round table" },
   "tipo.conversatorio": { es: "Conversatorio", en: "Conversation" },
+  "tipo.taller": { es: "Taller", en: "Workshop" },
   "tipo.acto": { es: "Acto", en: "Ceremony" },
   "tipo.receso": { es: "Receso", en: "Break" },
 
@@ -421,8 +430,20 @@ window.I18N_DICT = {
     en: "Main hall"
   },
   "room.consejo.sub": {
-    es: "Sala paralela",
-    en: "Parallel room"
+    es: "Consejo / talleres",
+    en: "Council / workshops"
+  },
+  "room.prof1.sub": {
+    es: "Talleres",
+    en: "Workshops"
+  },
+  "room.prof2.sub": {
+    es: "Talleres",
+    en: "Workshops"
+  },
+  "room.aula.sub": {
+    es: "Talleres",
+    en: "Workshops"
   },
 
   "count.session": {
@@ -435,8 +456,8 @@ window.I18N_DICT = {
   },
 
   "footer.source": {
-    es: "Fuente: Programa Académico CAEM 2026.",
-    en: "Source: CAEM 2026 Academic Program."
+    es: "Fuente: Programa Académico y Grilla de Talleres CAEM 2026.",
+    en: "Source: CAEM 2026 Academic Program and Workshops Grid."
   },
   "footer.official": {
     es: "Sitio oficial",

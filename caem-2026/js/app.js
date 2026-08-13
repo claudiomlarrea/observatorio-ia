@@ -7,6 +7,7 @@
     plenaria: "tipo.plenaria",
     mesa: "tipo.mesa",
     conversatorio: "tipo.conversatorio",
+    taller: "tipo.taller",
     acto: "tipo.acto",
     receso: "tipo.receso",
   };
@@ -143,7 +144,23 @@
   function salaClass(sala) {
     if (sala === "Aula Magna") return "magna";
     if (sala === "Salón de Consejo") return "consejo";
+    if (sala === "Sala Profesores 1") return "prof1";
+    if (sala === "Sala Profesores 2") return "prof2";
+    if (sala === "Aula") return "aula";
     return "";
+  }
+
+  function roomSubtitle(sala) {
+    if (sala === "Aula Magna") return t("room.magna.sub");
+    if (sala === "Salón de Consejo") return t("room.consejo.sub");
+    if (sala === "Sala Profesores 1") return t("room.prof1.sub");
+    if (sala === "Sala Profesores 2") return t("room.prof2.sub");
+    if (sala === "Aula") return t("room.aula.sub");
+    return "";
+  }
+
+  function talleresOnly() {
+    return (state.data?.sesiones || []).filter((s) => s.tipo === "taller");
   }
 
   function groupBySlot(sessions) {
@@ -218,6 +235,13 @@
         );
       case "aula":
         return all.filter((s) => s.sala === selection && s.tipo !== "receso");
+      case "talleres":
+        if (selection.wholeDay) {
+          return all.filter((s) => s.dia === selection.day && s.tipo === "taller");
+        }
+        return all.filter(
+          (s) => s.dia === selection.day && s.inicio === selection.inicio && s.tipo === "taller"
+        );
       case "ahora":
         return selection.sessions || [];
       default:
@@ -246,12 +270,21 @@
     const salaBadge = session.sala
       ? `<span class="badge badge-sala ${salaClass(session.sala)}">${highlight(session.sala, query)}</span>`
       : "";
+    const tallerBadge =
+      session.tipo === "taller" && session.tallerNumero
+        ? `<span class="badge badge-taller">${escapeHtml(
+            t("taller.number", { n: session.tallerNumero })
+          )}</span>`
+        : "";
 
     return `
-      <article class="session${isReceso ? " is-receso" : ""}" data-sala="${escapeHtml(session.sala || "")}">
+      <article class="session${isReceso ? " is-receso" : ""}${
+        session.tipo === "taller" ? " is-taller" : ""
+      }" data-sala="${escapeHtml(session.sala || "")}">
         <div class="session-meta">
           <span class="badge badge-time">${escapeHtml(session.inicio)} – ${escapeHtml(session.fin)}</span>
           ${salaBadge}
+          ${tallerBadge}
           <span class="badge">${escapeHtml(tipo)}</span>
         </div>
         <h3 class="session-title">${highlight(session.titulo, query)}</h3>
@@ -411,16 +444,52 @@
   }
 
   function renderTalleresStep() {
-    els.optionGrid.innerHTML = `
-      <a class="option-btn option-link" href="assets/Grilla_Talleres_CAEM_2026.pdf" download="Grilla_Talleres_CAEM_2026.pdf" target="_blank" rel="noopener noreferrer">
-        <strong>${escapeHtml(t("talleres.pdfOption"))}</strong>
-        <span>${escapeHtml(t("talleres.pdfOptionSub"))}</span>
-      </a>
-      <a class="option-btn option-link" href="https://caem.afacimera.org.ar/talleres" target="_blank" rel="noopener noreferrer">
-        <strong>${escapeHtml(t("talleres.webOption"))}</strong>
-        <span>${escapeHtml(t("talleres.webOptionSub"))}</span>
-      </a>
-    `;
+    const talleres = talleresOnly();
+    if (!state.day) {
+      els.stepTitle.textContent = t("step.talleres.dayTitle");
+      els.stepHelp.textContent = t("step.talleres.dayHelp");
+      els.optionGrid.innerHTML = state.data.meta.fechas
+        .map((dia) => {
+          const count = talleres.filter((s) => s.dia === dia).length;
+          if (!count) return "";
+          return optionButton({
+            value: dia,
+            title: dayShort(dia),
+            subtitle: t("talleres.daySub"),
+            count,
+          });
+        })
+        .join("");
+      return;
+    }
+
+    els.stepTitle.textContent = t("step.talleres.slotTitle");
+    els.stepHelp.textContent = dayLong(state.day);
+    const dayTalleres = talleres.filter((s) => s.dia === state.day);
+    const slots = groupBySlot(dayTalleres);
+    els.optionGrid.innerHTML =
+      optionButton({
+        value: "__back_days__",
+        title: t("back.days"),
+        subtitle: t("back.days.sub"),
+      }) +
+      optionButton({
+        value: "__all_day__",
+        title: t("talleres.allDay"),
+        subtitle: t("talleres.allDayHelp"),
+        count: dayTalleres.length,
+      }) +
+      slots
+        .map((slot) => {
+          const salas = [...new Set(slot.items.map((s) => s.sala).filter(Boolean))].join(" · ");
+          return optionButton({
+            value: slot.inicio,
+            title: `${slot.inicio} – ${slot.fin}`,
+            subtitle: salas,
+            count: slot.items.length,
+          });
+        })
+        .join("");
   }
 
   function renderHorarioStep() {
@@ -484,8 +553,20 @@
 
   function renderTipoStep() {
     const tipos = [...new Set(state.data.sesiones.map((s) => s.tipo))].filter((x) => x !== "receso");
-    const order = ["bienvenida", "conferencia", "plenaria", "mesa", "conversatorio", "acto"];
-    tipos.sort((a, b) => order.indexOf(a) - order.indexOf(b));
+    const order = [
+      "bienvenida",
+      "conferencia",
+      "plenaria",
+      "mesa",
+      "conversatorio",
+      "taller",
+      "acto",
+    ];
+    tipos.sort((a, b) => {
+      const ia = order.indexOf(a);
+      const ib = order.indexOf(b);
+      return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+    });
     els.optionGrid.innerHTML = tipos
       .map((tipo) =>
         optionButton({
@@ -503,7 +584,7 @@
         optionButton({
           value: sala,
           title: sala,
-          subtitle: sala === "Aula Magna" ? t("room.magna.sub") : t("room.consejo.sub"),
+          subtitle: roomSubtitle(sala),
           count: state.data.sesiones.filter((s) => s.sala === sala && s.tipo !== "receso").length,
         })
       )
@@ -600,6 +681,27 @@
       return;
     }
 
+    if (mode === "talleres") {
+      if (value === "__back_days__") {
+        state.day = null;
+        renderStep();
+        return;
+      }
+      if (!state.day) {
+        state.day = value;
+        renderStep();
+        return;
+      }
+      if (value === "__all_day__") {
+        state.selection = { day: state.day, wholeDay: true };
+        showResults(`${dayShort(state.day)} · ${t("talleres.allDay")}`);
+        return;
+      }
+      state.selection = { day: state.day, inicio: value };
+      showResults(`${dayShort(state.day)} · ${value}`);
+      return;
+    }
+
     if (mode === "disertante") {
       state.selection = value;
       showResults(value);
@@ -623,6 +725,12 @@
           showResults(tipoLabel(state.selection));
         } else if (state.mode === "aula" || state.mode === "disertante") {
           showResults(state.selection);
+        } else if (state.mode === "talleres" && state.selection.day) {
+          showResults(
+            state.selection.wholeDay
+              ? `${dayShort(state.selection.day)} · ${t("talleres.allDay")}`
+              : `${dayShort(state.selection.day)} · ${state.selection.inicio}`
+          );
         }
       }
       return;
@@ -702,12 +810,12 @@
       const basePath = window.location.pathname.endsWith("/")
         ? window.location.pathname
         : `${window.location.pathname.replace(/\/?$/, "")}/`;
-      const url = new URL(`data/programa.json?v=6`, `${window.location.origin}${basePath}`);
+      const url = new URL(`data/programa.json?v=11`, `${window.location.origin}${basePath}`);
       let res;
       try {
         res = await fetch(url.href, { cache: "no-store" });
       } catch (_net) {
-        res = await fetch("data/programa.json?v=6", { cache: "no-store" });
+        res = await fetch("data/programa.json?v=11", { cache: "no-store" });
       }
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       state.data = await res.json();
