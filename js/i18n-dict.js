@@ -967,8 +967,32 @@ window.I18N_DICT = {
     "en": "AI Apps"
   },
   "sec.herramientas.intro": {
-    "es": "Sistemas y plataformas desarrollados por el Observatorio de Inteligencia Artificial de la UCCuyo para la comunidad universitaria e instituciones vinculadas: encuestas, datos, evaluación, auditoría académica, conversión curricular SACAU/CRE, planificación estratégica y más. Se amplían a medida que se incorporan nuevos desarrollos.",
-    "en": "Systems and platforms developed by the UCCuyo Artificial Intelligence Observatory for the university community and partner institutions: surveys, data, assessment, academic audit, SACAU/CRE curriculum conversion, strategic planning, and more. The catalog grows as new developments are added."
+    "es": "Sistemas y plataformas desarrollados por el Observatorio de Inteligencia Artificial de la UCCuyo para la comunidad universitaria e instituciones vinculadas: encuestas, datos, evaluación, auditoría académica, conversión curricular SACAU/CRE, planificación estratégica, prevención digital y más. Se amplían a medida que se incorporan nuevos desarrollos.",
+    "en": "Systems and platforms developed by the UCCuyo Artificial Intelligence Observatory for the university community and partner institutions: surveys, data, assessment, academic audit, SACAU/CRE curriculum conversion, strategic planning, digital prevention, and more. The catalog grows as new developments are added."
+  },
+  "sec.herramientas.senalsegura.title": {
+    "es": "Señal Segura",
+    "en": "Señal Segura"
+  },
+  "sec.herramientas.senalsegura.lead": {
+    "es": "Herramienta digital de prevención y educación frente al grooming: analiza chats o capturas de forma voluntaria para identificar señales de alerta y orientar sobre cómo pedir ayuda, con procesamiento en el propio dispositivo.",
+    "en": "Digital prevention and education tool against grooming: voluntarily analyze chats or screenshots to identify warning signs and guidance on seeking help, with on-device processing."
+  },
+  "sec.herramientas.senalsegura.item1": {
+    "es": "Varias capturas o textos antes de analizar (p. ej. WhatsApp)",
+    "en": "Multiple screenshots or texts before analysis (e.g. WhatsApp)"
+  },
+  "sec.herramientas.senalsegura.item2": {
+    "es": "Contenidos por edad: chicos, adolescentes y adultos",
+    "en": "Age-adapted content: children, teens, and adults"
+  },
+  "sec.herramientas.senalsegura.item3": {
+    "es": "Derivación a ayuda: 137, 102, 911 y canales de denuncia",
+    "en": "Help pathways: 137, 102, 911, and reporting channels"
+  },
+  "sec.herramientas.senalsegura.btnAbrir": {
+    "es": "Abrir Señal Segura",
+    "en": "Open Señal Segura"
   },
   "sec.herramientas.rumbo.badge": {
     "es": "Demo · consulta",
