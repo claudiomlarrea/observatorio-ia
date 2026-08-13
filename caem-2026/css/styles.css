@@ -324,6 +324,24 @@ body {
   background: linear-gradient(180deg, #18a084, #0d6b57);
 }
 
+.mode-btn-talleres {
+  background: linear-gradient(180deg, #9a2a40, #7a1f32);
+}
+
+.mode-btn-talleres.is-active {
+  background: linear-gradient(180deg, #b8334d, #921f3a);
+  box-shadow:
+    0 0 0 2px #fff,
+    0 0 0 4px color-mix(in srgb, #7a1f32 55%, white),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.option-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
 .mode-icon {
   font-size: 0.66rem;
   line-height: 1;

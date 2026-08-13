@@ -182,7 +182,33 @@ window.I18N_DICT = {
   "mode.tipo": { es: "Tipo", en: "Type" },
   "mode.disertante": { es: "Disertante", en: "Speaker" },
   "mode.aula": { es: "Aula", en: "Room" },
+  "mode.talleres": { es: "Talleres", en: "Workshops" },
   "mode.ahora": { es: "Ahora", en: "Now" },
+
+  "step.talleres.title": {
+    es: "Talleres CAEM 2026",
+    en: "CAEM 2026 Workshops"
+  },
+  "step.talleres.help": {
+    es: "Descargá la grilla o mirá los talleres en el sitio oficial.",
+    en: "Download the grid or browse workshops on the official site."
+  },
+  "talleres.pdfOption": {
+    es: "Descargar grilla de talleres (PDF)",
+    en: "Download workshops grid (PDF)"
+  },
+  "talleres.pdfOptionSub": {
+    es: "Horarios, aulas y responsables",
+    en: "Schedules, rooms, and facilitators"
+  },
+  "talleres.webOption": {
+    es: "Ver talleres online",
+    en: "View workshops online"
+  },
+  "talleres.webOptionSub": {
+    es: "Sitio oficial CAEM / AFACIMERA",
+    en: "Official CAEM / AFACIMERA site"
+  },
 
   "step.horario.dayTitle": {
     es: "Elegí el día",

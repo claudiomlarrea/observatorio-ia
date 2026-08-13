@@ -17,6 +17,7 @@
     tipo: { title: "step.tipo.title", help: "step.tipo.help" },
     disertante: { title: "step.disertante.title", help: "step.disertante.help" },
     aula: { title: "step.aula.title", help: "step.aula.help" },
+    talleres: { title: "step.talleres.title", help: "step.talleres.help" },
     ahora: { title: "step.ahora.title", help: "step.ahora.help" },
   };
 
