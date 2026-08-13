@@ -1,0 +1,35 @@
+{
+  "name": "App de Consulta CAEM 2026",
+  "short_name": "CAEM 2026",
+  "description": "Encontrá horario, aula, tema y disertante del Congreso Argentino de Educación Médica 2026.",
+  "id": "/observatorio-ia/caem-2026/",
+  "start_url": "./?utm_source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b1f4a",
+  "theme_color": "#0b1f4a",
+  "lang": "es-AR",
+  "dir": "ltr",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

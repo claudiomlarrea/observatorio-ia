@@ -64,6 +64,94 @@ window.I18N_DICT = {
     es: "Descargar programa completo (PDF)",
     en: "Download full program (PDF)"
   },
+  "install.howToShort": {
+    es: "Agregar a la pantalla del celular",
+    en: "Add to your phone home screen"
+  },
+  "install.barText": {
+    es: "Agregá la app a tu pantalla de inicio",
+    en: "Add the app to your home screen"
+  },
+  "install.barCta": {
+    es: "Instalar",
+    en: "Install"
+  },
+  "install.howTo": {
+    es: "¿Cómo se hace?",
+    en: "How do I do it?"
+  },
+  "install.pageTitle": {
+    es: "Agregar a la pantalla",
+    en: "Add to Home Screen"
+  },
+  "install.pageSub": {
+    es: "En 30 segundos tenés el ícono en el celular, sin Play Store ni App Store.",
+    en: "In 30 seconds you get the icon on your phone—no Play Store or App Store."
+  },
+  "install.openFirst": {
+    es: "1. Abrí esta dirección en el celular:",
+    en: "1. Open this address on your phone:"
+  },
+  "install.videoTitle": {
+    es: "Video rápido (16 s)",
+    en: "Quick video (16 s)"
+  },
+  "install.videoDownload": {
+    es: "Descargar video",
+    en: "Download video"
+  },
+  "install.androidTitle": {
+    es: "Android (Chrome)",
+    en: "Android (Chrome)"
+  },
+  "install.android1": {
+    es: "Abrí el link en Chrome.",
+    en: "Open the link in Chrome."
+  },
+  "install.android2": {
+    es: "Tocá el menú ⋮ (arriba a la derecha).",
+    en: "Tap the ⋮ menu (top right)."
+  },
+  "install.android3": {
+    es: "Elegí “Instalar app” o “Agregar a la pantalla de inicio”.",
+    en: "Choose “Install app” or “Add to Home screen”."
+  },
+  "install.android4": {
+    es: "Confirmá. Aparece el ícono CAEM 2026 como una app.",
+    en: "Confirm. The CAEM 2026 icon appears like an app."
+  },
+  "install.iosTitle": {
+    es: "iPhone / iPad (Safari)",
+    en: "iPhone / iPad (Safari)"
+  },
+  "install.ios1": {
+    es: "Abrí el link en Safari (no en Instagram/WhatsApp interno).",
+    en: "Open the link in Safari (not inside Instagram/WhatsApp)."
+  },
+  "install.ios2": {
+    es: "Tocá el botón Compartir □↑ (abajo o arriba).",
+    en: "Tap the Share button □↑ (bottom or top)."
+  },
+  "install.ios3": {
+    es: "Desplazate y tocá “Agregar a pantalla de inicio”.",
+    en: "Scroll and tap “Add to Home Screen”."
+  },
+  "install.ios4": {
+    es: "Tocá “Agregar”. Queda el ícono en tu pantalla.",
+    en: "Tap “Add”. The icon stays on your screen."
+  },
+  "install.storesTitle": {
+    es: "¿Play Store o App Store?",
+    en: "Play Store or App Store?"
+  },
+  "install.storesBody": {
+    es: "No hace falta. Esta es una app web instalable (PWA): se agrega desde el navegador, es gratis, se actualiza sola y evita cuentas de desarrollador, revisión y demoras de las tiendas. Para el congreso, es el camino más simple para mil personas.",
+    en: "Not needed. This is an installable web app (PWA): add it from the browser, it’s free, updates itself, and avoids developer accounts, store review, and delays. For the congress, it’s the simplest path for a thousand people."
+  },
+  "install.openApp": {
+    es: "Abrir App de Consulta",
+    en: "Open Consultation App"
+  },
 
   "mode.horario": { es: "Horario", en: "Schedule" },
   "mode.tema": { es: "Tema", en: "Topic" },

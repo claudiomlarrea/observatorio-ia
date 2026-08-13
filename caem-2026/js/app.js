@@ -687,12 +687,12 @@
       const basePath = window.location.pathname.endsWith("/")
         ? window.location.pathname
         : `${window.location.pathname.replace(/\/?$/, "")}/`;
-      const url = new URL(`data/programa.json?v=5`, `${window.location.origin}${basePath}`);
+      const url = new URL(`data/programa.json?v=6`, `${window.location.origin}${basePath}`);
       let res;
       try {
         res = await fetch(url.href, { cache: "no-store" });
       } catch (_net) {
-        res = await fetch("data/programa.json?v=5", { cache: "no-store" });
+        res = await fetch("data/programa.json?v=6", { cache: "no-store" });
       }
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       state.data = await res.json();

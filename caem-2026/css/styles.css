@@ -206,6 +206,16 @@ body {
   filter: brightness(1.04);
 }
 
+.install-guide-link {
+  display: inline-flex;
+  margin-top: 0.65rem;
+  color: #fff;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
 .pdf-download-footer {
   font-weight: 700;
 }
