@@ -313,14 +313,14 @@
 
   function buildResultsHtml(conv, val) {
     const t = conv.totales;
-    const byAnio = SacauEngine.groupBy(conv.items, (i) => i.asignatura.anio);
-    const byArea = SacauEngine.groupBy(conv.items, (i) => i.asignatura.area || "—");
+    const byAnio = SacauEngine.groupBy(conv.items, (i) => Number(i.asignatura.anio || 1));
+    const byArea = SacauEngine.groupBy(conv.items, (i) => String(i.asignatura.area || "—"));
 
     const anioRows = Object.keys(byAnio)
       .sort((a, b) => Number(a) - Number(b))
       .map((anio) => {
         const tot = SacauEngine.computeTotales(byAnio[anio], 1);
-        return `<tr><td>${anio}</td><td>${tot.horas_interaccion.toFixed(0)}</td><td>${tot.horas_autonomas.toFixed(0)}</td><td>${fmtCre(tot.cre)}</td></tr>`;
+        return `<tr data-anio="${anio}"><td>${anio}</td><td>${tot.horas_interaccion.toFixed(0)}</td><td>${tot.horas_autonomas.toFixed(0)}</td><td class="cre-cell">${fmtCre(tot.cre)}</td></tr>`;
       })
       .join("");
 
@@ -328,7 +328,7 @@
       .sort()
       .map((area) => {
         const tot = SacauEngine.computeTotales(byArea[area]);
-        return `<tr><td>${area}</td><td>${tot.horas_interaccion.toFixed(0)}</td><td>${tot.horas_practicas.toFixed(0)}</td><td>${fmtCre(tot.cre)}</td></tr>`;
+        return `<tr data-area="${area}"><td>${area}</td><td>${tot.horas_interaccion.toFixed(0)}</td><td>${tot.horas_practicas.toFixed(0)}</td><td class="cre-cell">${fmtCre(tot.cre)}</td></tr>`;
       })
       .join("");
 
@@ -340,39 +340,41 @@
       .join("");
 
     return `
-      <div class="metrics">
-        <div class="metric"><div class="label">Interacción</div><div class="value">${t.horas_interaccion.toLocaleString("es-AR", { maximumFractionDigits: 0 })} h</div></div>
-        <div class="metric"><div class="label">Autónomas</div><div class="value">${t.horas_autonomas.toLocaleString("es-AR", { maximumFractionDigits: 0 })} h</div></div>
-        <div class="metric"><div class="label">Totales estudiante</div><div class="value">${t.horas_totales.toLocaleString("es-AR", { maximumFractionDigits: 0 })} h</div></div>
-        <div class="metric"><div class="label">CRE totales</div><div class="value">${fmtCre(t.cre)}</div></div>
-        <div class="metric"><div class="label">CRE / año</div><div class="value">${Number.isFinite(t.cre_promedio_anual) ? fmtCre(t.cre_promedio_anual) : "—"}</div></div>
+      <div class="metrics" id="metricsCre">
+        <div class="metric"><div class="label">Interacción</div><div class="value" id="metricInter">${t.horas_interaccion.toLocaleString("es-AR", { maximumFractionDigits: 0 })} h</div></div>
+        <div class="metric"><div class="label">Autónomas</div><div class="value" id="metricAuto">${t.horas_autonomas.toLocaleString("es-AR", { maximumFractionDigits: 0 })} h</div></div>
+        <div class="metric"><div class="label">Totales estudiante</div><div class="value" id="metricTot">${t.horas_totales.toLocaleString("es-AR", { maximumFractionDigits: 0 })} h</div></div>
+        <div class="metric"><div class="label">CRE totales</div><div class="value" id="metricCreTotal">${fmtCre(t.cre)}</div></div>
+        <div class="metric"><div class="label">CRE / año</div><div class="value" id="metricCreAnual">${Number.isFinite(t.cre_promedio_anual) ? fmtCre(t.cre_promedio_anual) : "—"}</div></div>
       </div>
-      <div class="grid-2">
-        <section class="panel">
-          <h2>Cumplimiento SACAU</h2>
-          <p class="note" style="margin-top:0">
-            Umbrales según tipo de carrera «${(normasUccuyo.tipos_carrera || {})[tipoCarreraActual()]?.label || tipoCarreraActual()}».
-            ${normasUccuyo.nota_autonomas ? `<br/><span class="muted-sm">${normasUccuyo.nota_autonomas}</span>` : ""}
-          </p>
-          <ul class="checks">${checkLis || '<li class="warning">⚠️ Cargá un plan para evaluar el cumplimiento.</li>'}</ul>
-        </section>
-        <section class="panel">
+      <div class="grid-2" id="bloquesDesglose">
+        <section class="panel" id="panelPorAnio">
           <h2>Por año</h2>
-          <div class="table-wrap" style="max-height:14rem">
-            <table>
+          <div class="table-wrap" style="max-height:16rem">
+            <table id="tablaPorAnio">
               <thead><tr><th>Año</th><th>Interacción</th><th>Autónomas</th><th>CRE</th></tr></thead>
-              <tbody>${anioRows || '<tr><td colspan="4">Sin datos</td></tr>'}</tbody>
+              <tbody id="bodyPorAnio">${anioRows || '<tr><td colspan="4">Sin datos</td></tr>'}</tbody>
             </table>
           </div>
-          <h2 style="margin-top:1rem">Por área</h2>
-          <div class="table-wrap" style="max-height:14rem">
-            <table>
+        </section>
+        <section class="panel" id="panelPorArea">
+          <h2>Por área</h2>
+          <div class="table-wrap" style="max-height:16rem">
+            <table id="tablaPorArea">
               <thead><tr><th>Área</th><th>Interacción</th><th>Prácticas</th><th>CRE</th></tr></thead>
-              <tbody>${areaRows || '<tr><td colspan="4">Sin datos</td></tr>'}</tbody>
+              <tbody id="bodyPorArea">${areaRows || '<tr><td colspan="4">Sin datos</td></tr>'}</tbody>
             </table>
           </div>
         </section>
       </div>
+      <section class="panel" style="margin-top:1rem">
+        <h2>Cumplimiento SACAU</h2>
+        <p class="note" style="margin-top:0">
+          Umbrales según tipo de carrera «${(normasUccuyo.tipos_carrera || {})[tipoCarreraActual()]?.label || tipoCarreraActual()}».
+          ${normasUccuyo.nota_autonomas ? `<br/><span class="muted-sm">${normasUccuyo.nota_autonomas}</span>` : ""}
+        </p>
+        <ul class="checks">${checkLis || '<li class="warning">⚠️ Cargá un plan para evaluar el cumplimiento.</li>'}</ul>
+      </section>
       <footer class="site">
         Marco: Res. 788-CS-2026 (CRE UCCuyo) · Res. 911-CS-2026 · RESOL-2025-556 (SACAU).
         Normativa disponible arriba en «Biblioteca normativa».
@@ -381,54 +383,73 @@
     `;
   }
 
+  function paintResults(conv, val) {
+    const root = document.getElementById("app-resultado");
+    if (!root) return;
+    root.classList.remove("loading");
+    root.innerHTML = buildResultsHtml(conv, val);
+    root.dataset.creTotal = String(conv.totales.cre);
+    root.dataset.updatedAt = String(Date.now());
+    root.classList.remove("is-updating");
+    // Forzar reflow para el destello visual
+    void root.offsetWidth;
+    root.classList.add("is-updating");
+    window.setTimeout(() => root.classList.remove("is-updating"), 700);
+  }
+
   /** Recalcula CRE y refresca totales sin recrear los inputs de la tabla. */
   function refreshComputedViews() {
-    syncPlanFromUi();
-    syncAnexoFromUi();
-    if (!plan) return null;
-    ensureDuracion(plan);
-    plan.tipo_carrera = tipoCarreraActual();
-    const conv = SacauEngine.convertPlan(plan, optionsFromUi());
-    const val = SacauEngine.validatePlan(
-      conv,
-      normasUccuyo,
-      normasPsicologia,
-      plan.tipo_carrera
-    );
-    window.__lastConv = conv;
-    window.__lastVal = val;
-
-    const rows = [...document.querySelectorAll("#tablaAsig tbody tr:not(.empty-row)")];
-    conv.items.forEach((item, i) => {
-      const tr = rows[i];
-      if (!tr) return;
-      const inter = tr.querySelector(".cell-inter");
-      const aut = tr.querySelector(".cell-aut");
-      const cre = tr.querySelector(".cell-cre");
-      if (inter) inter.textContent = item.horas_interaccion.toFixed(0);
-      if (aut) aut.textContent = item.horas_autonomas.toFixed(0);
-      if (cre) cre.innerHTML = `<strong>${fmtCre(item.cre)}</strong>`;
-    });
-
-    const resumen = document.getElementById("resumenRapido");
-    if (resumen) {
-      const t = conv.totales;
-      resumen.innerHTML = `<strong>${plan.asignaturas.length}</strong> materias · Interacción <strong>${t.horas_interaccion.toFixed(0)} h</strong> · CRE estimado <strong>${fmtCre(t.cre)}</strong>`;
-    }
-
-    resultEl.classList.remove("loading");
-    resultEl.innerHTML = buildResultsHtml(conv, val);
-
-    if (plan.metadata?.anexo_911) {
-      plan.metadata.anexo_911 = SacauAnexo911.refreshDespliegue(
-        plan.metadata.anexo_911,
-        plan,
-        conv
+    try {
+      syncPlanFromUi();
+      syncAnexoFromUi();
+      if (!plan) return null;
+      ensureDuracion(plan);
+      plan.tipo_carrera = tipoCarreraActual();
+      const conv = SacauEngine.convertPlan(plan, optionsFromUi());
+      const val = SacauEngine.validatePlan(
+        conv,
+        normasUccuyo,
+        normasPsicologia,
+        plan.tipo_carrera
       );
-      renderAnexo();
+      window.__lastConv = conv;
+      window.__lastVal = val;
+
+      const rows = [...document.querySelectorAll("#tablaAsig tbody tr:not(.empty-row)")];
+      conv.items.forEach((item, i) => {
+        const tr = rows[i];
+        if (!tr) return;
+        const inter = tr.querySelector(".cell-inter");
+        const aut = tr.querySelector(".cell-aut");
+        const cre = tr.querySelector(".cell-cre");
+        if (inter) inter.textContent = item.horas_interaccion.toFixed(0);
+        if (aut) aut.textContent = item.horas_autonomas.toFixed(0);
+        if (cre) cre.innerHTML = `<strong>${fmtCre(item.cre)}</strong>`;
+      });
+
+      const resumen = document.getElementById("resumenRapido");
+      if (resumen) {
+        const t = conv.totales;
+        resumen.innerHTML = `<strong>${plan.asignaturas.length}</strong> materias · Interacción <strong>${t.horas_interaccion.toFixed(0)} h</strong> · CRE estimado <strong>${fmtCre(t.cre)}</strong>`;
+      }
+
+      // Siempre reconsultar el nodo: evita actualizar un #app-resultado desconectado del DOM.
+      paintResults(conv, val);
+
+      if (plan.metadata?.anexo_911) {
+        plan.metadata.anexo_911 = SacauAnexo911.refreshDespliegue(
+          plan.metadata.anexo_911,
+          plan,
+          conv
+        );
+        renderAnexo();
+      }
+      updateExportState();
+      return { conv, val };
+    } catch (err) {
+      console.error("refreshComputedViews", err);
+      return null;
     }
-    updateExportState();
-    return { conv, val };
   }
 
   function scheduleAutoRecalc() {
@@ -436,7 +457,7 @@
     autoRecalcTimer = setTimeout(() => {
       autoRecalcTimer = null;
       refreshComputedViews();
-    }, 120);
+    }, 60);
   }
 
   function bindDecideDelegates() {
@@ -597,7 +618,7 @@
     bindDecideDelegates();
 
     resultEl.classList.remove("loading");
-    resultEl.innerHTML = buildResultsHtml(conv, val);
+    paintResults(conv, val);
     updateExportState();
     renderAnexo();
   }
