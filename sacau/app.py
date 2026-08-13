@@ -8,6 +8,8 @@ from __future__ import annotations
 import json
 import re
 import sys
+import unicodedata
+from collections import defaultdict
 from io import BytesIO
 from pathlib import Path
 
@@ -18,7 +20,7 @@ ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from engine.convert import convert_plan, totales_por_anio, totales_por_area
+from engine.convert import compute_totales, convert_plan, totales_por_anio
 from engine.export import (
     plan_to_dataframe,
     to_csv_bytes,
@@ -77,6 +79,21 @@ def df_to_tipologias(df: pd.DataFrame) -> dict[str, Tipologia]:
             descripcion=str(row.get("descripcion", "") or ""),
         )
     return out
+
+
+def is_tipologia_practica(tip: str) -> bool:
+    """Detecta tipologías de práctica supervisada / PPS (no el campo de horas)."""
+    t = unicodedata.normalize("NFD", str(tip or "").lower())
+    t = "".join(c for c in t if unicodedata.category(c) != "Mn")
+    return (
+        t in ("practica_supervisada", "pps")
+        or t.startswith("practic")
+        or "practica" in t
+    )
+
+
+def cre_practicas_items(items) -> int:
+    return int(round(sum(float(i.cre) for i in items if is_tipologia_practica(i.asignatura.tipologia))))
 
 
 EDITOR_COLUMNS = [
@@ -596,20 +613,27 @@ def main() -> None:
             )
         with c_b:
             st.markdown("**Por área**")
+            by_area: dict[str, list] = defaultdict(list)
+            for item in convertido.items:
+                by_area[item.asignatura.area or "SIN_AREA"].append(item)
             st.dataframe(
                 pd.DataFrame(
                     [
                         {
                             "Área": area,
-                            "Interacción": tot.horas_interaccion,
-                            "Prácticas": tot.horas_practicas,
-                            "CRE": tot.cre,
+                            "Interacción (h)": compute_totales(items).horas_interaccion,
+                            "CRE prácticas": cre_practicas_items(items),
+                            "CRE": compute_totales(items).cre,
                         }
-                        for area, tot in totales_por_area(convertido.items).items()
+                        for area, items in sorted(by_area.items())
                     ]
                 ),
                 hide_index=True,
                 use_container_width=True,
+            )
+            st.caption(
+                "CRE prácticas = créditos de materias con tipología práctica supervisada o PPS "
+                "(no las horas del campo «prácticas»)."
             )
 
         st.subheader("Descargar plan en créditos")
