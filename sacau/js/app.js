@@ -200,14 +200,14 @@
   function optionsFromUi() {
     return {
       valor_cre_default: Number($("#valorCre").value || 25),
-      redondeo_cre: Number($("#redondeo").value),
+      // Política fija: CRE enteros; el total = suma de asignaturas.
+      redondeo_cre: 1,
       tipologias: tipologiasMap,
     };
   }
 
-  function fmtCre(n, opts) {
-    const step = opts?.redondeo_cre ?? optionsFromUi().redondeo_cre;
-    return SacauEngine.formatCre(n, step);
+  function fmtCre(n) {
+    return SacauEngine.formatCre(n, 1);
   }
 
   function ensureDuracion(p) {
@@ -324,13 +324,11 @@
     const byAnio = SacauEngine.groupBy(conv.items, (i) => i.asignatura.anio);
     const byArea = SacauEngine.groupBy(conv.items, (i) => i.asignatura.area || "—");
 
-    const roundStep = conv.opciones?.redondeo_cre ?? optionsFromUi().redondeo_cre;
-
     const anioRows = Object.keys(byAnio)
       .sort((a, b) => Number(a) - Number(b))
       .map((anio) => {
         const tot = SacauEngine.computeTotales(byAnio[anio], 1);
-        return `<tr><td>${anio}</td><td>${tot.horas_interaccion.toFixed(0)}</td><td>${tot.horas_autonomas.toFixed(0)}</td><td>${fmtCre(tot.cre, { redondeo_cre: roundStep })}</td></tr>`;
+        return `<tr><td>${anio}</td><td>${tot.horas_interaccion.toFixed(0)}</td><td>${tot.horas_autonomas.toFixed(0)}</td><td>${fmtCre(tot.cre)}</td></tr>`;
       })
       .join("");
 
@@ -338,7 +336,7 @@
       .sort()
       .map((area) => {
         const tot = SacauEngine.computeTotales(byArea[area]);
-        return `<tr><td>${area}</td><td>${tot.horas_interaccion.toFixed(0)}</td><td>${tot.horas_practicas.toFixed(0)}</td><td>${fmtCre(tot.cre, { redondeo_cre: roundStep })}</td></tr>`;
+        return `<tr><td>${area}</td><td>${tot.horas_interaccion.toFixed(0)}</td><td>${tot.horas_practicas.toFixed(0)}</td><td>${fmtCre(tot.cre)}</td></tr>`;
       })
       .join("");
 
@@ -379,7 +377,7 @@
           <td><input data-f="valor_cre_override" type="number" class="narrow" min="25" max="30" value="${ovC}" placeholder="25" /></td>
           <td>${item.horas_interaccion.toFixed(0)}</td>
           <td>${item.horas_autonomas.toFixed(0)}</td>
-          <td><strong>${fmtCre(item.cre, { redondeo_cre: roundStep })}</strong></td>
+          <td><strong>${fmtCre(item.cre)}</strong></td>
           <td>
             <button type="button" class="btn-secondary btn-del" title="Quitar esta asignatura">Quitar</button>
             <input type="hidden" data-f="horas_estimadas" value="${a.horas_estimadas ? "1" : "0"}" />
@@ -420,7 +418,7 @@
         </section>
         <section class="panel">
           <h2>Resumen rápido</h2>
-          <p class="note" style="margin:0 0 0.5rem"><strong>${plan.asignaturas.length}</strong> materias · Interacción <strong>${t.horas_interaccion.toFixed(0)} h</strong> · CRE estimado <strong>${fmtCre(t.cre, { redondeo_cre: roundStep })}</strong></p>
+          <p class="note" style="margin:0 0 0.5rem"><strong>${plan.asignaturas.length}</strong> materias · Interacción <strong>${t.horas_interaccion.toFixed(0)} h</strong> · CRE estimado <strong>${fmtCre(t.cre)}</strong></p>
           <p class="note">${resumenNota}</p>
         </section>
       </div>
@@ -464,8 +462,8 @@
         <div class="metric"><div class="label">Interacción</div><div class="value">${t.horas_interaccion.toLocaleString("es-AR", { maximumFractionDigits: 0 })} h</div></div>
         <div class="metric"><div class="label">Autónomas</div><div class="value">${t.horas_autonomas.toLocaleString("es-AR", { maximumFractionDigits: 0 })} h</div></div>
         <div class="metric"><div class="label">Totales estudiante</div><div class="value">${t.horas_totales.toLocaleString("es-AR", { maximumFractionDigits: 0 })} h</div></div>
-        <div class="metric"><div class="label">CRE totales</div><div class="value">${fmtCre(t.cre, { redondeo_cre: roundStep })}</div></div>
-        <div class="metric"><div class="label">CRE / año</div><div class="value">${Number.isFinite(t.cre_promedio_anual) ? fmtCre(t.cre_promedio_anual, { redondeo_cre: roundStep }) : "—"}</div></div>
+        <div class="metric"><div class="label">CRE totales</div><div class="value">${fmtCre(t.cre)}</div></div>
+        <div class="metric"><div class="label">CRE / año</div><div class="value">${Number.isFinite(t.cre_promedio_anual) ? fmtCre(t.cre_promedio_anual) : "—"}</div></div>
       </div>
       <div class="grid-2">
         <section class="panel">
@@ -751,7 +749,6 @@
     $("#btnAddRow").addEventListener("click", addRow);
     $("#btnRecalc").addEventListener("click", actualizarCreditos);
     $("#valorCre").addEventListener("change", () => render({ skipSync: false }));
-    $("#redondeo").addEventListener("change", () => render({ skipSync: false }));
     $("#btnDocx").addEventListener("click", onExportDocx);
     $("#btnPdf").addEventListener("click", onExportPdf);
     $("#btnCsv").addEventListener("click", onExportCsv);

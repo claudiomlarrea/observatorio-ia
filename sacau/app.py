@@ -479,17 +479,8 @@ def main() -> None:
             value=float(normas_uccuyo.get("cre_default", 25)),
             step=1.0,
         )
-        redondeo = st.selectbox(
-            "Redondeo de CRE",
-            options=[0.5, 0.25, 1.0, 0.0],
-            format_func=lambda x: {
-                0.5: "Medios (0.5)",
-                0.25: "Cuartos (0.25)",
-                1.0: "Enteros (sin decimales)",
-                0.0: "Exacto (con decimales)",
-            }.get(x, str(x)),
-            index=0,
-        )
+        redondeo = 1.0
+        st.caption("Los CRE se expresan siempre en enteros. El total es la suma de cada asignatura.")
 
     if "plan_base" not in st.session_state:
         st.session_state.plan_base = empty_plan()

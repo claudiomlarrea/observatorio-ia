@@ -335,8 +335,8 @@ def make_completo():
         Paragraph(
             "1) Interacción = horas teóricas + horas prácticas.<br/>"
             "2) Autónomas = (interacción × ratio de tipología) + horas fijas, salvo override manual.<br/>"
-            "3) CRE asignatura = (interacción + autónomas) ÷ CRE h, con el redondeo elegido "
-            "(medios 0.5 / cuartos 0.25 / enteros / exacto con decimales).<br/>"
+            "3) CRE asignatura = (interacción + autónomas) ÷ CRE h, redondeado a "
+            "<b>entero</b>. El CRE total del plan es la suma de los CRE de cada asignatura.<br/>"
             "4) CRE totales = suma de las asignaturas.",
             st["body"],
         )
@@ -344,7 +344,7 @@ def make_completo():
     story.append(
         Paragraph(
             "Ejemplo: teórica con 70 h de clase, ratio 1 y CRE h = 25 → autónomas 70 → total 140 h → "
-            "CRE = 140/25 = 5.6 → con redondeo 0.5 queda 5.5. Si CRE h = 30 → ≈ 4.5. "
+            "CRE = 140/25 = 5.6 → se expresa como <b>6</b> CRE (enteros). Si CRE h = 30 → 140/30 ≈ 4.7 → <b>5</b> CRE. "
             "Por eso «subir CRE h» disminuye créditos.",
             st["body"],
         )
