@@ -64,6 +64,14 @@ window.I18N_DICT = {
     es: "Descargar programa completo (PDF)",
     en: "Download full program (PDF)"
   },
+  "pdf.talleres": {
+    es: "Descargar grilla de talleres (PDF)",
+    en: "Download workshops grid (PDF)"
+  },
+  "talleres.web": {
+    es: "Ver talleres online",
+    en: "View workshops online"
+  },
   "install.howToShort": {
     es: "Agregar a la pantalla del celular",
     en: "Add to your phone home screen"

@@ -206,6 +206,24 @@ body {
   filter: brightness(1.04);
 }
 
+.pdf-download-talleres {
+  background: #f3e6ea;
+  color: #7a1f32;
+}
+
+.pdf-download-talleres:hover {
+  background: #ead5dc;
+  filter: none;
+}
+
+.install-guide-link-talleres-web {
+  background: #0d5c4d;
+}
+
+.install-guide-link-talleres-web:hover {
+  background: #0f7a63;
+}
+
 .install-guide-link {
   display: inline-flex;
   align-items: center;
