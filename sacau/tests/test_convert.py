@@ -46,9 +46,28 @@ def test_round_to_step():
     assert round_to_step(3.2, 0.5) == 3.0
     assert round_to_step(3.3, 0.5) == 3.5
     assert round_to_step(3.24, 0.25) == 3.25
-    assert round_to_step(3.24, 0) == 3.24
+    # step 0 o inválido → enteros (política del convertidor)
+    assert round_to_step(3.24, 0) == 3.0
     assert round_to_step(3.24, 1) == 3.0
     assert round_to_step(3.6, 1) == 4.0
+
+
+def test_totales_igual_suma_asignaturas(tipologias):
+    from engine.models import Asignatura, ConvertOptions, PlanEstudios
+
+    plan = PlanEstudios(
+        id="t",
+        nombre="T",
+        duracion_anios=1,
+        asignaturas=[
+            Asignatura(codigo="1", nombre="A", anio=1, area="FB", horas_teoricas=50, horas_practicas=0, tipologia="teorica"),
+            Asignatura(codigo="2", nombre="B", anio=1, area="FB", horas_teoricas=40, horas_practicas=0, tipologia="teorica"),
+        ],
+    )
+    opts = ConvertOptions(valor_cre_default=25, redondeo_cre=1, tipologias=tipologias)
+    conv = convert_plan(plan, opts)
+    assert all(float(i.cre).is_integer() for i in conv.items)
+    assert conv.totales.cre == sum(i.cre for i in conv.items)
 
 
 def test_estimate_autonomous_override(tipologias):
@@ -91,7 +110,7 @@ def test_convert_simple(tipologias):
             Asignatura("01", "Materia", 1, "FB", 50, 0, tipologia="teorica"),
         ],
     )
-    opts = ConvertOptions(valor_cre_default=25, redondeo_cre=0.5, tipologias=tipologias)
+    opts = ConvertOptions(valor_cre_default=25, redondeo_cre=1, tipologias=tipologias)
     conv = convert_plan(plan, opts)
     # interacción 50 + autónomas 50 = 100 → 4 CRE
     assert conv.items[0].cre == 4.0
@@ -114,7 +133,7 @@ def test_psicologia_totales_interaccion(plan_psico):
 
 
 def test_psicologia_conversion_y_sacau(plan_psico, tipologias, normas_uccuyo, normas_psico):
-    opts = ConvertOptions(valor_cre_default=25, redondeo_cre=0.5, tipologias=tipologias)
+    opts = ConvertOptions(valor_cre_default=25, redondeo_cre=1, tipologias=tipologias)
     conv = convert_plan(plan_psico, opts)
     assert conv.totales.horas_interaccion == 3660
     assert conv.totales.horas_autonomas > 0
@@ -132,7 +151,7 @@ def test_psicologia_conversion_y_sacau(plan_psico, tipologias, normas_uccuyo, no
 def test_export_formats(plan_psico, tipologias, normas_uccuyo, normas_psico):
     from engine.export import to_docx_bytes, to_pdf_bytes
 
-    opts = ConvertOptions(valor_cre_default=25, redondeo_cre=0.5, tipologias=tipologias)
+    opts = ConvertOptions(valor_cre_default=25, redondeo_cre=1, tipologias=tipologias)
     conv = convert_plan(plan_psico, opts)
     val = validate_plan(conv, normas_uccuyo, normas_psico)
     df = plan_to_dataframe(conv)

@@ -5,25 +5,24 @@
   "use strict";
 
   function roundToStep(value, step) {
-    if (!step || step <= 0) return Number(value);
-    const rounded = Math.round(Number(value) / step) * step;
-    // Evitar residuos de coma flotante (p. ej. 49.0000000002)
-    const decimals = step >= 1 ? 0 : String(step).includes(".") ? String(step).split(".")[1].length : 0;
-    return Number(rounded.toFixed(Math.min(6, decimals + 2)));
+    // Política del convertidor: CRE siempre enteros (paso 1).
+    const s = !step || step <= 0 ? 1 : Number(step);
+    const rounded = Math.round(Number(value) / s) * s;
+    return s >= 1 ? Math.round(rounded) : Number(rounded.toFixed(6));
   }
 
   /** Cantidad de decimales a mostrar según el paso de redondeo. */
   function creDecimals(step) {
     const s = Number(step);
-    if (!s || s <= 0) return 2; // exacto: hasta 2 decimales útiles
-    if (s >= 1) return 0;
+    if (!s || s <= 0 || s >= 1) return 0;
     if (s >= 0.5) return 1;
     return 2;
   }
 
   function formatCre(value, step) {
-    const d = creDecimals(step);
-    return Number(value || 0).toLocaleString("es-AR", {
+    const d = creDecimals(step == null ? 1 : step);
+    const n = d === 0 ? Math.round(Number(value || 0)) : Number(value || 0);
+    return n.toLocaleString("es-AR", {
       minimumFractionDigits: d,
       maximumFractionDigits: d,
     });
@@ -87,6 +86,8 @@
       tot.anios = Math.max(...items.map((i) => Number(i.asignatura.anio || 1)));
     }
     tot.cre_promedio_anual = tot.anios ? tot.cre / tot.anios : 0;
+    // Los CRE de asignaturas ya son enteros: el total es su suma exacta.
+    tot.cre = Math.round(tot.cre);
     return tot;
   }
 

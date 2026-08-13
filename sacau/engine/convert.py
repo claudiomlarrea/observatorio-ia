@@ -17,11 +17,12 @@ from .models import (
 
 
 def round_to_step(value: float, step: float) -> float:
-    """Redondea al múltiplo de `step` más cercano (0 = exacto, con decimales)."""
-    if not step or step <= 0:
-        return float(value)
-    rounded = round(value / step) * step
-    decimals = 0 if step >= 1 else len(str(step).split(".")[-1]) if "." in str(step) else 0
+    """Redondea al múltiplo de `step` más cercano. El convertidor usa enteros (step=1)."""
+    s = 1.0 if not step or step <= 0 else float(step)
+    rounded = round(value / s) * s
+    if s >= 1:
+        return float(round(rounded))
+    decimals = len(str(s).split(".")[-1]) if "." in str(s) else 0
     return round(rounded, min(6, decimals + 2))
 
 
@@ -76,6 +77,8 @@ def compute_totales(items: list[AsignaturaConvertida], duracion_anios: int = 0) 
     anios = duracion_anios
     if not anios and items:
         anios = max(i.asignatura.anio for i in items)
+    # CRE por asignatura ya son enteros: el total es su suma exacta.
+    cre = float(round(cre))
     cre_anual = (cre / anios) if anios else 0.0
 
     return TotalesPlan(
