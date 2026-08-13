@@ -208,12 +208,23 @@ body {
 
 .install-guide-link {
   display: inline-flex;
+  align-items: center;
   margin-top: 0.65rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
+  background: #7a1f32;
   color: #fff;
-  font-size: 0.86rem;
-  font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 0.15em;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  touch-action: manipulation;
+}
+
+.install-guide-link:hover {
+  background: #921f3a;
+  filter: brightness(1.05);
 }
 
 .pdf-download-footer {
