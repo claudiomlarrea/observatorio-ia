@@ -686,7 +686,7 @@ body {
   }
 
   .botonera {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     margin: -0.85rem auto 0;
     width: calc(100% - 1.5rem);
     padding: 0.65rem 0.85rem;

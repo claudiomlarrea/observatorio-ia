@@ -399,7 +399,7 @@
     els.stepTools.hidden = state.mode !== "disertante";
     els.optionGrid.classList.toggle(
       "is-compact",
-      ["tipo", "aula", "horario"].includes(state.mode)
+      ["tipo", "aula", "horario", "talleres"].includes(state.mode)
     );
 
     if (state.mode === "horario") renderHorarioStep();
@@ -407,6 +407,20 @@
     else if (state.mode === "tipo") renderTipoStep();
     else if (state.mode === "disertante") renderDisertanteStep();
     else if (state.mode === "aula") renderAulaStep();
+    else if (state.mode === "talleres") renderTalleresStep();
+  }
+
+  function renderTalleresStep() {
+    els.optionGrid.innerHTML = `
+      <a class="option-btn option-link" href="assets/Grilla_Talleres_CAEM_2026.pdf" download="Grilla_Talleres_CAEM_2026.pdf" target="_blank" rel="noopener noreferrer">
+        <strong>${escapeHtml(t("talleres.pdfOption"))}</strong>
+        <span>${escapeHtml(t("talleres.pdfOptionSub"))}</span>
+      </a>
+      <a class="option-btn option-link" href="https://caem.afacimera.org.ar/talleres" target="_blank" rel="noopener noreferrer">
+        <strong>${escapeHtml(t("talleres.webOption"))}</strong>
+        <span>${escapeHtml(t("talleres.webOptionSub"))}</span>
+      </a>
+    `;
   }
 
   function renderHorarioStep() {
