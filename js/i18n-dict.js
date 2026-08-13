@@ -1003,8 +1003,12 @@ window.I18N_DICT = {
     "en": "Double-click the video"
   },
   "sec.herramientas.rumbo.btnVideo": {
-    "es": "Abrir video en pestaña nueva",
-    "en": "Open video in a new tab"
+    "es": "Ver demo en video",
+    "en": "Watch demo video"
+  },
+  "sec.herramientas.rumbo.btnConsulta": {
+    "es": "Consultar por correo",
+    "en": "Inquire by email"
   },
   "sec.herramientas.rumbo.videoOpenAria": {
     "es": "Abrir demo de Rumbo Deporte en una pestaña nueva con doble clic",
@@ -1139,8 +1143,8 @@ window.I18N_DICT = {
     "en": "SACAU → CRE Converter"
   },
   "sec.herramientas.sacau.lead": {
-    "es": "Transformá planes de estudio en horas (Word, PDF o CSV) al sistema de créditos CRE de la UCCuyo: tipologías, desglose por año y área, cumplimiento SACAU y exportación del plan en créditos.",
-    "en": "Convert study plans in hours (Word, PDF, or CSV) to UCCuyo’s CRE credit system: typologies, breakdown by year and area, SACAU compliance, and credit-plan export."
+    "es": "Convertí planes de estudio en horas (Word, PDF o CSV) al sistema de créditos CRE de la UCCuyo, con tipologías y control de cumplimiento SACAU.",
+    "en": "Convert study plans in hours (Word, PDF, or CSV) to UCCuyo’s CRE credit system, with typologies and SACAU compliance checks."
   },
   "sec.herramientas.sacau.item1": {
     "es": "Carga de planes en Word (.docx), PDF o CSV",
