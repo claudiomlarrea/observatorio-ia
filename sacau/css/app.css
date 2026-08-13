@@ -115,6 +115,25 @@ header.hero p {
   color: var(--soft);
 }
 
+#app-resultado.is-updating #bloquesDesglose,
+#app-resultado.is-updating #metricsCre {
+  animation: sacauFlash 0.65s ease;
+}
+
+#app-resultado .cre-cell {
+  font-weight: 700;
+  color: var(--inst-dark);
+}
+
+@keyframes sacauFlash {
+  0% {
+    background: rgba(122, 21, 50, 0.12);
+  }
+  100% {
+    background: transparent;
+  }
+}
+
 .panel-head {
   display: flex;
   flex-wrap: wrap;
