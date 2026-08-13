@@ -967,8 +967,8 @@ window.I18N_DICT = {
     "en": "AI Apps"
   },
   "sec.herramientas.intro": {
-    "es": "Sistemas y plataformas desarrollados por el Observatorio de Inteligencia Artificial de la UCCuyo para la comunidad universitaria e instituciones vinculadas: encuestas, datos, evaluación, auditoría académica, planificación estratégica y más. Se amplían a medida que se incorporan nuevos desarrollos.",
-    "en": "Systems and platforms developed by the UCCuyo Artificial Intelligence Observatory for the university community and partner institutions: surveys, data, assessment, academic audit, strategic planning, and more. The catalog grows as new developments are added."
+    "es": "Sistemas y plataformas desarrollados por el Observatorio de Inteligencia Artificial de la UCCuyo para la comunidad universitaria e instituciones vinculadas: encuestas, datos, evaluación, auditoría académica, conversión curricular SACAU/CRE, planificación estratégica y más. Se amplían a medida que se incorporan nuevos desarrollos.",
+    "en": "Systems and platforms developed by the UCCuyo Artificial Intelligence Observatory for the university community and partner institutions: surveys, data, assessment, academic audit, SACAU/CRE curriculum conversion, strategic planning, and more. The catalog grows as new developments are added."
   },
   "sec.herramientas.rumbo.badge": {
     "es": "Demo · consulta",
@@ -1133,6 +1133,30 @@ window.I18N_DICT = {
   "sec.herramientas.evaluar.btnInstructivo": {
     "es": "Instructivo (PDF)",
     "en": "Guide (PDF, Spanish)"
+  },
+  "sec.herramientas.sacau.title": {
+    "es": "Convertidor SACAU → CRE",
+    "en": "SACAU → CRE Converter"
+  },
+  "sec.herramientas.sacau.lead": {
+    "es": "Transformá planes de estudio en horas (Word, PDF o CSV) al sistema de créditos CRE de la UCCuyo: tipologías, desglose por año y área, cumplimiento SACAU y exportación del plan en créditos.",
+    "en": "Convert study plans in hours (Word, PDF, or CSV) to UCCuyo’s CRE credit system: typologies, breakdown by year and area, SACAU compliance, and credit-plan export."
+  },
+  "sec.herramientas.sacau.item1": {
+    "es": "Carga de planes en Word (.docx), PDF o CSV",
+    "en": "Load plans from Word (.docx), PDF, or CSV"
+  },
+  "sec.herramientas.sacau.item2": {
+    "es": "Cálculo CRE, tipologías y desglose por año / área",
+    "en": "CRE calculation, typologies, and year / area breakdown"
+  },
+  "sec.herramientas.sacau.item3": {
+    "es": "Exportación Word, PDF y CSV · anexo Res. 911",
+    "en": "Word, PDF, and CSV export · Res. 911 annex"
+  },
+  "sec.herramientas.sacau.btnAbrir": {
+    "es": "Abrir convertidor SACAU",
+    "en": "Open SACAU converter"
   },
   "common.abrir": {
     "es": "Abrir",
