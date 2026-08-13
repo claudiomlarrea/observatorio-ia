@@ -115,23 +115,46 @@ header.hero p {
   color: var(--soft);
 }
 
-#app-resultado.is-updating #bloquesDesglose,
-#app-resultado.is-updating #metricsCre {
-  animation: sacauFlash 0.65s ease;
-}
-
 #app-resultado .cre-cell {
   font-weight: 700;
   color: var(--inst-dark);
+  transition: color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-@keyframes sacauFlash {
-  0% {
-    background: rgba(122, 21, 50, 0.12);
-  }
-  100% {
-    background: transparent;
-  }
+.cell-cre {
+  transition: color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.cell-cre.cre-delta-up,
+.cell-cre.cre-delta-down,
+.cre-cell.cre-delta-up,
+.cre-cell.cre-delta-down,
+.metric .value.cre-delta-up,
+.metric .value.cre-delta-down,
+#resumenRapido .cre-flash.cre-delta-up,
+#resumenRapido .cre-flash.cre-delta-down {
+  border-radius: 4px;
+  padding: 0.05em 0.2em;
+}
+
+.cell-cre.cre-delta-up,
+.cell-cre.cre-delta-up strong,
+.cre-cell.cre-delta-up,
+.metric .value.cre-delta-up,
+#resumenRapido .cre-flash.cre-delta-up {
+  color: var(--green) !important;
+  background: rgba(13, 110, 79, 0.14);
+  box-shadow: 0 0 0 1px rgba(13, 110, 79, 0.28);
+}
+
+.cell-cre.cre-delta-down,
+.cell-cre.cre-delta-down strong,
+.cre-cell.cre-delta-down,
+.metric .value.cre-delta-down,
+#resumenRapido .cre-flash.cre-delta-down {
+  color: var(--inst) !important;
+  background: rgba(122, 21, 50, 0.16);
+  box-shadow: 0 0 0 1px rgba(122, 21, 50, 0.35);
 }
 
 .panel-head {
