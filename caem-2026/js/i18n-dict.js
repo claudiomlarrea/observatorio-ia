@@ -308,8 +308,8 @@ window.I18N_DICT = {
     en: "All"
   },
   "back.filter": {
-    es: "← Cambiar filtro",
-    en: "← Change filter"
+    es: "← Volver",
+    en: "← Back"
   },
   "back.days": {
     es: "← Volver a los días",
