@@ -303,7 +303,7 @@ def make_completo():
                 "<b>Instructivo completo / Biblioteca normativa</b>: acceso a guías y PDF oficiales.",
                 "<b>Borrar plan y empezar de nuevo</b>: vacía el plan cargado.",
                 "<b>Agregar asignatura</b>: suma una fila editable.",
-                "<b>Actualizar créditos</b>: recalcula totales (y refresca la síntesis de horas del anexo si corresponde).",
+                "<b>Edición en tabla</b>: al cambiar horas, tipología o CRE h, los totales y el CRE se recalculan solos.",
                 "<b>Generar / regenerar borrador 911</b>: propone textos desarrollados del anexo curricular.",
                 "<b>Vaciar anexo</b>: limpia los campos del anexo.",
                 "<b>Incluir anexo en descargas</b>: si está marcado, Word/PDF llevan el anexo.",
