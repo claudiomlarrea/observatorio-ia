@@ -105,8 +105,36 @@ window.I18N_DICT = {
     en: "Add to Home Screen"
   },
   "install.pageSub": {
-    es: "En 30 segundos tenés el ícono en el celular, sin Play Store ni App Store.",
-    en: "In 30 seconds you get the icon on your phone—no Play Store or App Store."
+    es: "Tocá Instalar y listo: el ícono queda en tu celular.",
+    en: "Tap Install and you’re done: the icon stays on your phone."
+  },
+  "install.ctaHint": {
+    es: "Un toque para agregar la App de Consulta a tu pantalla de inicio.",
+    en: "One tap to add the Consultation App to your home screen."
+  },
+  "install.ctaIosHint": {
+    es: "En iPhone: tocá Instalar y seguí los pasos de Safari más abajo.",
+    en: "On iPhone: tap Install and follow the Safari steps below."
+  },
+  "install.ctaManualHint": {
+    es: "Si no sale el cartel del navegador, usá los pasos de abajo.",
+    en: "If the browser prompt doesn’t appear, use the steps below."
+  },
+  "install.ctaInstalled": {
+    es: "Ya instalada",
+    en: "Already installed"
+  },
+  "install.ctaInstalledHint": {
+    es: "La app ya está en tu pantalla de inicio.",
+    en: "The app is already on your home screen."
+  },
+  "install.stepsTitle": {
+    es: "Si no aparece el cartel",
+    en: "If the prompt doesn’t appear"
+  },
+  "install.stepsLead": {
+    es: "En algunos celulares hay que hacerlo desde el menú del navegador:",
+    en: "On some phones you need to use the browser menu:"
   },
   "install.openFirst": {
     es: "1. Abrí esta dirección en el celular:",

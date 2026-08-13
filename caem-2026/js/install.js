@@ -1,8 +1,82 @@
 (() => {
   const t = (key) => (window.I18N && window.I18N.t ? window.I18N.t(key) : key);
   let deferredPrompt = null;
+  const isInstallPage = document.body.classList.contains("install-page");
+
+  function isStandalone() {
+    return (
+      window.matchMedia("(display-mode: standalone)").matches ||
+      window.navigator.standalone === true
+    );
+  }
+
+  function isIos() {
+    return /iphone|ipad|ipod/i.test(navigator.userAgent);
+  }
+
+  function setStatus(key) {
+    const status = document.getElementById("install-cta-status");
+    if (!status) return;
+    status.setAttribute("data-i18n", key);
+    status.textContent = t(key);
+  }
+
+  function refreshPageCta() {
+    const btn = document.getElementById("install-page-cta");
+    if (!btn) return;
+
+    if (isStandalone()) {
+      btn.disabled = true;
+      btn.textContent = t("install.ctaInstalled");
+      btn.setAttribute("data-i18n", "install.ctaInstalled");
+      setStatus("install.ctaInstalledHint");
+      return;
+    }
+
+    btn.disabled = false;
+    btn.textContent = t("install.barCta");
+    btn.setAttribute("data-i18n", "install.barCta");
+
+    if (deferredPrompt) {
+      setStatus("install.ctaHint");
+    } else if (isIos()) {
+      setStatus("install.ctaIosHint");
+    } else {
+      setStatus("install.ctaManualHint");
+    }
+  }
+
+  async function promptInstall() {
+    if (isStandalone()) {
+      setStatus("install.ctaInstalledHint");
+      return;
+    }
+
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      try {
+        await deferredPrompt.userChoice;
+      } catch (_e) {}
+      deferredPrompt = null;
+      const bar = document.getElementById("install-bar");
+      if (bar) bar.hidden = true;
+      refreshPageCta();
+      return;
+    }
+
+    const target = isIos()
+      ? document.getElementById("ios")
+      : document.getElementById("pasos") || document.getElementById("android");
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      target.classList.add("is-highlight");
+      setTimeout(() => target.classList.remove("is-highlight"), 2200);
+    }
+    setStatus(isIos() ? "install.ctaIosHint" : "install.ctaManualHint");
+  }
 
   function ensureInstallUi() {
+    if (isInstallPage) return;
     if (document.getElementById("install-bar")) return;
     const bar = document.createElement("div");
     bar.id = "install-bar";
@@ -20,17 +94,8 @@
     `;
     document.body.appendChild(bar);
 
-    document.getElementById("install-btn").addEventListener("click", async () => {
-      if (!deferredPrompt) {
-        window.location.href = "instalar.html";
-        return;
-      }
-      deferredPrompt.prompt();
-      try {
-        await deferredPrompt.userChoice;
-      } catch (_e) {}
-      deferredPrompt = null;
-      bar.hidden = true;
+    document.getElementById("install-btn").addEventListener("click", () => {
+      promptInstall();
     });
 
     document.getElementById("install-dismiss").addEventListener("click", () => {
@@ -42,14 +107,24 @@
   }
 
   function showBar() {
+    if (isInstallPage) return;
     try {
       if (sessionStorage.getItem("caem_install_dismissed") === "1") return;
     } catch (_e) {}
-    if (window.matchMedia("(display-mode: standalone)").matches) return;
-    if (window.navigator.standalone === true) return;
+    if (isStandalone()) return;
     const bar = document.getElementById("install-bar");
     if (bar) bar.hidden = false;
     if (window.I18N && window.I18N.apply) window.I18N.apply();
+  }
+
+  function bindPageCta() {
+    const btn = document.getElementById("install-page-cta");
+    if (!btn || btn.dataset.bound === "1") return;
+    btn.dataset.bound = "1";
+    btn.addEventListener("click", () => {
+      promptInstall();
+    });
+    refreshPageCta();
   }
 
   function registerSW() {
@@ -64,31 +139,41 @@
     deferredPrompt = e;
     ensureInstallUi();
     showBar();
+    refreshPageCta();
   });
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => {
-      ensureInstallUi();
-      registerSW();
-      // iOS / browsers without beforeinstallprompt: still offer help link subtly
-      setTimeout(() => {
-        if (!deferredPrompt) {
-          ensureInstallUi();
-          // On iPhone show help bar once
-          const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
-          if (isIos) showBar();
-        }
-      }, 1200);
-    });
-  } else {
+  window.addEventListener("appinstalled", () => {
+    deferredPrompt = null;
+    const bar = document.getElementById("install-bar");
+    if (bar) bar.hidden = true;
+    refreshPageCta();
+  });
+
+  function boot() {
     ensureInstallUi();
+    bindPageCta();
     registerSW();
+    refreshPageCta();
+    setTimeout(() => {
+      if (!deferredPrompt && !isInstallPage) {
+        ensureInstallUi();
+        if (isIos()) showBar();
+      }
+      refreshPageCta();
+    }, 1200);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
   }
 
   window.CAEM_INSTALL = {
     getPrompt: () => deferredPrompt,
+    promptInstall,
     openGuide: () => {
       window.location.href = "instalar.html";
-    }
+    },
   };
 })();

@@ -7,6 +7,88 @@
   gap: 1rem;
 }
 
+.install-hero-cta {
+  display: grid;
+  gap: 0.75rem;
+  justify-items: center;
+  text-align: center;
+  padding: 1.15rem 1rem 1.25rem;
+  background:
+    radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, #7a1f32 18%, white), transparent 55%),
+    #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 28px rgba(11, 31, 74, 0.08);
+}
+
+.install-cta-btn {
+  appearance: none;
+  border: 0;
+  width: min(100%, 18rem);
+  min-height: 3.35rem;
+  padding: 0.9rem 1.35rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #9a2a40, #7a1f32);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(122, 31, 50, 0.35);
+  touch-action: manipulation;
+}
+
+.install-cta-btn:hover {
+  background: linear-gradient(180deg, #b8334d, #921f3a);
+}
+
+.install-cta-btn:disabled {
+  opacity: 0.72;
+  cursor: default;
+  box-shadow: none;
+}
+
+.install-cta-status {
+  margin: 0;
+  max-width: 26rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.install-cta-back {
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.install-steps-lead {
+  margin: 0 0 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.install-steps-grid {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.install-steps-grid h3 {
+  margin: 0 0 0.45rem;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--navy);
+}
+
+.install-card.is-highlight,
+#ios.is-highlight,
+#android.is-highlight {
+  outline: 3px solid color-mix(in srgb, #7a1f32 55%, white);
+  outline-offset: 2px;
+  transition: outline-color 0.2s ease;
+}
+
 .install-url {
   margin: 0;
   padding: 0.95rem 1rem;

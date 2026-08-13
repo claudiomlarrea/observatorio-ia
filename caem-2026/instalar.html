@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-title" content="CAEM 2026" />
     <link rel="apple-touch-icon" href="assets/icon-180.png" />
     <link rel="manifest" href="manifest.webmanifest" />
-    <title>Cómo instalar App de Consulta · CAEM 2026</title>
+    <title>Instalar App de Consulta · CAEM 2026</title>
     <link rel="icon" type="image/png" href="assets/icon-192.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,28 +16,72 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="css/styles.css?v=8" />
-    <link rel="stylesheet" href="css/instalar.css?v=8" />
+    <link rel="stylesheet" href="css/styles.css?v=13" />
+    <link rel="stylesheet" href="css/instalar.css?v=13" />
   </head>
   <body class="install-page">
     <header class="site-header install-header">
       <div class="header-inner">
-        <img class="brand-logo" src="assets/logo-caem.png" width="72" height="86" alt="CAEM 2026" />
+        <img
+          class="brand-logo"
+          src="assets/logo-caem.png"
+          width="72"
+          height="86"
+          alt="CAEM 2026"
+          data-i18n-attr="alt:a11y.logoAlt"
+        />
         <div class="brand-copy">
           <p class="brand-kicker">CAEM 2026</p>
           <h1 class="brand-title" data-i18n="install.pageTitle">Agregar a la pantalla</h1>
           <p class="brand-sub" data-i18n="install.pageSub">
-            En 30 segundos tenés el ícono en el celular, sin Play Store ni App Store.
+            Tocá Instalar y listo: el ícono queda en tu celular.
           </p>
         </div>
       </div>
     </header>
 
     <main class="main install-main">
-      <p class="install-url">
-        <span data-i18n="install.openFirst">1. Abrí esta dirección en el celular:</span><br />
-        <a href="./">https://observatorio-ia.uccuyo.edu.ar/caem-2026/</a>
-      </p>
+      <section class="install-hero-cta" aria-labelledby="install-cta-title">
+        <h2 id="install-cta-title" class="sr-only" data-i18n="install.barCta">Instalar</h2>
+        <button type="button" class="install-cta-btn" id="install-page-cta" data-i18n="install.barCta">
+          Instalar
+        </button>
+        <p class="install-cta-status" id="install-cta-status" data-i18n="install.ctaHint">
+          Un toque para agregar la App de Consulta a tu pantalla de inicio.
+        </p>
+        <a class="install-cta-back" href="./" data-i18n="install.openApp">Abrir App de Consulta</a>
+      </section>
+
+      <section class="install-card" id="pasos">
+        <h2 data-i18n="install.stepsTitle">Si no aparece el cartel</h2>
+        <p class="install-steps-lead" data-i18n="install.stepsLead">
+          En algunos celulares hay que hacerlo desde el menú del navegador:
+        </p>
+        <div class="install-steps-grid">
+          <div id="android">
+            <h3 data-i18n="install.androidTitle">Android (Chrome)</h3>
+            <ol class="install-steps">
+              <li data-i18n="install.android1">Abrí el link en Chrome.</li>
+              <li data-i18n="install.android2">Tocá el menú ⋮ (arriba a la derecha).</li>
+              <li data-i18n="install.android3">
+                Elegí “Instalar app” o “Agregar a la pantalla de inicio”.
+              </li>
+              <li data-i18n="install.android4">Confirmá. Aparece el ícono CAEM 2026 como una app.</li>
+            </ol>
+          </div>
+          <div id="ios">
+            <h3 data-i18n="install.iosTitle">iPhone / iPad (Safari)</h3>
+            <ol class="install-steps">
+              <li data-i18n="install.ios1">
+                Abrí el link en Safari (no en Instagram/WhatsApp interno).
+              </li>
+              <li data-i18n="install.ios2">Tocá el botón Compartir □↑ (abajo o arriba).</li>
+              <li data-i18n="install.ios3">Desplazate y tocá “Agregar a pantalla de inicio”.</li>
+              <li data-i18n="install.ios4">Tocá “Agregar”. Queda el ícono en tu pantalla.</li>
+            </ol>
+          </div>
+        </div>
+      </section>
 
       <section class="install-card install-qr-card" id="qr">
         <h2 data-i18n="install.qrTitle">QR para compartir</h2>
@@ -52,7 +96,10 @@
           alt="Código QR App de Consulta CAEM 2026"
         />
         <p class="install-video-note">
-          <a href="assets/qr-caem-2026-print.png" download="QR-CAEM-2026.png" data-i18n="install.qrDownload"
+          <a
+            href="assets/qr-caem-2026-print.png"
+            download="QR-CAEM-2026.png"
+            data-i18n="install.qrDownload"
             >Descargar QR</a
           >
           · carteles, WhatsApp, diapositivas
@@ -78,26 +125,6 @@
         </p>
       </section>
 
-      <section class="install-card" id="android">
-        <h2 data-i18n="install.androidTitle">Android (Chrome)</h2>
-        <ol class="install-steps">
-          <li data-i18n="install.android1">Abrí el link en Chrome.</li>
-          <li data-i18n="install.android2">Tocá el menú ⋮ (arriba a la derecha).</li>
-          <li data-i18n="install.android3">Elegí “Instalar app” o “Agregar a la pantalla de inicio”.</li>
-          <li data-i18n="install.android4">Confirmá. Aparece el ícono CAEM 2026 como una app.</li>
-        </ol>
-      </section>
-
-      <section class="install-card" id="ios">
-        <h2 data-i18n="install.iosTitle">iPhone / iPad (Safari)</h2>
-        <ol class="install-steps">
-          <li data-i18n="install.ios1">Abrí el link en Safari (no en Instagram/WhatsApp interno).</li>
-          <li data-i18n="install.ios2">Tocá el botón Compartir □↑ (abajo o arriba).</li>
-          <li data-i18n="install.ios3">Desplazate y tocá “Agregar a pantalla de inicio”.</li>
-          <li data-i18n="install.ios4">Tocá “Agregar”. Queda el ícono en tu pantalla.</li>
-        </ol>
-      </section>
-
       <section class="install-card install-note">
         <h2 data-i18n="install.storesTitle">¿Play Store o App Store?</h2>
         <p data-i18n="install.storesBody">
@@ -106,17 +133,14 @@
           tiendas. Para el congreso, es el camino más simple para mil personas.
         </p>
       </section>
-
-      <p class="install-actions">
-        <a class="pdf-download" href="./" data-i18n="install.openApp">Abrir App de Consulta</a>
-      </p>
     </main>
 
     <footer class="site-footer">
       <p class="footer-note" data-i18n="footer.note">App de Consulta · Observatorio de IA · UCCuyo</p>
     </footer>
 
-    <script src="js/i18n-dict.js?v=8"></script>
-    <script src="js/i18n.js?v=8"></script>
+    <script src="js/i18n-dict.js?v=13"></script>
+    <script src="js/i18n.js?v=13"></script>
+    <script src="js/install.js?v=13"></script>
   </body>
 </html>
