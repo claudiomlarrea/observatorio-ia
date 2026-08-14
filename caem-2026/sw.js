@@ -1,16 +1,16 @@
 /* Service worker — App de Consulta CAEM 2026 */
-const CACHE = "caem-2026-v14";
+const CACHE = "caem-2026-v15";
 const ASSETS = [
   "./",
   "./index.html",
   "./instalar.html",
   "./manifest.webmanifest",
-  "./css/styles.css?v=14",
-  "./js/i18n-dict.js?v=14",
-  "./js/i18n.js?v=14",
-  "./js/app.js?v=14",
-  "./js/install.js?v=14",
-  "./data/programa.json?v=14",
+  "./css/styles.css?v=15",
+  "./js/i18n-dict.js?v=15",
+  "./js/i18n.js?v=15",
+  "./js/app.js?v=15",
+  "./js/install.js?v=15",
+  "./data/programa.json?v=15",
   "./assets/logo-caem.png",
   "./assets/icon-192.png",
   "./assets/icon-512.png",
