@@ -129,9 +129,32 @@
 
   function registerSW() {
     if (!("serviceWorker" in navigator)) return;
-    navigator.serviceWorker.register("./sw.js").catch((err) => {
-      console.warn("SW register failed", err);
-    });
+    navigator.serviceWorker
+      .register("./sw.js", { updateViaCache: "none" })
+      .then((reg) => {
+        try {
+          reg.update();
+        } catch (_e) {}
+      })
+      .catch((err) => {
+        console.warn("SW register failed", err);
+      });
+  }
+
+  function syncOfflineBanner() {
+    const banner = document.getElementById("offline-banner");
+    const offline = !navigator.onLine;
+    document.body.classList.toggle("is-offline", offline);
+    if (banner) {
+      banner.hidden = !offline;
+      if (offline && window.I18N && window.I18N.apply) window.I18N.apply();
+    }
+  }
+
+  function bindConnectivity() {
+    window.addEventListener("online", syncOfflineBanner);
+    window.addEventListener("offline", syncOfflineBanner);
+    syncOfflineBanner();
   }
 
   window.addEventListener("beforeinstallprompt", (e) => {
@@ -152,6 +175,7 @@
   function boot() {
     ensureInstallUi();
     bindPageCta();
+    bindConnectivity();
     registerSW();
     refreshPageCta();
     setTimeout(() => {
@@ -160,6 +184,7 @@
         if (isIos()) showBar();
       }
       refreshPageCta();
+      syncOfflineBanner();
     }, 1200);
   }
 

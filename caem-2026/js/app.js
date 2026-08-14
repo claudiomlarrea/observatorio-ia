@@ -24,6 +24,8 @@
   };
 
   const AGENDA_KEY = "caem_2026_agenda";
+  const PROGRAM_STORE_KEY = "caem_2026_programa";
+  const PROGRAM_VERSION = "16";
 
   const EJE_NAME_KEYS = {
     "eje-1": "eje.1.name",
@@ -966,23 +968,72 @@
       if (retry) retry.addEventListener("click", () => init());
     };
 
-    try {
+    const readStoredProgram = () => {
+      try {
+        const raw = localStorage.getItem(PROGRAM_STORE_KEY);
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+        if (!data?.sesiones?.length) return null;
+        return data;
+      } catch (_e) {
+        return null;
+      }
+    };
+
+    const persistProgram = (data) => {
+      try {
+        localStorage.setItem(PROGRAM_STORE_KEY, JSON.stringify(data));
+      } catch (_e) {}
+    };
+
+    const fetchProgram = async () => {
       const basePath = window.location.pathname.endsWith("/")
         ? window.location.pathname
         : `${window.location.pathname.replace(/\/?$/, "")}/`;
-      const url = new URL(`data/programa.json?v=15`, `${window.location.origin}${basePath}`);
-      let res;
-      try {
-        res = await fetch(url.href, { cache: "no-store" });
-      } catch (_net) {
-        res = await fetch("data/programa.json?v=15", { cache: "no-store" });
+      const candidates = [
+        new URL(`data/programa.json?v=${PROGRAM_VERSION}`, `${window.location.origin}${basePath}`)
+          .href,
+        `data/programa.json?v=${PROGRAM_VERSION}`,
+        "data/programa.json",
+      ];
+      let lastErr = null;
+      for (const url of candidates) {
+        try {
+          const res = await fetch(url, { cache: "default" });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          if (!data?.sesiones?.length) throw new Error("empty program");
+          return data;
+        } catch (err) {
+          lastErr = err;
+        }
       }
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      state.data = await res.json();
-      if (!state.data?.sesiones?.length) throw new Error("empty program");
+      throw lastErr || new Error("program fetch failed");
+    };
+
+    try {
+      let data = null;
+      let fromStore = false;
+      try {
+        data = await fetchProgram();
+        persistProgram(data);
+      } catch (err) {
+        data = readStoredProgram();
+        fromStore = Boolean(data);
+        if (!data) throw err;
+        console.warn("Using stored program offline", err);
+      }
+      state.data = data;
       bindEvents();
       updateAgendaBadge();
       setMode("horario");
+      if (fromStore || !navigator.onLine) {
+        const banner = document.getElementById("offline-banner");
+        if (banner) {
+          banner.hidden = false;
+          if (window.I18N && window.I18N.apply) window.I18N.apply();
+        }
+      }
     } catch (err) {
       console.error(err);
       showLoadError(err && err.message ? err.message : String(err));

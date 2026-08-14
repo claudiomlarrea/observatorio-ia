@@ -15,6 +15,10 @@ window.I18N_DICT = {
     es: "Ir al contenido",
     en: "Skip to content"
   },
+  "offline.banner": {
+    es: "Sin conexión — usando la versión guardada en este celular",
+    en: "Offline — using the version saved on this phone"
+  },
   "a11y.langSwitcher": {
     es: "Idioma / Language",
     en: "Language / Idioma"
