@@ -223,20 +223,20 @@ window.I18N_DICT = {
     en: "My agenda"
   },
   "agenda.add": {
-    es: "+ Agregar",
-    en: "+ Add"
+    es: "Agregar a la agenda",
+    en: "Add to agenda"
   },
   "agenda.saved": {
-    es: "✓ En agenda",
-    en: "✓ Saved"
+    es: "✓ En la agenda",
+    en: "✓ On agenda"
   },
   "agenda.empty": {
     es: "Todavía no guardaste nada.",
     en: "You haven’t saved anything yet."
   },
   "agenda.emptyHint": {
-    es: "En cualquier resultado tocá “+ Agregar”. Después volvé acá para ver tu día.",
-    en: "In any result, tap “+ Add”. Then come back here to see your day."
+    es: "En cualquier resultado tocá “Agregar a la agenda”. Después volvé acá para ver tu día.",
+    en: "In any result, tap “Add to agenda”. Then come back here to see your day."
   },
   "agenda.summary": {
     es: "{n} guardadas en este celular",
