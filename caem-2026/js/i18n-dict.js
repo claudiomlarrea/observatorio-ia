@@ -207,7 +207,49 @@ window.I18N_DICT = {
   "mode.disertante": { es: "Disertante", en: "Speaker" },
   "mode.aula": { es: "Aula", en: "Room" },
   "mode.talleres": { es: "Talleres", en: "Workshops" },
+  "mode.agenda": { es: "Agenda", en: "Agenda" },
   "mode.ahora": { es: "Ahora", en: "Now" },
+
+  "step.agenda.title": {
+    es: "Mi agenda",
+    en: "My agenda"
+  },
+  "step.agenda.help": {
+    es: "Sesiones y talleres que guardaste en este celular.",
+    en: "Sessions and workshops you saved on this phone."
+  },
+  "agenda.title": {
+    es: "Mi agenda",
+    en: "My agenda"
+  },
+  "agenda.add": {
+    es: "+ Agregar",
+    en: "+ Add"
+  },
+  "agenda.saved": {
+    es: "✓ En agenda",
+    en: "✓ Saved"
+  },
+  "agenda.empty": {
+    es: "Todavía no guardaste nada.",
+    en: "You haven’t saved anything yet."
+  },
+  "agenda.emptyHint": {
+    es: "En cualquier resultado tocá “+ Agregar”. Después volvé acá para ver tu día.",
+    en: "In any result, tap “+ Add”. Then come back here to see your day."
+  },
+  "agenda.summary": {
+    es: "{n} guardadas en este celular",
+    en: "{n} saved on this phone"
+  },
+  "agenda.conflict": {
+    es: "Atención: hay actividades que se superponen en el horario. Revisá las marcadas.",
+    en: "Heads up: some activities overlap. Check the highlighted ones."
+  },
+  "agenda.clear": {
+    es: "Vaciar agenda",
+    en: "Clear agenda"
+  },
 
   "step.talleres.title": {
     es: "Elegí el día del taller",

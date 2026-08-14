@@ -19,8 +19,11 @@
     disertante: { title: "step.disertante.title", help: "step.disertante.help" },
     aula: { title: "step.aula.title", help: "step.aula.help" },
     talleres: { title: "step.talleres.title", help: "step.talleres.help" },
+    agenda: { title: "step.agenda.title", help: "step.agenda.help" },
     ahora: { title: "step.ahora.title", help: "step.ahora.help" },
   };
+
+  const AGENDA_KEY = "caem_2026_agenda";
 
   const EJE_NAME_KEYS = {
     "eje-1": "eje.1.name",
@@ -71,6 +74,79 @@
 
   function sessionCountLabel(n) {
     return n === 1 ? t("count.session", { n }) : t("count.sessions", { n });
+  }
+
+  function loadAgendaIds() {
+    try {
+      const raw = localStorage.getItem(AGENDA_KEY);
+      const ids = raw ? JSON.parse(raw) : [];
+      return Array.isArray(ids) ? ids.filter((id) => typeof id === "string") : [];
+    } catch (_e) {
+      return [];
+    }
+  }
+
+  function saveAgendaIds(ids) {
+    try {
+      localStorage.setItem(AGENDA_KEY, JSON.stringify(ids));
+    } catch (_e) {}
+    updateAgendaBadge();
+  }
+
+  function isInAgenda(id) {
+    return loadAgendaIds().includes(id);
+  }
+
+  function toggleAgenda(id) {
+    if (!id) return false;
+    const ids = loadAgendaIds();
+    const idx = ids.indexOf(id);
+    if (idx >= 0) ids.splice(idx, 1);
+    else ids.push(id);
+    saveAgendaIds(ids);
+    return ids.includes(id);
+  }
+
+  function clearAgenda() {
+    saveAgendaIds([]);
+  }
+
+  function updateAgendaBadge() {
+    const badge = document.getElementById("agenda-count");
+    if (!badge) return;
+    const n = loadAgendaIds().length;
+    badge.textContent = String(n);
+    badge.hidden = n === 0;
+  }
+
+  function agendaSessions() {
+    const ids = new Set(loadAgendaIds());
+    return (state.data?.sesiones || [])
+      .filter((s) => ids.has(s.id))
+      .sort(
+        (a, b) =>
+          a.dia.localeCompare(b.dia) ||
+          toMinutes(a.inicio) - toMinutes(b.inicio) ||
+          String(a.titulo).localeCompare(String(b.titulo), "es")
+      );
+  }
+
+  function sessionsOverlap(a, b) {
+    if (!a || !b || a.dia !== b.dia || a.id === b.id) return false;
+    return toMinutes(a.inicio) < toMinutes(b.fin) && toMinutes(b.inicio) < toMinutes(a.fin);
+  }
+
+  function conflictIds(sessions) {
+    const conflicts = new Set();
+    for (let i = 0; i < sessions.length; i += 1) {
+      for (let j = i + 1; j < sessions.length; j += 1) {
+        if (sessionsOverlap(sessions[i], sessions[j])) {
+          conflicts.add(sessions[i].id);
+          conflicts.add(sessions[j].id);
+        }
+      }
+    }
+    return conflicts;
   }
 
   function normalize(text) {
@@ -242,6 +318,8 @@
         return all.filter(
           (s) => s.dia === selection.day && s.inicio === selection.inicio && s.tipo === "taller"
         );
+      case "agenda":
+        return agendaSessions();
       case "ahora":
         return selection.sessions || [];
       default:
@@ -249,7 +327,7 @@
     }
   }
 
-  function renderSession(session, query = "") {
+  function renderSession(session, query = "", options = {}) {
     const isReceso = session.tipo === "receso";
     const tipo = tipoLabel(session.tipo);
     const people = [];
@@ -276,11 +354,24 @@
             t("taller.number", { n: session.tallerNumero })
           )}</span>`
         : "";
+    const saved = isInAgenda(session.id);
+    const agendaBtn =
+      !isReceso && session.id
+        ? `<button
+            type="button"
+            class="agenda-toggle${saved ? " is-saved" : ""}"
+            data-agenda-id="${escapeHtml(session.id)}"
+            aria-pressed="${saved ? "true" : "false"}"
+          >${escapeHtml(saved ? t("agenda.saved") : t("agenda.add"))}</button>`
+        : "";
+    const conflictClass = options.conflictIds?.has(session.id) ? " is-conflict" : "";
 
     return `
       <article class="session${isReceso ? " is-receso" : ""}${
         session.tipo === "taller" ? " is-taller" : ""
-      }" data-sala="${escapeHtml(session.sala || "")}">
+      }${conflictClass}${saved ? " is-in-agenda" : ""}" data-sala="${escapeHtml(
+        session.sala || ""
+      )}" data-session-id="${escapeHtml(session.id || "")}">
         <div class="session-meta">
           <span class="badge badge-time">${escapeHtml(session.inicio)} – ${escapeHtml(session.fin)}</span>
           ${salaBadge}
@@ -289,14 +380,16 @@
         </div>
         <h3 class="session-title">${highlight(session.titulo, query)}</h3>
         ${people.length ? `<ul class="session-people">${people.join("")}</ul>` : ""}
+        ${agendaBtn}
       </article>
     `;
   }
 
-  function renderSessionsList(sessions, query = "") {
+  function renderSessionsList(sessions, query = "", options = {}) {
     if (!sessions.length) {
-      return `<p class="empty">${escapeHtml(t("results.empty"))}</p>`;
+      return `<p class="empty">${escapeHtml(t(options.emptyKey || "results.empty"))}</p>`;
     }
+    const conflicts = options.conflictIds || conflictIds(sessions);
     return groupByDay(sessions)
       .map(({ dia, items }) => {
         const slots = groupBySlot(items);
@@ -310,7 +403,9 @@
                   <section class="slot">
                     <h4 class="slot-time">${escapeHtml(slot.inicio)} <span>– ${escapeHtml(slot.fin)}</span></h4>
                     <div class="slot-grid${parallel ? " is-parallel" : ""}">
-                      ${slot.items.map((s) => renderSession(s, query)).join("")}
+                      ${slot.items
+                        .map((s) => renderSession(s, query, { conflictIds: conflicts }))
+                        .join("")}
                     </div>
                   </section>
                 `;
@@ -361,6 +456,11 @@
       return;
     }
 
+    if (mode === "agenda") {
+      showAgenda();
+      return;
+    }
+
     els.results.hidden = true;
     els.stepPanel.hidden = false;
     renderStep();
@@ -374,6 +474,40 @@
     els.results.hidden = false;
     els.resultsTitle.textContent = title;
     els.resultsBody.innerHTML = renderSessionsList(sessions, query || "");
+    els.results.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function showAgenda() {
+    const sessions = agendaSessions();
+    const conflicts = conflictIds(sessions);
+    state.selection = { agenda: true };
+    state.showResults = true;
+    els.stepPanel.hidden = true;
+    els.results.hidden = false;
+    els.resultsTitle.textContent = t("agenda.title");
+
+    let html = "";
+    if (sessions.length) {
+      html += `<p class="agenda-summary">${escapeHtml(
+        t("agenda.summary", { n: sessions.length })
+      )}</p>`;
+      if (conflicts.size) {
+        html += `<p class="agenda-conflict-banner" role="status">${escapeHtml(
+          t("agenda.conflict")
+        )}</p>`;
+      }
+      html += renderSessionsList(sessions, "", { conflictIds: conflicts });
+      html += `<div class="agenda-actions">
+        <button type="button" class="agenda-clear" id="agenda-clear" data-i18n="agenda.clear">
+          ${escapeHtml(t("agenda.clear"))}
+        </button>
+      </div>`;
+    } else {
+      html = `<p class="empty">${escapeHtml(t("agenda.empty"))}</p>
+        <p class="agenda-empty-hint">${escapeHtml(t("agenda.emptyHint"))}</p>`;
+    }
+
+    els.resultsBody.innerHTML = html;
     els.results.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
@@ -710,9 +844,11 @@
 
   function refreshForLang() {
     if (!state.data) return;
-    if (state.mode === "ahora" || state.showResults) {
+    if (state.mode === "ahora" || state.mode === "agenda" || state.showResults) {
       if (state.mode === "ahora") {
         showAhora();
+      } else if (state.mode === "agenda") {
+        showAgenda();
       } else if (state.selection != null) {
         if (state.mode === "horario" && state.selection.day) {
           showResults(`${dayShort(state.selection.day)} · ${state.selection.inicio}`);
@@ -762,10 +898,34 @@
       onOptionClick(opt.dataset.value);
     });
 
+    els.resultsBody?.addEventListener("click", (e) => {
+      const clearBtn = e.target.closest("#agenda-clear");
+      if (clearBtn) {
+        clearAgenda();
+        showAgenda();
+        return;
+      }
+      const toggle = e.target.closest("[data-agenda-id]");
+      if (!toggle) return;
+      const id = toggle.dataset.agendaId;
+      toggleAgenda(id);
+      if (state.mode === "agenda") {
+        showAgenda();
+        return;
+      }
+      if (state.mode === "ahora") {
+        showAhora();
+        return;
+      }
+      if (state.showResults && state.selection != null) {
+        refreshForLang();
+      }
+    });
+
     els.backBtn?.addEventListener("click", () => {
       state.showResults = false;
       state.selection = null;
-      if (state.mode === "ahora") {
+      if (state.mode === "ahora" || state.mode === "agenda") {
         setMode("horario");
         return;
       }
@@ -810,17 +970,18 @@
       const basePath = window.location.pathname.endsWith("/")
         ? window.location.pathname
         : `${window.location.pathname.replace(/\/?$/, "")}/`;
-      const url = new URL(`data/programa.json?v=13`, `${window.location.origin}${basePath}`);
+      const url = new URL(`data/programa.json?v=14`, `${window.location.origin}${basePath}`);
       let res;
       try {
         res = await fetch(url.href, { cache: "no-store" });
       } catch (_net) {
-        res = await fetch("data/programa.json?v=13", { cache: "no-store" });
+        res = await fetch("data/programa.json?v=14", { cache: "no-store" });
       }
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       state.data = await res.json();
       if (!state.data?.sesiones?.length) throw new Error("empty program");
       bindEvents();
+      updateAgendaBadge();
       setMode("horario");
     } catch (err) {
       console.error(err);
