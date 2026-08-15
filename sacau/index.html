@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Convertidor SACAU UCCuyo: cargá un plan en Word o PDF y transformalo a créditos CRE."
+      content="Convertidor SACAU → CRE (UCCuyo). Demo comercial del Observatorio de Inteligencia Artificial."
     />
-    <title>Convertidor SACAU → CRE | Universidad Católica de Cuyo</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <title>SACAU → CRE · Demo comercial | Observatorio IA UCCuyo</title>
     <link rel="icon" type="image/png" href="../assets/logo-observatorio-ia.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,242 +16,125 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/app.css?v=32" />
+    <link rel="stylesheet" href="css/app.css?v=33" />
+    <style>
+      .gate {
+        max-width: 40rem;
+        margin: 2.5rem auto 3rem;
+        padding: 1.5rem 1.35rem 1.75rem;
+        background: #fff;
+        border-radius: 12px;
+        border: 1px solid rgba(122, 21, 50, 0.14);
+        border-left: 4px solid #7a1532;
+        box-shadow: 0 8px 28px rgba(31, 20, 24, 0.08);
+      }
+      .gate h1 {
+        font-family: "Fraunces", Georgia, serif;
+        font-size: 1.65rem;
+        color: #4a0c1f;
+        margin: 0 0 0.65rem;
+      }
+      .gate .badge {
+        display: inline-block;
+        margin: 0 0 0.75rem;
+        padding: 0.15rem 0.55rem;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: #7a1532;
+        background: rgba(122, 21, 50, 0.1);
+        border-radius: 999px;
+      }
+      .gate p {
+        margin: 0 0 0.85rem;
+        line-height: 1.45;
+        color: #3d2f34;
+      }
+      .gate ul {
+        margin: 0 0 1.1rem;
+        padding-left: 1.15rem;
+        color: #1f1418;
+      }
+      .gate li + li {
+        margin-top: 0.25rem;
+      }
+      .gate-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+        align-items: flex-start;
+        margin-top: 1rem;
+      }
+      .gate-actions .btn-primary,
+      .gate-actions .btn-secondary {
+        display: inline-block;
+        text-decoration: none;
+        padding: 0.55rem 1rem;
+        border-radius: 8px;
+        font-weight: 700;
+      }
+      .gate-actions .btn-primary {
+        background: #7a1532;
+        color: #fff;
+      }
+      .gate-actions .btn-secondary {
+        background: transparent;
+        color: #7a1532;
+        border: 1.5px solid #7a1532;
+      }
+      .gate-note {
+        margin-top: 1.1rem;
+        font-size: 0.9rem;
+        color: #5c4f54;
+      }
+    </style>
   </head>
   <body>
     <div class="topbar">
       Universidad Católica de Cuyo · Convertidor SACAU / CRE ·
-      <a href="https://observatorio-ia.uccuyo.edu.ar/" style="color: #fff">Observatorio IA</a>
-      ·
-      <a
-        class="btn-instructivo"
-        href="docs/instructivo_completo.pdf"
-        target="_blank"
-        rel="noopener"
-        >Instructivo completo (PDF)</a
+      <a href="https://observatorio-ia.uccuyo.edu.ar/#herramientas" style="color: #fff"
+        >Observatorio IA</a
       >
     </div>
 
     <div class="wrap">
-      <header class="hero">
-        <h1>Convertidor SACAU → CRE</h1>
+      <section class="gate" aria-labelledby="gate-title">
+        <p class="badge">Demo · consulta</p>
+        <h1 id="gate-title">Convertidor SACAU → CRE</h1>
         <p>
-          Convertí un plan de estudios de <strong>horas</strong> a
-          <strong>créditos CRE</strong> (UCCuyo: 1 CRE = 25 h, hasta 30 justificado).
-          Los apartados quedan a la vista desde el inicio; se completan al cargar el archivo.
+          Sistema comercial del Observatorio de Inteligencia Artificial (UCCuyo) para
+          transformar planes de estudio en <strong>horas</strong> a
+          <strong>créditos CRE</strong>, con tipologías, desglose por año/área y
+          cumplimiento SACAU.
         </p>
-        <p class="hero-actions">
-          <a
-            class="btn-instructivo"
-            href="docs/instructivo_completo.pdf"
-            target="_blank"
-            rel="noopener"
-          >Instructivo completo de funcionamiento (PDF)</a>
-          <a class="btn-instructivo" href="#biblioteca-normativa">Biblioteca normativa</a>
+        <p>
+          El acceso web libre está deshabilitado. Para una <strong>demo guiada</strong> y
+          su uso institucional, comunicate con el Observatorio.
         </p>
-        <p id="sacauUsage" class="usage-counter" hidden>
-          <span class="usage-counter__label">Planes de estudios cargados</span>
-          <strong id="sacauUsageCount">—</strong>
-          <span id="sacauUsageHint" class="usage-counter__hint">en total</span>
-        </p>
-      </header>
-
-      <section id="biblioteca-normativa" class="panel biblioteca-panel" aria-label="Biblioteca normativa">
-        <h2>Biblioteca normativa</h2>
-        <p class="note">
-          Documentos Institucionales y del Marco Nacional. El convertidor ya aplica los
-          parámetros operativos (25–30 h/CRE, 60 CRE/año, mínimos de pregrado/grado).
-        </p>
-        <ul class="normativa-list">
-          <li>
-            <a href="docs/normativa/RESOL-2025-556-SACAU.pdf" target="_blank" rel="noopener"
-              >RESOL-2025-556 (SACAU nacional)</a
-            >
-            <span>Definición de CRE, 25–30 h, 60 CRE/año, mínimos de carrera.</span>
-          </li>
-          <li>
-            <a href="docs/normativa/Res-788-CS-2026-CRE-UCCuyo.pdf" target="_blank" rel="noopener"
-              >Res. 788-CS-2026 UCCuyo</a
-            >
-            <span>1 CRE = 25 h (hasta 30 justificado).</span>
-          </li>
-          <li>
-            <a
-              href="docs/normativa/Res-911-CS-2026-Marco-Conceptual-SACAU-UCCuyo.pdf"
-              target="_blank"
-              rel="noopener"
-              >Res. 911-CS-2026 UCCuyo</a
-            >
-            <span>Marco conceptual de implementación y adecuación curricular.</span>
-          </li>
-          <li>
-            <a href="docs/normativa/Informe-SACAU-CRE-CONFEDI-2026.pdf" target="_blank" rel="noopener"
-              >Informe SACAU/CRE CONFEDI 2026</a
-            >
-            <span>Estado de avance en ingenierías (referencia comparativa).</span>
-          </li>
+        <ul>
+          <li>Carga de planes Word, PDF o CSV</li>
+          <li>Cálculo CRE y control normativo</li>
+          <li>Exportación Word / PDF / CSV y anexo Res. 911</li>
         </ul>
-      </section>
-
-      <div id="error" class="err-banner" hidden></div>
-      <div id="info" class="info-banner" hidden></div>
-      <div id="progress" class="progress-banner" hidden>
-        <div class="progress-label" id="progressLabel">Procesando…</div>
-        <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
-      </div>
-
-      <nav class="steps" aria-label="Pasos del convertidor">
-        <button type="button" class="step active" data-step="1" id="stepBtn1">1. Cargar plan</button>
-        <button type="button" class="step" data-step="2" id="stepBtn2">2. Revisar y ajustar</button>
-        <button type="button" class="step" data-step="3" id="stepBtn3">3. Ver créditos y descargar</button>
-      </nav>
-
-      <!-- Descargas siempre visibles -->
-      <section class="toolbar export-bar" id="exportBar" aria-label="Descargas">
-        <span class="export-label">Descargar plan en créditos:</span>
-        <div class="actions" style="margin-left: 0">
-          <button type="button" class="btn-primary" id="btnDocx">Word (.docx)</button>
-          <button type="button" class="btn-primary" id="btnPdf">PDF</button>
-          <button type="button" class="btn-secondary" id="btnCsv">CSV</button>
+        <div class="gate-actions">
+          <a class="btn-primary" href="../assets/sacau-cre-demo-45s.mp4" target="_blank" rel="noopener"
+            >Ver video de 45 segundos</a
+          >
+          <a
+            class="btn-secondary"
+            href="mailto:observatorioia@uccuyo.edu.ar?subject=Demo%20SACAU%20CRE%20UCCuyo"
+            >Solicitar demo y uso</a
+          >
+          <a class="btn-secondary" href="https://observatorio-ia.uccuyo.edu.ar/#herramientas"
+            >Volver a Aplicaciones IA</a
+          >
         </div>
-        <p class="note export-hint" id="exportHint">
-          Las descargas se habilitan cuando haya materias cargadas.
+        <p class="gate-note">
+          Consultas:
+          <a href="mailto:observatorioia@uccuyo.edu.ar">observatorioia@uccuyo.edu.ar</a>
         </p>
-      </section>
-
-      <!-- PASO 1 -->
-      <section id="panel-1" class="panel-step" aria-labelledby="stepBtn1">
-        <div class="panel">
-          <h2>Cargar tu plan de estudios</h2>
-          <p class="note">
-            Subí un archivo Word (.docx), PDF (también escaneado) o CSV con las materias y sus horas.
-            Sirve para planes de <strong>cualquier universidad</strong>: hace falta una grilla o listado
-            con carga horaria (no solo correlatividades).
-          </p>
-          <div class="toolbar" style="box-shadow:none;border:none;padding:0;margin:0">
-            <div class="field grow">
-              <label for="filePlan">Archivo del plan</label>
-              <input
-                id="filePlan"
-                type="file"
-                accept=".docx,.pdf,.csv,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-              />
-            </div>
-          </div>
-          <p class="note">
-            Si todavía no tenés el archivo armado, descargá una
-            <a href="ejemplos/plantilla_plan_horas.csv">plantilla CSV vacía</a>
-            y completá las filas. Los PDF sin horas (solo materias y correlativas) se importan
-            como listado vacío de horas para completar a mano.
-          </p>
-          <div class="actions" style="margin-top:1rem">
-            <button type="button" class="btn-secondary" id="btnClearPlan" title="Borra el plan actual">
-              Borrar plan y empezar de nuevo
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- PASO 2: siempre visible (vacío hasta cargar) -->
-      <section id="panel-2" class="panel-step" aria-labelledby="stepBtn2">
-        <div class="toolbar">
-          <div class="field">
-            <label for="tipoCarrera">Tipo de carrera (umbrales SACAU)</label>
-            <select id="tipoCarrera">
-              <option value="grado">Grado (general)</option>
-              <option value="pregrado">Pregrado (general)</option>
-              <option value="pregrado_regulado">Pregrado regulado por el Estado</option>
-              <option value="art43">Carrera art. 43 LES (p. ej. Psicología)</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="valorCre">Horas por cada CRE</label>
-            <input id="valorCre" type="number" min="25" max="30" step="1" value="25" />
-          </div>
-          <div class="field field-note">
-            <label>Créditos (CRE)</label>
-            <p class="note" style="margin:0.35rem 0 0">
-              Se expresan siempre en <strong>enteros</strong>. El total del plan es la suma de los CRE
-              de cada asignatura (sin decimales).
-            </p>
-          </div>
-          <div class="actions">
-            <button type="button" class="btn-secondary" id="btnBackToLoad" title="Ir a la carga de archivo">
-              ← Ir a cargar archivo
-            </button>
-            <button type="button" class="btn-secondary" id="btnAddRow" title="Suma una asignatura nueva a la tabla">
-              Agregar asignatura
-            </button>
-          </div>
-        </div>
-        <p class="note">
-          Acá se ven tipologías y asignaturas. Los créditos se recalculan solos al editar;
-          «Agregar asignatura» suma una fila a mano.
-        </p>
-        <div id="app-decidir" class="loading">Preparando editor…</div>
-      </section>
-
-      <!-- Totales / cumplimiento: arriba del anexo 911 -->
-      <section id="panel-3" class="panel-step" aria-labelledby="stepBtn3">
-        <div id="app-resultado" class="loading">Preparando resultados…</div>
-      </section>
-
-      <!-- Anexo curricular Res. 911 (editable) -->
-      <section id="panel-anexo-911" class="panel-step" aria-label="Anexo curricular Res. 911">
-        <div class="panel anexo-911">
-          <div class="panel-head">
-            <h2>Anexo curricular (Res. 911-CS-2026)</h2>
-            <a
-              class="btn-instructivo btn-sm"
-              href="docs/normativa/Res-911-CS-2026-Marco-Conceptual-SACAU-UCCuyo.pdf"
-              target="_blank"
-              rel="noopener"
-              >Ver Res. 911</a
-            >
-          </div>
-          <p class="note">
-            El sistema propone un <strong>borrador</strong> con perfil de egreso, competencias,
-            resultados de aprendizaje, flexibilidad, reconocimiento y movilidad, vinculado al
-            despliegue de horas/CRE. <strong>Podés modificar todo</strong> según tu carrera y
-            universidad. Se incluye en la descarga Word/PDF.
-          </p>
-          <div class="actions" style="margin: 0.75rem 0 1rem">
-            <button type="button" class="btn-primary" id="btnGenAnexo911">
-              Generar / regenerar borrador 911
-            </button>
-            <button type="button" class="btn-secondary" id="btnClearAnexo911">
-              Vaciar anexo
-            </button>
-            <label class="check-inline">
-              <input type="checkbox" id="incluirAnexo911" checked />
-              Incluir anexo en descargas
-            </label>
-          </div>
-          <div id="app-anexo-911" class="anexo-fields"></div>
-        </div>
       </section>
     </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <script>
-      if (window.pdfjsLib) {
-        pdfjsLib.GlobalWorkerOptions.workerSrc =
-          "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-      }
-    </script>
-    <script src="https://unpkg.com/mammoth@1.8.0/mammoth.browser.min.js"></script>
-    <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-
-    <script src="js/engine.js?v=32"></script>
-    <script src="js/anexo911.js?v=32"></script>
-    <script src="js/ocr.js?v=32"></script>
-    <script src="js/parser.js?v=32"></script>
-    <script src="js/export.js?v=32"></script>
-    <script src="js/usage-config.js?v=32"></script>
-    <script src="js/usage.js?v=32"></script>
-    <script src="js/app.js?v=32"></script>
   </body>
 </html>
