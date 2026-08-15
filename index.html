@@ -1575,6 +1575,11 @@
     <script src="js/publicaciones.js?v=14" defer></script>
     <script src="js/publicaciones-fuentes-abiertas.js?v=1" defer></script>
     <script src="js/publicaciones-ia-mundo.js?v=4" defer></script>
+        <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("sacau/sw.js").catch(function () {});
+      }
+    </script>
     <script src="js/main.js?v=2" defer></script>
   </body>
 </html>
