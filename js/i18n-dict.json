@@ -804,8 +804,8 @@
     "en": "Demo · inquiry"
   },
   "sec.herramientas.sacau.lead": {
-    "es": "Convertí planes de estudio en horas (Word, PDF o CSV) al sistema de créditos CRE de la UCCuyo, con tipologías y control de cumplimiento SACAU.",
-    "en": "Convert study plans in hours (Word, PDF, or CSV) to UCCuyo’s CRE credit system, with typologies and SACAU compliance checks."
+    "es": "Conversión de planes de estudio en horas a créditos CRE (UCCuyo), con tipologías y cumplimiento SACAU. Para una demo guiada, comunicate con el Observatorio.",
+    "en": "Convert study plans in hours to UCCuyo CRE credits, with typologies and SACAU compliance. For a guided demo, contact the Observatory."
   },
   "sec.herramientas.sacau.item1": {
     "es": "Carga de planes en Word (.docx), PDF o CSV",
