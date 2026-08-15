@@ -1033,6 +1033,24 @@
       1,
       { scroll: false }
     );
+
+    // Ejemplo opcional solo con acceso autorizado (para demos guiadas / video).
+    const ejemplo = new URLSearchParams(window.location.search).get("ejemplo");
+    if (ejemplo === "psicologia") {
+      try {
+        const raw = await loadJson("data/psicologia_1098.json");
+        usePlan(
+          raw,
+          "Ejemplo: Licenciatura en Psicología (Res. 1098-CS-2013). Revisá tipologías y totales.",
+          2,
+          { scroll: false }
+        );
+        setStep(3, { scroll: false });
+        render({ skipSync: true });
+      } catch (errEj) {
+        console.warn("No se pudo cargar el ejemplo de Psicología", errEj);
+      }
+    }
   } catch (e) {
     console.error(e);
     showError(e.message || String(e));

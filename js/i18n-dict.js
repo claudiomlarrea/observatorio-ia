@@ -1171,8 +1171,8 @@ window.I18N_DICT = {
     "en": "Demo · inquiry"
   },
   "sec.herramientas.sacau.lead": {
-    "es": "Conversión de planes de estudio en horas a créditos CRE (UCCuyo), con tipologías y cumplimiento SACAU. Acceso por demo comercial del Observatorio.",
-    "en": "Convert study plans in hours to UCCuyo CRE credits, with typologies and SACAU compliance. Access via Observatory commercial demo."
+    "es": "Conversión de planes de estudio en horas a créditos CRE (UCCuyo), con tipologías y cumplimiento SACAU. Acceso por demo del Observatorio.",
+    "en": "Convert study plans in hours to UCCuyo CRE credits, with typologies and SACAU compliance. Access via Observatory demo."
   },
   "sec.herramientas.sacau.item1": {
     "es": "Carga de planes en Word (.docx), PDF o CSV",

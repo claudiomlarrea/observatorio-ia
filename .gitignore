@@ -9,3 +9,6 @@ sacau/__pycache__/
 sacau/**/__pycache__/
 sacau/.pytest_cache/
 *.pyc
+node_modules/
+assets/sacau-demo-frames/
+mammoth-1.12.1.tgz
