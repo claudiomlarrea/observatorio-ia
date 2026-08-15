@@ -1,4 +1,4 @@
-# Convertidor SACAU (UCCuyo)
+# SACAU CRE (UCCuyo)
 
 Transformá un **plan de estudios en horas** al **SACAU / CRE**.
 

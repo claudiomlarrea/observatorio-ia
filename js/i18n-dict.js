@@ -1163,16 +1163,16 @@ window.I18N_DICT = {
     "en": "Guide (PDF, Spanish)"
   },
   "sec.herramientas.sacau.title": {
-    "es": "Convertidor SACAU → CRE",
-    "en": "SACAU → CRE Converter"
+    "es": "SACAU CRE",
+    "en": "SACAU CRE"
   },
   "sec.herramientas.sacau.badge": {
-    "es": "Demo · consulta",
-    "en": "Demo · inquiry"
+    "es": "Disponible",
+    "en": "Available"
   },
   "sec.herramientas.sacau.lead": {
-    "es": "Conversión de planes de estudio en horas a créditos CRE (UCCuyo), con tipologías y cumplimiento SACAU. Para una demo guiada, comunicate con el Observatorio.",
-    "en": "Convert study plans in hours to UCCuyo CRE credits, with typologies and SACAU compliance. For a guided demo, contact the Observatory."
+    "es": "Convertí planes de estudio en horas (Word, PDF o CSV) al sistema de créditos CRE de la UCCuyo, con tipologías y control de cumplimiento SACAU.",
+    "en": "Convert study plans in hours (Word, PDF, or CSV) to UCCuyo’s CRE credit system, with typologies and SACAU compliance checks."
   },
   "sec.herramientas.sacau.item1": {
     "es": "Carga de planes en Word (.docx), PDF o CSV",
@@ -1195,8 +1195,12 @@ window.I18N_DICT = {
     "en": "Request demo and access"
   },
   "sec.herramientas.sacau.btnAbrir": {
-    "es": "Abrir convertidor SACAU",
-    "en": "Open SACAU converter"
+    "es": "Abrir SACAU CRE",
+    "en": "Open SACAU CRE"
+  },
+  "sec.herramientas.sacau.btnInstructivo": {
+    "es": "Instructivo de uso",
+    "en": "User guide"
   },
   "sec.herramientas.sacauAula.title": {
     "es": "SACAU Aula",
