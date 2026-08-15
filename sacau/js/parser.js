@@ -39,6 +39,8 @@
     { re: /pr[aá]ctica|exploraci[oó]n|psicodiagn/i, tipologia: "practica_supervisada" },
   ];
 
+  let currentDataBase = "data";
+
   function guessArea(nombre) {
     for (const h of AREA_HINTS) if (h.re.test(nombre)) return h.area;
     return "OTRA";
@@ -615,7 +617,8 @@
   }
 
   async function loadKnownPlanData(entry) {
-    const res = await fetch(`data/${entry.data_file}?v=21`);
+    const base = String(currentDataBase || "data").replace(/\/$/, "");
+    const res = await fetch(`${base}/${entry.data_file}?v=21`);
     if (!res.ok) throw new Error(`No se pudo cargar el plan reconocido (${entry.data_file})`);
     const data = await res.json();
     data.metadata = {
@@ -662,6 +665,7 @@
     const lower = name.toLowerCase();
     const onProgress = options.onProgress;
     const knownCatalog = options.knownCatalog || null;
+    currentDataBase = options.dataBase || "data";
 
     // Reconocimiento temprano por nombre (docx/pdf/csv)
     if (knownCatalog) {

@@ -15,6 +15,9 @@
   let ficha = E.emptyFicha();
   let plan = null;
   let suppressSave = false;
+  let tipologiasMap = {};
+  let knownCatalog = null;
+  let valorCreDefault = 25;
 
   function showError(msg) {
     errEl.hidden = !msg;
@@ -43,6 +46,25 @@
 
   function fmt0(n) {
     return Number(n || 0).toLocaleString("es-AR", { maximumFractionDigits: 0 });
+  }
+
+  function showProgress(payload) {
+    const progressEl = $("#progress");
+    const progressLabel = $("#progressLabel");
+    const progressBar = $("#progressBar");
+    if (!progressEl) return;
+    if (!payload) {
+      progressEl.hidden = true;
+      return;
+    }
+    progressEl.hidden = false;
+    progressLabel.textContent = payload.message || "Procesando…";
+    let pct = 0;
+    if (payload.total && payload.current) pct = (payload.current / payload.total) * 100;
+    else if (payload.progress != null) pct = payload.progress * 100;
+    else if (payload.phase === "done" || payload.phase === "known") pct = 100;
+    else if (payload.phase === "ocr") pct = 5;
+    progressBar.style.width = `${Math.max(3, Math.min(100, pct))}%`;
   }
 
   function persist() {
@@ -107,15 +129,26 @@
       return;
     }
     wrap.classList.add("is-open");
+    const q = String($("#pickFilter") && $("#pickFilter").value || "")
+      .trim()
+      .toLowerCase();
     const currentNombre = ficha.asignatura && ficha.asignatura.nombre;
+    const visible = [];
     sel.innerHTML = plan.items
       .map((item, i) => {
-        const label = `${item.codigo ? item.codigo + " · " : ""}${item.nombre || "Asignatura"} (${fmt0(item.cre)} CRE)`;
+        const label = `${item.codigo ? item.codigo + " · " : ""}${item.nombre || "Asignatura"} · ${item.anio || "?"}º · ${fmt0(item.cre)} CRE`;
+        const hay = `${item.codigo || ""} ${item.nombre || ""} ${item.anio || ""}`.toLowerCase();
+        if (q && !hay.includes(q)) return "";
+        visible.push(i);
         const selected = item.nombre === currentNombre ? " selected" : "";
         return `<option value="${i}"${selected}>${esc(label)}</option>`;
       })
       .join("");
-    hint.textContent = `${plan.items.length} materias desde ${plan.carrera || "el convertidor SACAU CRE"}. Elegí una para armar el programa.`;
+    if (!sel.value && visible.length) sel.value = String(visible[0]);
+    const origen = plan.fuente || plan.carrera || "el plan cargado";
+    hint.textContent = q
+      ? `${visible.length} de ${plan.items.length} materias coinciden en «${origen}».`
+      : `${plan.items.length} materias en «${origen}». Elegí la cátedra y continuá.`;
   }
 
   function renderMetrics() {
@@ -240,15 +273,20 @@
   function loadFromItem(item, meta) {
     ficha = E.fichaFromSeedItem(item, meta || plan || {});
     C.seedActivities(ficha);
-    showInfo(`Programa armado para «${ficha.asignatura.nombre}». Revisá horas, semáforo y RA antes de descargar.`);
+    showInfo(`Programa armado para «${ficha.asignatura.nombre}» (${fmt0(ficha.asignatura.cre)} CRE). Revisá el presupuesto, el autónomo y el semáforo, y descargá el Word.`);
     render();
+    const fichaPanel = $("#panel-ficha");
+    if (fichaPanel) fichaPanel.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function onPickAsig() {
     if (!plan) return;
     const i = Number($("#pickAsig").value);
     const item = plan.items[i];
-    if (!item) return;
+    if (!item) {
+      showError("Elegí una asignatura de la lista.");
+      return;
+    }
     if (ficha._meta && ficha._meta.editado && (ficha.actividades || []).length) {
       const ok = window.confirm(
         "Hay un programa en edición. ¿Reemplazarlo por la asignatura elegida del plan?"
@@ -259,6 +297,90 @@
       }
     }
     loadFromItem(item, plan);
+  }
+
+  function itemsFromConv(conv) {
+    return (conv.items || []).map((item) => ({
+      codigo: item.asignatura.codigo,
+      nombre: item.asignatura.nombre,
+      anio: item.asignatura.anio,
+      area: item.asignatura.area,
+      regimen: item.asignatura.regimen,
+      tipologia: item.asignatura.tipologia,
+      horas_teoricas: item.asignatura.horas_teoricas,
+      horas_practicas: item.asignatura.horas_practicas,
+      horas_interaccion: item.horas_interaccion,
+      horas_autonomas: item.horas_autonomas,
+      horas_totales: item.horas_totales,
+      valor_cre: item.valor_cre,
+      cre: item.cre,
+    }));
+  }
+
+  function applyLoadedPlan(loaded, fileName) {
+    if (!window.SacauEngine) throw new Error("No está disponible el motor SACAU CRE.");
+    const conv = window.SacauEngine.convertPlan(loaded, {
+      valor_cre_default: valorCreDefault,
+      redondeo_cre: 1,
+      tipologias: tipologiasMap,
+    });
+    const n = (conv.items || []).length;
+    if (!n) {
+      throw new Error(
+        `No se leyeron materias de «${fileName}». El archivo tiene que ser un plan con asignaturas y horas (Word, PDF o CSV).`
+      );
+    }
+    plan = {
+      v: 1,
+      source: "archivo",
+      ts: Date.now(),
+      institucion: loaded.institucion || "Universidad Católica de Cuyo",
+      carrera: loaded.nombre || loaded.titulo || fileName,
+      tipo_carrera: loaded.tipo_carrera || (loaded.carrera_clave === "psicologia" ? "art43" : "grado"),
+      valor_cre: valorCreDefault,
+      selected: null,
+      items: itemsFromConv(conv),
+      fuente: fileName,
+    };
+    try {
+      E.writeJson(E.PLAN_KEY, plan);
+    } catch (_) {
+      /* ignore */
+    }
+    const filter = $("#pickFilter");
+    if (filter) filter.value = "";
+    showError("");
+    showInfo(
+      `Se cargaron ${n} materias de «${plan.carrera}». Buscá o elegí la cátedra y pulsá «Continuar con esta cátedra».`
+    );
+    renderPicker();
+    $("#planPicker").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  async function onPlanFile(file) {
+    if (!file) return;
+    if (!window.SacauParser) {
+      showError("No se pudo iniciar el lector de planes. Recargá la página.");
+      return;
+    }
+    showError("");
+    showInfo(`Leyendo «${file.name}»…`);
+    showProgress({ phase: "start", message: `Analizando «${file.name}»…`, current: 0, total: 1 });
+    try {
+      const loaded = await window.SacauParser.loadPlanFromFile(file, {
+        knownCatalog,
+        dataBase: "../sacau/data",
+        onProgress: showProgress,
+        maxOcrPages: 40,
+      });
+      applyLoadedPlan(loaded, file.name);
+    } catch (e) {
+      console.error(e);
+      showInfo("");
+      showError(e && e.message ? String(e.message) : String(e));
+    } finally {
+      showProgress(null);
+    }
   }
 
   function addAct(tipo) {
@@ -508,23 +630,71 @@
     };
     reader.readAsText(file);
   });
-  $("#pickAsig").addEventListener("change", onPickAsig);
+  $("#filePlan").addEventListener("change", (ev) => {
+    const f = ev.target.files && ev.target.files[0];
+    onPlanFile(f);
+    ev.target.value = "";
+  });
+  const drop = $("#dropzone");
+  if (drop) {
+    ["dragenter", "dragover"].forEach((evName) => {
+      drop.addEventListener(evName, (ev) => {
+        ev.preventDefault();
+        drop.classList.add("is-drag");
+      });
+    });
+    ["dragleave", "drop"].forEach((evName) => {
+      drop.addEventListener(evName, (ev) => {
+        ev.preventDefault();
+        drop.classList.remove("is-drag");
+      });
+    });
+    drop.addEventListener("drop", (ev) => {
+      const f = ev.dataTransfer && ev.dataTransfer.files && ev.dataTransfer.files[0];
+      if (f) onPlanFile(f);
+    });
+  }
+  $("#pickFilter")?.addEventListener("input", () => renderPicker());
+  $("#btnUsarAsig")?.addEventListener("click", onPickAsig);
+  $("#pickAsig").addEventListener("dblclick", onPickAsig);
   $("#btnDocx").addEventListener("click", () => onExport("docx"));
   $("#btnPdf").addEventListener("click", () => onExport("pdf"));
   $("#btnJson").addEventListener("click", () => onExport("json"));
 
-  if (!bootFromBridge()) {
-    const saved = E.loadFicha();
-    const savedPlan = E.readJson(E.PLAN_KEY);
-    if (savedPlan && savedPlan.items) plan = savedPlan;
-    if (saved && saved.asignatura && (saved.asignatura.nombre || (saved.actividades || []).length)) {
-      ficha = saved;
-      showInfo("Se restauró el último programa de este navegador.");
-      render();
-    } else {
-      ficha = C.exampleFicha();
-      showInfo("Empezá con el ejemplo, con una materia del convertidor o en blanco.");
-      render();
+  async function initCatalogs() {
+    try {
+      const [tipsRaw, conocidos, normas] = await Promise.all([
+        fetch("../sacau/data/tipologias.json").then((r) => {
+          if (!r.ok) throw new Error(r.status);
+          return r.json();
+        }),
+        fetch("../sacau/data/planes_reconocidos.json").then((r) => r.json()),
+        fetch("../sacau/data/normas_uccuyo.json").then((r) => r.json()),
+      ]);
+      tipologiasMap = {};
+      for (const t of tipsRaw.tipologias || []) tipologiasMap[t.id] = t;
+      knownCatalog = conocidos;
+      valorCreDefault = normas.cre_default || 25;
+    } catch (e) {
+      console.warn("Catálogos SACAU", e);
     }
   }
+
+  (async function boot() {
+    await initCatalogs();
+    if (!bootFromBridge()) {
+      const saved = E.loadFicha();
+      const savedPlan = E.readJson(E.PLAN_KEY);
+      if (savedPlan && savedPlan.items) plan = savedPlan;
+      if (saved && saved.asignatura && (saved.asignatura.nombre || (saved.actividades || []).length)) {
+        ficha = saved;
+        showInfo("Se restauró el último programa de este navegador. Podés cargar otro plan arriba.");
+        render();
+      } else {
+        ficha = E.emptyFicha();
+        showInfo("Cargá un plan de estudios (Word, PDF o CSV). Ejemplo: el plan de Psicología. Después elegí la materia.");
+        render();
+      }
+    }
+  })();
 })();

@@ -4,20 +4,22 @@ Del crédito al programa de cátedra. Continuación de [SACAU CRE](https://obser
 
 **Usar:** [https://observatorio-ia.uccuyo.edu.ar/sacau-aula/](https://observatorio-ia.uccuyo.edu.ar/sacau-aula/)
 
-## Qué hace
+## Cómo se usa
 
-SACAU CRE convierte un **plan de estudios** a créditos. SACAU Aula toma **una asignatura** y arma el programa analítico en clave SACAU:
+1. **Cargá el plan de estudios** (Word `.docx`, PDF o CSV) en la zona de la pantalla. Sirve el de cualquier carrera y universidad: por ejemplo el plan de Psicología (Res. 1098-CS-2013).
+2. **Elegí una asignatura** de la lista (hay buscador por nombre, código o año).
+3. Pulsá **Continuar con esta cátedra**. El sistema calcula el CRE y propone presupuesto semanal, trabajo autónomo, semáforo de IA, resultados de aprendizaje y cláusula de uso de IA.
+4. Revisá, ajustá y **descargá** Word, PDF o JSON.
 
-1. Presupuesto de esfuerzo del estudiante (interacción + autónomo = CRE, horas/semana).
-2. Desglose del trabajo autónomo con horas honestas.
-3. Semáforo de IA (rojo / amarillo / verde) y rediseño de consignas que una IA resuelve.
-4. Resultados de aprendizaje de la cátedra, atados a actividades y evidencias.
-5. Cláusula de uso de IA.
-6. Descarga Word, PDF y JSON.
+No hace falta pasar antes por el convertidor. Si ya convertiste el plan en [SACAU CRE](../sacau/), el botón **Aula** de cada materia abre esta misma pantalla con esa asignatura.
 
-## Puente desde el convertidor
+## Qué hace después de cargar
 
-En [SACAU CRE](../sacau/) cada fila tiene el botón **Aula**, y la barra de descargas **Abrir en SACAU Aula**. El plan convertido viaja por `localStorage` (mismo origen) y aparece como selector de asignaturas.
+- Presupuesto de esfuerzo del estudiante (interacción + autónomo = CRE, horas/semana).
+- Desglose del trabajo autónomo con horas honestas.
+- Semáforo de IA y rediseño de consignas que una IA resuelve.
+- Resultados de aprendizaje atados a actividades.
+- Cláusula de uso de IA y diagnóstico de coherencia.
 
 ## Marco
 

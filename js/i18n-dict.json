@@ -840,8 +840,8 @@
     "en": "Follow-on to SACAU CRE: from the credit to the course syllabus. Student workload budget, independent work, an AI traffic light, and learning outcomes, with Word and PDF download."
   },
   "sec.herramientas.sacauAula.item1": {
-    "es": "Puente desde el plan convertido (una materia, un programa)",
-    "en": "Bridge from the converted plan (one course, one syllabus)"
+    "es": "Cargá cualquier plan (Word, PDF o CSV) y elegí la cátedra",
+    "en": "Load any study plan (Word, PDF, or CSV) and pick the course"
   },
   "sec.herramientas.sacauAula.item2": {
     "es": "Horas/semana, desglose autónomo y semáforo de IA",

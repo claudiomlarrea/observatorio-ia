@@ -15,6 +15,7 @@
   padding: 0.4rem 0.7rem;
   border-radius: 6px;
 }
+.hero-kicker {
   display: inline-block;
   font-size: 0.78rem;
   font-weight: 700;
@@ -43,6 +44,46 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-top: 0.85rem;
+}
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  margin-top: 0.85rem;
+  padding: 1.35rem 1rem;
+  border: 2px dashed rgba(122, 21, 50, 0.35);
+  border-radius: var(--radius);
+  background: #faf7f8;
+  cursor: pointer;
+  text-align: center;
+  color: var(--inst-dark);
+}
+
+.dropzone strong {
+  font-size: 1.05rem;
+}
+
+.dropzone span {
+  font-size: 0.88rem;
+  color: var(--soft);
+}
+
+.dropzone:hover,
+.dropzone.is-drag {
+  border-color: var(--inst);
+  background: rgba(122, 21, 50, 0.06);
+}
+
+#pickAsig {
+  min-height: 14rem;
+  width: 100%;
+}
+
+.plan-picker .field {
+  margin-top: 0.75rem;
 }
 
 .metrics-aula {
