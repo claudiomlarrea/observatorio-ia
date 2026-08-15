@@ -2,6 +2,8 @@
 
 Transformá un **plan de estudios en horas** al **SACAU / CRE**.
 
+Para el programa de cada cátedra (esfuerzo semanal, autónomo, semáforo de IA y RA) usá **[SACAU Aula](https://observatorio-ia.uccuyo.edu.ar/sacau-aula/)**. En la tabla del convertidor, el botón **Aula** abre esa materia.
+
 ## Anexo curricular Res. 911
 
 Debajo de la tabla de asignaturas hay un **Anexo curricular (Res. 911-CS-2026)** editable:

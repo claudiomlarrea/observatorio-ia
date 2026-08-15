@@ -264,6 +264,19 @@ button,
   background: var(--inst-dark);
 }
 
+.btn-aula {
+  background: var(--green);
+  color: #fff;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.78rem;
+  margin-right: 0.2rem;
+}
+
+.btn-aula:hover {
+  background: #095c42;
+  color: #fff;
+}
+
 .btn-secondary {
   background: #ebe4e7;
   color: var(--inst-dark);

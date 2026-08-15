@@ -54,7 +54,7 @@
 
   function updateExportState() {
     const ready = hasMaterias();
-    ["btnDocx", "btnPdf", "btnCsv"].forEach((id) => {
+    ["btnDocx", "btnPdf", "btnCsv", "btnAula"].forEach((id) => {
       const btn = document.getElementById(id);
       if (btn) btn.disabled = !ready;
     });
@@ -666,6 +666,14 @@
     });
 
     decideEl.addEventListener("click", (ev) => {
+      const aulaBtn = ev.target instanceof Element ? ev.target.closest(".btn-aula") : null;
+      if (aulaBtn && decideEl.contains(aulaBtn)) {
+        const tr = aulaBtn.closest("tr");
+        const rows = [...document.querySelectorAll("#tablaAsig tbody tr:not(.empty-row)")];
+        const idx = rows.indexOf(tr);
+        openSacauAula(idx >= 0 ? idx : null);
+        return;
+      }
       const btn = ev.target instanceof Element ? ev.target.closest(".btn-del") : null;
       if (!btn || !decideEl.contains(btn)) return;
       btn.closest("tr")?.remove();
@@ -712,6 +720,7 @@
           <td class="cell-aut">${item.horas_autonomas.toFixed(0)}</td>
           <td class="cell-cre"><strong>${fmtCre(item.cre)}</strong></td>
           <td>
+            <button type="button" class="btn-aula" title="Abrir esta asignatura en SACAU Aula">Aula</button>
             <button type="button" class="btn-secondary btn-del" title="Quitar esta asignatura">Quitar</button>
             <input type="hidden" data-f="horas_estimadas" value="${a.horas_estimadas ? "1" : "0"}" />
             <input type="hidden" data-f="notas" value="${String(a.notas || "").replace(/"/g, "&quot;")}" />
@@ -941,6 +950,51 @@
     SacauExport.downloadBlob(blob, `${plan.id || "plan"}_CRE.csv`);
   }
 
+  const AULA_BRIDGE_KEY = "sacau_aula_bridge_v1";
+
+  function bridgePayload(selectedIndex) {
+    const result = currentConversion();
+    if (!result) return null;
+    return {
+      v: 1,
+      source: "sacau-cre",
+      ts: Date.now(),
+      institucion: plan.institucion || "Universidad Católica de Cuyo",
+      carrera: plan.nombre || plan.titulo || "",
+      tipo_carrera: plan.tipo_carrera || "grado",
+      valor_cre: Number($("#valorCre").value || 25),
+      selected: selectedIndex == null ? null : selectedIndex,
+      items: result.conv.items.map((item) => ({
+        codigo: item.asignatura.codigo,
+        nombre: item.asignatura.nombre,
+        anio: item.asignatura.anio,
+        area: item.asignatura.area,
+        regimen: item.asignatura.regimen,
+        tipologia: item.asignatura.tipologia,
+        horas_teoricas: item.asignatura.horas_teoricas,
+        horas_practicas: item.asignatura.horas_practicas,
+        horas_interaccion: item.horas_interaccion,
+        horas_autonomas: item.horas_autonomas,
+        horas_totales: item.horas_totales,
+        valor_cre: item.valor_cre,
+        cre: item.cre,
+      })),
+    };
+  }
+
+  function openSacauAula(selectedIndex) {
+    if (!requireMaterias("abrir SACAU Aula")) return;
+    const payload = bridgePayload(selectedIndex);
+    if (!payload) return;
+    try {
+      localStorage.setItem(AULA_BRIDGE_KEY, JSON.stringify(payload));
+    } catch (e) {
+      showError("No se pudo guardar el puente a SACAU Aula (almacenamiento del navegador).");
+      return;
+    }
+    window.open("../sacau-aula/", "_blank", "noopener");
+  }
+
   try {
     const [tipsRaw, uccuyo, conocidos, psico, plantillas] = await Promise.all([
       loadJson("data/tipologias.json"),
@@ -1026,6 +1080,7 @@
     $("#btnDocx").addEventListener("click", onExportDocx);
     $("#btnPdf").addEventListener("click", onExportPdf);
     $("#btnCsv").addEventListener("click", onExportCsv);
+    $("#btnAula")?.addEventListener("click", () => openSacauAula(null));
 
     usePlan(
       SacauParser.emptyPlan(),

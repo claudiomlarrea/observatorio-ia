@@ -652,8 +652,8 @@
     "en": "AI Apps"
   },
   "sec.herramientas.intro": {
-    "es": "Sistemas y plataformas desarrollados por el Observatorio de Inteligencia Artificial de la UCCuyo para la comunidad universitaria e instituciones vinculadas: encuestas, datos, evaluación, auditoría académica, conversión curricular SACAU/CRE, planificación estratégica, prevención digital y más. Se amplían a medida que se incorporan nuevos desarrollos.",
-    "en": "Systems and platforms developed by the UCCuyo Artificial Intelligence Observatory for the university community and partner institutions: surveys, data, assessment, academic audit, SACAU/CRE curriculum conversion, strategic planning, digital prevention, and more. The catalog grows as new developments are added."
+    "es": "Sistemas y plataformas desarrollados por el Observatorio de Inteligencia Artificial de la UCCuyo para la comunidad universitaria e instituciones vinculadas: encuestas, datos, evaluación, auditoría académica, conversión curricular SACAU/CRE, programas de cátedra (SACAU Aula), planificación estratégica, prevención digital y más. Se amplían a medida que se incorporan nuevos desarrollos.",
+    "en": "Systems and platforms developed by the UCCuyo Artificial Intelligence Observatory for the university community and partner institutions: surveys, data, assessment, academic audit, SACAU/CRE curriculum conversion, course syllabi (SACAU Aula), strategic planning, digital prevention, and more. The catalog grows as new developments are added."
   },
   "sec.herramientas.senalsegura.title": {
     "es": "Señal Segura",
@@ -830,6 +830,34 @@
   "sec.herramientas.sacau.btnAbrir": {
     "es": "Abrir convertidor SACAU",
     "en": "Open SACAU converter"
+  },
+  "sec.herramientas.sacauAula.title": {
+    "es": "SACAU Aula",
+    "en": "SACAU Aula"
+  },
+  "sec.herramientas.sacauAula.lead": {
+    "es": "Continuación de SACAU CRE: del crédito al programa de cátedra. Presupuesto de esfuerzo del estudiante, trabajo autónomo, semáforo de IA y resultados de aprendizaje, con descarga Word y PDF.",
+    "en": "Follow-on to SACAU CRE: from the credit to the course syllabus. Student workload budget, independent work, an AI traffic light, and learning outcomes, with Word and PDF download."
+  },
+  "sec.herramientas.sacauAula.item1": {
+    "es": "Puente desde el plan convertido (una materia, un programa)",
+    "en": "Bridge from the converted plan (one course, one syllabus)"
+  },
+  "sec.herramientas.sacauAula.item2": {
+    "es": "Horas/semana, desglose autónomo y semáforo de IA",
+    "en": "Hours/week, independent-work breakdown, and AI traffic light"
+  },
+  "sec.herramientas.sacauAula.item3": {
+    "es": "RA, cláusula de uso de IA y programa analítico descargable",
+    "en": "Learning outcomes, AI-use clause, and downloadable syllabus"
+  },
+  "sec.herramientas.sacauAula.btnAbrir": {
+    "es": "Abrir SACAU Aula",
+    "en": "Open SACAU Aula"
+  },
+  "sec.herramientas.sacauAula.btnCre": {
+    "es": "Ir a SACAU CRE",
+    "en": "Go to SACAU CRE"
   },
   "common.abrir": {
     "es": "Abrir",

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="SACAU Aula: del crédito CRE al programa de cátedra. Presupuesto de esfuerzo, trabajo autónomo, semáforo de IA y resultados de aprendizaje."
+    />
+    <title>SACAU Aula | Observatorio de IA · UCCuyo</title>
+    <link rel="icon" type="image/png" href="../assets/logo-observatorio-ia.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../sacau/css/app.css?v=33" />
+    <link rel="stylesheet" href="css/aula.css?v=1" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Ir al contenido</a>
+    <div class="topbar">
+      Universidad Católica de Cuyo · SACAU Aula ·
+      <a href="https://observatorio-ia.uccuyo.edu.ar/">Observatorio IA</a>
+      ·
+      <a href="../sacau/">SACAU CRE</a>
+    </div>
+
+    <div class="wrap" id="contenido">
+      <header class="hero">
+        <p class="hero-kicker">Continuación de SACAU CRE</p>
+        <h1>SACAU Aula</h1>
+        <p>
+          Del crédito al programa de cátedra. Tomá una materia ya convertida (o empezá de cero)
+          y construí el paradigma: presupuesto de esfuerzo del estudiante, trabajo autónomo
+          honesto, semáforo de IA y resultados de aprendizaje.
+        </p>
+        <p class="pair-note">
+          <strong>SACAU CRE</strong> convierte el plan en créditos.
+          <strong>SACAU Aula</strong> hace que esos créditos se puedan enseñar.
+          <a href="../sacau/">Volver al convertidor</a>
+        </p>
+      </header>
+
+      <div id="error" class="err-banner" hidden></div>
+      <div id="info" class="info-banner" hidden></div>
+
+      <section class="toolbar export-bar" id="exportBar" aria-label="Descargas">
+        <span class="export-label">Descargar programa:</span>
+        <div class="actions" style="margin-left: 0">
+          <button type="button" class="btn-primary" id="btnDocx">Word (.docx)</button>
+          <button type="button" class="btn-primary" id="btnPdf">PDF</button>
+          <button type="button" class="btn-secondary" id="btnJson">JSON</button>
+        </div>
+        <p class="note export-hint" id="exportHint">
+          El programa se arma abajo; las descargas quedan listas en cualquier momento.
+        </p>
+      </section>
+
+      <section class="panel panel-step" id="panel-origen">
+        <h2>1. Origen de la cátedra</h2>
+        <p class="note">
+          Si venís del convertidor, las materias del plan aparecen acá. Si no, cargá un
+          ejemplo, una ficha JSON o empezá en blanco.
+        </p>
+        <div class="origin-actions">
+          <button type="button" class="btn-primary" id="btnEjemplo">Cargar ejemplo</button>
+          <button type="button" class="btn-secondary" id="btnBlanco">Empezar en blanco</button>
+          <label class="btn-secondary" for="fileJson" style="cursor: pointer">Cargar JSON</label>
+          <input id="fileJson" type="file" accept="application/json,.json" hidden />
+        </div>
+        <div class="plan-picker" id="planPicker">
+          <div class="field grow" style="margin-top: 0.75rem">
+            <label for="pickAsig">Asignatura del plan convertido</label>
+            <select id="pickAsig"></select>
+          </div>
+          <p class="note" id="planPickerHint"></p>
+        </div>
+      </section>
+
+      <section class="panel panel-step" id="panel-ficha">
+        <h2>2. Ficha y presupuesto de esfuerzo</h2>
+        <p class="note">
+          El CRE no es un total al pie: es el tiempo semanal que le pedís al estudiante.
+          1 CRE = 25 h (hasta 30 justificado). Un cuatrimestre de referencia son 30 CRE.
+        </p>
+        <div class="ficha-grid" id="fichaFields">
+          <div class="field wide">
+            <label for="fNombre">Asignatura</label>
+            <input id="fNombre" type="text" data-f="nombre" placeholder="Nombre de la materia" />
+          </div>
+          <div class="field">
+            <label for="fCodigo">Código</label>
+            <input id="fCodigo" type="text" data-f="codigo" />
+          </div>
+          <div class="field">
+            <label for="fCarrera">Carrera</label>
+            <input id="fCarrera" type="text" data-meta="carrera" />
+          </div>
+          <div class="field">
+            <label for="fInstitucion">Institución</label>
+            <input id="fInstitucion" type="text" data-meta="institucion" />
+          </div>
+          <div class="field">
+            <label for="fUnidad">Unidad académica</label>
+            <input id="fUnidad" type="text" data-meta="unidad_academica" />
+          </div>
+          <div class="field">
+            <label for="fDocente">Docente / cátedra</label>
+            <input id="fDocente" type="text" data-meta="docente" />
+          </div>
+          <div class="field">
+            <label for="fCiclo">Ciclo lectivo</label>
+            <input id="fCiclo" type="text" data-meta="ciclo" placeholder="1.er cuatrimestre 2027" />
+          </div>
+          <div class="field">
+            <label for="fAnio">Año del plan</label>
+            <input id="fAnio" type="number" min="1" data-f="anio" />
+          </div>
+          <div class="field">
+            <label for="fRegimen">Régimen</label>
+            <select id="fRegimen" data-f="regimen">
+              <option value="S">Semestral</option>
+              <option value="A">Anual</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fTipologia">Tipología</label>
+            <select id="fTipologia" data-f="tipologia">
+              <option value="teorica">Teórica / teórico-práctica</option>
+              <option value="taller">Taller / seminario</option>
+              <option value="practica_supervisada">Práctica supervisada</option>
+              <option value="pps">PPS</option>
+              <option value="tif">TIF / tesis</option>
+              <option value="optativa">Optativa</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fTeo">Horas teóricas (IP)</label>
+            <input id="fTeo" type="number" min="0" data-f="horas_teoricas" />
+          </div>
+          <div class="field">
+            <label for="fPrac">Horas prácticas (IP)</label>
+            <input id="fPrac" type="number" min="0" data-f="horas_practicas" />
+          </div>
+          <div class="field">
+            <label for="fAuto">Horas autónomas</label>
+            <input id="fAuto" type="number" min="0" data-f="horas_autonomas" />
+          </div>
+          <div class="field">
+            <label for="fValorCre">Horas por CRE</label>
+            <input id="fValorCre" type="number" min="25" max="30" data-f="valor_cre" />
+          </div>
+          <div class="field">
+            <label for="fSemanas">Semanas de cursado</label>
+            <input id="fSemanas" type="number" min="4" max="40" data-meta="semanas" />
+          </div>
+        </div>
+        <div class="metrics metrics-aula" id="metrics" aria-live="polite"></div>
+        <div id="weekVisual"></div>
+      </section>
+
+      <section class="panel panel-step" id="panel-actividades">
+        <div class="panel-head">
+          <h2>3. Actividades: interacción y autónomo</h2>
+        </div>
+        <p class="note">
+          Desglosá las horas. El semáforo no detecta trampas: audita si el CRE autónomo
+          es tiempo real de aprendizaje o un producto que una IA resuelve en minutos.
+        </p>
+        <div class="act-toolbar">
+          <button type="button" class="btn-primary" id="btnGenerarAct">
+            Generar / regenerar propuesta
+          </button>
+          <button type="button" class="btn-secondary" id="btnAddIp">Agregar interacción</button>
+          <button type="button" class="btn-secondary" id="btnAddTa">Agregar autónomo</button>
+          <button type="button" class="btn-secondary" id="btnReconciliar">
+            Ajustar autónomo al presupuesto
+          </button>
+        </div>
+        <div class="table-wrap act-table">
+          <table id="tablaAct">
+            <thead>
+              <tr>
+                <th>Tipo</th>
+                <th>Actividad</th>
+                <th>Horas</th>
+                <th>IA</th>
+                <th>RA</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel panel-step" id="panel-ra">
+        <div class="panel-head">
+          <h2>4. Resultados de aprendizaje de la cátedra</h2>
+        </div>
+        <p class="note">
+          El crédito certifica RA, no asistencia. Cuatro a seis desempeños de
+          <em>esta</em> materia, con evidencia y criterio. Vincúlelos a las actividades.
+        </p>
+        <div class="ra-toolbar">
+          <button type="button" class="btn-secondary" id="btnAddRa">Agregar RA</button>
+          <button type="button" class="btn-secondary" id="btnSeedRa">Proponer RA</button>
+        </div>
+        <div class="table-wrap act-table">
+          <table class="ra-table" id="tablaRa">
+            <thead>
+              <tr>
+                <th>Resultado de aprendizaje</th>
+                <th>Evidencia</th>
+                <th>Criterio</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel panel-step" id="panel-contrato">
+        <div class="panel-head">
+          <h2>5. Cláusula de uso de IA</h2>
+          <button type="button" class="btn-primary btn-sm" id="btnContrato">
+            Generar / regenerar cláusula
+          </button>
+        </div>
+        <p class="note">
+          Una página clara para el estudiante: qué está permitido, qué hay que declarar
+          y qué evidencia de proceso se pide. Editable.
+        </p>
+        <textarea id="contratoIa" class="contrato-ia" aria-label="Cláusula de uso de IA"></textarea>
+      </section>
+
+      <section class="panel panel-step" id="panel-diag">
+        <h2>6. Diagnóstico de coherencia</h2>
+        <p class="score-line" id="scoreLine"></p>
+        <ul class="checks" id="checks"></ul>
+        <p class="note" style="margin-top: 1rem">
+          <label for="notasCatedra"><strong>Notas de la cátedra</strong> (opcionales)</label>
+        </p>
+        <textarea id="notasCatedra" data-meta="notas" placeholder="Acuerdos de equipo, correlativas, particularidades de la sede…"></textarea>
+      </section>
+    </div>
+
+    <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <script src="js/engine.js?v=1"></script>
+    <script src="js/catalog.js?v=1"></script>
+    <script src="js/export.js?v=1"></script>
+    <script src="js/app.js?v=1"></script>
+  </body>
+</html>
