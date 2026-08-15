@@ -20,13 +20,7 @@ En la UI web: selector de **tipo de carrera** (grado / pregrado / art. 43) para 
 
 ## Usar en el navegador
 
-**Acceso demo:** la URL pública
-[`/sacau/`](https://observatorio-ia.uccuyo.edu.ar/sacau/) muestra la ficha de
-consulta (video + contacto). El convertidor no está abierto al público.
-
-Para una demo interna autorizada:
-
-`https://observatorio-ia.uccuyo.edu.ar/sacau/convertidor.html?acceso=observatorio-demo`
+**https://observatorio-ia.uccuyo.edu.ar/sacau/**
 
 1. Cargá tu plan en **Word (.docx)** o **PDF** (también escaneado / CSV).
 2. Si el PDF es imagen, el sistema aplica **OCR** automáticamente.
