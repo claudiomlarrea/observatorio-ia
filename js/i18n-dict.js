@@ -1226,6 +1226,10 @@ window.I18N_DICT = {
     "es": "Abrir SACAU Aula",
     "en": "Open SACAU Aula"
   },
+  "sec.herramientas.sacauAula.btnInstructivo": {
+    "es": "Instructivo de uso",
+    "en": "User guide"
+  },
   "sec.herramientas.sacauAula.btnCre": {
     "es": "Ir a SACAU CRE",
     "en": "Go to SACAU CRE"

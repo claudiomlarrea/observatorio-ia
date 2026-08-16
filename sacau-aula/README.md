@@ -4,6 +4,8 @@ Del crédito al programa de cátedra. Continuación de [SACAU CRE](https://obser
 
 **Usar:** [https://observatorio-ia.uccuyo.edu.ar/sacau-aula/](https://observatorio-ia.uccuyo.edu.ar/sacau-aula/)
 
+**Instructivo de uso (PDF):** [docs/instructivo_completo.pdf](docs/instructivo_completo.pdf)
+
 ## Cómo se usa
 
 1. **Cargá el plan de estudios** (Word `.docx`, PDF o CSV) en la zona de la pantalla. Sirve el de cualquier carrera y universidad: por ejemplo el plan de Psicología (Res. 1098-CS-2013).
