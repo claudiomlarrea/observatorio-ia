@@ -9,25 +9,64 @@
   var lightboxVideo = null;
   var currentList = [];
   var currentIndex = 0;
+  var openIds = {};
+
+  function tt(key, fallback) {
+    if (window.I18N && typeof window.I18N.t === "function") {
+      var v = window.I18N.t(key);
+      if (v && v !== key) return v;
+    }
+    return fallback;
+  }
+
+  function albumTitle(album) {
+    if (album.titleKey) return tt(album.titleKey, album.title || "");
+    return album.title || "";
+  }
+
+  function albumDescription(album) {
+    if (album.descriptionKey) return tt(album.descriptionKey, album.description || "");
+    return album.description || "";
+  }
+
+  function photoAlt(photo) {
+    if (photo && photo.altKey) return tt(photo.altKey, photo.alt || "");
+    return (photo && photo.alt) || "";
+  }
 
   function isVideo(item) {
     return item && (item.type === "video" || /\.mp4($|\?)/i.test(item.src || ""));
   }
 
   function ensureLightbox() {
-    if (lightbox) return;
+    if (lightbox) {
+      lightbox.setAttribute("aria-label", tt("sec.galeria.lightbox.label", "Vista ampliada"));
+      var closeBtn = lightbox.querySelector(".gallery-lightbox-close");
+      var prevBtn = lightbox.querySelector(".gallery-lightbox-prev");
+      var nextBtn = lightbox.querySelector(".gallery-lightbox-next");
+      if (closeBtn) closeBtn.setAttribute("aria-label", tt("sec.galeria.lightbox.close", "Cerrar"));
+      if (prevBtn) prevBtn.setAttribute("aria-label", tt("sec.galeria.lightbox.prev", "Anterior"));
+      if (nextBtn) nextBtn.setAttribute("aria-label", tt("sec.galeria.lightbox.next", "Siguiente"));
+      return;
+    }
     lightbox = document.createElement("div");
     lightbox.className = "gallery-lightbox";
     lightbox.hidden = true;
     lightbox.setAttribute("role", "dialog");
     lightbox.setAttribute("aria-modal", "true");
-    lightbox.setAttribute("aria-label", "Vista ampliada");
+    lightbox.setAttribute("aria-label", tt("sec.galeria.lightbox.label", "Vista ampliada"));
     lightbox.innerHTML =
-      '<button type="button" class="gallery-lightbox-close" aria-label="Cerrar">×</button>' +
-      '<button type="button" class="gallery-lightbox-nav gallery-lightbox-prev" aria-label="Anterior">‹</button>' +
+      '<button type="button" class="gallery-lightbox-close" aria-label="' +
+      tt("sec.galeria.lightbox.close", "Cerrar") +
+      '">×</button>' +
+      '<button type="button" class="gallery-lightbox-nav gallery-lightbox-prev" aria-label="' +
+      tt("sec.galeria.lightbox.prev", "Anterior") +
+      '">‹</button>' +
       '<img class="gallery-lightbox-img" alt="" />' +
       '<video class="gallery-lightbox-video" controls playsinline></video>' +
-      '<button type="button" class="gallery-lightbox-nav gallery-lightbox-next" aria-label="Siguiente">›</button>';
+      '<button type="button" class="gallery-lightbox-nav gallery-lightbox-next" aria-label="' +
+      tt("sec.galeria.lightbox.next", "Siguiente") +
+      '">›</button>';
     document.body.appendChild(lightbox);
     lightboxImg = lightbox.querySelector(".gallery-lightbox-img");
     lightboxVideo = lightbox.querySelector(".gallery-lightbox-video");
@@ -77,7 +116,7 @@
     } else {
       lightboxImg.hidden = false;
       lightboxImg.src = item.src;
-      lightboxImg.alt = item.alt || "";
+      lightboxImg.alt = photoAlt(item);
     }
     lightbox.hidden = false;
     document.body.classList.add("gallery-lightbox-open");
@@ -94,21 +133,27 @@
   }
 
   function fillGrid(grid, photos) {
-    if (grid.dataset.filled === "1") return;
+    grid.innerHTML = "";
     photos.forEach(function (photo, i) {
       var item = document.createElement("button");
       item.type = "button";
       item.className = "gallery-item" + (isVideo(photo) ? " gallery-item--video" : "");
       item.setAttribute("role", "listitem");
+      var viewKey = isVideo(photo) ? "sec.galeria.viewVideo" : "sec.galeria.viewPhoto";
+      var viewFallback = isVideo(photo) ? "Ver video" : "Ver foto";
       item.setAttribute(
         "aria-label",
-        photo.alt ||
-          (isVideo(photo) ? "Ver video " : "Ver foto ") + (i + 1) + " de " + photos.length
+        photoAlt(photo) ||
+          tt(viewKey, viewFallback) +
+            " " +
+            (i + 1) +
+            tt("sec.galeria.of", " de ") +
+            photos.length
       );
 
       var img = document.createElement("img");
       img.src = isVideo(photo) ? photo.poster || photo.src : photo.src;
-      img.alt = photo.alt || "";
+      img.alt = photoAlt(photo);
       img.loading = "lazy";
       img.decoding = "async";
       item.appendChild(img);
@@ -117,7 +162,7 @@
         var badge = document.createElement("span");
         badge.className = "gallery-video-badge";
         badge.setAttribute("aria-hidden", "true");
-        badge.textContent = "▶ Video";
+        badge.textContent = tt("sec.galeria.videoBadge", "▶ Video");
         item.appendChild(badge);
       }
 
@@ -137,18 +182,37 @@
     panel.hidden = !open;
   }
 
+  function metaText(photos) {
+    var videos = photos.filter(isVideo).length;
+    var images = photos.length - videos;
+    var metaParts = [];
+    if (images) {
+      metaParts.push(
+        images +
+          (images === 1
+            ? tt("sec.galeria.imageSingular", " imagen")
+            : tt("sec.galeria.imagePlural", " imágenes"))
+      );
+    }
+    if (videos) {
+      metaParts.push(
+        videos +
+          (videos === 1
+            ? tt("sec.galeria.videoSingular", " video")
+            : tt("sec.galeria.videoPlural", " videos"))
+      );
+    }
+    return metaParts.join(" · ");
+  }
+
   function renderAlbum(album, openByDefault) {
     var photos = album.photos || [];
     var panelId = "galeria-panel-" + album.id;
     var titleId = "galeria-" + album.id;
-    var videos = photos.filter(isVideo).length;
-    var images = photos.length - videos;
-    var metaParts = [];
-    if (images) metaParts.push(images + (images === 1 ? " imagen" : " imágenes"));
-    if (videos) metaParts.push(videos + (videos === 1 ? " video" : " videos"));
 
     var article = document.createElement("article");
     article.className = "gallery-event" + (openByDefault ? " is-open" : "");
+    article.dataset.albumId = album.id;
 
     var toggle = document.createElement("button");
     toggle.type = "button";
@@ -162,18 +226,18 @@
       '<span class="gallery-toggle-meta"></span>' +
       "</span>" +
       '<span class="gallery-toggle-chevron" aria-hidden="true"></span>';
-    toggle.querySelector(".gallery-toggle-title").textContent = album.title;
-    toggle.querySelector(".gallery-toggle-meta").textContent = metaParts.join(" · ");
+    toggle.querySelector(".gallery-toggle-title").textContent = albumTitle(album);
+    toggle.querySelector(".gallery-toggle-meta").textContent = metaText(photos);
 
     var panel = document.createElement("div");
     panel.className = "gallery-panel";
     panel.id = panelId;
     panel.hidden = !openByDefault;
 
-    if (album.description) {
+    if (albumDescription(album)) {
       var desc = document.createElement("p");
       desc.className = "gallery-panel-desc";
-      desc.textContent = album.description;
+      desc.textContent = albumDescription(album);
       panel.appendChild(desc);
     }
 
@@ -185,6 +249,7 @@
     toggle.addEventListener("click", function () {
       var open = !article.classList.contains("is-open");
       setOpen(article, toggle, panel, open);
+      openIds[album.id] = open;
       if (open) fillGrid(grid, photos);
     });
 
@@ -192,10 +257,26 @@
     article.appendChild(panel);
     root.appendChild(article);
 
-    if (openByDefault) fillGrid(grid, photos);
+    if (openByDefault) {
+      openIds[album.id] = true;
+      fillGrid(grid, photos);
+    }
   }
 
-  albums.forEach(function (album, i) {
-    renderAlbum(album, i === 0);
-  });
+  function renderAll() {
+    var previouslyOpen = {};
+    Object.keys(openIds).forEach(function (id) {
+      previouslyOpen[id] = openIds[id];
+    });
+    root.innerHTML = "";
+    albums.forEach(function (album, i) {
+      var open =
+        previouslyOpen[album.id] != null ? !!previouslyOpen[album.id] : i === 0;
+      renderAlbum(album, open);
+    });
+    ensureLightbox();
+  }
+
+  renderAll();
+  document.addEventListener("oia:langchange", renderAll);
 })();

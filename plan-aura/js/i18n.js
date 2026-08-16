@@ -72,6 +72,14 @@
       }
     });
 
+    /* Plan AURA markup uses data-i18n-html="key" (key in the attribute value). */
+    document.querySelectorAll("[data-i18n-html]").forEach(function (el) {
+      if (el.hasAttribute("data-i18n")) return;
+      var key = el.getAttribute("data-i18n-html");
+      if (!key) return;
+      el.innerHTML = t(key);
+    });
+
     document.querySelectorAll("[data-i18n-attr]").forEach(setAttrTranslation);
 
     document.querySelectorAll("[data-lang]").forEach(function (btn) {

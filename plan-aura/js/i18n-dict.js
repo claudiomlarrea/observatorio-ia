@@ -314,6 +314,10 @@ window.I18N_DICT = {
     es: "Representantes institucionales designados para la coordinación operativa e interdisciplinaria del Plan AURA.",
     en: "Institutional representatives designated for the operational and interdisciplinary coordination of Plan AURA."
   },
+  "sec.equipo.coord.lead": {
+    es: "<strong>Ing. Luis Jiménez</strong> — Coordinador del Programa",
+    en: "<strong>Eng. Luis Jiménez</strong> — Program Coordinator"
+  },
   "sec.equipo.com.title": {
     es: "Equipo de comunicación",
     en: "Communication team"
@@ -1043,6 +1047,10 @@ window.I18N_DICT = {
   "sec.galeria.videoPlural": {
     es: " videos",
     en: " videos"
+  },
+  "sec.galeria.of": {
+    es: " de ",
+    en: " of "
   },
 
   "sec.visitas.kicker": {
