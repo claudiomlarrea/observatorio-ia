@@ -1,0 +1,29 @@
+PARCHE — Contador de programas cargados (SACAU Aula)
+====================================================
+
+El frontend en sacau-aula/ ya llama:
+  ?action=sacau_aula_stats      → lee el total
+  ?action=sacau_aula_programa   → +1 al armar un programa de cátedra
+
+Hay que publicar una nueva versión de Apps Script o el contador
+solo funcionará en modo local (este navegador). Es el mismo proyecto
+que el contador de SACAU CRE.
+
+1. Abrí en Cursor: google-apps-script/PublicacionesWeb.gs
+2. Copiá todo el archivo
+3. Proyecto Apps Script «Publicaciones Página Web»
+   https://script.google.com/home/projects/19z0bOktBiOQ0b8tA8EByQEm-oP9jNHFzvlyniDZmN-pSpdyXo1bc52ps/edit
+4. Pegá sobre PublicacionesWeb.gs → Guardar
+5. Implementar → Administrar implementaciones → lápiz (/exec)
+   → Nueva versión → Implementar
+
+Probar (no debe incrementar):
+  .../exec?action=sacau_aula_stats
+
+Probar (+1):
+  .../exec?action=sacau_aula_programa
+
+Luego:
+  https://observatorio-ia.uccuyo.edu.ar/sacau-aula/
+
+No afecta los contadores de visitas ni el de planes de SACAU CRE.

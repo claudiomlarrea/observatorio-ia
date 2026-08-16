@@ -270,11 +270,21 @@
     persist();
   }
 
+  function recordPrograma(meta) {
+    if (window.SacauAulaUsage && typeof window.SacauAulaUsage.recordProgramaLoad === "function") {
+      window.SacauAulaUsage.recordProgramaLoad(meta || {});
+    }
+  }
+
   function loadFromItem(item, meta) {
     ficha = E.fichaFromSeedItem(item, meta || plan || {});
     C.seedActivities(ficha);
     showInfo(`Programa armado para «${ficha.asignatura.nombre}» (${fmt0(ficha.asignatura.cre)} CRE). Revisá el presupuesto, el autónomo y el semáforo, y descargá el Word.`);
     render();
+    recordPrograma({
+      name: ficha.asignatura.nombre || "asignatura",
+      extra: (ficha.carrera || "") + ":" + (ficha.asignatura.codigo || ""),
+    });
     const fichaPanel = $("#panel-ficha");
     if (fichaPanel) fichaPanel.scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -624,6 +634,7 @@
         E.syncHoras(ficha);
         showInfo(`Ficha cargada desde «${file.name}».`);
         render();
+        recordPrograma({ name: file.name, extra: "json" });
       } catch (e) {
         showError(e.message || String(e));
       }

@@ -11,6 +11,8 @@
  * - GET  ?action=visitmap&site=observatorio|secretaria|agua|aura: JSON de países/regiones para el mapa público.
  * - GET  ?action=sacau_plan: +1 plan cargado en el Convertidor SACAU → CRE (devuelve total).
  * - GET  ?action=sacau_stats: consulta el total de planes cargados (sin incrementar).
+ * - GET  ?action=sacau_aula_programa: +1 programa de cátedra cargado en SACAU Aula (devuelve total).
+ * - GET  ?action=sacau_aula_stats: consulta el total de programas en SACAU Aula (sin incrementar).
  * - POST ?action=add: agrega publicación (solo emails autorizados).
  * - POST ?action=contact: envía consulta del formulario web (público).
  */
@@ -110,6 +112,12 @@ function doGet(e) {
     }
     if (action === "sacau_stats") {
       return jsonOrJsonp_(obtenerStatsSacau_(), e);
+    }
+    if (action === "sacau_aula_programa") {
+      return jsonOrJsonp_(registrarProgramaSacauAula_(), e);
+    }
+    if (action === "sacau_aula_stats") {
+      return jsonOrJsonp_(obtenerStatsSacauAula_(), e);
     }
     if (action === "noticias") {
       return jsonOrJsonp_(obtenerNoticiasMedios_(), e);
@@ -855,6 +863,31 @@ function registrarPlanSacau_() {
     tipo: "sacau_convertidor",
     planes_cargados: planes,
     url: "https://observatorio-ia.uccuyo.edu.ar/sacau/"
+  };
+}
+
+/** Contador de programas de cátedra cargados en /sacau-aula/. */
+function obtenerStatsSacauAula_() {
+  var props = PropertiesService.getScriptProperties();
+  var programas = parseInt(props.getProperty("sacau_aula_programas_cargados") || "0", 10) || 0;
+  return {
+    ok: true,
+    tipo: "sacau_aula",
+    programas_cargados: programas,
+    url: "https://observatorio-ia.uccuyo.edu.ar/sacau-aula/"
+  };
+}
+
+function registrarProgramaSacauAula_() {
+  var props = PropertiesService.getScriptProperties();
+  var programas = parseInt(props.getProperty("sacau_aula_programas_cargados") || "0", 10) || 0;
+  programas++;
+  props.setProperty("sacau_aula_programas_cargados", String(programas));
+  return {
+    ok: true,
+    tipo: "sacau_aula",
+    programas_cargados: programas,
+    url: "https://observatorio-ia.uccuyo.edu.ar/sacau-aula/"
   };
 }
 

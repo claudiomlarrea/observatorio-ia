@@ -6,6 +6,8 @@ Del crédito al programa de cátedra. Continuación de [SACAU CRE](https://obser
 
 **Instructivo de uso (PDF):** [docs/instructivo_completo.pdf](docs/instructivo_completo.pdf)
 
+En la portada se muestra cuántos **programas de cátedra** se cargaron (se suma al elegir una materia o al abrir una ficha JSON).
+
 ## Cómo se usa
 
 1. **Cargá el plan de estudios** (Word `.docx`, PDF o CSV) en la zona de la pantalla. Sirve el de cualquier carrera y universidad: por ejemplo el plan de Psicología (Res. 1098-CS-2013).
