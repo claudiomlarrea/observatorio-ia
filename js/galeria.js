@@ -9,10 +9,19 @@
   var currentList = [];
   var currentIndex = 0;
 
-  function thumbUrl(id, size) {
+  function isLocalOrHttp(photo) {
+    var s = String(photo || "");
+    return (
+      /^(https?:\/\/|\/|\.\/|assets\/)/i.test(s) ||
+      /\.(jpe?g|png|webp|gif)(\?|#|$)/i.test(s)
+    );
+  }
+
+  function thumbUrl(photo, size) {
+    if (isLocalOrHttp(photo)) return String(photo);
     return (
       "https://lh3.googleusercontent.com/d/" +
-      encodeURIComponent(id) +
+      encodeURIComponent(String(photo)) +
       "=w" +
       (size || 640)
     );

@@ -1,6 +1,17 @@
 window.OBS_GALERIA = {
   albums: [
     {
+      id: "webinar-evaluar-2026-08-13",
+      title: "Webinar EvaluAR — 13 de agosto de 2026",
+      description:
+        "Primer webinar del Observatorio de Inteligencia Artificial: EvaluAR (examen en papel, corrección digital), a cargo del Dr. Claudio Larrea.",
+      photos: [
+        "assets/flayer-webinar-evaluar-13agosto-2026.png",
+        "assets/galeria/webinar-evaluar-2026-08-13-meet-1.jpg",
+        "assets/galeria/webinar-evaluar-2026-08-13-meet-2.jpg",
+      ],
+    },
+    {
       id: "marimon",
       title: "Visita del asesor Frederic Marimon",
       description:
