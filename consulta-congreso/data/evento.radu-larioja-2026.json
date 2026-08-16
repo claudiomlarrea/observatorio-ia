@@ -1,0 +1,310 @@
+{
+  "meta": {
+    "titulo": "Encuentro RADU · La Rioja",
+    "subtitulo": "Investigación y Extensión · Instituto Universitario Fundación Barceló",
+    "fechas": ["2026-06-04", "2026-06-05"],
+    "sede": "Instituto Universitario de Ciencias de la Salud — Fundación Barceló, Sede La Rioja",
+    "salas": ["Investigación", "Extensión"],
+    "organizador": "RADU · Fundación Barceló · Sede La Rioja",
+    "sitioOficial": "https://observatorio-ia.uccuyo.edu.ar/",
+    "fuente": "Cronograma Encuentro RADU La Rioja — junio 2026",
+    "descargas": [
+      {
+        "id": "programa",
+        "label": "Descargar cronograma completo (PDF)",
+        "labelEn": "Download full schedule (PDF)",
+        "href": "assets/Cronograma_RADU_La_Rioja_2026.pdf"
+      }
+    ]
+  },
+  "ejes": [
+    {
+      "id": "eje-investigacion",
+      "dia": "2026-06-04",
+      "nombre": "Investigación"
+    },
+    {
+      "id": "eje-extension",
+      "dia": "2026-06-04",
+      "nombre": "Extensión"
+    }
+  ],
+  "sesiones": [
+    {
+      "id": "radu-0604-0900-acreditaciones",
+      "dia": "2026-06-04",
+      "inicio": "09:00",
+      "fin": "09:30",
+      "sala": "Investigación",
+      "tipo": "bienvenida",
+      "titulo": "Acreditaciones",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-investigacion"
+    },
+    {
+      "id": "radu-0604-0930-apertura",
+      "dia": "2026-06-04",
+      "inicio": "09:30",
+      "fin": "10:00",
+      "sala": "Investigación",
+      "tipo": "acto",
+      "titulo": "Acto de apertura — Palabras de autoridades",
+      "disertantes": ["Autoridades"],
+      "moderadores": [],
+      "ejeId": "eje-investigacion"
+    },
+    {
+      "id": "radu-0604-1000-panel-ia",
+      "dia": "2026-06-04",
+      "inicio": "10:00",
+      "fin": "11:00",
+      "sala": "Investigación",
+      "tipo": "mesa",
+      "titulo": "Charla central: Panel sobre IA en investigación",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-investigacion"
+    },
+    {
+      "id": "radu-0604-1000-mesa1",
+      "dia": "2026-06-04",
+      "inicio": "10:00",
+      "fin": "11:00",
+      "sala": "Extensión",
+      "tipo": "mesa",
+      "titulo": "Mesa 1 — Experiencias de Extensión Universitaria: aprendizaje y servicio comunitario",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-extension"
+    },
+    {
+      "id": "radu-0604-1100-break1",
+      "dia": "2026-06-04",
+      "inicio": "11:00",
+      "fin": "11:30",
+      "sala": "",
+      "tipo": "receso",
+      "titulo": "Break",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": ""
+    },
+    {
+      "id": "radu-0604-1130-exp-inv",
+      "dia": "2026-06-04",
+      "inicio": "11:30",
+      "fin": "13:00",
+      "sala": "Investigación",
+      "tipo": "conferencia",
+      "titulo": "Exposiciones por área simultáneas: Salud – Sociales – Humanas – Ingenierías",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-investigacion"
+    },
+    {
+      "id": "radu-0604-1130-mesa2",
+      "dia": "2026-06-04",
+      "inicio": "11:30",
+      "fin": "13:00",
+      "sala": "Extensión",
+      "tipo": "mesa",
+      "titulo": "Mesa 2 — Curricularización de la Extensión Universitaria",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-extension"
+    },
+    {
+      "id": "radu-0604-1300-break2",
+      "dia": "2026-06-04",
+      "inicio": "13:00",
+      "fin": "14:30",
+      "sala": "",
+      "tipo": "receso",
+      "titulo": "Break",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": ""
+    },
+    {
+      "id": "radu-0604-1430-exp-inv",
+      "dia": "2026-06-04",
+      "inicio": "14:30",
+      "fin": "16:00",
+      "sala": "Investigación",
+      "tipo": "conferencia",
+      "titulo": "Exposiciones por área simultáneas: Salud – Sociales – Humanas – Ingenierías",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-investigacion"
+    },
+    {
+      "id": "radu-0604-1430-mesa3",
+      "dia": "2026-06-04",
+      "inicio": "14:30",
+      "fin": "16:00",
+      "sala": "Extensión",
+      "tipo": "mesa",
+      "titulo": "Mesa 3 — Voluntariado Universitario",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-extension"
+    },
+    {
+      "id": "radu-0604-1600-break3",
+      "dia": "2026-06-04",
+      "inicio": "16:00",
+      "fin": "16:30",
+      "sala": "",
+      "tipo": "receso",
+      "titulo": "Break",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": ""
+    },
+    {
+      "id": "radu-0604-1630-exp-inv",
+      "dia": "2026-06-04",
+      "inicio": "16:30",
+      "fin": "18:00",
+      "sala": "Investigación",
+      "tipo": "conferencia",
+      "titulo": "Exposiciones por área simultáneas: Salud – Sociales – Humanas – Ingenierías",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-investigacion"
+    },
+    {
+      "id": "radu-0605-0930-exp-inv",
+      "dia": "2026-06-05",
+      "inicio": "09:30",
+      "fin": "11:00",
+      "sala": "Investigación",
+      "tipo": "conferencia",
+      "titulo": "Exposiciones por área simultáneas: Salud – Sociales – Humanas – Ingenierías",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-investigacion"
+    },
+    {
+      "id": "radu-0605-0930-mesa4",
+      "dia": "2026-06-05",
+      "inicio": "09:30",
+      "fin": "11:00",
+      "sala": "Extensión",
+      "tipo": "mesa",
+      "titulo": "Mesa 4 — Sostenibilidad Universitaria y Extensión",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-extension"
+    },
+    {
+      "id": "radu-0605-1100-break1",
+      "dia": "2026-06-05",
+      "inicio": "11:00",
+      "fin": "11:30",
+      "sala": "",
+      "tipo": "receso",
+      "titulo": "Break",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": ""
+    },
+    {
+      "id": "radu-0605-1130-exp-inv",
+      "dia": "2026-06-05",
+      "inicio": "11:30",
+      "fin": "13:00",
+      "sala": "Investigación",
+      "tipo": "conferencia",
+      "titulo": "Exposiciones por área simultáneas: Salud – Sociales – Humanas – Ingenierías",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-investigacion"
+    },
+    {
+      "id": "radu-0605-1130-mesa5",
+      "dia": "2026-06-05",
+      "inicio": "11:30",
+      "fin": "13:00",
+      "sala": "Extensión",
+      "tipo": "mesa",
+      "titulo": "Mesa 5 — Bienestar Universitario: Deporte, Cultura y Comunidad",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-extension"
+    },
+    {
+      "id": "radu-0605-1300-break2",
+      "dia": "2026-06-05",
+      "inicio": "13:00",
+      "fin": "14:30",
+      "sala": "",
+      "tipo": "receso",
+      "titulo": "Break",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": ""
+    },
+    {
+      "id": "radu-0605-1430-exp-inv",
+      "dia": "2026-06-05",
+      "inicio": "14:30",
+      "fin": "16:30",
+      "sala": "Investigación",
+      "tipo": "conferencia",
+      "titulo": "Exposiciones por área simultáneas: Salud – Sociales – Humanas – Ingenierías",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-investigacion"
+    },
+    {
+      "id": "radu-0605-1430-mesa6",
+      "dia": "2026-06-05",
+      "inicio": "14:30",
+      "fin": "16:30",
+      "sala": "Extensión",
+      "tipo": "mesa",
+      "titulo": "Mesa 6 — Panel de intercambio entre universidades RADU",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-extension"
+    },
+    {
+      "id": "radu-0605-1630-break3",
+      "dia": "2026-06-05",
+      "inicio": "16:30",
+      "fin": "17:00",
+      "sala": "",
+      "tipo": "receso",
+      "titulo": "Break",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": ""
+    },
+    {
+      "id": "radu-0605-1700-cierre-areas",
+      "dia": "2026-06-05",
+      "inicio": "17:00",
+      "fin": "18:00",
+      "sala": "Extensión",
+      "tipo": "conversatorio",
+      "titulo": "Cierre de áreas — Espacio de articulación Extensión, investigación y territorio",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-extension"
+    },
+    {
+      "id": "radu-0605-1800-cierre",
+      "dia": "2026-06-05",
+      "inicio": "18:00",
+      "fin": "19:00",
+      "sala": "Extensión",
+      "tipo": "acto",
+      "titulo": "Acto de cierre — Actividades culturales",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-extension"
+    }
+  ]
+}

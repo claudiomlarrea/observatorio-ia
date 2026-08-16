@@ -79,6 +79,16 @@
     loadExample().catch((err) => setStatus("loader.error", { msg: err.message || String(err) }));
   });
 
+  document.getElementById("btn-radu")?.addEventListener("click", () => {
+    fetch("data/evento.radu-larioja-2026.json?v=1", { cache: "no-store" })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((raw) => showPreview(raw))
+      .catch((err) => setStatus("loader.error", { msg: err.message || String(err) }));
+  });
+
   els.pdfId?.addEventListener("change", () => {
     els.pdfCustom.hidden = els.pdfId.value !== "otro";
   });
