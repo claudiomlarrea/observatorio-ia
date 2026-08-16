@@ -390,7 +390,7 @@
   function consumeBridge() {
     const bridge = readJson(BRIDGE_KEY);
     if (!bridge || !Array.isArray(bridge.items) || !bridge.items.length) {
-      return { bridge: null, plan: readJson(PLAN_KEY) };
+      return { bridge: null, plan: null };
     }
     const plan = {
       v: 1,
@@ -404,12 +404,29 @@
       items: bridge.items,
     };
     try {
-      writeJson(PLAN_KEY, plan);
       localStorage.removeItem(BRIDGE_KEY);
     } catch (_) {
-      /* ignore quota */
+      /* ignore */
     }
     return { bridge, plan };
+  }
+
+  function savePlan(plan) {
+    if (!plan || !plan.items || !plan.items.length) return plan;
+    try {
+      writeJson(PLAN_KEY, plan);
+    } catch (_) {
+      /* ignore */
+    }
+    return plan;
+  }
+
+  function clearPlan() {
+    try {
+      localStorage.removeItem(PLAN_KEY);
+    } catch (_) {
+      /* ignore */
+    }
   }
 
   function saveFicha(ficha) {
@@ -425,6 +442,20 @@
     const data = readJson(FICHA_KEY);
     if (!data || !data.asignatura) return null;
     return data;
+  }
+
+  function clearFicha() {
+    try {
+      localStorage.removeItem(FICHA_KEY);
+    } catch (_) {
+      /* ignore */
+    }
+  }
+
+  function hasPrograma(ficha) {
+    if (!ficha || !ficha.asignatura) return false;
+    if (String(ficha.asignatura.nombre || "").trim()) return true;
+    return Array.isArray(ficha.actividades) && ficha.actividades.length > 0;
   }
 
   function slug(ficha) {
@@ -463,8 +494,12 @@
     buildContrato,
     fichaFromSeedItem,
     consumeBridge,
+    savePlan,
+    clearPlan,
     saveFicha,
     loadFicha,
+    clearFicha,
+    hasPrograma,
     readJson,
     writeJson,
     slug,

@@ -281,6 +281,7 @@
     C.seedActivities(ficha);
     showInfo(`Programa armado para «${ficha.asignatura.nombre}» (${fmt0(ficha.asignatura.cre)} CRE). Revisá el presupuesto, el autónomo y el semáforo, y descargá el Word.`);
     render();
+    if (plan && plan.items && plan.items.length) E.savePlan(plan);
     recordPrograma({
       name: ficha.asignatura.nombre || "asignatura",
       extra: (ficha.carrera || "") + ":" + (ficha.asignatura.codigo || ""),
@@ -352,11 +353,6 @@
       items: itemsFromConv(conv),
       fuente: fileName,
     };
-    try {
-      E.writeJson(E.PLAN_KEY, plan);
-    } catch (_) {
-      /* ignore */
-    }
     const filter = $("#pickFilter");
     if (filter) filter.value = "";
     showError("");
@@ -446,9 +442,20 @@
     }
   }
 
+  function clearLoadedPlan(opts = {}) {
+    plan = null;
+    E.clearPlan();
+    const filter = $("#pickFilter");
+    if (filter) filter.value = "";
+    if (!opts.silent) {
+      showInfo("Se quitó el plan de este navegador. Cargá otro archivo o empezá en blanco.");
+    }
+    render();
+  }
+
   function bootFromBridge() {
-    const { plan: incoming } = E.consumeBridge();
-    if (incoming && incoming.items && incoming.items.length) {
+    const { bridge, plan: incoming } = E.consumeBridge();
+    if (bridge && incoming && incoming.items && incoming.items.length) {
       plan = incoming;
       let idx = incoming.selected;
       if (idx == null || idx === "") {
@@ -602,11 +609,16 @@
     render();
   });
   $("#btnEjemplo").addEventListener("click", () => {
+    plan = null;
+    E.clearPlan();
     ficha = C.exampleFicha();
     showInfo("Ejemplo cargado: Metodología de la investigación (5 CRE, semestral). Usalo como modelo.");
     render();
   });
   $("#btnBlanco").addEventListener("click", () => {
+    plan = null;
+    E.clearPlan();
+    E.clearFicha();
     ficha = E.emptyFicha({
       asignatura: {
         tipologia: "teorica",
@@ -667,6 +679,10 @@
   }
   $("#pickFilter")?.addEventListener("input", () => renderPicker());
   $("#btnUsarAsig")?.addEventListener("click", onPickAsig);
+  $("#btnQuitarPlan")?.addEventListener("click", () => {
+    if (!plan) return;
+    clearLoadedPlan();
+  });
   $("#pickAsig").addEventListener("dblclick", onPickAsig);
   $("#btnDocx").addEventListener("click", () => onExport("docx"));
   $("#btnPdf").addEventListener("click", () => onExport("pdf"));
@@ -696,12 +712,15 @@
     if (!bootFromBridge()) {
       const saved = E.loadFicha();
       const savedPlan = E.readJson(E.PLAN_KEY);
-      if (savedPlan && savedPlan.items) plan = savedPlan;
-      if (saved && saved.asignatura && (saved.asignatura.nombre || (saved.actividades || []).length)) {
+      const hayPrograma = E.hasPrograma(saved);
+      if (hayPrograma && savedPlan && savedPlan.items) plan = savedPlan;
+      else if (savedPlan) E.clearPlan();
+      if (hayPrograma) {
         ficha = saved;
-        showInfo("Se restauró el último programa de este navegador. Podés cargar otro plan arriba.");
+        showInfo("Se restauró el último programa de este navegador. Podés cargar otro plan arriba o quitarlo.");
         render();
       } else {
+        E.clearFicha();
         ficha = E.emptyFicha();
         showInfo("Cargá un plan de estudios (Word, PDF o CSV). Ejemplo: el plan de Psicología. Después elegí la materia.");
         render();
