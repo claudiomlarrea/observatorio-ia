@@ -189,10 +189,28 @@
     return out;
   }
 
+  /** Libros, diarios, revistas e informes técnicos → tarjeta “Publicaciones” en números. */
+  var CATS_PUBLICACIONES_NUMERO = {
+    libros: true,
+    diarios: true,
+    revistas: true,
+    repositorios: true
+  };
+
+  function syncNumerosPublicaciones() {
+    if (!window.OBS_NUMEROS_API) return;
+    var n = 0;
+    items.forEach(function (it) {
+      if (CATS_PUBLICACIONES_NUMERO[categoriaItem(it)]) n += 1;
+    });
+    window.OBS_NUMEROS_API.set("publicaciones-oia", n);
+  }
+
   function renderTodo() {
     el("pub-status").innerHTML = "";
     dibujarFiltros();
     dibujarGrilla();
+    syncNumerosPublicaciones();
   }
 
   function dibujarFiltros() {
