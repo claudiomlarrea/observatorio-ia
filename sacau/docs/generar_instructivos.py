@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Genera los PDF de instructivo del Convertidor SACAU → CRE."""
+import shutil
 from pathlib import Path
 
 from reportlab.lib.colors import HexColor
@@ -7,9 +8,12 @@ from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_LEFT
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import cm
-from reportlab.platypus import ListFlowable, ListItem, Paragraph, SimpleDocTemplate, Table, TableStyle
+from reportlab.platypus import Image, ListFlowable, ListItem, Paragraph, SimpleDocTemplate, Table, TableStyle
 
 OUT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[2]
+LOGO = ROOT / "assets" / "logo-observatorio-ia.png"
+OUT_OBS = ROOT / "docs/instructivos/instructivo-sacau-cre.pdf"
 BRAND = HexColor("#7a1532")
 SOFT = HexColor("#5c4f54")
 LINE = HexColor("#e4dce0")
@@ -78,18 +82,77 @@ def styles():
     }
 
 
+def draw_logo(canvas, x, y, d):
+    if not LOGO.is_file():
+        return
+    canvas.saveState()
+    path = canvas.beginPath()
+    path.circle(x + d / 2, y + d / 2, d / 2)
+    canvas.clipPath(path, stroke=0)
+    canvas.drawImage(
+        str(LOGO),
+        x,
+        y,
+        width=d,
+        height=d,
+        preserveAspectRatio=True,
+        mask="auto",
+    )
+    canvas.restoreState()
+
+
 def header_footer(canvas, doc):
     canvas.saveState()
+    bar_h = 22
     canvas.setFillColor(BRAND)
-    canvas.rect(0, A4[1] - 18, A4[0], 18, fill=1, stroke=0)
+    canvas.rect(0, A4[1] - bar_h, A4[0], bar_h, fill=1, stroke=0)
+    d = 16
+    lx = 1.5 * cm
+    ly = A4[1] - bar_h + (bar_h - d) / 2
+    draw_logo(canvas, lx, ly, d)
     canvas.setFillColor(HexColor("#ffffff"))
     canvas.setFont("Helvetica", 8)
-    canvas.drawString(1.8 * cm, A4[1] - 12, "Universidad Católica de Cuyo · Convertidor SACAU → CRE")
+    canvas.drawString(lx + d + 6, A4[1] - 14, "Universidad Católica de Cuyo · Convertidor SACAU → CRE")
     canvas.setFillColor(SOFT)
     canvas.setFont("Helvetica", 8)
     canvas.drawString(1.8 * cm, 1.1 * cm, "Observatorio IA · https://observatorio-ia.uccuyo.edu.ar/sacau/")
     canvas.drawRightString(A4[0] - 1.8 * cm, 1.1 * cm, f"Pág. {doc.page}")
     canvas.restoreState()
+
+
+def brand_block(st, title, subtitle):
+    if not LOGO.is_file():
+        return [Paragraph(title, st["title"]), Paragraph(subtitle, st["small"])]
+    logo = Image(str(LOGO), width=2.4 * cm, height=2.4 * cm)
+    inner = Table(
+        [[Paragraph(title, st["title"])], [Paragraph(subtitle, st["small"])]],
+        colWidths=[13.4 * cm],
+    )
+    inner.setStyle(
+        TableStyle(
+            [
+                ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+                ("TOPPADDING", (0, 0), (-1, -1), 0),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 2),
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+            ]
+        )
+    )
+    t = Table([[logo, inner]], colWidths=[2.7 * cm, 13.5 * cm])
+    t.setStyle(
+        TableStyle(
+            [
+                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                ("RIGHTPADDING", (0, 0), (0, 0), 10),
+                ("RIGHTPADDING", (1, 0), (1, 0), 0),
+                ("TOPPADDING", (0, 0), (-1, -1), 0),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 10),
+            ]
+        )
+    )
+    return [t]
 
 
 def bullets(items, st):
@@ -114,11 +177,11 @@ def make_autonomo():
         bottomMargin=1.8 * cm,
     )
     story = []
-    story.append(Paragraph("Instructivo: estimar el trabajo autónomo", st["title"]))
-    story.append(
-        Paragraph(
+    story.extend(
+        brand_block(
+            st,
+            "Instructivo: estimar el trabajo autónomo",
             "Guía rápida del cuadro «Cómo estimar el trabajo autónomo» del Convertidor SACAU → CRE.",
-            st["small"],
         )
     )
     story.append(Paragraph("¿Para qué sirve este cuadro?", st["h2"]))
@@ -221,12 +284,12 @@ def make_completo():
         bottomMargin=1.8 * cm,
     )
     story = []
-    story.append(Paragraph("Instructivo completo — Convertidor SACAU → CRE", st["title"]))
-    story.append(
-        Paragraph(
+    story.extend(
+        brand_block(
+            st,
+            "Instructivo completo — Convertidor SACAU → CRE",
             "Universidad Católica de Cuyo · Observatorio IA · Uso del sistema web · "
             "Actualizado con biblioteca normativa, tipo de carrera y anexo curricular Res. 911.",
-            st["small"],
         )
     )
 
@@ -412,6 +475,9 @@ def make_completo():
     )
     doc.build(story, onFirstPage=header_footer, onLaterPages=header_footer)
     print("wrote", path)
+    OUT_OBS.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(path, OUT_OBS)
+    print("wrote", OUT_OBS)
 
 
 if __name__ == "__main__":
