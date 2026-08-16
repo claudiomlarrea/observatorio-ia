@@ -1,0 +1,171 @@
+{
+  "meta": {
+    "titulo": "Jornada ejemplo · Consulta Congreso",
+    "subtitulo": "Plantilla reutilizable del Observatorio de IA",
+    "fechas": ["2026-10-08", "2026-10-09"],
+    "sede": "Sede del evento · Ciudad",
+    "salas": ["Aula Magna", "Sala A", "Sala B", "Hall de póster"],
+    "organizador": "Observatorio de IA · UCCuyo",
+    "sitioOficial": "https://observatorio-ia.uccuyo.edu.ar/",
+    "fuente": "Datos de ejemplo — reemplazá con el programa real",
+    "descargas": [
+      {
+        "id": "programa",
+        "label": "Descargar programa completo (PDF)",
+        "labelEn": "Download full program (PDF)",
+        "href": ""
+      },
+      {
+        "id": "talleres",
+        "label": "Descargar grilla de talleres (PDF)",
+        "labelEn": "Download workshops grid (PDF)",
+        "href": ""
+      },
+      {
+        "id": "posters",
+        "label": "Descargar listado de pósteres (PDF)",
+        "labelEn": "Download posters list (PDF)",
+        "href": ""
+      }
+    ]
+  },
+  "ejes": [
+    {
+      "id": "eje-1",
+      "dia": "2026-10-08",
+      "nombre": "Innovación y prácticas educativas"
+    },
+    {
+      "id": "eje-2",
+      "dia": "2026-10-09",
+      "nombre": "Evaluación, IA y formación docente"
+    }
+  ],
+  "sesiones": [
+    {
+      "id": "ej-2026-10-08-0900-magna",
+      "dia": "2026-10-08",
+      "inicio": "09:00",
+      "fin": "09:30",
+      "sala": "Aula Magna",
+      "tipo": "bienvenida",
+      "titulo": "Apertura institucional",
+      "disertantes": ["Autoridades del evento"],
+      "moderadores": [],
+      "ejeId": "eje-1"
+    },
+    {
+      "id": "ej-2026-10-08-0930-magna",
+      "dia": "2026-10-08",
+      "inicio": "09:30",
+      "fin": "10:30",
+      "sala": "Aula Magna",
+      "tipo": "conferencia",
+      "titulo": "Conferencia inaugural de ejemplo",
+      "disertantes": ["Dra. Ana Ejemplo (Universidad Demo)"],
+      "moderadores": ["Dr. Juan Moderador"],
+      "ejeId": "eje-1"
+    },
+    {
+      "id": "ej-taller-1",
+      "tallerNumero": 1,
+      "dia": "2026-10-08",
+      "inicio": "11:00",
+      "fin": "12:30",
+      "sala": "Sala A",
+      "tipo": "taller",
+      "titulo": "Taller ejemplo: diseño de rúbricas con IA",
+      "disertantes": ["Lic. María Taller"],
+      "moderadores": [],
+      "ejeId": "eje-1"
+    },
+    {
+      "id": "ej-taller-2",
+      "tallerNumero": 2,
+      "dia": "2026-10-08",
+      "inicio": "11:00",
+      "fin": "12:30",
+      "sala": "Sala B",
+      "tipo": "taller",
+      "titulo": "Taller ejemplo: simulación clínica breve",
+      "disertantes": ["Dr. Pedro Simulación"],
+      "moderadores": [],
+      "ejeId": "eje-1"
+    },
+    {
+      "id": "ej-mesa-1",
+      "dia": "2026-10-08",
+      "inicio": "14:00",
+      "fin": "15:30",
+      "sala": "Aula Magna",
+      "tipo": "mesa",
+      "titulo": "Mesa redonda: desafíos de la formación",
+      "disertantes": ["Panelista A", "Panelista B", "Panelista C"],
+      "moderadores": ["Moderación institucional"],
+      "ejeId": "eje-1"
+    },
+    {
+      "id": "ej-poster-1",
+      "posterNumero": 1,
+      "dia": "2026-10-08",
+      "inicio": "16:00",
+      "fin": "17:00",
+      "sala": "Hall de póster",
+      "tipo": "poster",
+      "titulo": "Póster ejemplo: trayectoria estudiantil",
+      "disertantes": ["Equipo Póster Uno"],
+      "moderadores": [],
+      "ejeId": "eje-1"
+    },
+    {
+      "id": "ej-poster-2",
+      "posterNumero": 2,
+      "dia": "2026-10-08",
+      "inicio": "16:00",
+      "fin": "17:00",
+      "sala": "Hall de póster",
+      "tipo": "poster",
+      "titulo": "Póster ejemplo: evaluación formativa",
+      "disertantes": ["Equipo Póster Dos"],
+      "moderadores": [],
+      "ejeId": "eje-1"
+    },
+    {
+      "id": "ej-2026-10-09-0930-magna",
+      "dia": "2026-10-09",
+      "inicio": "09:30",
+      "fin": "10:30",
+      "sala": "Aula Magna",
+      "tipo": "plenaria",
+      "titulo": "Plenaria ejemplo: nuevas fronteras docentes",
+      "disertantes": ["Prof. Invitado Internacional"],
+      "moderadores": ["Coordinación académica"],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "ej-taller-3",
+      "tallerNumero": 3,
+      "dia": "2026-10-09",
+      "inicio": "11:00",
+      "fin": "12:30",
+      "sala": "Sala A",
+      "tipo": "taller",
+      "titulo": "Taller ejemplo: feedback con IA",
+      "disertantes": ["Esp. Lucía Feedback"],
+      "moderadores": [],
+      "ejeId": "eje-2"
+    },
+    {
+      "id": "ej-acto-cierre",
+      "dia": "2026-10-09",
+      "inicio": "13:00",
+      "fin": "13:45",
+      "sala": "Aula Magna",
+      "tipo": "acto",
+      "titulo": "Cierre y entrega de reconocimientos",
+      "disertantes": [],
+      "moderadores": [],
+      "ejeId": "eje-2"
+    }
+  ]
+}

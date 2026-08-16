@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="App de Consulta de Congreso: cargá el programa de tu evento y consultá horarios, aulas, talleres, pósteres y agenda offline."
+    />
+    <meta name="theme-color" content="#0b1f4a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Consulta Congreso" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <title>Consulta Congreso · Observatorio de IA</title>
+    <link rel="icon" type="image/png" href="assets/icon-192.png" />
+    <link rel="apple-touch-icon" href="assets/icon-180.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="css/fonts.css?v=1" />
+    <link rel="stylesheet" href="css/styles.css?v=1" />
+    <link rel="stylesheet" href="css/instalar.css?v=1" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido" data-i18n="a11y.skipLink">Ir al contenido</a>
+    <div id="offline-banner" class="offline-banner" hidden role="status">
+      <span data-i18n="offline.banner">Sin conexión — usando la versión guardada en este celular</span>
+    </div>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="brand-copy">
+          <p class="brand-kicker" id="brand-kicker" data-i18n="brand.kicker">
+            Observatorio de IA · UCCuyo
+          </p>
+          <h1 class="brand-title" id="brand-title" data-i18n="brand.title">Consulta Congreso</h1>
+          <p class="brand-sub" id="brand-sub" data-i18n="brand.sub">
+            ¿Qué querés encontrar?
+          </p>
+          <p class="brand-dates" id="brand-dates"></p>
+          <div class="header-actions" id="download-links"></div>
+          <div class="header-actions">
+            <a class="install-guide-link" href="instalar.html" data-i18n="install.howToShort"
+              >Agregar a la pantalla del celular</a
+            >
+            <a class="load-event-link" href="cargar.html" data-i18n="loader.open">
+              Cargar / cambiar evento
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <nav class="botonera" aria-label="Cómo buscar" id="botonera" data-i18n-attr="aria-label:a11y.botonera"></nav>
+
+    <main id="contenido" class="main">
+      <section class="step-panel" id="step-panel" aria-live="polite">
+        <div class="step-head">
+          <h2 class="step-title" id="step-title">Elegí el día</h2>
+          <p class="step-help" id="step-help">Después vas a ver los horarios de ese día.</p>
+        </div>
+        <div class="step-tools" id="step-tools" hidden>
+          <label class="sr-only" for="person-filter" data-i18n="a11y.personFilter"
+            >Filtrar nombres</label
+          >
+          <input
+            id="person-filter"
+            class="person-filter"
+            type="search"
+            placeholder="Escribí un apellido o nombre…"
+            autocomplete="off"
+            data-i18n-attr="placeholder:person.filterPlaceholder"
+          />
+        </div>
+        <div
+          class="option-grid"
+          id="option-grid"
+          role="listbox"
+          aria-label="Opciones"
+          data-i18n-attr="aria-label:a11y.options"
+        ></div>
+      </section>
+
+      <section
+        class="results"
+        id="results"
+        aria-label="Resultados"
+        data-i18n-attr="aria-label:a11y.results"
+        hidden
+      >
+        <div class="results-head">
+          <h2 class="results-title" id="results-title" data-i18n="results.title">Resultados</h2>
+          <button type="button" class="back-btn" id="back-btn" data-i18n="back.filter">
+            ← Volver
+          </button>
+        </div>
+        <div id="results-body"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        <a class="load-event-link-footer" href="cargar.html" data-i18n="loader.open"
+          >Cargar / cambiar evento</a
+        >
+        ·
+        <a href="../" data-i18n="footer.observatorio">Observatorio de IA</a>
+      </p>
+      <p class="footer-note" id="footer-source"></p>
+      <p class="footer-note" data-i18n="footer.note">
+        Consulta Congreso · Observatorio de IA · UCCuyo
+      </p>
+    </footer>
+
+    <script src="js/i18n-dict.js?v=1"></script>
+    <script src="js/i18n.js?v=1"></script>
+    <script src="js/store.js?v=1"></script>
+    <script src="js/normalize.js?v=1"></script>
+    <script src="js/install.js?v=1"></script>
+    <script src="js/app.js?v=1" defer></script>
+  </body>
+</html>
