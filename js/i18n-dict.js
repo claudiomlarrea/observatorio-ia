@@ -870,8 +870,8 @@ window.I18N_DICT = {
     "en": "Faculty survey"
   },
   "sec.encuestas.docentes.body": {
-    "es": "Desde el Observatorio de Inteligencia Artificial invitamos al cuerpo docente de la UCCuyo a responder una encuesta anónima sobre percepción, conocimiento y uso de la IA en la enseñanza, la evaluación y la gestión académica. Las respuestas alimentan el diagnóstico institucional y se analizan con Encuesta Clara; el equipo puede publicar los informes en esta misma sección.",
-    "en": "The Artificial Intelligence Observatory invites UCCuyo faculty to complete an anonymous survey on perception, knowledge, and use of AI in teaching, assessment, and academic management. Responses feed the institutional diagnosis and are analyzed with Encuesta Clara; the team may publish reports in this same section."
+    "es": "Desde el Observatorio de Inteligencia Artificial invitamos al cuerpo docente de la UCCuyo a responder una encuesta anónima sobre <strong>percepción, conocimiento y uso de la IA</strong> en la enseñanza, la evaluación y la gestión académica. Las respuestas alimentan el diagnóstico institucional y se analizan con Encuesta Clara; el equipo puede publicar los informes en esta misma sección.",
+    "en": "The Artificial Intelligence Observatory invites UCCuyo faculty to complete an anonymous survey on <strong>perception, knowledge, and use of AI</strong> in teaching, assessment, and academic management. Responses feed the institutional diagnosis and are analyzed with Encuesta Clara; the team may publish reports in this same section."
   },
   "sec.encuestas.docentes.steps.ariaLabel": {
     "es": "Flujo",
