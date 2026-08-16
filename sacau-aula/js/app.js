@@ -206,7 +206,7 @@
       .map((act, i) => {
         const ia = act.ia || "amarillo";
         const showRedesign = ia !== "verde" && act.rediseño;
-        return `<tr class="ia-${ia}" data-act="${i}">
+        return `<tr class="ia-${ia}${act.plantilla ? " is-plantilla" : ""}" data-act="${i}">
           <td>
             <select data-af="tipo">
               <option value="ip" ${act.tipo === "ip" ? "selected" : ""}>IP · clase</option>
@@ -215,6 +215,7 @@
           </td>
           <td>
             <input type="text" data-af="nombre" value="${esc(act.nombre)}" />
+            ${act.plantilla ? `<p class="act-desc plantilla-tag">Propuesta de Aula · reescribí el nombre si es de la cátedra</p>` : ""}
             <p class="act-desc">${esc(act.descripcion || "")}</p>
             ${
               showRedesign
@@ -249,8 +250,8 @@
     }
     tb.innerHTML = ras
       .map(
-        (r, i) => `<tr data-ra="${i}">
-        <td><textarea data-rf="texto" rows="3">${esc(r.texto)}</textarea></td>
+        (r, i) => `<tr data-ra="${i}" class="${r.plantilla && String(r.texto || "").trim() ? "is-plantilla" : ""}">
+        <td>${r.plantilla && String(r.texto || "").trim() ? `<p class="plantilla-tag">Plantilla · reescribí este RA</p>` : ""}<textarea data-rf="texto" rows="3">${esc(r.texto)}</textarea></td>
         <td><textarea data-rf="evidencia" rows="3">${esc(r.evidencia)}</textarea></td>
         <td><textarea data-rf="criterio" rows="3">${esc(r.criterio)}</textarea></td>
         <td><button type="button" class="btn-secondary btn-tiny btn-del-ra">Quitar</button></td>
@@ -266,6 +267,19 @@
     $("#checks").innerHTML = d.checks
       .map((c) => `<li class="${c.nivel}">${esc(c.mensaje)}</li>`)
       .join("");
+    const ancla = ficha._meta && ficha._meta.plan;
+    const planHint = $("#planAnchorHint");
+    if (planHint) {
+      if (ancla && (ancla.cre != null || ancla.regimen)) {
+        const reg = ancla.regimen === "A" ? "anual" : "semestral";
+        planHint.hidden = false;
+        planHint.textContent = `Ancla del plan: ${ancla.nombre || "esta materia"} · ${ancla.cre} CRE · ${reg} · ${ancla.horas_interaccion || "?"} h de clase. Si cambiás esos datos, el diagnóstico lo marca.`;
+      } else {
+        planHint.hidden = true;
+      }
+    }
+    const raHint = $("#raPlantillaHint");
+    if (raHint) raHint.hidden = !E.esBorradorPlantilla(ficha);
     return d;
   }
 
@@ -425,6 +439,7 @@
       rediseño: C.suggestRedesign(nombre, ""),
       ra_id: (ficha.ra[0] && ficha.ra[0].id) || "",
       semanas: "",
+      plantilla: false,
     });
     render();
   }
@@ -436,6 +451,7 @@
     tr.querySelectorAll("[data-af]").forEach((el) => {
       const k = el.getAttribute("data-af");
       act[k] = el.type === "number" ? E.num(el.value) : el.value;
+      if (k === "nombre" || k === "descripcion") act.plantilla = false;
     });
   }
 
@@ -449,7 +465,12 @@
     const diag = E.diagnose(ficha);
     if (diag.critico) {
       const ok = window.confirm(
-        "Hay incoherencias críticas (horas, calendario o autónomo). El archivo se descargará como BORRADOR INCOHERENTE. ¿Continuar?"
+        "Hay incoherencias críticas (horas, calendario, CRE o régimen respecto del plan). El archivo se descargará como BORRADOR INCOHERENTE. ¿Continuar?"
+      );
+      if (!ok) return;
+    } else if (E.esBorradorPlantilla(ficha)) {
+      const ok = window.confirm(
+        "Los RA o las actividades siguen siendo plantilla de Aula. El archivo se descargará como BORRADOR DE CÁTEDRA, no como programa cerrado. ¿Continuar?"
       );
       if (!ok) return;
     }
@@ -593,8 +614,12 @@
     const r = ficha.ra[i];
     if (!r) return;
     const k = ev.target.getAttribute("data-rf");
-    if (k) r[k] = ev.target.value;
+    if (k) {
+      r[k] = ev.target.value;
+      r.plantilla = false;
+    }
     persist();
+    renderDiag();
   });
   $("#tablaRa").addEventListener("click", (ev) => {
     if (!ev.target.closest(".btn-del-ra")) return;
@@ -638,6 +663,7 @@
     ficha.ra = ficha.ra || [];
     ficha.ra.push({
       id: E.uid("ra"),
+      plantilla: false,
       texto: "",
       evidencia: "",
       criterio: "",

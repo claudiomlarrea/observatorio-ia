@@ -141,6 +141,7 @@
       rediseño: suggestRedesign(item.nombre, item.desc),
       ra_id: raId || "",
       semanas: "",
+      plantilla: true,
     };
   }
 
@@ -164,30 +165,35 @@
     return [
       {
         id: E.uid("ra"),
+        plantilla: true,
         texto: `Explicar los núcleos conceptuales y el vocabulario de ${nombre}, situándolos en debates actuales del campo.`,
         evidencia: "Coloquio, guía justificada o mapa conceptual defendido en clase.",
         criterio: "Precisión, uso de fuentes y capacidad de distinguir lo esencial de lo accesorio.",
       },
       {
         id: E.uid("ra"),
+        plantilla: true,
         texto: `Aplicar métodos, técnicas o procedimientos de ${tip} a situaciones guiadas o casos del medio.`,
         evidencia: "Resolución de caso, práctica supervisada o producto de taller con versiones.",
         criterio: "Pertinencia del método, justificación de decisiones y corrección de errores.",
       },
       {
         id: E.uid("ra"),
+        plantilla: true,
         texto: "Documentar el propio proceso de aprendizaje (borradores, bitácora, declaración de herramientas) de modo que el CRE autónomo sea auditable.",
         evidencia: "Dossier de proceso o portafolio con hitos fechados.",
         criterio: "Trazabilidad, honestidad intelectual y mejora entre versiones.",
       },
       {
         id: E.uid("ra"),
+        plantilla: true,
         texto: "Argumentar una decisión o interpretación con fuentes, datos y criterio ético, incluyendo límites del propio saber.",
         evidencia: "Informe de caso situado, ateneo o ensayo breve con defensa.",
         criterio: "Calidad del argumento, honestidad de fuentes y reconocimiento de objeciones.",
       },
       {
         id: E.uid("ra"),
+        plantilla: true,
         texto: "Comunicar y defender oralmente un producto o posición de la cátedra ante preguntas no ensayadas.",
         evidencia: "Defensa, coloquio o supervisión (8–15 min).",
         criterio: "Claridad, respuesta a imprevistos y coherencia con el proceso presentado.",
@@ -280,6 +286,7 @@
     act.descripcion = suggestion;
     act.ia = "verde";
     act.rediseño = suggestion;
+    act.plantilla = false;
     return act;
   }
 

@@ -95,6 +95,7 @@
       _meta: {
         editado: Boolean(seed && seed._meta && seed._meta.editado),
         origen: (seed && seed._meta && seed._meta.origen) || "manual",
+        plan: (seed && seed._meta && seed._meta.plan) || null,
       },
     };
   }
@@ -297,6 +298,44 @@
       });
     }
 
+    const ancla = ficha._meta && ficha._meta.plan;
+    if (ancla) {
+      const a = ficha.asignatura || {};
+      const regPlan = ancla.regimen === "A" || ancla.regimen === "S" ? ancla.regimen : "";
+      if (regPlan && regPlan !== b.regimen) {
+        checks.push({
+          id: "ancla_regimen",
+          nivel: "error",
+          mensaje: `El plan indica régimen ${regPlan === "A" ? "anual" : "semestral"}; esta ficha declara ${b.regimen === "A" ? "anual" : "semestral"}.`,
+        });
+      }
+      if (ancla.cre != null && Math.abs(num(ancla.cre) - b.cre) >= 1) {
+        checks.push({
+          id: "ancla_cre",
+          nivel: "error",
+          mensaje: `El plan asigna ${num(ancla.cre)} CRE a ${ancla.nombre || a.nombre || "esta materia"}; esta ficha declara ${b.cre} CRE.`,
+        });
+      } else if (ancla.horas_interaccion != null && Math.abs(num(ancla.horas_interaccion) - b.ip) > 2) {
+        checks.push({
+          id: "ancla_ip",
+          nivel: "warning",
+          mensaje: `El plan prevé ${num(ancla.horas_interaccion)} h de interacción; la ficha tiene ${b.ip} h.`,
+        });
+      }
+      if (
+        ancla.cre != null &&
+        Math.abs(num(ancla.cre) - b.cre) < 1 &&
+        ancla.horas_autonomas != null &&
+        Math.abs(num(ancla.horas_autonomas) - b.ta) > 2
+      ) {
+        checks.push({
+          id: "ancla_ta",
+          nivel: "warning",
+          mensaje: `El plan prevé ${num(ancla.horas_autonomas)} h autónomas; la ficha tiene ${b.ta} h.`,
+        });
+      }
+    }
+
     if (!ra.length || ra.every((r) => !String(r.texto || "").trim())) {
       checks.push({
         id: "ra_vacio",
@@ -319,6 +358,14 @@
           mensaje: "Cada resultado de aprendizaje tiene al menos una actividad que lo sostiene.",
         });
       }
+    }
+
+    if (esBorradorPlantilla(ficha)) {
+      checks.push({
+        id: "plantilla",
+        nivel: "warning",
+        mensaje: "Los RA o las actividades siguen siendo plantilla de SACAU Aula. Reescribilos con la voz de la cátedra antes de tratar el archivo como programa.",
+      });
     }
 
     if (!String(ficha.contrato_ia || "").trim()) {
@@ -390,13 +437,43 @@
     return lines.join("\n");
   }
 
+  function planSnapshot(item, meta) {
+    const a = normalizeAsignatura(item);
+    return {
+      codigo: a.codigo,
+      nombre: a.nombre,
+      regimen: a.regimen,
+      tipologia: a.tipologia,
+      horas_teoricas: a.horas_teoricas,
+      horas_practicas: a.horas_practicas,
+      horas_interaccion: a.horas_interaccion,
+      horas_autonomas: a.horas_autonomas,
+      cre: a.cre,
+      valor_cre: a.valor_cre,
+      carrera: (meta && meta.carrera) || "",
+      fuente: (meta && (meta.fuente || meta.source)) || "",
+    };
+  }
+
+  function esBorradorPlantilla(ficha) {
+    const ras = (ficha.ra || []).filter((r) => String(r.texto || "").trim());
+    if (ras.some((r) => r.plantilla === true)) return true;
+    const acts = (ficha.actividades || []).filter((x) => String(x.nombre || "").trim());
+    if (acts.length && acts.every((x) => x.plantilla === true)) return true;
+    return false;
+  }
+
   function fichaFromSeedItem(item, meta) {
     const asignatura = normalizeAsignatura(item);
     return emptyFicha({
       institucion: (meta && meta.institucion) || "Universidad Católica de Cuyo",
       carrera: (meta && meta.carrera) || "",
       asignatura,
-      _meta: { origen: "sacau-cre", editado: false },
+      _meta: {
+        origen: "sacau-cre",
+        editado: false,
+        plan: planSnapshot(item, meta),
+      },
     });
   }
 
@@ -519,6 +596,8 @@
     diagnose,
     reconcileAutonomo,
     buildContrato,
+    planSnapshot,
+    esBorradorPlantilla,
     fichaFromSeedItem,
     consumeBridge,
     savePlan,

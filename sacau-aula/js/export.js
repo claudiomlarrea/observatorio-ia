@@ -29,6 +29,15 @@
     return `BORRADOR INCOHERENTE. No usar como programa aprobado. ${huecos}`.trim();
   }
 
+  function stampExport(ficha, diag) {
+    const incoh = stampIncoherente(diag);
+    if (incoh) return incoh;
+    if (E.esBorradorPlantilla(ficha)) {
+      return "BORRADOR DE CÁTEDRA. Los resultados de aprendizaje o las actividades siguen siendo propuesta de SACAU Aula. Reescribilos antes de tratar este archivo como programa.";
+    }
+    return "";
+  }
+
   function paragraphsFromText(text, Paragraph, TextRun, size = 20) {
     const chunks = String(text || "")
       .split(/\n+/)
@@ -138,17 +147,19 @@
       });
     });
 
+    const faja = stampExport(ficha, diag);
+
     const children = [
       new Paragraph({
         heading: HeadingLevel.HEADING_1,
         children: [new TextRun("Programa analítico · SACAU Aula")],
       }),
-      ...(stampIncoherente(diag)
+      ...(faja
         ? [
             new Paragraph({
               children: [
                 new TextRun({
-                  text: stampIncoherente(diag),
+                  text: faja,
                   bold: true,
                   size: 22,
                   color: "7A1532",
@@ -362,7 +373,7 @@
     }
 
     h1("Programa analítico · SACAU Aula");
-    const stamp = stampIncoherente(diag);
+    const stamp = stampExport(ficha, diag);
     if (stamp) {
       doc.setFont("helvetica", "bold");
       doc.setFontSize(11);

@@ -162,8 +162,18 @@
   color: var(--inst-dark);
 }
 
-.check-inline input {
-  margin-top: 0.2rem;
+.plantilla-tag {
+  margin: 0 0 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--inst);
+}
+
+tr.is-plantilla textarea,
+tr.is-plantilla input[type="text"] {
+  background: #faf7f8;
 }
 
 .act-toolbar,
