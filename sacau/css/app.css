@@ -58,6 +58,51 @@ header.hero {
   margin-bottom: 1.5rem;
 }
 
+.hero-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem 1.1rem;
+  margin-bottom: 0.75rem;
+}
+
+.hero-logo-link {
+  flex: 0 0 auto;
+  line-height: 0;
+}
+
+.hero-logo {
+  width: 5.5rem;
+  height: 5.5rem;
+  display: block;
+  border-radius: 50%;
+  background: #fff;
+}
+
+@media (max-width: 520px) {
+  .hero-logo {
+    width: 4.25rem;
+    height: 4.25rem;
+  }
+}
+
+.hero-brand-text {
+  min-width: 0;
+}
+
+.hero-brand-text .hero-kicker {
+  margin-bottom: 0.2rem;
+}
+
+.hero-kicker {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--inst);
+  margin: 0 0 0.35rem;
+}
+
 header.hero h1 {
   font-family: var(--display);
   font-weight: 600;
