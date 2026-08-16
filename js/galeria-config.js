@@ -7,8 +7,8 @@ window.OBS_GALERIA = {
         "Primer webinar del Observatorio de Inteligencia Artificial: EvaluAR (examen en papel, corrección digital), a cargo del Dr. Claudio Larrea.",
       photos: [
         "assets/flayer-webinar-evaluar-13agosto-2026.png",
-        "assets/galeria/webinar-evaluar-2026-08-13-meet-1.jpg",
-        "assets/galeria/webinar-evaluar-2026-08-13-meet-2.jpg",
+        "assets/galeria/webinar-evaluar-2026-08-13-meet-1.jpg?v=2",
+        "assets/galeria/webinar-evaluar-2026-08-13-meet-2.jpg?v=2",
       ],
     },
     {
