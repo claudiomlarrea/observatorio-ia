@@ -71,7 +71,6 @@
     if (suppressSave) return;
     ficha._meta = ficha._meta || {};
     ficha._meta.editado = true;
-    E.saveFicha(ficha);
   }
 
   function readFichaFromForm() {
@@ -281,7 +280,6 @@
     C.seedActivities(ficha);
     showInfo(`Programa armado para «${ficha.asignatura.nombre}» (${fmt0(ficha.asignatura.cre)} CRE). Revisá el presupuesto, el autónomo y el semáforo, y descargá el Word.`);
     render();
-    if (plan && plan.items && plan.items.length) E.savePlan(plan);
     recordPrograma({
       name: ficha.asignatura.nombre || "asignatura",
       extra: (ficha.carrera || "") + ":" + (ficha.asignatura.codigo || ""),
@@ -442,13 +440,21 @@
     }
   }
 
-  function clearLoadedPlan(opts = {}) {
+  function resetWorkspace() {
     plan = null;
+    ficha = E.emptyFicha();
     E.clearPlan();
+    E.clearFicha();
     const filter = $("#pickFilter");
     if (filter) filter.value = "";
+    const sel = $("#pickAsig");
+    if (sel) sel.innerHTML = "";
+  }
+
+  function clearLoadedPlan(opts = {}) {
+    resetWorkspace();
     if (!opts.silent) {
-      showInfo("Se quitó el plan de este navegador. Cargá otro archivo o empezá en blanco.");
+      showInfo("Se borró el plan y el programa de este navegador. Cargá otro archivo o empezá en blanco.");
     }
     render();
   }
@@ -710,21 +716,9 @@
   (async function boot() {
     await initCatalogs();
     if (!bootFromBridge()) {
-      const saved = E.loadFicha();
-      const savedPlan = E.readJson(E.PLAN_KEY);
-      const hayPrograma = E.hasPrograma(saved);
-      if (hayPrograma && savedPlan && savedPlan.items) plan = savedPlan;
-      else if (savedPlan) E.clearPlan();
-      if (hayPrograma) {
-        ficha = saved;
-        showInfo("Se restauró el último programa de este navegador. Podés cargar otro plan arriba o quitarlo.");
-        render();
-      } else {
-        E.clearFicha();
-        ficha = E.emptyFicha();
-        showInfo("Cargá un plan de estudios (Word, PDF o CSV). Ejemplo: el plan de Psicología. Después elegí la materia.");
-        render();
-      }
+      resetWorkspace();
+      showInfo("Cargá un plan de estudios (Word, PDF o CSV). Ejemplo: el plan de Psicología. Después elegí la materia.");
+      render();
     }
   })();
 })();
