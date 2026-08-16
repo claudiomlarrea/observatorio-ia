@@ -20,6 +20,15 @@
     });
   }
 
+  function stampIncoherente(diag) {
+    if (!diag || !diag.critico) return "";
+    const huecos = (diag.checks || [])
+      .filter((c) => c.nivel === "error")
+      .map((c) => c.mensaje)
+      .join(" ");
+    return `BORRADOR INCOHERENTE. No usar como programa aprobado. ${huecos}`.trim();
+  }
+
   function paragraphsFromText(text, Paragraph, TextRun, size = 20) {
     const chunks = String(text || "")
       .split(/\n+/)
@@ -134,6 +143,21 @@
         heading: HeadingLevel.HEADING_1,
         children: [new TextRun("Programa analítico · SACAU Aula")],
       }),
+      ...(stampIncoherente(diag)
+        ? [
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: stampIncoherente(diag),
+                  bold: true,
+                  size: 22,
+                  color: "7A1532",
+                }),
+              ],
+              spacing: { after: 120 },
+            }),
+          ]
+        : []),
       new Paragraph({
         children: [
           new TextRun({
@@ -338,6 +362,19 @@
     }
 
     h1("Programa analítico · SACAU Aula");
+    const stamp = stampIncoherente(diag);
+    if (stamp) {
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(11);
+      doc.setTextColor(122, 21, 50);
+      const stampLines = doc.splitTextToSize(stamp, pageW - margin * 2);
+      for (const line of stampLines) {
+        ensure(14);
+        doc.text(line, margin, y);
+        y += 13;
+      }
+      y += 6;
+    }
     body("Observatorio de Inteligencia Artificial · Universidad Católica de Cuyo");
     h2("1. Identificación y presupuesto CRE");
     body(

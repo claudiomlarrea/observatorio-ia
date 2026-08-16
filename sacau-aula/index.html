@@ -16,7 +16,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../sacau/css/app.css?v=37" />
-    <link rel="stylesheet" href="css/aula.css?v=3" />
+    <link rel="stylesheet" href="css/aula.css?v=4" />
   </head>
   <body>
     <a class="skip-link" href="#contenido">Ir al contenido</a>
@@ -204,6 +204,12 @@
             <label for="fSemanas">Semanas de cursado</label>
             <input id="fSemanas" type="number" min="4" max="40" data-meta="semanas" />
           </div>
+          <div class="field wide">
+            <label class="check-inline" for="fCalExcepcional">
+              <input id="fCalExcepcional" type="checkbox" />
+              Calendario excepcional (no usar 16 semanas si es semestral ni 32 si es anual)
+            </label>
+          </div>
         </div>
         <div class="metrics metrics-aula" id="metrics" aria-live="polite"></div>
         <div id="weekVisual"></div>
@@ -224,7 +230,7 @@
           <button type="button" class="btn-secondary" id="btnAddIp">Agregar interacción</button>
           <button type="button" class="btn-secondary" id="btnAddTa">Agregar autónomo</button>
           <button type="button" class="btn-secondary" id="btnReconciliar">
-            Ajustar autónomo al presupuesto
+            Ajustar horas al presupuesto
           </button>
         </div>
         <div class="table-wrap act-table">
@@ -313,9 +319,9 @@
     <script src="../sacau/js/parser.js?v=38"></script>
     <script src="../sacau/js/usage-config.js?v=36"></script>
     <script src="js/usage.js?v=1"></script>
-    <script src="js/engine.js?v=3"></script>
-    <script src="js/catalog.js?v=1"></script>
-    <script src="js/export.js?v=1"></script>
-    <script src="js/app.js?v=6"></script>
+    <script src="js/engine.js?v=4"></script>
+    <script src="js/catalog.js?v=2"></script>
+    <script src="js/export.js?v=2"></script>
+    <script src="js/app.js?v=7"></script>
   </body>
 </html>

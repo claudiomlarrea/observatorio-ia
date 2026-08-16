@@ -14,10 +14,16 @@
   const SEMANAS_A = 32;
   const H_SEMANA_ALERTA = 12;
 
-  function semanasFor(regimen, override) {
-    const n = Number(override);
-    if (n > 0) return n;
+  function expectedSemanas(regimen) {
     return String(regimen || "S").toUpperCase() === "A" ? SEMANAS_A : SEMANAS_S;
+  }
+
+  function semanasFor(regimen, override, excepcional) {
+    if (excepcional) {
+      const n = Number(override);
+      if (n > 0) return n;
+    }
+    return expectedSemanas(regimen);
   }
 
   function denomCarga(regimen) {
@@ -65,7 +71,11 @@
 
   function emptyFicha(seed) {
     const asignatura = normalizeAsignatura(seed && seed.asignatura ? seed.asignatura : seed);
-    const semanas = semanasFor(asignatura.regimen, seed && seed.semanas);
+    const semanas = semanasFor(
+      asignatura.regimen,
+      seed && seed.semanas,
+      seed && seed.calendario_excepcional
+    );
     return {
       v: 1,
       id: (seed && seed.id) || uid("ficha"),
@@ -76,6 +86,7 @@
       docente: (seed && seed.docente) || "",
       ciclo: (seed && seed.ciclo) || "",
       semanas,
+      calendario_excepcional: Boolean(seed && seed.calendario_excepcional),
       asignatura,
       ra: (seed && seed.ra) || [],
       actividades: (seed && seed.actividades) || [],
@@ -94,14 +105,14 @@
     a.horas_totales = a.horas_interaccion + num(a.horas_autonomas);
     a.valor_cre = num(a.valor_cre, 25) || 25;
     a.cre = roundCre(a.horas_totales, a.valor_cre);
-    ficha.semanas = semanasFor(a.regimen, ficha.semanas);
+    ficha.semanas = semanasFor(a.regimen, ficha.semanas, ficha.calendario_excepcional);
     ficha.updated = new Date().toISOString();
     return ficha;
   }
 
   function budget(ficha) {
     const a = ficha.asignatura || normalizeAsignatura({});
-    const semanas = semanasFor(a.regimen, ficha.semanas);
+    const semanas = semanasFor(a.regimen, ficha.semanas, ficha.calendario_excepcional);
     const ip = num(a.horas_interaccion);
     const ta = num(a.horas_autonomas);
     const total = ip + ta;
@@ -190,14 +201,14 @@
     if (!acts.filter((x) => x.tipo === "ip").length) {
       checks.push({
         id: "ip_vacio",
-        nivel: "warning",
+        nivel: b.ip > 2 ? "error" : "warning",
         mensaje: "Todavía no hay actividades de interacción pedagógica. Generá una propuesta o cargalas a mano.",
       });
     } else if (Math.abs(gapIp) > 2) {
       checks.push({
         id: "ip_gap",
-        nivel: "warning",
-        mensaje: `Las actividades de interacción suman ${sumIp} h y el presupuesto es ${b.ip} h (diferencia ${gapIp > 0 ? "+" : ""}${gapIp} h).`,
+        nivel: "error",
+        mensaje: `Las actividades de interacción suman ${sumIp} h y el presupuesto es ${b.ip} h (diferencia ${gapIp > 0 ? "+" : ""}${gapIp} h). Regenerá la propuesta o ajustá las horas de clase.`,
       });
     } else {
       checks.push({
@@ -217,7 +228,7 @@
     } else if (Math.abs(gapTa) > 2) {
       checks.push({
         id: "ta_gap",
-        nivel: "warning",
+        nivel: "error",
         mensaje: `El autónomo declarado suma ${sumTa} h y el presupuesto es ${b.ta} h (diferencia ${gapTa > 0 ? "+" : ""}${gapTa} h). Ajustá horas o reconciliá el presupuesto.`,
       });
     } else {
@@ -246,6 +257,21 @@
         id: "ia_ok",
         nivel: "ok",
         mensaje: "Ninguna actividad autónoma quedó en rojo. El crédito puede defenderse como tiempo de aprendizaje.",
+      });
+    }
+
+    const esperadas = expectedSemanas(b.regimen);
+    if (!ficha.calendario_excepcional && b.semanas !== esperadas) {
+      checks.push({
+        id: "calendario",
+        nivel: "error",
+        mensaje: `Régimen ${b.regimen === "A" ? "anual" : "semestral"} lleva ${esperadas} semanas, no ${b.semanas}. Corregí el régimen o marcá calendario excepcional.`,
+      });
+    } else if (ficha.calendario_excepcional) {
+      checks.push({
+        id: "calendario_ex",
+        nivel: "warning",
+        mensaje: `Calendario excepcional: ${b.semanas} semanas (el régimen ${b.regimen === "A" ? "anual" : "semestral"} usa ${esperadas} por defecto).`,
       });
     }
 
@@ -314,7 +340,7 @@
       warning: checks.filter((c) => c.nivel === "warning").length,
       error: checks.filter((c) => c.nivel === "error").length,
     };
-    return { checks, score, budget: b, sumIp, sumTa, taRojo, pctRojo };
+    return { checks, score, budget: b, sumIp, sumTa, taRojo, pctRojo, critico: score.error > 0 };
   }
 
   function reconcileAutonomo(ficha) {
@@ -480,6 +506,7 @@
     uid,
     num,
     roundCre,
+    expectedSemanas,
     semanasFor,
     normalizeAsignatura,
     emptyFicha,

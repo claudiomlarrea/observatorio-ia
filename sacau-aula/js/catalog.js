@@ -195,6 +195,27 @@
     ];
   }
 
+  function redistributeHours(ficha) {
+    const a = ficha.asignatura || {};
+    const acts = ficha.actividades || [];
+    if (!acts.length) return ficha;
+    function byTipo(tipo, total) {
+      const rows = acts.filter((x) => x.tipo === tipo);
+      if (!rows.length) return;
+      const weights = rows.map((x) => {
+        const h = E.num(x.horas);
+        return h > 0 ? h : 1;
+      });
+      const hours = distributeInt(total, weights);
+      rows.forEach((row, i) => {
+        row.horas = hours[i];
+      });
+    }
+    byTipo("ip", E.num(a.horas_interaccion));
+    byTipo("ta", E.num(a.horas_autonomas));
+    return ficha;
+  }
+
   function seedActivities(ficha) {
     const a = ficha.asignatura;
     const pack = packFor(a.tipologia);
@@ -269,6 +290,7 @@
     suggestRedesign,
     raTemplates,
     seedActivities,
+    redistributeHours,
     exampleFicha,
     applyRedesign,
   };

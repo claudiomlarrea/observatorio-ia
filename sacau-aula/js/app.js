@@ -88,6 +88,11 @@
     });
     const ta = $("#contratoIa");
     if (ta) ficha.contrato_ia = ta.value;
+    const cal = $("#fCalExcepcional");
+    ficha.calendario_excepcional = Boolean(cal && cal.checked);
+    if (!ficha.calendario_excepcional) {
+      ficha.semanas = E.expectedSemanas(a.regimen);
+    }
     E.syncHoras(ficha);
   }
 
@@ -113,6 +118,10 @@
     set("fAuto", a.horas_autonomas);
     set("fValorCre", a.valor_cre);
     set("fSemanas", ficha.semanas);
+    const cal = $("#fCalExcepcional");
+    if (cal) cal.checked = Boolean(ficha.calendario_excepcional);
+    const sem = $("#fSemanas");
+    if (sem) sem.disabled = !ficha.calendario_excepcional;
     const contrato = $("#contratoIa");
     if (contrato) contrato.value = ficha.contrato_ia || "";
     const notas = $("#notasCatedra");
@@ -438,6 +447,12 @@
     }
     showError("");
     const diag = E.diagnose(ficha);
+    if (diag.critico) {
+      const ok = window.confirm(
+        "Hay incoherencias críticas (horas, calendario o autónomo). El archivo se descargará como BORRADOR INCOHERENTE. ¿Continuar?"
+      );
+      if (!ok) return;
+    }
     const base = E.slug(ficha);
     try {
       if (kind === "docx") {
@@ -504,8 +519,17 @@
 
   $("#fichaFields").addEventListener("input", () => {
     if (suppressSave) return;
+    const prevIp = E.num(ficha.asignatura.horas_teoricas) + E.num(ficha.asignatura.horas_practicas);
+    const prevTa = E.num(ficha.asignatura.horas_autonomas);
     readFichaFromForm();
+    const hoursChanged =
+      E.num(ficha.asignatura.horas_interaccion) !== prevIp ||
+      E.num(ficha.asignatura.horas_autonomas) !== prevTa;
+    if (hoursChanged && (ficha.actividades || []).length) {
+      C.redistributeHours(ficha);
+    }
     renderMetrics();
+    renderActividades();
     renderDiag();
     persist();
   });
@@ -513,9 +537,10 @@
     if (suppressSave) return;
     const prevReg = ficha.asignatura.regimen;
     readFichaFromForm();
-    if (ficha.asignatura.regimen !== prevReg) {
-      ficha.semanas = E.semanasFor(ficha.asignatura.regimen);
+    if (ficha.asignatura.regimen !== prevReg && !ficha.calendario_excepcional) {
+      ficha.semanas = E.expectedSemanas(ficha.asignatura.regimen);
     }
+    if ((ficha.actividades || []).length) C.redistributeHours(ficha);
     render();
   });
 
@@ -604,8 +629,9 @@
   $("#btnAddTa").addEventListener("click", () => addAct("ta"));
   $("#btnReconciliar").addEventListener("click", () => {
     readFichaFromForm();
+    C.redistributeHours(ficha);
     E.reconcileAutonomo(ficha);
-    showInfo("La última actividad autónoma absorbió la diferencia con el presupuesto CRE.");
+    showInfo("Las horas de las actividades se ajustaron al presupuesto CRE (clase y autónomo).");
     render();
   });
   $("#btnAddRa").addEventListener("click", () => {
