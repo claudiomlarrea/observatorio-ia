@@ -13,6 +13,8 @@
  * - GET  ?action=sacau_stats: consulta el total de planes cargados (sin incrementar).
  * - GET  ?action=sacau_aula_programa: +1 programa de cátedra cargado en SACAU Aula (devuelve total).
  * - GET  ?action=sacau_aula_stats: consulta el total de programas en SACAU Aula (sin incrementar).
+ * - GET  ?action=galeria: JSON de álbumes de la Galería de imágenes.
+ * - GET  ?action=galeria_admin: panel HTML para cargar álbum (solo emails autorizados).
  * - POST ?action=add: agrega publicación (solo emails autorizados).
  * - POST ?action=contact: envía consulta del formulario web (público).
  */
@@ -121,6 +123,10 @@ function doGet(e) {
     }
     if (action === "noticias") {
       return jsonOrJsonp_(obtenerNoticiasMedios_(), e);
+    }
+    if (typeof routeGaleriaGet_ === "function") {
+      var galeriaGet = routeGaleriaGet_(e);
+      if (galeriaGet) return galeriaGet;
     }
     if (typeof routeEncuestaDocentesGet_ === "function") {
       var encuestaGet = routeEncuestaDocentesGet_(e);

@@ -1520,5 +1520,8 @@ window.I18N_DICT = {
   "dyn.visitas.mapFail": {"es": "No se pudo cargar el mapa interactivo. La lista de orígenes sigue disponible.", "en": "Could not load the interactive map. The origin list remains available."},
   "dyn.pub.loading": {"es": "Cargando publicaciones…", "en": "Loading publications…"},
   "dyn.pub.teamEntry": {"es": "Ingreso equipo · Cargar publicaciones", "en": "Team access · Upload publications"},
-  "dyn.pub.teamHint": {"es": "(iniciá sesión en Google con un correo autorizado)", "en": "(sign in to Google with an authorized email)"}
+  "dyn.pub.teamHint": {"es": "(iniciá sesión en Google con un correo autorizado)", "en": "(sign in to Google with an authorized email)"},
+  "dyn.galeria.teamEntry": {"es": "Ingreso equipo · Cargar álbum", "en": "Team access · Upload album"},
+  "dyn.galeria.teamHint": {"es": "(iniciá sesión en Google con un correo autorizado)", "en": "(sign in to Google with an authorized email)"},
+  "dyn.galeria.empty": {"es": "Todavía no hay álbumes publicados. El equipo puede cargar eventos desde el ingreso autorizado.", "en": "No albums published yet. The team can add events via authorized access."}
 };

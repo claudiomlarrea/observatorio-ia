@@ -1,4 +1,11 @@
 window.OBS_GALERIA = {
+  /**
+   * Misma URL /exec que publicaciones (Apps Script).
+   * Panel: ?action=galeria_admin · Listado: ?action=galeria
+   */
+  APPS_SCRIPT_URL:
+    "https://script.google.com/a/macros/uccuyo.edu.ar/s/AKfycbxXOx3XpKzmpffpUFJ9tLctA5FR-552RbggS4pLO2KrL3mpVVZuKyGBFdnXDC3qR5zH/exec",
+  /** Álbumes locales (siempre visibles; los remotos se suman por encima). */
   albums: [
     {
       id: "webinar-evaluar-2026-08-13",

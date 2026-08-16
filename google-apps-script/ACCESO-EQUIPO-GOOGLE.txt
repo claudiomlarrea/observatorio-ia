@@ -20,3 +20,7 @@ Tras pegar el .gs actualizado:
   3. Ejecutar como: tu cuenta (investigacion@...).
 
 Jornadas IA / EvaluAR / listado público / visitas: no cambian (siguen sin login).
+
+Galería de imágenes: mismo acceso con
+  .../exec?action=galeria_admin
+(desde el botón «Ingreso equipo · Cargar álbum»). Ver PEGAR-GALERIA.txt.

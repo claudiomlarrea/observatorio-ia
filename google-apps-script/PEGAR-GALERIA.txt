@@ -1,0 +1,33 @@
+# Galería de imágenes — panel equipo (igual que Publicaciones)
+
+## Qué agrega
+- En el sitio: botón «Ingreso equipo · Cargar álbum» en #galeria
+- Apps Script:
+  - GET ?action=galeria        → JSON público
+  - GET ?action=galeria_admin  → panel (solo AUTHORIZED_EMAILS)
+  - saveGaleriaAlbumAdmin_     → guarda en hoja «Galeria»
+
+## Pasos en Apps Script (proyecto SyncLookerOpenAlex / Publicaciones)
+1. Abrí el proyecto de Apps Script de la planilla OIA.
+2. Creá un archivo nuevo: GaleriaWeb.gs
+3. Pegá TODO el contenido de google-apps-script/GaleriaWeb.gs del repo.
+4. En PublicacionesWeb.gs, asegurate de tener el enrutado (ya está en el repo):
+
+   if (typeof routeGaleriaGet_ === "function") {
+     var galeriaGet = routeGaleriaGet_(e);
+     if (galeriaGet) return galeriaGet;
+   }
+
+5. Implementar → Administrar implementaciones → lápiz → Nueva versión
+   (misma URL /exec; no crees una implementación nueva).
+6. Quién tiene acceso: «Cualquier usuario de Google».
+7. La primera carga crea sola la hoja «Galeria» en la planilla.
+
+## Cómo carga el equipo un evento
+1. Subir fotos a una carpeta de Drive.
+2. Compartir carpeta (o archivos): «Cualquier persona con el enlace» → Lector.
+3. En https://observatorio-ia.uccuyo.edu.ar/#galeria → «Ingreso equipo · Cargar álbum».
+4. Completar título, fecha, descripción y pegar enlace de carpeta (o IDs).
+5. Publicar → el álbum aparece en la galería pública.
+
+Correos autorizados: los mismos de AUTHORIZED_EMAILS (ver ACCESO-EQUIPO-GOOGLE.txt).

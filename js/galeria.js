@@ -1,13 +1,60 @@
 (function () {
   var CFG = window.OBS_GALERIA || {};
-  var albums = CFG.albums || [];
+  var localAlbums = CFG.albums || [];
   var root = document.getElementById("galeria-albums");
-  if (!root || !albums.length) return;
+  if (!root) return;
 
   var lightbox = null;
   var lightboxImg = null;
   var currentList = [];
   var currentIndex = 0;
+
+  function tt(key, fallback) {
+    if (window.I18N && typeof window.I18N.t === "function") {
+      var v = window.I18N.t(key);
+      if (v && v !== key) return v;
+    }
+    return fallback;
+  }
+
+  function esc(s) {
+    var d = document.createElement("div");
+    d.textContent = s == null ? "" : String(s);
+    return d.innerHTML;
+  }
+
+  function appsUrl() {
+    var fromGal = CFG.APPS_SCRIPT_URL && String(CFG.APPS_SCRIPT_URL).trim();
+    if (fromGal) return fromGal;
+    var pub = window.OBS_PUBLICACIONES || {};
+    return (pub.APPS_SCRIPT_URL && String(pub.APPS_SCRIPT_URL).trim()) || "";
+  }
+
+  function adminUrl() {
+    var base = appsUrl();
+    if (!base) return "";
+    return base + (base.indexOf("?") >= 0 ? "&" : "?") + "action=galeria_admin";
+  }
+
+  function dibujarIngresoEquipo() {
+    var box = document.getElementById("galeria-team-entry");
+    if (!box) return;
+    var url = adminUrl();
+    if (!url) {
+      box.innerHTML = "";
+      return;
+    }
+    box.innerHTML =
+      '<p class="pub-intro" style="margin-top:0">' +
+      '<a class="btn btn-ghost" href="' +
+      esc(url) +
+      '" target="_blank" rel="noopener noreferrer">' +
+      tt("dyn.galeria.teamEntry", "Ingreso equipo · Cargar álbum") +
+      "</a> " +
+      "<small>" +
+      tt("dyn.galeria.teamHint", "(iniciá sesión en Google con un correo autorizado)") +
+      "</small></p>";
+  }
 
   function isLocalOrHttp(photo) {
     var s = String(photo || "");
@@ -186,7 +233,109 @@
     return article;
   }
 
-  albums.forEach(function (album) {
-    root.appendChild(renderAlbum(album));
+  function mergeAlbums(remote) {
+    var seen = {};
+    var out = [];
+    (remote || []).forEach(function (a) {
+      if (!a || !a.id) return;
+      seen[a.id] = true;
+      out.push(a);
+    });
+    localAlbums.forEach(function (a) {
+      if (!a || !a.id || seen[a.id]) return;
+      out.push(a);
+    });
+    return out;
+  }
+
+  function renderAll(list) {
+    root.innerHTML = "";
+    if (!list.length) {
+      root.innerHTML =
+        '<p class="visitas-empty">' +
+        tt(
+          "dyn.galeria.empty",
+          "Todavía no hay álbumes publicados. El equipo puede cargar eventos desde el ingreso autorizado."
+        ) +
+        "</p>";
+      return;
+    }
+    list.forEach(function (album) {
+      root.appendChild(renderAlbum(album));
+    });
+  }
+
+  function fetchJson(url) {
+    return fetch(url, { method: "GET" }).then(function (r) {
+      if (!r.ok) throw new Error("network");
+      return r.json();
+    });
+  }
+
+  function fetchJsonp(url) {
+    return new Promise(function (resolve, reject) {
+      var name = "_obsGalCb_" + Math.floor(Math.random() * 1e9);
+      var done = false;
+      var qs = url.indexOf("?") >= 0 ? "&" : "?";
+      var script = document.createElement("script");
+      window[name] = function (data) {
+        if (done) return;
+        done = true;
+        delete window[name];
+        if (script.parentNode) script.parentNode.removeChild(script);
+        resolve(data);
+      };
+      script.async = true;
+      script.src = url + qs + "callback=" + encodeURIComponent(name);
+      script.onerror = function () {
+        if (done) return;
+        done = true;
+        delete window[name];
+        if (script.parentNode) script.parentNode.removeChild(script);
+        reject(new Error("jsonp"));
+      };
+      document.body.appendChild(script);
+      window.setTimeout(function () {
+        if (done) return;
+        script.onerror();
+      }, 20000);
+    });
+  }
+
+  function cargarRemotos() {
+    var base = appsUrl();
+    if (!base) {
+      renderAll(localAlbums.slice());
+      return;
+    }
+    var url =
+      base +
+      (base.indexOf("?") >= 0 ? "&" : "?") +
+      "action=galeria&_=" +
+      Date.now();
+    fetchJson(url)
+      .then(function (data) {
+        if (!data || !data.ok || !Array.isArray(data.albums)) throw new Error("format");
+        renderAll(mergeAlbums(data.albums));
+      })
+      .catch(function () {
+        return fetchJsonp(url).then(
+          function (data) {
+            if (!data || !data.ok || !Array.isArray(data.albums)) throw new Error("format");
+            renderAll(mergeAlbums(data.albums));
+          },
+          function () {
+            renderAll(localAlbums.slice());
+          }
+        );
+      });
+  }
+
+  dibujarIngresoEquipo();
+  renderAll(localAlbums.slice());
+  cargarRemotos();
+
+  document.addEventListener("oia:langchange", function () {
+    dibujarIngresoEquipo();
   });
 })();
