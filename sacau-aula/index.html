@@ -16,7 +16,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../sacau/css/app.css?v=37" />
-    <link rel="stylesheet" href="css/aula.css?v=2" />
+    <link rel="stylesheet" href="css/aula.css?v=3" />
   </head>
   <body>
     <a class="skip-link" href="#contenido">Ir al contenido</a>
@@ -71,7 +71,7 @@
         <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
       </div>
 
-      <section class="toolbar export-bar" id="exportBar" aria-label="Descargas">
+      <section class="toolbar export-bar" id="exportBar" aria-label="Descargas" hidden>
         <span class="export-label">Descargar programa:</span>
         <div class="actions" style="margin-left: 0">
           <button type="button" class="btn-primary" id="btnDocx">Word (.docx)</button>
@@ -127,7 +127,7 @@
         </div>
       </section>
 
-      <section class="panel panel-step" id="panel-ficha">
+      <section class="panel panel-step" id="panel-ficha" hidden>
         <h2>2. Ficha y presupuesto de esfuerzo</h2>
         <p class="note">
           El CRE no es un total al pie: es el tiempo semanal que le pedís al estudiante.
@@ -209,7 +209,7 @@
         <div id="weekVisual"></div>
       </section>
 
-      <section class="panel panel-step" id="panel-actividades">
+      <section class="panel panel-step" id="panel-actividades" hidden>
         <div class="panel-head">
           <h2>3. Actividades: interacción y autónomo</h2>
         </div>
@@ -244,7 +244,7 @@
         </div>
       </section>
 
-      <section class="panel panel-step" id="panel-ra">
+      <section class="panel panel-step" id="panel-ra" hidden>
         <div class="panel-head">
           <h2>4. Resultados de aprendizaje de la cátedra</h2>
         </div>
@@ -271,7 +271,7 @@
         </div>
       </section>
 
-      <section class="panel panel-step" id="panel-contrato">
+      <section class="panel panel-step" id="panel-contrato" hidden>
         <div class="panel-head">
           <h2>5. Cláusula de uso de IA</h2>
           <button type="button" class="btn-primary btn-sm" id="btnContrato">
@@ -285,7 +285,7 @@
         <textarea id="contratoIa" class="contrato-ia" aria-label="Cláusula de uso de IA"></textarea>
       </section>
 
-      <section class="panel panel-step" id="panel-diag">
+      <section class="panel panel-step" id="panel-diag" hidden>
         <h2>6. Diagnóstico de coherencia</h2>
         <p class="score-line" id="scoreLine"></p>
         <ul class="checks" id="checks"></ul>
@@ -316,6 +316,6 @@
     <script src="js/engine.js?v=3"></script>
     <script src="js/catalog.js?v=1"></script>
     <script src="js/export.js?v=1"></script>
-    <script src="js/app.js?v=5"></script>
+    <script src="js/app.js?v=6"></script>
   </body>
 </html>

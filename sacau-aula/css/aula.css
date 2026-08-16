@@ -251,6 +251,10 @@ tr.ia-rojo {
   border-radius: 8px;
 }
 
+.export-bar[hidden] {
+  display: none !important;
+}
+
 .plan-picker {
   display: none;
   margin-top: 0.85rem;

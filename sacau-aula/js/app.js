@@ -14,6 +14,7 @@
 
   let ficha = E.emptyFicha();
   let plan = null;
+  let programaAbierto = false;
   let suppressSave = false;
   let tipologiasMap = {};
   let knownCatalog = null;
@@ -259,9 +260,22 @@
     return d;
   }
 
+  function syncProgramaPanels() {
+    const on = programaAbierto;
+    ["exportBar", "panel-ficha", "panel-actividades", "panel-ra", "panel-contrato", "panel-diag"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.hidden = !on;
+    });
+  }
+
   function render() {
-    fillForm();
+    syncProgramaPanels();
     renderPicker();
+    if (!programaAbierto) {
+      persist();
+      return;
+    }
+    fillForm();
     renderMetrics();
     renderActividades();
     renderRa();
@@ -276,6 +290,7 @@
   }
 
   function loadFromItem(item, meta) {
+    programaAbierto = true;
     ficha = E.fichaFromSeedItem(item, meta || plan || {});
     C.seedActivities(ficha);
     showInfo(`Programa armado para «${ficha.asignatura.nombre}» (${fmt0(ficha.asignatura.cre)} CRE). Revisá el presupuesto, el autónomo y el semáforo, y descargá el Word.`);
@@ -442,6 +457,7 @@
 
   function resetWorkspace() {
     plan = null;
+    programaAbierto = false;
     ficha = E.emptyFicha();
     E.clearPlan();
     E.clearFicha();
@@ -449,6 +465,8 @@
     if (filter) filter.value = "";
     const sel = $("#pickAsig");
     if (sel) sel.innerHTML = "";
+    const wrap = $("#planPicker");
+    if (wrap) wrap.classList.remove("is-open");
   }
 
   function clearLoadedPlan(opts = {}) {
@@ -617,6 +635,7 @@
   $("#btnEjemplo").addEventListener("click", () => {
     plan = null;
     E.clearPlan();
+    programaAbierto = true;
     ficha = C.exampleFicha();
     showInfo("Ejemplo cargado: Metodología de la investigación (5 CRE, semestral). Usalo como modelo.");
     render();
@@ -625,6 +644,7 @@
     plan = null;
     E.clearPlan();
     E.clearFicha();
+    programaAbierto = true;
     ficha = E.emptyFicha({
       asignatura: {
         tipologia: "teorica",
@@ -650,6 +670,7 @@
         if (!data.asignatura) throw new Error("El JSON no es una ficha SACAU Aula.");
         ficha = E.emptyFicha(data);
         E.syncHoras(ficha);
+        programaAbierto = true;
         showInfo(`Ficha cargada desde «${file.name}».`);
         render();
         recordPrograma({ name: file.name, extra: "json" });
