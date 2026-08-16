@@ -48,7 +48,7 @@
   const AGENDA_KEY = "consulta_congreso_agenda";
   const PROGRAM_STORE_KEY = "consulta_congreso_app_backup";
   const DATA_VERSION = "1";
-  const DATA_URL = "data/evento.ejemplo.json";
+  const DATA_URL = "data/evento.radu-larioja-2026.json";
   const COMPACT_GRID_MODES = ["horario", "tipo", "aula", "atajo"];
 
   const state = {

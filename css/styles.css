@@ -1668,6 +1668,48 @@ header.section-head--bar h2 {
   color: var(--color-institutional-dark);
 }
 
+.tool-card-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+  margin: 0.7rem 0 0.85rem;
+}
+
+.tool-card-gallery-item {
+  margin: 0;
+  min-width: 0;
+}
+
+.tool-card-gallery-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 0.45rem;
+  border: 1px solid rgba(var(--rgb-inst), 0.16);
+  background: #eef2f7;
+}
+
+.tool-card-gallery-item figcaption {
+  margin: 0.28rem 0 0;
+  font-size: 0.72rem;
+  line-height: 1.25;
+  color: #5a4a50;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .tool-card-gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .tool-card-gallery-item img {
+    aspect-ratio: 16 / 10;
+  }
+}
+
 .contact-layout {
   display: grid;
   gap: 2rem;

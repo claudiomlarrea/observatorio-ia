@@ -1,10 +1,10 @@
 /**
- * Diccionario ES/EN — Consulta Congreso (Observatorio de IA)
+ * Diccionario ES/EN — Consulta Académica (Observatorio de IA)
  */
 window.I18N_DICT = {
   "meta.title": {
-    es: "Consulta Congreso · Observatorio de IA",
-    en: "Congress Lookup · AI Observatory"
+    es: "Consulta Académica · Observatorio de IA",
+    en: "Academic Lookup · AI Observatory"
   },
   "a11y.skipLink": { es: "Ir al contenido", en: "Skip to content" },
   "a11y.botonera": { es: "Cómo buscar", en: "How to search" },
@@ -17,7 +17,7 @@ window.I18N_DICT = {
     en: "Offline — using the version saved on this phone"
   },
   "brand.kicker": { es: "Observatorio de IA · UCCuyo", en: "AI Observatory · UCCuyo" },
-  "brand.title": { es: "Consulta Congreso", en: "Congress Lookup" },
+  "brand.title": { es: "Consulta Académica", en: "Academic Lookup" },
   "brand.sub": { es: "¿Qué querés encontrar?", en: "What are you looking for?" },
   "install.howToShort": {
     es: "Agregar a la pantalla del celular",
@@ -35,8 +35,8 @@ window.I18N_DICT = {
     en: "Tap Install and you’re done: the icon stays on your phone."
   },
   "install.ctaHint": {
-    es: "Un toque para agregar Consulta Congreso a tu pantalla de inicio.",
-    en: "One tap to add Congress Lookup to your home screen."
+    es: "Un toque para agregar Consulta Académica a tu pantalla de inicio.",
+    en: "One tap to add Academic Lookup to your home screen."
   },
   "install.ctaIosHint": {
     es: "En iPhone: tocá Instalar y seguí los pasos de Safari más abajo.",
@@ -87,12 +87,12 @@ window.I18N_DICT = {
     es: "Tocá “Agregar”. Queda el ícono en tu pantalla.",
     en: "Tap “Add”. The icon stays on your screen."
   },
-  "install.openApp": { es: "Abrir Consulta Congreso", en: "Open Congress Lookup" },
-  "loader.open": { es: "Cargar / cambiar evento", en: "Load / change event" },
-  "loader.pageTitle": { es: "Cargar evento", en: "Load event" },
+  "install.openApp": { es: "Abrir Consulta Académica", en: "Open Academic Lookup" },
+  "loader.open": { es: "Herramienta interna · cargar evento", en: "Internal tool · load event" },
+  "loader.pageTitle": { es: "Cargar evento (uso interno)", en: "Load event (internal)" },
   "loader.pageSub": {
-    es: "Subí planillas Excel del programa (podés elegir varias). La app arma la botonera sola. El PDF queda opcional para descargar.",
-    en: "Upload Excel program sheets (you can pick several). The button bar builds itself. PDF download is optional."
+    es: "Herramienta del Observatorio para armar la app de cada evento. La oferta pública es el servicio: nosotros cargamos programa, logo y materiales, y entregamos la URL.",
+    en: "Observatory tool to assemble each event app. The public offer is the service: we load program, logo and materials, then deliver the URL."
   },
   "loader.step1": { es: "1. Planillas Excel del programa", en: "1. Excel program sheets" },
   "loader.step1Help": {
@@ -177,6 +177,7 @@ window.I18N_DICT = {
   "atajo.allDaysHelp": { es: "Ver todo este tipo", en: "See all of this type" },
   "atajo.allDay": { es: "Todo el día", en: "Whole day" },
   "atajo.allDayHelp": { es: "Sin fijar franja", en: "Without locking a slot" },
+  "atajo.daySub": { es: "Actividades de este día", en: "Activities on this day" },
   "back.filter": { es: "← Volver", en: "← Back" },
   "back.days": { es: "← Volver a los días", en: "← Back to days" },
   "back.days.sub": { es: "Cambiar de jornada", en: "Change day" },
@@ -238,8 +239,12 @@ window.I18N_DICT = {
   "now.opening": { es: "Apertura del evento", en: "Event opening" },
   "now.empty": { es: "No hay actividades para mostrar.", en: "Nothing to show." },
   "footer.observatorio": { es: "Observatorio de IA", en: "AI Observatory" },
+  "footer.requestEvent": {
+    es: "Solicitar para tu evento",
+    en: "Request for your event"
+  },
   "footer.note": {
-    es: "Consulta Congreso · Observatorio de IA · UCCuyo",
-    en: "Congress Lookup · AI Observatory · UCCuyo"
+    es: "Consulta Académica · Observatorio de IA · UCCuyo",
+    en: "Academic Lookup · AI Observatory · UCCuyo"
   }
 };

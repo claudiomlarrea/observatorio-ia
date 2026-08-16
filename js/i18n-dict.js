@@ -1005,29 +1005,49 @@ window.I18N_DICT = {
     "es": "Abrir Señal Segura",
     "en": "Open Señal Segura"
   },
+  "sec.herramientas.consultaCongreso.badge": {
+    "es": "Servicio del Observatorio",
+    "en": "Observatory service"
+  },
   "sec.herramientas.consultaCongreso.title": {
-    "es": "Consulta Congreso",
-    "en": "Congress Lookup"
+    "es": "Consulta Académica",
+    "en": "Academic Lookup"
   },
   "sec.herramientas.consultaCongreso.lead": {
-    "es": "App reutilizable para congresos, jornadas y reuniones: cargá planillas Excel o el PDF y la botonera se arma sola (horarios, exposiciones, talleres, agenda y modo offline).",
-    "en": "Reusable app for congresses and meetings: load Excel sheets or PDFs and the button bar builds itself (schedule, talks, workshops, agenda, and offline mode)."
+    "es": "El Observatorio de IA te ayuda a armar la organización del evento científico con esta aplicación: congresos, jornadas, talleres y otras reuniones. Nosotros cargamos el programa, el logo y los materiales, y te entregamos la URL lista para compartir.",
+    "en": "The AI Observatory helps you organize the scientific event with this app: congresses, meetings, workshops and more. We load the program, logo and materials, and deliver a ready-to-share URL."
+  },
+  "sec.herramientas.consultaCongreso.cap1": {
+    "es": "Botonera del programa",
+    "en": "Program button bar"
+  },
+  "sec.herramientas.consultaCongreso.cap2": {
+    "es": "Consulta por tipo",
+    "en": "Browse by type"
+  },
+  "sec.herramientas.consultaCongreso.cap3": {
+    "es": "App en el celular",
+    "en": "Phone install"
   },
   "sec.herramientas.consultaCongreso.item1": {
-    "es": "Cargá Excel del programa (varias planillas) y PDF opcionales",
-    "en": "Load Excel program sheets (several files) and optional PDFs"
+    "es": "Armamos la app con el programa, logo y PDF de tu evento",
+    "en": "We build the app with your program, logo and PDF"
   },
   "sec.herramientas.consultaCongreso.item2": {
-    "es": "Botones automáticos según el contenido del programa",
-    "en": "Automatic buttons based on program content"
+    "es": "Botonera clara: horario, tipo, disertante, aula, agenda y más",
+    "en": "Clear buttons: schedule, type, speaker, room, agenda and more"
   },
   "sec.herramientas.consultaCongreso.item3": {
-    "es": "Instalación en el celular (PWA) y consulta sin Wi‑Fi",
-    "en": "Phone install (PWA) and offline lookup"
+    "es": "Te entregamos la URL del evento; se puede instalar y usar sin Wi‑Fi",
+    "en": "We deliver the event URL; it can be installed and used offline"
   },
   "sec.herramientas.consultaCongreso.btnAbrir": {
-    "es": "Abrir Consulta Congreso",
-    "en": "Open Congress Lookup"
+    "es": "Ver demo",
+    "en": "View demo"
+  },
+  "sec.herramientas.consultaCongreso.btnSolicitar": {
+    "es": "Solicitar para tu evento",
+    "en": "Request for your event"
   },
   "sec.herramientas.consultaCongreso.btnCargar": {
     "es": "Cargar evento",

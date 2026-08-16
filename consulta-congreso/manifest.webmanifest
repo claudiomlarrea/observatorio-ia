@@ -1,7 +1,7 @@
 {
-  "name": "Consulta Congreso",
-  "short_name": "Congreso",
-  "description": "Consultá horarios, aulas, talleres, pósteres y agenda de tu congreso o jornada. Offline y sin tiendas.",
+  "name": "Consulta Académica",
+  "short_name": "Consulta",
+  "description": "Consultá el programa de congresos, jornadas y reuniones científicas. Offline y sin tiendas.",
   "id": "/observatorio-ia/consulta-congreso/",
   "start_url": "./?utm_source=pwa",
   "scope": "./",

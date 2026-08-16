@@ -1,5 +1,5 @@
 /* Service worker — Consulta Congreso (offline-first) */
-const CACHE = "consulta-congreso-v2";
+const CACHE = "consulta-congreso-v3";
 
 const CORE_ASSETS = [
   "./",
@@ -12,12 +12,12 @@ const CORE_ASSETS = [
   "./css/instalar.css?v=1",
   "./css/cargar.css?v=2",
   "./js/vendor/xlsx.full.min.js?v=1",
-  "./js/i18n-dict.js?v=2",
+  "./js/i18n-dict.js?v=3",
   "./js/i18n.js?v=1",
   "./js/store.js?v=1",
   "./js/normalize.js?v=2",
   "./js/excel-import.js?v=1",
-  "./js/app.js?v=2",
+  "./js/app.js?v=3",
   "./js/install.js?v=1",
   "./js/cargar.js?v=3",
   "./data/evento.ejemplo.json?v=1",

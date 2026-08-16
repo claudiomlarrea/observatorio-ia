@@ -19,7 +19,7 @@
       gtag("config", "G-C55ZPTW8C2");
     </script>
     <link rel="icon" type="image/png" href="assets/logo-observatorio-ia.png" />
-    <link rel="stylesheet" href="css/styles.css?v=59" />
+    <link rel="stylesheet" href="css/styles.css?v=60" />
   </head>
   <body>
     <a class="skip-link" href="#contenido" data-i18n="a11y.skipLink">Ir al contenido</a>
@@ -1169,22 +1169,58 @@
                    data-i18n="common.instructivoPdf">Instructivo (PDF)</a>
               </p>
             </article>
-            <article class="tool-card">
-              <p class="tool-card-badge" data-i18n="common.disponible">Disponible</p>
-              <h3 data-i18n="sec.herramientas.consultaCongreso.title">Consulta Congreso</h3>
+            <article class="tool-card tool-card--consulta-academica">
+              <p class="tool-card-badge" data-i18n="sec.herramientas.consultaCongreso.badge">Servicio del Observatorio</p>
+              <h3 data-i18n="sec.herramientas.consultaCongreso.title">Consulta Académica</h3>
               <p class="tool-card-lead" data-i18n="sec.herramientas.consultaCongreso.lead">
-                App reutilizable para congresos, jornadas y reuniones: cargá planillas Excel o el
-                PDF y la botonera se arma sola (horarios, exposiciones, talleres, agenda y modo offline).
+                El Observatorio de IA te ayuda a armar la organización del evento científico
+                con esta aplicación: congresos, jornadas, talleres y otras reuniones.
+                Nosotros cargamos el programa, el logo y los materiales, y te entregamos la URL lista para compartir.
               </p>
+              <div class="tool-card-gallery" aria-label="Capturas de la aplicación">
+                <figure class="tool-card-gallery-item">
+                  <img
+                    src="assets/consulta-academica/demo-botonera.webp"
+                    alt="Botonera de consulta del programa del evento"
+                    width="892"
+                    height="632"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <figcaption data-i18n="sec.herramientas.consultaCongreso.cap1">Botonera del programa</figcaption>
+                </figure>
+                <figure class="tool-card-gallery-item">
+                  <img
+                    src="assets/consulta-academica/demo-consulta.webp"
+                    alt="Consulta por tipo de actividad"
+                    width="892"
+                    height="632"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <figcaption data-i18n="sec.herramientas.consultaCongreso.cap2">Consulta por tipo</figcaption>
+                </figure>
+                <figure class="tool-card-gallery-item">
+                  <img
+                    src="assets/consulta-academica/demo-instalar.webp"
+                    alt="Instalación de la app en el celular"
+                    width="892"
+                    height="632"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <figcaption data-i18n="sec.herramientas.consultaCongreso.cap3">App en el celular</figcaption>
+                </figure>
+              </div>
               <ul class="tool-card-list">
                 <li data-i18n="sec.herramientas.consultaCongreso.item1">
-                  Cargá Excel del programa (varias planillas) y PDF opcionales
+                  Armamos la app con el programa, logo y PDF de tu evento
                 </li>
                 <li data-i18n="sec.herramientas.consultaCongreso.item2">
-                  Botones automáticos según el contenido del programa
+                  Botonera clara: horario, tipo, disertante, aula, agenda y más
                 </li>
                 <li data-i18n="sec.herramientas.consultaCongreso.item3">
-                  Instalación en el celular (PWA) y consulta sin Wi‑Fi
+                  Te entregamos la URL del evento; se puede instalar y usar sin Wi‑Fi
                 </li>
               </ul>
               <p class="tile-actions">
@@ -1194,15 +1230,13 @@
                   target="_blank"
                   rel="noopener noreferrer"
                   data-i18n="sec.herramientas.consultaCongreso.btnAbrir"
-                  >Abrir Consulta Congreso</a
+                  >Ver demo</a
                 >
                 <a
                   class="btn btn-ghost"
-                  href="consulta-congreso/cargar.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-i18n="sec.herramientas.consultaCongreso.btnCargar"
-                  >Cargar evento</a
+                  href="mailto:observatorioia@uccuyo.edu.ar?subject=%5BObservatorio%20IA%5D%20Consulta%20Acad%C3%A9mica%20para%20evento%20cient%C3%ADfico"
+                  data-i18n="sec.herramientas.consultaCongreso.btnSolicitar"
+                  >Solicitar para tu evento</a
                 >
               </p>
             </article>
@@ -1596,7 +1630,7 @@
       </div>
     </footer>
 
-    <script src="js/i18n-dict.js?v=29"></script>
+    <script src="js/i18n-dict.js?v=30"></script>
     <script src="js/i18n.js?v=3"></script>
     <script src="js/observatorio-numeros-config.js?v=5" defer></script>
     <script src="js/observatorio-numeros.js?v=2" defer></script>
