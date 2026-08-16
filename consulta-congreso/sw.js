@@ -1,5 +1,5 @@
 /* Service worker — Consulta Congreso (offline-first) */
-const CACHE = "consulta-congreso-v1";
+const CACHE = "consulta-congreso-v2";
 
 const CORE_ASSETS = [
   "./",
@@ -8,21 +8,25 @@ const CORE_ASSETS = [
   "./instalar.html",
   "./manifest.webmanifest",
   "./css/fonts.css?v=1",
-  "./css/styles.css?v=1",
+  "./css/styles.css?v=2",
   "./css/instalar.css?v=1",
-  "./css/cargar.css?v=1",
-  "./js/i18n-dict.js?v=1",
+  "./css/cargar.css?v=2",
+  "./js/vendor/xlsx.full.min.js?v=1",
+  "./js/i18n-dict.js?v=2",
   "./js/i18n.js?v=1",
   "./js/store.js?v=1",
-  "./js/normalize.js?v=1",
-  "./js/app.js?v=1",
+  "./js/normalize.js?v=2",
+  "./js/excel-import.js?v=1",
+  "./js/app.js?v=2",
   "./js/install.js?v=1",
-  "./js/cargar.js?v=2",
+  "./js/cargar.js?v=3",
   "./data/evento.ejemplo.json?v=1",
   "./data/evento.ejemplo.json",
   "./data/evento.radu-larioja-2026.json?v=1",
   "./data/evento.radu-larioja-2026.json",
   "./assets/Cronograma_RADU_La_Rioja_2026.pdf",
+  "./assets/samples/CH_Trabajos_Ciencias_Humanas.xlsx",
+  "./assets/samples/CS_Trabajos_Ciencias_Sociales.xlsx",
   "./assets/icon-180.png",
   "./assets/icon-192.png",
   "./assets/icon-512.png",

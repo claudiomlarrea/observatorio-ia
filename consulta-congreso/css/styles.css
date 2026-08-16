@@ -383,6 +383,18 @@ body.is-offline .botonera {
     inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
+.mode-btn-exposicion {
+  background: linear-gradient(180deg, #b45309, #92400e);
+}
+
+.mode-btn-exposicion.is-active {
+  background: linear-gradient(180deg, #d97706, #b45309);
+  box-shadow:
+    0 0 0 2px #fff,
+    0 0 0 4px color-mix(in srgb, #b45309 55%, white),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
 .load-event-link,
 .load-event-link-footer {
   display: inline-flex;

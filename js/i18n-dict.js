@@ -1010,12 +1010,12 @@ window.I18N_DICT = {
     "en": "Congress Lookup"
   },
   "sec.herramientas.consultaCongreso.lead": {
-    "es": "App reutilizable para congresos, jornadas y reuniones: cargá el programa y la botonera se arma sola (horarios, talleres, pósteres, agenda y modo offline).",
-    "en": "Reusable app for congresses and meetings: load the program and the button bar builds itself (schedule, workshops, posters, agenda, and offline mode)."
+    "es": "App reutilizable para congresos, jornadas y reuniones: cargá planillas Excel o el PDF y la botonera se arma sola (horarios, exposiciones, talleres, agenda y modo offline).",
+    "en": "Reusable app for congresses and meetings: load Excel sheets or PDFs and the button bar builds itself (schedule, talks, workshops, agenda, and offline mode)."
   },
   "sec.herramientas.consultaCongreso.item1": {
-    "es": "Cargá PDF del programa, talleres, exposiciones, pósteres, etc.",
-    "en": "Load PDFs for the program, workshops, talks, posters, and more."
+    "es": "Cargá Excel del programa (varias planillas) y PDF opcionales",
+    "en": "Load Excel program sheets (several files) and optional PDFs"
   },
   "sec.herramientas.consultaCongreso.item2": {
     "es": "Botones automáticos según el contenido del programa",

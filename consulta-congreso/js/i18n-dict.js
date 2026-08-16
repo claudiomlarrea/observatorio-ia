@@ -91,17 +91,28 @@ window.I18N_DICT = {
   "loader.open": { es: "Cargar / cambiar evento", en: "Load / change event" },
   "loader.pageTitle": { es: "Cargar evento", en: "Load event" },
   "loader.pageSub": {
-    es: "Subí el programa en JSON y, si querés, los PDF. La botonera se arma sola.",
-    en: "Upload the program as JSON and optional PDFs. The button bar builds itself."
+    es: "Subí planillas Excel del programa (podés elegir varias). La app arma la botonera sola. El PDF queda opcional para descargar.",
+    en: "Upload Excel program sheets (you can pick several). The button bar builds itself. PDF download is optional."
   },
-  "loader.step1": { es: "1. Programa del evento (JSON)", en: "1. Event program (JSON)" },
+  "loader.step1": { es: "1. Planillas Excel del programa", en: "1. Excel program sheets" },
   "loader.step1Help": {
-    es: "Usá la plantilla de ejemplo o tu archivo con meta, ejes y sesiones.",
-    en: "Use the sample template or your file with meta, axes, and sessions."
+    es: "Formatos típicos: Día / horario / Disertante / Ponencia / Aula, o EXPOSITOR / TÍTULO / Aula 16 / Aula 17. Podés cargar varias (p. ej. Ciencias Humanas + Ciencias Sociales) y se unen.",
+    en: "Typical columns: Day / time / Speaker / Title / Room, or SPEAKER / TITLE / Room 16 / Room 17. You can upload several sheets and they will be merged."
+  },
+  "loader.pickExcel": { es: "Elegir planillas Excel", en: "Choose Excel sheets" },
+  "loader.useExcelSamples": { es: "Probar con CH + CS de ejemplo", en: "Try sample CH + CS sheets" },
+  "loader.excelMergeHint": {
+    es: "Si ya hay un evento en borrador (p. ej. RADU), las planillas se agregan a ese programa.",
+    en: "If a draft event is already loaded (e.g. RADU), sheets are added to that program."
   },
   "loader.pickJson": { es: "Elegir archivo JSON", en: "Choose JSON file" },
   "loader.useExample": { es: "Cargar ejemplo demo", en: "Load demo example" },
   "loader.downloadTemplate": { es: "Descargar plantilla JSON", en: "Download JSON template" },
+  "loader.stepJson": { es: "Avanzado: JSON", en: "Advanced: JSON" },
+  "loader.stepJsonHelp": {
+    es: "Solo si ya tenés el programa en JSON (plantilla del Observatorio).",
+    en: "Only if you already have the program as JSON (Observatorio template)."
+  },
   "loader.step2": { es: "2. PDFs descargables (opcional)", en: "2. Downloadable PDFs (optional)" },
   "loader.step2Help": {
     es: "Asociá un PDF al programa completo, talleres, pósteres u otro id de descarga.",
@@ -114,9 +125,9 @@ window.I18N_DICT = {
   "loader.apply": { es: "Usar este evento en la app", en: "Use this event in the app" },
   "loader.clear": { es: "Quitar evento cargado", en: "Remove loaded event" },
   "loader.statusOk": { es: "Evento listo: {n} sesiones.", en: "Event ready: {n} sessions." },
-  "loader.statusEmpty": { es: "Todavía no hay un JSON válido cargado.", en: "No valid JSON loaded yet." },
+  "loader.statusEmpty": { es: "Todavía no hay un programa cargado.", en: "No program loaded yet." },
   "loader.statusCleared": { es: "Se quitó el evento. La app volverá al ejemplo.", en: "Event removed. The app will fall back to the example." },
-  "loader.error": { es: "No se pudo leer el JSON: {msg}", en: "Could not read JSON: {msg}" },
+  "loader.error": { es: "No se pudo cargar: {msg}", en: "Could not load: {msg}" },
   "mode.horario": { es: "Horario", en: "Schedule" },
   "mode.tema": { es: "Tema", en: "Topic" },
   "mode.tipo": { es: "Tipo", en: "Type" },
@@ -126,6 +137,7 @@ window.I18N_DICT = {
   "mode.posters": { es: "Pósteres", en: "Posters" },
   "mode.simposio": { es: "Simposios", en: "Symposia" },
   "mode.curso": { es: "Cursos", en: "Courses" },
+  "mode.exposicion": { es: "Exposiciones", en: "Talks" },
   "mode.agenda": { es: "Agenda", en: "Agenda" },
   "mode.ahora": { es: "Ahora", en: "Now" },
   "step.horario.dayTitle": { es: "Elegí el día", en: "Choose the day" },
@@ -194,6 +206,7 @@ window.I18N_DICT = {
   "tipo.poster": { es: "Póster", en: "Poster" },
   "tipo.simposio": { es: "Simposio", en: "Symposium" },
   "tipo.curso": { es: "Curso", en: "Course" },
+  "tipo.exposicion": { es: "Exposición", en: "Talk" },
   "tipo.acto": { es: "Acto", en: "Ceremony" },
   "tipo.receso": { es: "Receso", en: "Break" },
   "taller.number": { es: "Taller {n}", en: "Workshop {n}" },

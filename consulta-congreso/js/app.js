@@ -16,6 +16,7 @@
     poster: "tipo.poster",
     simposio: "tipo.simposio",
     curso: "tipo.curso",
+    exposicion: "tipo.exposicion",
     acto: "tipo.acto",
     receso: "tipo.receso",
   };
@@ -30,6 +31,7 @@
     "poster",
     "simposio",
     "curso",
+    "exposicion",
     "acto",
   ];
 

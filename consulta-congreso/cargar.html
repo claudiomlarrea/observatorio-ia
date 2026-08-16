@@ -9,7 +9,7 @@
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="stylesheet" href="css/fonts.css?v=1" />
     <link rel="stylesheet" href="css/styles.css?v=1" />
-    <link rel="stylesheet" href="css/cargar.css?v=1" />
+    <link rel="stylesheet" href="css/cargar.css?v=2" />
   </head>
   <body class="load-page">
     <header class="site-header">
@@ -17,9 +17,8 @@
         <div class="brand-copy">
           <p class="brand-kicker" data-i18n="brand.kicker">Observatorio de IA · UCCuyo</p>
           <h1 class="brand-title" data-i18n="loader.pageTitle">Cargar evento</h1>
-          <p class="brand-sub">
-            Para probar: tocá <strong>Cargar RADU La Rioja</strong>, después
-            <strong>Usar este evento en la app</strong>. El PDF del cronograma queda para descargar.
+          <p class="brand-sub" data-i18n="loader.pageSub">
+            Subí planillas Excel del programa (podés elegir varias). La app arma la botonera sola. El PDF queda opcional para descargar.
           </p>
         </div>
       </div>
@@ -27,29 +26,40 @@
 
     <main class="main load-main">
       <p class="load-status" id="load-status" data-i18n="loader.statusEmpty">
-        Todavía no hay un JSON válido cargado.
+        Todavía no hay un programa cargado.
       </p>
 
       <section class="load-card">
-        <h2 data-i18n="loader.step1">1. Programa del evento (JSON)</h2>
+        <h2 data-i18n="loader.step1">1. Planillas Excel del programa</h2>
         <p class="load-help" data-i18n="loader.step1Help">
-          Usá la plantilla de ejemplo o tu archivo con meta, ejes y sesiones.
+          Formatos típicos: columnas Día / horario / Disertante / Ponencia / Aula, o EXPOSITOR / TÍTULO / Aula 16 / Aula 17.
+          Podés cargar varias (p. ej. Ciencias Humanas + Ciencias Sociales) y se unen.
         </p>
         <div class="load-actions">
           <label class="load-file-btn">
-            <span data-i18n="loader.pickJson">Elegir archivo JSON</span>
-            <input id="json-file" type="file" accept="application/json,.json" hidden />
+            <span data-i18n="loader.pickExcel">Elegir planillas Excel</span>
+            <input
+              id="excel-file"
+              type="file"
+              accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+              multiple
+              hidden
+            />
           </label>
-          <button type="button" class="load-secondary" id="btn-example" data-i18n="loader.useExample">
-            Cargar ejemplo demo
+          <button type="button" class="load-secondary" id="btn-excel-samples" data-i18n="loader.useExcelSamples">
+            Probar con CH + CS de ejemplo
           </button>
           <button type="button" class="load-secondary" id="btn-radu">
             Cargar RADU La Rioja (junio 2026)
           </button>
-          <a class="load-secondary" href="data/evento.ejemplo.json" download data-i18n="loader.downloadTemplate"
-            >Descargar plantilla JSON</a
-          >
+          <button type="button" class="load-secondary" id="btn-example" data-i18n="loader.useExample">
+            Cargar ejemplo demo
+          </button>
         </div>
+        <p class="load-help load-help-tight" data-i18n="loader.excelMergeHint">
+          Si ya hay un evento en borrador (p. ej. RADU), las planillas se agregan a ese programa.
+        </p>
+        <ul class="load-excel-list" id="excel-list"></ul>
         <pre class="load-preview" id="json-preview" hidden></pre>
       </section>
 
@@ -80,6 +90,22 @@
         <ul class="load-pdf-list" id="pdf-list"></ul>
       </section>
 
+      <section class="load-card load-card-advanced">
+        <h2 data-i18n="loader.stepJson">Avanzado: JSON</h2>
+        <p class="load-help" data-i18n="loader.stepJsonHelp">
+          Solo si ya tenés el programa en JSON (plantilla del Observatorio).
+        </p>
+        <div class="load-actions">
+          <label class="load-file-btn load-file-btn-muted">
+            <span data-i18n="loader.pickJson">Elegir archivo JSON</span>
+            <input id="json-file" type="file" accept="application/json,.json" hidden />
+          </label>
+          <a class="load-secondary" href="data/evento.ejemplo.json" download data-i18n="loader.downloadTemplate"
+            >Descargar plantilla JSON</a
+          >
+        </div>
+      </section>
+
       <section class="load-card">
         <h2 data-i18n="loader.step3">3. Activar en la app</h2>
         <div class="load-actions">
@@ -100,10 +126,12 @@
       </p>
     </footer>
 
-    <script src="js/i18n-dict.js?v=1"></script>
+    <script src="js/vendor/xlsx.full.min.js?v=1"></script>
+    <script src="js/i18n-dict.js?v=2"></script>
     <script src="js/i18n.js?v=1"></script>
     <script src="js/store.js?v=1"></script>
-    <script src="js/normalize.js?v=1"></script>
-    <script src="js/cargar.js?v=2"></script>
+    <script src="js/normalize.js?v=2"></script>
+    <script src="js/excel-import.js?v=1"></script>
+    <script src="js/cargar.js?v=3"></script>
   </body>
 </html>

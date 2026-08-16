@@ -12,6 +12,7 @@ window.CC_NORMALIZE = (() => {
     "poster",
     "simposio",
     "curso",
+    "exposicion",
     "acto",
     "receso",
   ]);
@@ -22,6 +23,7 @@ window.CC_NORMALIZE = (() => {
     { tipo: "poster", icon: "Po", className: "mode-btn-posters", labelKey: "mode.posters" },
     { tipo: "simposio", icon: "Si", className: "mode-btn-simposio", labelKey: "mode.simposio" },
     { tipo: "curso", icon: "Cu", className: "mode-btn-curso", labelKey: "mode.curso" },
+    { tipo: "exposicion", icon: "Ex", className: "mode-btn-exposicion", labelKey: "mode.exposicion" },
   ];
 
   function padTime(t) {

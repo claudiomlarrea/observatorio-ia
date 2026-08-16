@@ -2,12 +2,16 @@
   const t = (key, vars) => (window.I18N && window.I18N.t ? window.I18N.t(key, vars) : key);
   let draft = null;
   let pdfFile = null;
+  const excelSources = [];
 
   const els = {
     status: document.getElementById("load-status"),
     jsonFile: document.getElementById("json-file"),
+    excelFile: document.getElementById("excel-file"),
+    excelList: document.getElementById("excel-list"),
     preview: document.getElementById("json-preview"),
     btnExample: document.getElementById("btn-example"),
+    btnExcelSamples: document.getElementById("btn-excel-samples"),
     pdfId: document.getElementById("pdf-id"),
     pdfCustom: document.getElementById("pdf-id-custom"),
     pdfFile: document.getElementById("pdf-file"),
@@ -26,11 +30,40 @@
     const normalized = window.CC_NORMALIZE.normalize(raw);
     draft = raw;
     els.preview.hidden = false;
+    const warn =
+      Array.isArray(raw._importWarnings) && raw._importWarnings.length
+        ? `\n⚠ ${raw._importWarnings.join(" · ")}`
+        : "";
     els.preview.textContent = `${normalized.meta.titulo}\n${normalized.sesiones.length} sesiones · tipos: ${Object.keys(
       normalized._derived.counts
-    ).join(", ")}\natajos: ${normalized._derived.atajos.map((a) => a.tipo).join(", ") || "—"}`;
+    ).join(", ")}\natajos: ${normalized._derived.atajos.map((a) => a.tipo).join(", ") || "—"}${warn}`;
     setStatus("loader.statusOk", { n: normalized.sesiones.length });
     refreshPdfOptions(normalized);
+    renderExcelList();
+  }
+
+  function renderExcelList() {
+    if (!els.excelList) return;
+    if (!excelSources.length) {
+      els.excelList.innerHTML = "";
+      return;
+    }
+    els.excelList.innerHTML = excelSources
+      .map(
+        (s) =>
+          `<li><strong>${escapeHtml(s.name)}</strong> · ${s.count} sesiones${
+            s.eje ? ` · ${escapeHtml(s.eje)}` : ""
+          }</li>`
+      )
+      .join("");
+  }
+
+  function escapeHtml(str) {
+    return String(str || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
   }
 
   function refreshPdfOptions(normalized) {
@@ -59,8 +92,63 @@
   async function loadExample() {
     const res = await fetch("data/evento.ejemplo.json?v=1", { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    excelSources.length = 0;
     showPreview(await res.json());
   }
+
+  async function importExcelFiles(files) {
+    if (!files?.length) return;
+    if (!window.CC_EXCEL) throw new Error("Módulo Excel no disponible");
+    const opts = window.CC_EXCEL.optsFromDraft(draft);
+    const imports = [];
+    for (const file of files) {
+      const imp = await window.CC_EXCEL.readFile(file, opts);
+      imports.push(imp);
+      excelSources.push({
+        name: file.name,
+        count: imp.sessions.length,
+        eje: imp.eje?.nombre || "",
+      });
+    }
+    const event = window.CC_EXCEL.buildEventFromImports(imports, draft);
+    showPreview(event);
+  }
+
+  async function importExcelSamples() {
+    if (!window.CC_EXCEL) throw new Error("Módulo Excel no disponible");
+    const opts = window.CC_EXCEL.optsFromDraft(draft);
+    const urls = [
+      "assets/samples/CH_Trabajos_Ciencias_Humanas.xlsx",
+      "assets/samples/CS_Trabajos_Ciencias_Sociales.xlsx",
+    ];
+    const imports = [];
+    for (const url of urls) {
+      const imp = await window.CC_EXCEL.readUrl(url, opts);
+      imports.push(imp);
+      excelSources.push({
+        name: url.split("/").pop(),
+        count: imp.sessions.length,
+        eje: imp.eje?.nombre || "",
+      });
+    }
+    const event = window.CC_EXCEL.buildEventFromImports(imports, draft);
+    showPreview(event);
+  }
+
+  els.excelFile?.addEventListener("change", async () => {
+    const files = [...(els.excelFile.files || [])];
+    els.excelFile.value = "";
+    if (!files.length) return;
+    try {
+      await importExcelFiles(files);
+    } catch (err) {
+      setStatus("loader.error", { msg: err.message || String(err) });
+    }
+  });
+
+  els.btnExcelSamples?.addEventListener("click", () => {
+    importExcelSamples().catch((err) => setStatus("loader.error", { msg: err.message || String(err) }));
+  });
 
   els.jsonFile?.addEventListener("change", async () => {
     const file = els.jsonFile.files?.[0];
@@ -68,6 +156,7 @@
     try {
       const text = await file.text();
       const raw = JSON.parse(text);
+      excelSources.length = 0;
       showPreview(raw);
     } catch (err) {
       setStatus("loader.error", { msg: err.message || String(err) });
@@ -85,7 +174,10 @@
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
       })
-      .then((raw) => showPreview(raw))
+      .then((raw) => {
+        excelSources.length = 0;
+        showPreview(raw);
+      })
       .catch((err) => setStatus("loader.error", { msg: err.message || String(err) }));
   });
 
@@ -134,7 +226,9 @@
     }
     try {
       window.CC_NORMALIZE.normalize(draft);
-      await window.CC_STORE.saveEvento(draft);
+      const toSave = { ...draft };
+      delete toSave._importWarnings;
+      await window.CC_STORE.saveEvento(toSave);
       window.location.href = "./";
     } catch (err) {
       setStatus("loader.error", { msg: err.message || String(err) });
@@ -147,7 +241,9 @@
       localStorage.removeItem("consulta_congreso_app_backup");
     } catch (_e) {}
     draft = null;
+    excelSources.length = 0;
     els.preview.hidden = true;
+    renderExcelList();
     setStatus("loader.statusCleared");
     await refreshPdfList();
   });

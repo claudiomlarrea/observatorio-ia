@@ -108,6 +108,28 @@
   color: var(--text-muted);
 }
 
+.load-excel-list {
+  margin: 0.75rem 0 0;
+  padding-left: 1.1rem;
+  color: var(--text-muted);
+}
+
+.load-help-tight {
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+  font-size: 0.86rem;
+}
+
+.load-file-btn-muted {
+  background: #fff;
+  color: var(--navy);
+  border-color: var(--border);
+}
+
+.load-card-advanced {
+  opacity: 0.92;
+}
+
 .load-page .install-cta-btn {
   appearance: none;
   border: 0;
