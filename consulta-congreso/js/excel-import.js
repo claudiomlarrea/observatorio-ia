@@ -1,5 +1,5 @@
 /**
- * Importa planillas Excel (CH / CS / genéricas) → sesiones Consulta Congreso.
+ * Importa planillas Excel (CH / CS / genéricas) → sesiones Gestor de Eventos Científicos.
  * Requiere SheetJS (XLSX) en window.
  */
 window.CC_EXCEL = (() => {

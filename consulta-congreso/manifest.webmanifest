@@ -1,6 +1,6 @@
 {
-  "name": "Consulta Académica",
-  "short_name": "Consulta",
+  "name": "Gestor de Eventos Científicos",
+  "short_name": "Eventos",
   "description": "Consultá el programa de congresos, jornadas y reuniones científicas. Offline y sin tiendas.",
   "id": "/observatorio-ia/consulta-congreso/",
   "start_url": "./?utm_source=pwa",

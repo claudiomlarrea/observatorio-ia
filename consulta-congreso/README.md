@@ -1,4 +1,4 @@
-# Consulta Académica
+# Gestor de Eventos Científicos
 
 App del Observatorio de IA para **congresos, jornadas, talleres y otras reuniones científicas**.
 

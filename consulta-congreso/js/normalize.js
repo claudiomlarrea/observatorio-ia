@@ -113,7 +113,7 @@ window.CC_NORMALIZE = (() => {
 
     return {
       meta: {
-        titulo: metaIn.titulo || "Consulta Académica",
+        titulo: metaIn.titulo || "Gestor de Eventos Científicos",
         subtitulo: metaIn.subtitulo || "",
         fechas,
         sede: metaIn.sede || "",

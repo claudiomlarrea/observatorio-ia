@@ -684,8 +684,8 @@
     "en": "Observatory service"
   },
   "sec.herramientas.consultaCongreso.title": {
-    "es": "Consulta Académica",
-    "en": "Academic Lookup"
+    "es": "Gestor de Eventos Científicos",
+    "en": "Scientific Event Manager"
   },
   "sec.herramientas.consultaCongreso.lead": {
     "es": "El Observatorio de IA te ayuda a armar la organización del evento científico con esta aplicación: congresos, jornadas, talleres y otras reuniones. Nosotros cargamos el programa, el logo y los materiales, y te entregamos la URL lista para compartir.",

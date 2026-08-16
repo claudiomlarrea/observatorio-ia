@@ -1,5 +1,5 @@
 /**
- * Consulta Congreso — Observatorio de IA
+ * Gestor de Eventos Científicos — Observatorio de IA
  * Lógica genérica de la app: carga el evento (store → fetch → normalize),
  * arma la botonera según los datos disponibles y resuelve cada modo de búsqueda.
  */
@@ -1191,7 +1191,7 @@
     } catch (fetchErr) {
       const backup = readProgramBackup();
       if (backup) {
-        console.warn("Consulta Congreso: usando copia local sin conexión.", fetchErr);
+        console.warn("Gestor de Eventos Científicos: usando copia local sin conexión.", fetchErr);
         return { raw: backup, fromCache: true, userLoaded: false };
       }
       throw fetchErr;

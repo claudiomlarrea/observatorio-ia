@@ -1,10 +1,10 @@
 /**
- * Diccionario ES/EN — Consulta Académica (Observatorio de IA)
+ * Diccionario ES/EN — Gestor de Eventos Científicos (Observatorio de IA)
  */
 window.I18N_DICT = {
   "meta.title": {
-    es: "Consulta Académica · Observatorio de IA",
-    en: "Academic Lookup · AI Observatory"
+    es: "Gestor de Eventos Científicos · Observatorio de IA",
+    en: "Scientific Event Manager · AI Observatory"
   },
   "a11y.skipLink": { es: "Ir al contenido", en: "Skip to content" },
   "a11y.botonera": { es: "Cómo buscar", en: "How to search" },
@@ -17,7 +17,7 @@ window.I18N_DICT = {
     en: "Offline — using the version saved on this phone"
   },
   "brand.kicker": { es: "Observatorio de IA · UCCuyo", en: "AI Observatory · UCCuyo" },
-  "brand.title": { es: "Consulta Académica", en: "Academic Lookup" },
+  "brand.title": { es: "Gestor de Eventos Científicos", en: "Scientific Event Manager" },
   "brand.sub": { es: "¿Qué querés encontrar?", en: "What are you looking for?" },
   "install.howToShort": {
     es: "Agregar a la pantalla del celular",
@@ -35,8 +35,8 @@ window.I18N_DICT = {
     en: "Tap Install and you’re done: the icon stays on your phone."
   },
   "install.ctaHint": {
-    es: "Un toque para agregar Consulta Académica a tu pantalla de inicio.",
-    en: "One tap to add Academic Lookup to your home screen."
+    es: "Un toque para agregar Gestor de Eventos Científicos a tu pantalla de inicio.",
+    en: "One tap to add Scientific Event Manager to your home screen."
   },
   "install.ctaIosHint": {
     es: "En iPhone: tocá Instalar y seguí los pasos de Safari más abajo.",
@@ -87,7 +87,7 @@ window.I18N_DICT = {
     es: "Tocá “Agregar”. Queda el ícono en tu pantalla.",
     en: "Tap “Add”. The icon stays on your screen."
   },
-  "install.openApp": { es: "Abrir Consulta Académica", en: "Open Academic Lookup" },
+  "install.openApp": { es: "Abrir Gestor de Eventos Científicos", en: "Open Scientific Event Manager" },
   "loader.open": { es: "Herramienta interna · cargar evento", en: "Internal tool · load event" },
   "loader.pageTitle": { es: "Cargar evento (uso interno)", en: "Load event (internal)" },
   "loader.pageSub": {
@@ -244,7 +244,7 @@ window.I18N_DICT = {
     en: "Request for your event"
   },
   "footer.note": {
-    es: "Consulta Académica · Observatorio de IA · UCCuyo",
-    en: "Academic Lookup · AI Observatory · UCCuyo"
+    es: "Gestor de Eventos Científicos · Observatorio de IA · UCCuyo",
+    en: "Scientific Event Manager · AI Observatory · UCCuyo"
   }
 };

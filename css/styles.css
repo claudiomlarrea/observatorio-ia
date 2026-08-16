@@ -1501,7 +1501,7 @@ header.section-head--bar h2 {
 .tools-grid {
   display: grid;
   gap: 0.85rem;
-  align-items: stretch;
+  align-items: start;
 }
 
 @media (min-width: 720px) {
@@ -1514,8 +1514,6 @@ header.section-head--bar h2 {
   .tools-grid {
     grid-template-columns: repeat(4, 1fr);
     gap: 0.75rem;
-    /* Misma altura de fila en todo el catálogo (como las 4 de arriba). */
-    grid-auto-rows: 1fr;
   }
 }
 
@@ -1579,15 +1577,7 @@ header.section-head--bar h2 {
   box-shadow: 0 4px 16px rgba(4, 74, 48, 0.06);
   display: flex;
   flex-direction: column;
-  height: 100%;
-  min-height: 20.5rem;
   box-sizing: border-box;
-}
-
-@media (min-width: 1100px) {
-  .tool-card {
-    min-height: 22rem;
-  }
 }
 
 .tool-card-badge {
@@ -1643,8 +1633,8 @@ header.section-head--bar h2 {
 }
 
 .tool-card .tile-actions {
-  margin-top: auto;
-  padding-top: 0.15rem;
+  margin-top: 0.85rem;
+  padding-top: 0;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
