@@ -1017,18 +1017,6 @@ window.I18N_DICT = {
     "es": "El Observatorio de IA te ayuda a armar la organización del evento científico con esta aplicación: congresos, jornadas, talleres y otras reuniones. Nosotros cargamos el programa, el logo y los materiales, y te entregamos la URL lista para compartir.",
     "en": "The AI Observatory helps you organize the scientific event with this app: congresses, meetings, workshops and more. We load the program, logo and materials, and deliver a ready-to-share URL."
   },
-  "sec.herramientas.consultaCongreso.cap1": {
-    "es": "Botonera del programa",
-    "en": "Program button bar"
-  },
-  "sec.herramientas.consultaCongreso.cap2": {
-    "es": "Consulta por tipo",
-    "en": "Browse by type"
-  },
-  "sec.herramientas.consultaCongreso.cap3": {
-    "es": "App en el celular",
-    "en": "Phone install"
-  },
   "sec.herramientas.consultaCongreso.item1": {
     "es": "Armamos la app con el programa, logo y PDF de tu evento",
     "en": "We build the app with your program, logo and PDF"
