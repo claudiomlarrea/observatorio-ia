@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b1f4a" />
+    <title>Cargar evento · Consulta Congreso</title>
+    <link rel="icon" type="image/png" href="assets/icon-192.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="css/fonts.css?v=1" />
+    <link rel="stylesheet" href="css/styles.css?v=1" />
+    <link rel="stylesheet" href="css/cargar.css?v=1" />
+  </head>
+  <body class="load-page">
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="brand-copy">
+          <p class="brand-kicker" data-i18n="brand.kicker">Observatorio de IA · UCCuyo</p>
+          <h1 class="brand-title" data-i18n="loader.pageTitle">Cargar evento</h1>
+          <p class="brand-sub" data-i18n="loader.pageSub">
+            Subí el programa en JSON y, si querés, los PDF. La botonera se arma sola.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <main class="main load-main">
+      <p class="load-status" id="load-status" data-i18n="loader.statusEmpty">
+        Todavía no hay un JSON válido cargado.
+      </p>
+
+      <section class="load-card">
+        <h2 data-i18n="loader.step1">1. Programa del evento (JSON)</h2>
+        <p class="load-help" data-i18n="loader.step1Help">
+          Usá la plantilla de ejemplo o tu archivo con meta, ejes y sesiones.
+        </p>
+        <div class="load-actions">
+          <label class="load-file-btn">
+            <span data-i18n="loader.pickJson">Elegir archivo JSON</span>
+            <input id="json-file" type="file" accept="application/json,.json" hidden />
+          </label>
+          <button type="button" class="load-secondary" id="btn-example" data-i18n="loader.useExample">
+            Cargar ejemplo demo
+          </button>
+          <a class="load-secondary" href="data/evento.ejemplo.json" download data-i18n="loader.downloadTemplate"
+            >Descargar plantilla JSON</a
+          >
+        </div>
+        <pre class="load-preview" id="json-preview" hidden></pre>
+      </section>
+
+      <section class="load-card">
+        <h2 data-i18n="loader.step2">2. PDFs descargables (opcional)</h2>
+        <p class="load-help" data-i18n="loader.step2Help">
+          Asociá un PDF al programa completo, talleres, pósteres u otro id de descarga.
+        </p>
+        <div class="load-pdf-row">
+          <label>
+            <span data-i18n="loader.pdfId">Id de descarga</span>
+            <select id="pdf-id">
+              <option value="programa">programa</option>
+              <option value="talleres">talleres</option>
+              <option value="posters">posters</option>
+              <option value="otro">otro…</option>
+            </select>
+          </label>
+          <input id="pdf-id-custom" type="text" placeholder="id personalizado" hidden />
+          <label class="load-file-btn">
+            <span data-i18n="loader.pdfFile">Archivo PDF</span>
+            <input id="pdf-file" type="file" accept="application/pdf,.pdf" hidden />
+          </label>
+          <button type="button" class="load-secondary" id="btn-save-pdf" data-i18n="loader.savePdf">
+            Guardar PDF
+          </button>
+        </div>
+        <ul class="load-pdf-list" id="pdf-list"></ul>
+      </section>
+
+      <section class="load-card">
+        <h2 data-i18n="loader.step3">3. Activar en la app</h2>
+        <div class="load-actions">
+          <button type="button" class="install-cta-btn" id="btn-apply" data-i18n="loader.apply">
+            Usar este evento en la app
+          </button>
+          <button type="button" class="load-danger" id="btn-clear" data-i18n="loader.clear">
+            Quitar evento cargado
+          </button>
+          <a class="load-secondary" href="./" data-i18n="install.openApp">Abrir Consulta Congreso</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p class="footer-note" data-i18n="footer.note">
+        Consulta Congreso · Observatorio de IA · UCCuyo
+      </p>
+    </footer>
+
+    <script src="js/i18n-dict.js?v=1"></script>
+    <script src="js/i18n.js?v=1"></script>
+    <script src="js/store.js?v=1"></script>
+    <script src="js/normalize.js?v=1"></script>
+    <script src="js/cargar.js?v=1"></script>
+  </body>
+</html>

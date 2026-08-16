@@ -351,13 +351,32 @@
       .join("");
   }
 
-  function applyBranding(data) {
+  async function resolveDescargas(meta) {
+    const list = Array.isArray(meta.descargas) ? meta.descargas : [];
+    const out = [];
+    for (const d of list) {
+      let href = d.href || "";
+      if (!href && window.CC_STORE?.pdfObjectUrl) {
+        try {
+          href = await window.CC_STORE.pdfObjectUrl(d.id);
+        } catch (_e) {}
+      }
+      out.push({ ...d, href });
+    }
+    return out;
+  }
+
+  async function applyBranding(data) {
     const meta = data.meta || {};
     if (els.brandKicker && meta.organizador) els.brandKicker.textContent = meta.organizador;
     if (els.brandTitle && meta.titulo) els.brandTitle.textContent = meta.titulo;
     if (els.brandSub && meta.subtitulo) els.brandSub.textContent = meta.subtitulo;
     if (els.brandDates) els.brandDates.textContent = formatBrandDates(meta);
-    renderDownloadLinks(meta.descargas);
+    const descargas = await resolveDescargas(meta);
+    meta.descargas = descargas;
+    renderDownloadLinks(descargas);
+    const footerSource = document.getElementById("footer-source");
+    if (footerSource) footerSource.textContent = meta.fuente || "";
   }
 
   // ---------------------------------------------------------------------
@@ -1005,6 +1024,7 @@
 
   function refreshForLang() {
     if (!state.data) return;
+    renderBotonera(state.data);
     renderDownloadLinks(state.data.meta.descargas);
     if (els.brandDates) els.brandDates.textContent = formatBrandDates(state.data.meta);
 
@@ -1157,24 +1177,20 @@
       const fromStore =
         window.CC_STORE && window.CC_STORE.loadEvento ? await window.CC_STORE.loadEvento() : null;
       if (fromStore && Array.isArray(fromStore.sesiones) && fromStore.sesiones.length) {
-        return { raw: fromStore, fromCache: true };
+        return { raw: fromStore, fromCache: true, userLoaded: true };
       }
     } catch (_e) {}
 
     try {
       const raw = await fetchEventoFile();
       persistProgramBackup(raw);
-      if (window.CC_STORE && window.CC_STORE.saveEvento) {
-        try {
-          await window.CC_STORE.saveEvento(raw);
-        } catch (_e) {}
-      }
-      return { raw, fromCache: false };
+      // No guardar el ejemplo en CC_STORE: solo los eventos cargados por el usuario.
+      return { raw, fromCache: false, userLoaded: false };
     } catch (fetchErr) {
       const backup = readProgramBackup();
       if (backup) {
         console.warn("Consulta Congreso: usando copia local sin conexión.", fetchErr);
-        return { raw: backup, fromCache: true };
+        return { raw: backup, fromCache: true, userLoaded: false };
       }
       throw fetchErr;
     }
@@ -1197,16 +1213,16 @@
       const { raw, fromCache } = await loadEventoRaw();
       const data = window.CC_NORMALIZE.normalize(raw);
       state.data = data;
-
-      applyBranding(data);
+      await applyBranding(data);
       renderBotonera(data);
       bindEvents();
       updateAgendaBadge();
       setMode("horario");
-
       if (fromCache || !navigator.onLine) {
-        if (els.offlineBanner) {
-          els.offlineBanner.hidden = false;
+        const banner = document.getElementById("offline-banner");
+        if (banner) {
+          banner.hidden = false;
+          document.body.classList.add("is-offline");
           if (window.I18N && window.I18N.apply) window.I18N.apply();
         }
       }

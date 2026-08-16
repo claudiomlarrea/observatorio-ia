@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b1f4a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Consulta Congreso" />
+    <link rel="apple-touch-icon" href="assets/icon-180.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <title>Instalar · Consulta Congreso</title>
+    <link rel="icon" type="image/png" href="assets/icon-192.png" />
+    <link rel="stylesheet" href="css/fonts.css?v=1" />
+    <link rel="stylesheet" href="css/styles.css?v=1" />
+    <link rel="stylesheet" href="css/instalar.css?v=1" />
+  </head>
+  <body class="install-page">
+    <div id="offline-banner" class="offline-banner" hidden role="status">
+      <span data-i18n="offline.banner">Sin conexión — usando la versión guardada en este celular</span>
+    </div>
+    <header class="site-header install-header">
+      <div class="header-inner">
+        <div class="brand-copy">
+          <p class="brand-kicker" data-i18n="brand.kicker">Observatorio de IA · UCCuyo</p>
+          <h1 class="brand-title" data-i18n="install.pageTitle">Agregar a la pantalla</h1>
+          <p class="brand-sub" data-i18n="install.pageSub">
+            Tocá Instalar y listo: el ícono queda en tu celular.
+          </p>
+        </div>
+      </div>
+    </header>
+    <main class="main install-main">
+      <section class="install-hero-cta">
+        <button type="button" class="install-cta-btn" id="install-page-cta" data-i18n="install.barCta">
+          Instalar
+        </button>
+        <p class="install-cta-status" id="install-cta-status" data-i18n="install.ctaHint">
+          Un toque para agregar Consulta Congreso a tu pantalla de inicio.
+        </p>
+        <a class="install-cta-back" href="./" data-i18n="install.openApp">Abrir Consulta Congreso</a>
+      </section>
+      <section class="install-card" id="pasos">
+        <h2 data-i18n="install.stepsTitle">Si no aparece el cartel</h2>
+        <p class="install-steps-lead" data-i18n="install.stepsLead">
+          En algunos celulares hay que hacerlo desde el menú del navegador:
+        </p>
+        <div class="install-steps-grid">
+          <div id="android">
+            <h3 data-i18n="install.androidTitle">Android (Chrome)</h3>
+            <ol class="install-steps">
+              <li data-i18n="install.android1">Abrí el link en Chrome.</li>
+              <li data-i18n="install.android2">Tocá el menú ⋮ (arriba a la derecha).</li>
+              <li data-i18n="install.android3">
+                Elegí “Instalar app” o “Agregar a la pantalla de inicio”.
+              </li>
+              <li data-i18n="install.android4">Confirmá. Aparece el ícono como una app.</li>
+            </ol>
+          </div>
+          <div id="ios">
+            <h3 data-i18n="install.iosTitle">iPhone / iPad (Safari)</h3>
+            <ol class="install-steps">
+              <li data-i18n="install.ios1">
+                Abrí el link en Safari (no en Instagram/WhatsApp interno).
+              </li>
+              <li data-i18n="install.ios2">Tocá el botón Compartir □↑ (abajo o arriba).</li>
+              <li data-i18n="install.ios3">Desplazate y tocá “Agregar a pantalla de inicio”.</li>
+              <li data-i18n="install.ios4">Tocá “Agregar”. Queda el ícono en tu pantalla.</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <p class="footer-note" data-i18n="footer.note">
+        Consulta Congreso · Observatorio de IA · UCCuyo
+      </p>
+    </footer>
+    <script src="js/i18n-dict.js?v=1"></script>
+    <script src="js/i18n.js?v=1"></script>
+    <script src="js/install.js?v=1"></script>
+  </body>
+</html>

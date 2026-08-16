@@ -1005,6 +1005,34 @@ window.I18N_DICT = {
     "es": "Abrir Señal Segura",
     "en": "Open Señal Segura"
   },
+  "sec.herramientas.consultaCongreso.title": {
+    "es": "Consulta Congreso",
+    "en": "Congress Lookup"
+  },
+  "sec.herramientas.consultaCongreso.lead": {
+    "es": "App reutilizable para congresos, jornadas y reuniones: cargá el programa y la botonera se arma sola (horarios, talleres, pósteres, agenda y modo offline).",
+    "en": "Reusable app for congresses and meetings: load the program and the button bar builds itself (schedule, workshops, posters, agenda, and offline mode)."
+  },
+  "sec.herramientas.consultaCongreso.item1": {
+    "es": "Carga JSON del evento + PDF (programa, talleres, pósteres)",
+    "en": "Load event JSON + PDFs (program, workshops, posters)"
+  },
+  "sec.herramientas.consultaCongreso.item2": {
+    "es": "Botones automáticos según el contenido del programa",
+    "en": "Automatic buttons based on program content"
+  },
+  "sec.herramientas.consultaCongreso.item3": {
+    "es": "Instalación en el celular (PWA) y consulta sin Wi‑Fi",
+    "en": "Phone install (PWA) and offline lookup"
+  },
+  "sec.herramientas.consultaCongreso.btnAbrir": {
+    "es": "Abrir Consulta Congreso",
+    "en": "Open Congress Lookup"
+  },
+  "sec.herramientas.consultaCongreso.btnCargar": {
+    "es": "Cargar evento",
+    "en": "Load event"
+  },
   "sec.herramientas.rumbo.badge": {
     "es": "Demo · consulta",
     "en": "Demo · inquiry"

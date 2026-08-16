@@ -3,7 +3,7 @@
  * Diccionario: window.I18N_DICT[key] = { es, en }
  */
 (function () {
-  var STORAGE_KEY = "caem_lang";
+  var STORAGE_KEY = "consulta_congreso_lang";
   var dict = window.I18N_DICT || {};
   var lang = "es";
 

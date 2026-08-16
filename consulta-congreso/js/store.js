@@ -90,7 +90,13 @@ window.CC_STORE = (() => {
       await idbSet(`pdf:${id}`, record);
     } catch (_e) {
       const buf = await blob.arrayBuffer();
-      const b64 = btoa(String.fromCharCode(...new Uint8Array(buf)));
+      const bytes = new Uint8Array(buf);
+      let bin = "";
+      const chunk = 0x8000;
+      for (let i = 0; i < bytes.length; i += chunk) {
+        bin += String.fromCharCode(...bytes.subarray(i, i + chunk));
+      }
+      const b64 = btoa(bin);
       localStorage.setItem(
         LS_PDF_PREFIX + id,
         JSON.stringify({ filename, type: record.type, b64 })

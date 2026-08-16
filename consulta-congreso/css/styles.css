@@ -357,6 +357,56 @@ body.is-offline .botonera {
     inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
+.mode-btn-posters {
+  background: linear-gradient(180deg, #1d4ed8, #1e3a8a);
+}
+
+.mode-btn-posters.is-active {
+  background: linear-gradient(180deg, #3b82f6, #1d4ed8);
+  box-shadow:
+    0 0 0 2px #fff,
+    0 0 0 4px color-mix(in srgb, #1d4ed8 55%, white),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.mode-btn-simposio,
+.mode-btn-curso {
+  background: linear-gradient(180deg, #0f766e, #115e59);
+}
+
+.mode-btn-simposio.is-active,
+.mode-btn-curso.is-active {
+  background: linear-gradient(180deg, #14b8a6, #0f766e);
+  box-shadow:
+    0 0 0 2px #fff,
+    0 0 0 4px color-mix(in srgb, #0f766e 55%, white),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.load-event-link,
+.load-event-link-footer {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.65rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, #fff 14%, transparent);
+  border: 1px solid color-mix(in srgb, #fff 35%, transparent);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.load-event-link-footer {
+  margin-top: 0;
+  background: transparent;
+  border: 0;
+  color: var(--navy-mid);
+  padding: 0;
+}
+
 .mode-btn-agenda {
   background: linear-gradient(180deg, #b45309, #92400e);
   position: relative;
@@ -889,4 +939,12 @@ body.is-offline .botonera {
     transition: none !important;
     scroll-behavior: auto !important;
   }
+}
+
+
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.35rem;
 }
