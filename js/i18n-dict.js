@@ -282,14 +282,21 @@ window.I18N_DICT = {
   },
   "sec.datos.card4.cta": { "es": "Abrir Encuesta Clara", "en": "Open Encuesta Clara" },
   "sec.datos.card5.title": {
-    "es": "Indicadores por provincia",
-    "en": "Province indicators"
+    "es": "Documentos del Observatorio",
+    "en": "Observatory documents"
   },
   "sec.datos.card5.body": {
-    "es": "En desarrollo: evolución del uso de IA y tableros provinciales a partir de encuestas y fuentes abiertas.",
-    "en": "In progress: AI-use trends and provincial dashboards from surveys and open sources."
+    "es": "Resoluciones del Consejo Superior: creación del Observatorio y aprobación de las 1° Jornadas internas de IA.",
+    "en": "Superior Council resolutions: Observatory creation and approval of the 1st internal AI Conference."
   },
-  "sec.datos.card5.badge": { "es": "Próximamente", "en": "Coming soon" },
+  "sec.datos.card5.doc1": {
+    "es": "Resolución 741-CS-2025 (creación)",
+    "en": "Resolution 741-CS-2025 (creation)"
+  },
+  "sec.datos.card5.doc2": {
+    "es": "Resolución 914-CS-2026 (Jornadas IA)",
+    "en": "Resolution 914-CS-2026 (AI Conference)"
+  },
   "sec.observatorio.kicker": {
     "es": "Identidad",
     "en": "Identity"
@@ -1523,5 +1530,7 @@ window.I18N_DICT = {
   "dyn.pub.teamHint": {"es": "(iniciá sesión en Google con un correo autorizado)", "en": "(sign in to Google with an authorized email)"},
   "dyn.galeria.teamEntry": {"es": "Ingreso equipo · Cargar álbum", "en": "Team access · Upload album"},
   "dyn.galeria.teamHint": {"es": "(iniciá sesión en Google con un correo autorizado)", "en": "(sign in to Google with an authorized email)"},
-  "dyn.galeria.empty": {"es": "Todavía no hay álbumes publicados. El equipo puede cargar eventos desde el ingreso autorizado.", "en": "No albums published yet. The team can add events via authorized access."}
+  "dyn.galeria.empty": {"es": "Todavía no hay álbumes publicados. El equipo puede cargar eventos desde el ingreso autorizado.", "en": "No albums published yet. The team can add events via authorized access."},
+  "dyn.noticias.teamEntry": {"es": "Ingreso equipo · Cargar noticia", "en": "Team access · Post news"},
+  "dyn.noticias.teamHint": {"es": "(iniciá sesión en Google con un correo autorizado)", "en": "(sign in to Google with an authorized email)"}
 };

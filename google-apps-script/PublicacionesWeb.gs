@@ -13,6 +13,8 @@
  * - GET  ?action=sacau_stats: consulta el total de planes cargados (sin incrementar).
  * - GET  ?action=sacau_aula_programa: +1 programa de cátedra cargado en SACAU Aula (devuelve total).
  * - GET  ?action=sacau_aula_stats: consulta el total de programas en SACAU Aula (sin incrementar).
+ * - GET  ?action=noticias: agregador de noticias/medios (público).
+ * - GET  ?action=noticias_admin: panel HTML para cargar avisos (solo emails autorizados).
  * - GET  ?action=galeria: JSON de álbumes de la Galería de imágenes.
  * - GET  ?action=galeria_admin: panel HTML para cargar álbum (solo emails autorizados).
  * - POST ?action=add: agrega publicación (solo emails autorizados).
@@ -123,6 +125,10 @@ function doGet(e) {
     }
     if (action === "noticias") {
       return jsonOrJsonp_(obtenerNoticiasMedios_(), e);
+    }
+    if (typeof routeNoticiasGet_ === "function") {
+      var noticiasGet = routeNoticiasGet_(e);
+      if (noticiasGet) return noticiasGet;
     }
     if (typeof routeGaleriaGet_ === "function") {
       var galeriaGet = routeGaleriaGet_(e);
@@ -1424,6 +1430,9 @@ var NOTICIAS_GOOGLE_QUERIES = [
 
 function obtenerNoticiasMedios_() {
   var items = [];
+  if (typeof obtenerNoticiasEquipo_ === "function") {
+    items = items.concat(obtenerNoticiasEquipo_());
+  }
   items = items.concat(fetchUccuyoNoticiasWp_());
   items = items.concat(fetchGoogleNewsRss_());
   items = items.concat(fetchPublicacionesMedios_());
@@ -1598,15 +1607,33 @@ function esMedioExcluidoNoticia_(item) {
 }
 
 function dedupeNoticias_(items) {
-  var seen = {};
+  var seenUrl = {};
+  var seenTitle = {};
   var out = [];
   items.forEach(function (it) {
-    var key = normalizarUrlNoticia_(it.link || it.id || "");
-    if (!key || seen[key]) return;
-    seen[key] = true;
+    var urlKey = normalizarUrlNoticia_(it.link || "");
+    var titleKey = normalizarTextoNoticia_(it.titulo || "");
+    if (urlKey && seenUrl[urlKey]) return;
+    if (titleKey && seenTitle[titleKey]) return;
+    if (urlKey) seenUrl[urlKey] = true;
+    if (titleKey) seenTitle[titleKey] = true;
     out.push(it);
   });
   return out;
+}
+
+function normalizarTextoNoticia_(texto) {
+  return String(texto || "")
+    .toLowerCase()
+    .replace(/[áàäâ]/g, "a")
+    .replace(/[éèëê]/g, "e")
+    .replace(/[íìïî]/g, "i")
+    .replace(/[óòöô]/g, "o")
+    .replace(/[úùüû]/g, "u")
+    .replace(/ñ/g, "n")
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function comparadorNoticiaReciente_(a, b) {

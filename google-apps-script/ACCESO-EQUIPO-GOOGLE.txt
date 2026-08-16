@@ -24,3 +24,7 @@ Jornadas IA / EvaluAR / listado público / visitas: no cambian (siguen sin login
 Galería de imágenes: mismo acceso con
   .../exec?action=galeria_admin
 (desde el botón «Ingreso equipo · Cargar álbum»). Ver PEGAR-GALERIA.txt.
+
+Noticias: mismo acceso con
+  .../exec?action=noticias_admin
+(desde «Ingreso equipo · Cargar noticia»). Ver PEGAR-NOTICIAS.txt.

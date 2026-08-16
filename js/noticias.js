@@ -197,15 +197,38 @@
   }
 
   function dedupeItems(items) {
-    var seen = {};
+    var seenUrl = {};
+    var seenTitle = {};
     var out = [];
     items.forEach(function (it) {
-      var key = normalizarUrl(it.link || it.id || "");
-      if (!key || seen[key]) return;
-      seen[key] = true;
+      var urlKey = normalizarUrl(it.link || "");
+      var titleKey = normalizar(it.titulo || "");
+      if (urlKey && seenUrl[urlKey]) return;
+      if (titleKey && seenTitle[titleKey]) return;
+      if (urlKey) seenUrl[urlKey] = true;
+      if (titleKey) seenTitle[titleKey] = true;
       out.push(it);
     });
     return out;
+  }
+
+  function prioridadOrigen(origen) {
+    var o = String(origen || "");
+    if (o === "observatorio") return 0;
+    if (o === "observatorio_equipo") return 1;
+    if (o === "uccuyo_noticias") return 2;
+    if (o === "boletin") return 3;
+    return 4;
+  }
+
+  function dedupePreferente(items) {
+    return dedupeItems(
+      items.slice().sort(function (a, b) {
+        var p = prioridadOrigen(a.origen) - prioridadOrigen(b.origen);
+        if (p !== 0) return p;
+        return parseFecha(b.fecha) - parseFecha(a.fecha);
+      })
+    );
   }
 
   function ordenarItems(items) {
@@ -215,7 +238,7 @@
   }
 
   function linkLabel(item) {
-    if (item.origen === "observatorio") {
+    if (item.origen === "observatorio" || item.origen === "observatorio_equipo") {
       if (String(item.link || "").indexOf("#webinars") === 0) return "Ver webinar";
       if (String(item.link || "").indexOf("#jornadas") === 0) return "Ver jornadas";
       return "Ver en el sitio";
@@ -344,9 +367,42 @@
     lista.innerHTML = visibles.map(renderItem).join("");
   }
 
+  function dibujarIngresoEquipo() {
+    var box = el("noticias-team-entry");
+    if (!box) return;
+    var base = PUB_CFG.APPS_SCRIPT_URL && String(PUB_CFG.APPS_SCRIPT_URL).trim();
+    if (!base) {
+      box.innerHTML = "";
+      return;
+    }
+    var url = base + (base.indexOf("?") >= 0 ? "&" : "?") + "action=noticias_admin";
+    var label =
+      window.I18N && window.I18N.t
+        ? window.I18N.t("dyn.noticias.teamEntry")
+        : "Ingreso equipo · Cargar noticia";
+    var hint =
+      window.I18N && window.I18N.t
+        ? window.I18N.t("dyn.noticias.teamHint")
+        : "(iniciá sesión en Google con un correo autorizado)";
+    if (label === "dyn.noticias.teamEntry") label = "Ingreso equipo · Cargar noticia";
+    if (hint === "dyn.noticias.teamHint") {
+      hint = "(iniciá sesión en Google con un correo autorizado)";
+    }
+    box.innerHTML =
+      '<p class="pub-intro" style="margin-top:0">' +
+      '<a class="btn btn-ghost" href="' +
+      esc(url) +
+      '" target="_blank" rel="noopener noreferrer">' +
+      esc(label) +
+      "</a> <small>" +
+      esc(hint) +
+      "</small></p>";
+  }
+
   function cargar() {
     var status = el("news-status");
     var destacadas = itemsDestacadas();
+    dibujarIngresoEquipo();
     if (status) {
       status.className = "news-status news-status--loading";
       status.textContent = "Buscando noticias, boletines y menciones en medios…";
@@ -359,8 +415,8 @@
       })
     ])
       .then(function (partes) {
-        var externas = ordenarItems(dedupeItems(filtrarPermitidos(partes[0].concat(partes[1]))));
-        todos = destacadas.concat(externas);
+        var externas = filtrarPermitidos(partes[0].concat(partes[1]));
+        todos = ordenarItems(dedupePreferente(destacadas.concat(externas)));
         pintarLista();
       })
       .catch(function () {
@@ -385,7 +441,9 @@
         pintarLista();
       });
     }
+    dibujarIngresoEquipo();
     cargar();
+    document.addEventListener("oia:langchange", dibujarIngresoEquipo);
   }
 
   if (document.readyState === "loading") {

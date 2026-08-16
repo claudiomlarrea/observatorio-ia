@@ -1,0 +1,21 @@
+# Noticias — panel equipo (igual que Publicaciones / Galería)
+
+## Qué agrega
+- En el sitio (#noticias): «Ingreso equipo · Cargar noticia»
+- Apps Script:
+  - GET ?action=noticias_admin → panel (AUTHORIZED_EMAILS)
+  - saveNoticiaAdmin_ → hoja «NoticiasOIA»
+  - Las noticias del equipo se incluyen en ?action=noticias
+- Deduplicación por URL y por título (evita repeticiones UCCuyo / Google News)
+
+## Pasos en Apps Script
+1. Crear archivo NoticiasWeb.gs y pegar google-apps-script/NoticiasWeb.gs
+2. En PublicacionesWeb.gs, asegurar el enrutado routeNoticiasGet_ y
+   obtenerNoticiasEquipo_ dentro de obtenerNoticiasMedios_ (ya en el repo).
+3. Implementar → lápiz → Nueva versión (misma URL /exec).
+4. Acceso: «Cualquier usuario de Google».
+
+## Uso
+1. https://observatorio-ia.uccuyo.edu.ar/#noticias
+2. Ingreso equipo · Cargar noticia
+3. Título, fecha, enlace (#webinars o URL), resumen → Publicar
