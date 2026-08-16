@@ -22,6 +22,8 @@
    (misma URL /exec; no crees una implementación nueva).
 6. Quién tiene acceso: «Cualquier usuario de Google».
 7. La primera carga crea sola la hoja «Galeria» en la planilla.
+8. La primera vez que guardés un álbum, Google pedirá permiso de Drive
+   (para leer la carpeta y dejar las fotos con enlace público).
 
 ## Cómo carga el equipo un evento
 1. Subir fotos a una carpeta de Drive.
