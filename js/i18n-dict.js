@@ -422,16 +422,16 @@ window.I18N_DICT = {
     "en": "Presenter deadline"
   },
   "sec.jornadas.facts.cierreExpositores.value": {
-    "es": "Artículo y PPT hasta el 10 de septiembre",
-    "en": "Article and PPT due by September 10"
+    "es": "Artículo y PPT hasta el <strong>10 de septiembre</strong>",
+    "en": "Article and PPT due by <strong>September 10</strong>"
   },
   "sec.jornadas.facts.cierreAsistentes.label": {
     "es": "Cierre asistentes",
     "en": "Attendee deadline"
   },
   "sec.jornadas.facts.cierreAsistentes.value": {
-    "es": "Inscripción hasta el 28 de septiembre",
-    "en": "Registration open until September 28"
+    "es": "Inscripción hasta el <strong>28 de septiembre</strong>",
+    "en": "Registration open until <strong>September 28</strong>"
   },
   "sec.jornadas.step1.title": {
     "es": "Inscripción",
@@ -718,8 +718,8 @@ window.I18N_DICT = {
     "en": "Surveys"
   },
   "sec.actividades.encuestas.body": {
-    "es": "Diseño y aplicación de instrumentos para alumnos, docentes y otros actores de la comunidad universitaria. Ver encuestas e informes y aplicaciones IA.",
-    "en": "Design and administration of instruments for students, faculty, and other members of the university community. See surveys & reports and AI Apps."
+    "es": "Diseño y aplicación de instrumentos para alumnos, docentes y otros actores de la comunidad universitaria. Ver <a href=\"#encuestas\">encuestas e informes</a> y <a href=\"#herramientas\">aplicaciones IA</a>.",
+    "en": "Design and administration of instruments for students, faculty, and other members of the university community. See <a href=\"#encuestas\">surveys & reports</a> and <a href=\"#herramientas\">AI Apps</a>."
   },
   "sec.actividades.encuestas.linkEncuestas": {
     "es": "encuestas e informes",
@@ -904,6 +904,10 @@ window.I18N_DICT = {
   "sec.encuestas.docentes.note": {
     "es": "La encuesta está en laboratorio y todavía no está abierta al público. Cuando se publique, el formulario estará disponible aquí. Consultas: <a href=\"mailto:observatorioia@uccuyo.edu.ar\">observatorioia@uccuyo.edu.ar</a>.",
     "en": "The survey is in the lab and not yet open to the public. When published, the form will be available here. Contact: <a href=\"mailto:observatorioia@uccuyo.edu.ar\">observatorioia@uccuyo.edu.ar</a>."
+  },
+  "sec.encuestas.docentes.noteOpen": {
+    "es": "La encuesta está abierta para docentes. El equipo del Observatorio puede descargar las respuestas y publicar informes desde los enlaces de abajo (inicio de sesión Google con correo autorizado). Consultas: <a href=\"mailto:observatorioia@uccuyo.edu.ar\">observatorioia@uccuyo.edu.ar</a>.",
+    "en": "The survey is open for faculty. The Observatory team can download responses and publish reports from the links below (Google sign-in with an authorized email). Contact: <a href=\"mailto:observatorioia@uccuyo.edu.ar\">observatorioia@uccuyo.edu.ar</a>."
   },
   "sec.encuestas.docentes.btnResponder": {
     "es": "Responder encuesta a docentes",
@@ -1302,8 +1306,8 @@ window.I18N_DICT = {
     "en": "Filter by type"
   },
   "sec.publicaciones.panel.global.intro": {
-    "es": "Resultados globales desde OpenAlex, Crossref, Semantic Scholar y Europe PMC (incluye PubMed), con enlaces de acceso abierto vía Unpaywall, para trabajos relacionados con inteligencia artificial. Puede haber faltantes, duplicados o registros a revisar.",
-    "en": "Global results from OpenAlex, Crossref, Semantic Scholar, and Europe PMC (including PubMed), with open-access links via Unpaywall, for works related to artificial intelligence. There may be gaps, duplicates, or records to review."
+    "es": "Resultados globales desde <a href=\"https://openalex.org\" target=\"_blank\" rel=\"noopener noreferrer\">OpenAlex</a>, <a href=\"https://www.crossref.org\" target=\"_blank\" rel=\"noopener noreferrer\">Crossref</a>, <a href=\"https://www.semanticscholar.org\" target=\"_blank\" rel=\"noopener noreferrer\">Semantic Scholar</a> y <a href=\"https://europepmc.org\" target=\"_blank\" rel=\"noopener noreferrer\">Europe PMC</a> (incluye PubMed), con enlaces de acceso abierto vía <a href=\"https://unpaywall.org\" target=\"_blank\" rel=\"noopener noreferrer\">Unpaywall</a>, para trabajos relacionados con inteligencia artificial. Puede haber faltantes, duplicados o registros a revisar.",
+    "en": "Global results from <a href=\"https://openalex.org\" target=\"_blank\" rel=\"noopener noreferrer\">OpenAlex</a>, <a href=\"https://www.crossref.org\" target=\"_blank\" rel=\"noopener noreferrer\">Crossref</a>, <a href=\"https://www.semanticscholar.org\" target=\"_blank\" rel=\"noopener noreferrer\">Semantic Scholar</a>, and <a href=\"https://europepmc.org\" target=\"_blank\" rel=\"noopener noreferrer\">Europe PMC</a> (including PubMed), with open-access links via <a href=\"https://unpaywall.org\" target=\"_blank\" rel=\"noopener noreferrer\">Unpaywall</a>, for works related to artificial intelligence. There may be gaps, duplicates, or records to review."
   },
   "sec.publicaciones.panel.global.badge": {
     "es": "Resultados aproximados",
@@ -1528,9 +1532,91 @@ window.I18N_DICT = {
   "dyn.pub.loading": {"es": "Cargando publicaciones…", "en": "Loading publications…"},
   "dyn.pub.teamEntry": {"es": "Ingreso equipo · Cargar publicaciones", "en": "Team access · Upload publications"},
   "dyn.pub.teamHint": {"es": "(iniciá sesión en Google con un correo autorizado)", "en": "(sign in to Google with an authorized email)"},
+  "dyn.pub.filter.todas": {"es": "Ver todas", "en": "View all"},
+  "dyn.pub.filter.papers": {"es": "Papers / artículos", "en": "Papers / articles"},
+  "dyn.pub.filter.documentos": {"es": "Documentos de trabajo", "en": "Working papers"},
+  "dyn.pub.filter.revistas": {"es": "Revistas", "en": "Journals"},
+  "dyn.pub.filter.libros": {"es": "Libros y capítulos", "en": "Books and chapters"},
+  "dyn.pub.filter.repositorios": {"es": "Informes técnicos", "en": "Technical reports"},
+  "dyn.pub.filter.protocolos": {"es": "Protocolos", "en": "Protocols"},
+  "dyn.pub.filter.datasets": {"es": "Datasets", "en": "Datasets"},
+  "dyn.pub.filter.eventos": {"es": "Reuniones / eventos", "en": "Meetings / events"},
+  "dyn.pub.filter.diarios": {"es": "Medios / diarios", "en": "Media / newspapers"},
+  "dyn.pub.chip.papers": {"es": "Paper / artículo", "en": "Paper / article"},
+  "dyn.pub.chip.documentos": {"es": "Documento de trabajo", "en": "Working paper"},
+  "dyn.pub.chip.revistas": {"es": "Revista", "en": "Journal"},
+  "dyn.pub.chip.libros": {"es": "Libro / capítulo", "en": "Book / chapter"},
+  "dyn.pub.chip.repositorios": {"es": "Informe técnico", "en": "Technical report"},
+  "dyn.pub.chip.protocolos": {"es": "Protocolo", "en": "Protocol"},
+  "dyn.pub.chip.datasets": {"es": "Dataset", "en": "Dataset"},
+  "dyn.pub.chip.eventos": {"es": "Evento científico", "en": "Scientific event"},
+  "dyn.pub.chip.diarios": {"es": "Medios", "en": "Media"},
+  "dyn.pub.chip.otros": {"es": "Publicación", "en": "Publication"},
+  "dyn.pub.openLink": {"es": "Abrir enlace", "en": "Open link"},
+  "dyn.pub.viewDoi": {"es": "Ver DOI", "en": "View DOI"},
+  "dyn.pub.viewFlayer": {"es": "Ver flayer (PDF)", "en": "View flyer (PDF)"},
+  "dyn.pub.noLink": {"es": "Sin enlace", "en": "No link"},
+  "dyn.pub.noTitle": {"es": "Sin título", "en": "Untitled"},
+  "dyn.pub.verMas": {"es": "Ver más ({n})", "en": "Show more ({n})"},
+  "dyn.pub.emptySoon": {"es": "Próximamente", "en": "Coming soon"},
+  "dyn.pub.emptyBuilding": {"es": "Estamos incorporando las publicaciones del Observatorio de Inteligencia Artificial.", "en": "We are adding publications from the Artificial Intelligence Observatory."},
+  "dyn.pub.emptyNone": {"es": "<p>No hay publicaciones para mostrar en este momento.</p><p>Volvé a consultar pronto.</p>", "en": "<p>There are no publications to show right now.</p><p>Please check back soon.</p>"},
+  "dyn.pub.emptyFilter": {"es": "<p>Todavía no hay publicaciones en <strong>{filter}</strong>.</p><p>Podés ver lo disponible en <strong>Ver todas</strong>.</p>", "en": "<p>There are no publications under <strong>{filter}</strong> yet.</p><p>Browse available items under <strong>View all</strong>.</p>"},
+  "dyn.pub.errorConnect": {"es": "No se pudo conectar al servicio de publicaciones. Si acabás de republicar Apps Script, usá <strong>Administrar implementaciones → lápiz → Nueva versión</strong> (no crees una implementación nueva) y verificá que exista el archivo <code>EncuestaDocentesWeb</code>. Después recargá con <kbd>⌘⇧R</kbd>.", "en": "Could not connect to the publications service. If you just redeployed Apps Script, use <strong>Manage deployments → pencil → New version</strong> (do not create a new deployment) and confirm the <code>EncuestaDocentesWeb</code> file exists. Then reload with <kbd>⌘⇧R</kbd>."},
+  "dyn.pub.col.tipo": {"es": "Tipo", "en": "Type"},
+  "dyn.pub.col.titulo": {"es": "Título", "en": "Title"},
+  "dyn.pub.col.unidad": {"es": "Unidad · Año", "en": "Unit · Year"},
+  "dyn.pub.col.enlace": {"es": "Enlace", "en": "Link"},
+  "dyn.pub.ariaUnidad": {"es": "Unidad académica y año", "en": "Academic unit and year"},
+  "dyn.pubIndex.loading": {"es": "Cargando en OpenAlex, Crossref, Semantic Scholar y Europe PMC...", "en": "Loading from OpenAlex, Crossref, Semantic Scholar, and Europe PMC..."},
+  "dyn.pubIndex.error": {"es": "No se pudo cargar el índice desde las fuentes abiertas. Probá de nuevo en unos minutos.", "en": "Could not load the index from open sources. Try again in a few minutes."},
+  "dyn.pubIndex.emptySearch": {"es": "<p>No hay publicaciones de IA que coincidan por <strong>{mode}</strong> con \"{q}\".</p><p>Probá otro criterio (título, DOI o autor/a) o usá <strong>Limpiar</strong>.</p>", "en": "<p>No AI publications match <strong>{mode}</strong> for \"{q}\".</p><p>Try another criterion (title, DOI, or author) or use <strong>Clear</strong>.</p>"},
+  "dyn.pubIndex.emptyPage": {"es": "<p>No hay registros para mostrar en esta página.</p>", "en": "<p>No records to show on this page.</p>"},
+  "dyn.pubIndex.year": {"es": "Año", "en": "Year"},
+  "dyn.pubIndex.mode": {"es": "Modo", "en": "Mode"},
+  "dyn.pubIndex.sort": {"es": "Orden", "en": "Sort"},
+  "dyn.pubIndex.pageSize": {"es": "Página", "en": "Page size"},
+  "dyn.pubIndex.search": {"es": "Búsqueda", "en": "Search"},
+  "dyn.pubIndex.filtersActive": {"es": "Filtros activos: {parts}", "en": "Active filters: {parts}"},
+  "dyn.pubIndex.prev": {"es": "← Anterior", "en": "← Previous"},
+  "dyn.pubIndex.first": {"es": "« Primera", "en": "« First"},
+  "dyn.pubIndex.next": {"es": "Siguiente →", "en": "Next →"},
+  "dyn.pubIndex.last": {"es": "Última »", "en": "Last »"},
+  "dyn.pubIndex.pageOf": {"es": "Página {n} de {total} · {count} resultados", "en": "Page {n} of {total} · {count} results"},
+  "dyn.pubIndex.allYears": {"es": "Todos los años", "en": "All years"},
+  "dyn.pubIndex.openAccess": {"es": "Acceso abierto", "en": "Open access"},
+  "dyn.pubIndex.sort.dateAsc": {"es": "Fecha ascendente", "en": "Date ascending"},
+  "dyn.pubIndex.sort.dateDesc": {"es": "Fecha descendente", "en": "Date descending"},
+  "dyn.pubIndex.sort.relevance": {"es": "Relevancia", "en": "Relevance"},
+  "dyn.pubIndex.mode.coincidencias": {"es": "coincidencias", "en": "matches"},
+  "dyn.pubIndex.mode.titulo": {"es": "titulo", "en": "title"},
+  "dyn.pubIndex.mode.autor": {"es": "autor/a", "en": "author"},
+  "dyn.pubIndex.partialFail": {"es": "Algunas fuentes no respondieron ({sources}). Se muestran resultados de las demás.", "en": "Some sources did not respond ({sources}). Showing results from the others."},
+  "dyn.pubIndex.head.tipo": {"es": "Tipo", "en": "Type"},
+  "dyn.pubIndex.head.titulo": {"es": "Título", "en": "Title"},
+  "dyn.pubIndex.head.ano": {"es": "Año", "en": "Year"},
+  "dyn.pubIndex.head.enlace": {"es": "Enlace", "en": "Link"},
   "dyn.galeria.teamEntry": {"es": "Ingreso equipo · Cargar álbum", "en": "Team access · Upload album"},
   "dyn.galeria.teamHint": {"es": "(iniciá sesión en Google con un correo autorizado)", "en": "(sign in to Google with an authorized email)"},
   "dyn.galeria.empty": {"es": "Todavía no hay álbumes publicados. El equipo puede cargar eventos desde el ingreso autorizado.", "en": "No albums published yet. The team can add events via authorized access."},
+  "dyn.galeria.photos": {"es": "{n} fotos", "en": "{n} photos"},
+  "dyn.galeria.viewPhoto": {"es": "Ver foto {i} de {n}", "en": "View photo {i} of {n}"},
+  "dyn.galeria.lightbox.label": {"es": "Vista ampliada de la foto", "en": "Enlarged photo view"},
+  "dyn.galeria.lightbox.close": {"es": "Cerrar", "en": "Close"},
+  "dyn.galeria.lightbox.prev": {"es": "Foto anterior", "en": "Previous photo"},
+  "dyn.galeria.lightbox.next": {"es": "Foto siguiente", "en": "Next photo"},
+  "dyn.noticias.loading": {"es": "Buscando noticias, boletines y menciones en medios…", "en": "Searching news, newsletters, and media mentions…"},
+  "dyn.noticias.empty": {"es": "No se encontraron noticias por ahora. La búsqueda se actualiza al cargar la página.", "en": "No news found for now. The search refreshes when the page loads."},
+  "dyn.noticias.emptyFilter": {"es": "No hay resultados para esa búsqueda.", "en": "No results for that search."},
+  "dyn.noticias.error": {"es": "No se pudieron cargar las noticias. Probá recargar la página en unos minutos.", "en": "Could not load the news. Try reloading the page in a few minutes."},
+  "dyn.noticias.showing": {"es": "Mostrando {n} resultados (avisos del Observatorio, Noticias UCCuyo y otros medios; sin Diario de Cuyo).", "en": "Showing {n} results (Observatory notices, UCCuyo News, and other media; excluding Diario de Cuyo)."},
+  "dyn.noticias.cta.webinar": {"es": "Ver webinar", "en": "View webinar"},
+  "dyn.noticias.cta.jornadas": {"es": "Ver jornadas", "en": "View conference"},
+  "dyn.noticias.cta.site": {"es": "Ver en el sitio", "en": "View on site"},
+  "dyn.noticias.cta.uccuyo": {"es": "Leer en noticias.uccuyo.edu.ar", "en": "Read on noticias.uccuyo.edu.ar"},
+  "dyn.noticias.cta.media": {"es": "Leer en el medio", "en": "Read in the media"},
+  "dyn.noticias.cta.boletin": {"es": "Ver boletín", "en": "View newsletter"},
+  "dyn.noticias.cta.note": {"es": "Ver nota", "en": "View article"},
   "dyn.noticias.teamEntry": {"es": "Ingreso equipo · Cargar noticia", "en": "Team access · Post news"},
   "dyn.noticias.teamHint": {"es": "(iniciá sesión en Google con un correo autorizado)", "en": "(sign in to Google with an authorized email)"}
 };

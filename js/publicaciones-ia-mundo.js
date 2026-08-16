@@ -23,15 +23,22 @@
   var pageSize = DEFAULT_PAGE_SIZE;
   var sortMode = "date_desc";
 
-  var ETIQUETA_MODO = {
-    auto: "coincidencias",
-    title: "titulo",
-    author: "autor/a",
-    doi: "DOI"
-  };
-
   function el(id) {
     return document.getElementById(id);
+  }
+
+  function tt(key, fallback, vars) {
+    if (window.I18N && typeof window.I18N.t === "function") {
+      var v = window.I18N.t(key, vars);
+      if (v && v !== key) return v;
+    }
+    var text = fallback == null ? key : fallback;
+    if (vars && typeof vars === "object") {
+      Object.keys(vars).forEach(function (k) {
+        text = String(text).split("{" + k + "}").join(String(vars[k]));
+      });
+    }
+    return text;
   }
 
   function esc(s) {
@@ -41,7 +48,18 @@
   }
 
   function formatInt(n) {
-    return Number(n || 0).toLocaleString("es-AR");
+    var loc =
+      window.I18N && window.I18N.getLang && window.I18N.getLang() === "en"
+        ? "en-US"
+        : "es-AR";
+    return Number(n || 0).toLocaleString(loc);
+  }
+
+  function etiquetaModoKey(modo) {
+    if (modo === "title") return tt("dyn.pubIndex.mode.titulo", "titulo");
+    if (modo === "author") return tt("dyn.pubIndex.mode.autor", "autor/a");
+    if (modo === "doi") return "DOI";
+    return tt("dyn.pubIndex.mode.coincidencias", "coincidencias");
   }
 
   function escapeRegExp(s) {
@@ -173,13 +191,17 @@
   function etiquetaModoActual() {
     var q = searchQuery.trim();
     if (!q) return "";
-    return ETIQUETA_MODO[modoBusquedaEfectivo(q)] || "coincidencias";
+    return etiquetaModoKey(modoBusquedaEfectivo(q));
   }
 
   function etiquetaOrdenActual() {
-    if (sortMode === "date_asc") return "Fecha ascendente";
-    if (sortMode === "relevance") return "Relevancia";
-    return "Fecha descendente";
+    if (sortMode === "date_asc") {
+      return tt("dyn.pubIndex.sort.dateAsc", "Fecha ascendente");
+    }
+    if (sortMode === "relevance") {
+      return tt("dyn.pubIndex.sort.relevance", "Relevancia");
+    }
+    return tt("dyn.pubIndex.sort.dateDesc", "Fecha descendente");
   }
 
   function fetchOpenAlex(url) {
@@ -223,10 +245,20 @@
 
   function actualizarContador() {
     var wrap = el("pub-index-count-wrap");
-    var totalEl = el("pub-index-total");
-    if (wrap && totalEl) {
-      wrap.hidden = false;
-      totalEl.textContent = formatInt(metaTotal);
+    var label = el("pub-index-count-label");
+    var n = formatInt(metaTotal);
+    if (wrap) wrap.hidden = false;
+    if (label) {
+      var tpl = tt(
+        "sec.publicaciones.panel.global.count",
+        "{n} trabajos aproximados (referencia OpenAlex)"
+      );
+      label.innerHTML = tpl
+        .split("{n}")
+        .join('<strong id="pub-index-total">' + esc(n) + "</strong>");
+    } else {
+      var totalEl = el("pub-index-total");
+      if (totalEl) totalEl.textContent = n;
     }
     if (
       metaTotal > 0 &&
@@ -256,11 +288,8 @@
           if (window.OBS_NUMEROS_API) {
             window.OBS_NUMEROS_API.set("publicaciones", globalIaTotal);
           }
-          var wrap = el("pub-index-count-wrap");
-          var totalEl = el("pub-index-total");
-          if (wrap && totalEl && !searchQuery.trim() && yearFilter === "all") {
-            wrap.hidden = false;
-            totalEl.textContent = formatInt(globalIaTotal);
+          if (!searchQuery.trim() && yearFilter === "all") {
+            actualizarContador();
           }
         }
       })
@@ -269,15 +298,24 @@
 
   function mensajeCarga() {
     if (searchQuery.trim()) {
+      var en = window.I18N && window.I18N.getLang && window.I18N.getLang() === "en";
+      var prefix = en ? "Searching by " : "Buscando por ";
       return (
-        '<div class="pub-msg pub-msg--loading">Buscando por ' +
-        esc(etiquetaModoActual()) +
-        ': "' +
-        esc(searchQuery.trim()) +
-        '"...</div>'
+        '<div class="pub-msg pub-msg--loading">' +
+        esc(prefix + etiquetaModoActual() + ': "' + searchQuery.trim() + '"...') +
+        "</div>"
       );
     }
-    return '<div class="pub-msg pub-msg--loading">Cargando en OpenAlex, Crossref, Semantic Scholar y Europe PMC...</div>';
+    return (
+      '<div class="pub-msg pub-msg--loading">' +
+      esc(
+        tt(
+          "dyn.pubIndex.loading",
+          "Cargando en OpenAlex, Crossref, Semantic Scholar y Europe PMC..."
+        )
+      ) +
+      "</div>"
+    );
   }
 
   function cargarPagina(page, query) {
@@ -327,9 +365,13 @@
         if (status) {
           if (res.fuentesFallidas && res.fuentesFallidas.length) {
             status.innerHTML =
-              '<div class="pub-msg pub-msg--hint">Algunas fuentes no respondieron (' +
-              esc(res.fuentesFallidas.join(", ")) +
-              "). Se muestran resultados de las demás.</div>";
+              '<div class="pub-msg pub-msg--hint">' +
+              tt(
+                "dyn.pubIndex.partialFail",
+                "Algunas fuentes no respondieron ({sources}). Se muestran resultados de las demás.",
+                { sources: esc(res.fuentesFallidas.join(", ")) }
+              ) +
+              "</div>";
           } else {
             status.innerHTML = "";
           }
@@ -341,7 +383,14 @@
         loading = false;
         if (status) {
           status.innerHTML =
-            '<div class="pub-msg pub-msg--error">No se pudo cargar el índice desde las fuentes abiertas. Probá de nuevo en unos minutos.</div>';
+            '<div class="pub-msg pub-msg--error">' +
+            esc(
+              tt(
+                "dyn.pubIndex.error",
+                "No se pudo cargar el índice desde las fuentes abiertas. Probá de nuevo en unos minutos."
+              )
+            ) +
+            "</div>";
         }
         ejecutarPendiente();
       });
@@ -392,7 +441,14 @@
         loading = false;
         if (status) {
           status.innerHTML =
-            '<div class="pub-msg pub-msg--error">No se pudo cargar el indice global de IA desde OpenAlex. Proba de nuevo en unos minutos.</div>';
+            '<div class="pub-msg pub-msg--error">' +
+            esc(
+              tt(
+                "dyn.pubIndex.error",
+                "No se pudo cargar el índice desde las fuentes abiertas. Probá de nuevo en unos minutos."
+              )
+            ) +
+            "</div>";
         }
         ejecutarPendiente();
       });
@@ -419,29 +475,44 @@
     var box = el("pub-index-active");
     if (!box) return;
     var parts = [];
-    if (yearFilter !== "all") parts.push("Año: " + yearFilter);
-    if (searchMode !== "auto") parts.push("Modo: " + ETIQUETA_MODO[searchMode]);
-    parts.push("Orden: " + etiquetaOrdenActual());
-    parts.push("Página: " + pageSize);
-    if (searchQuery.trim()) parts.push('Búsqueda: "' + searchQuery.trim() + '"');
-    box.textContent = parts.length ? "Filtros activos: " + parts.join(" · ") : "";
+    if (yearFilter !== "all") {
+      parts.push(tt("dyn.pubIndex.year", "Año") + ": " + yearFilter);
+    }
+    if (searchMode !== "auto") {
+      parts.push(tt("dyn.pubIndex.mode", "Modo") + ": " + etiquetaModoKey(searchMode));
+    }
+    parts.push(tt("dyn.pubIndex.sort", "Orden") + ": " + etiquetaOrdenActual());
+    parts.push(tt("dyn.pubIndex.pageSize", "Página") + ": " + pageSize);
+    if (searchQuery.trim()) {
+      parts.push(tt("dyn.pubIndex.search", "Búsqueda") + ': "' + searchQuery.trim() + '"');
+    }
+    box.textContent = parts.length
+      ? tt("dyn.pubIndex.filtersActive", "Filtros activos: {parts}", {
+          parts: parts.join(" · ")
+        })
+      : "";
   }
 
   function filaHTML(it) {
     var link = it.link || (it.doi ? "https://doi.org/" + it.doi : "");
-    var linkLabel = it.doi ? "Ver DOI" : "Abrir enlace";
+    var linkLabel = it.doi
+      ? tt("dyn.pub.viewDoi", "Ver DOI")
+      : tt("dyn.pub.openLink", "Abrir enlace");
     var linkHtml = link
       ? '<a class="pub-btn-link" href="' +
         esc(link) +
         '" target="_blank" rel="noopener noreferrer">' +
         esc(linkLabel) +
         "</a>"
-      : '<span class="pub-row-nolink">Sin enlace</span>';
+      : '<span class="pub-row-nolink">' + esc(tt("dyn.pub.noLink", "Sin enlace")) + "</span>";
 
     var meta = it.autores || "";
     if (it.doi) meta += (meta ? " · " : "") + "DOI: " + it.doi;
     if (it.fuente) meta += (meta ? " · " : "") + it.fuente;
-    if (it.oaUrl) meta += (meta ? " · " : "") + "Acceso abierto";
+    if (it.oaUrl) {
+      meta +=
+        (meta ? " · " : "") + tt("dyn.pubIndex.openAccess", "Acceso abierto");
+    }
 
     return (
       '<article class="pub-row pub-row--revistas">' +
@@ -453,7 +524,9 @@
       "</h3>" +
       (meta ? '<p class="pub-row-meta">' + highlightText(meta) + "</p>" : "") +
       "</div>" +
-      '<div class="pub-row-when" aria-label="Ano de publicacion"><span class="pub-row-year">' +
+      '<div class="pub-row-when" aria-label="' +
+      esc(tt("dyn.pubIndex.head.ano", "Año")) +
+      '"><span class="pub-row-year">' +
       esc(it.anio || "-") +
       "</span></div>" +
       '<div class="pub-row-link">' +
@@ -464,17 +537,16 @@
 
   function mensajeVacio() {
     if (searchQuery.trim()) {
-      return (
-        "<p>No hay publicaciones de IA que coincidan por <strong>" +
-        esc(etiquetaModoActual()) +
-        "</strong> con " +
-        '"' +
-        esc(searchQuery.trim()) +
-        '"' +
-        ".</p><p>Proba otro criterio (titulo, DOI o autor/a) o usa <strong>Limpiar</strong>.</p>"
+      return tt(
+        "dyn.pubIndex.emptySearch",
+        '<p>No hay publicaciones de IA que coincidan por <strong>{mode}</strong> con "{q}".</p><p>Probá otro criterio (título, DOI o autor/a) o usá <strong>Limpiar</strong>.</p>',
+        { mode: esc(etiquetaModoActual()), q: esc(searchQuery.trim()) }
       );
     }
-    return "<p>No hay registros para mostrar en esta pagina.</p>";
+    return tt(
+      "dyn.pubIndex.emptyPage",
+      "<p>No hay registros para mostrar en esta página.</p>"
+    );
   }
 
   function dibujarGrilla() {
@@ -489,7 +561,15 @@
     var html =
       '<div class="pub-list" role="list">' +
       '<div class="pub-list-head pub-list-head--index" aria-hidden="true">' +
-      "<span>Tipo</span><span>Titulo</span><span>Ano</span><span>Enlace</span>" +
+      "<span>" +
+      esc(tt("dyn.pubIndex.head.tipo", "Tipo")) +
+      "</span><span>" +
+      esc(tt("dyn.pubIndex.head.titulo", "Título")) +
+      "</span><span>" +
+      esc(tt("dyn.pubIndex.head.ano", "Año")) +
+      "</span><span>" +
+      esc(tt("dyn.pubIndex.head.enlace", "Enlace")) +
+      "</span>" +
       "</div>" +
       items.map(filaHTML).join("") +
       "</div>";
@@ -500,26 +580,42 @@
         html +=
           '<button type="button" class="pub-more-btn pub-index-nav" data-pub-index-page="' +
           (currentPage - 1) +
-          '">&larr; Anterior</button>';
+          '">' +
+          esc(tt("dyn.pubIndex.prev", "← Anterior")) +
+          "</button>";
       }
 
       if (currentPage > 1) {
         html +=
-          '<button type="button" class="pub-more-btn pub-index-nav" data-pub-index-page="1">&laquo; Primera</button>';
+          '<button type="button" class="pub-more-btn pub-index-nav" data-pub-index-page="1">' +
+          esc(tt("dyn.pubIndex.first", "« Primera")) +
+          "</button>";
       }
 
-      var info = "Pagina " + currentPage + " de " + totalPages + " · " + formatInt(metaTotal) + " resultados";
-      html += '<span class="pub-index-page-info">' + info + "</span>";
+      var info = tt(
+        "dyn.pubIndex.pageOf",
+        "Página {n} de {total} · {count} resultados",
+        {
+          n: currentPage,
+          total: totalPages,
+          count: formatInt(metaTotal)
+        }
+      );
+      html += '<span class="pub-index-page-info">' + esc(info) + "</span>";
 
       if (currentPage < totalPages) {
         html +=
           '<button type="button" class="pub-more-btn pub-index-nav" data-pub-index-page="' +
           (currentPage + 1) +
-          '">Siguiente &rarr;</button>';
+          '">' +
+          esc(tt("dyn.pubIndex.next", "Siguiente →")) +
+          "</button>";
         html +=
           '<button type="button" class="pub-more-btn pub-index-nav" data-pub-index-page="' +
           totalPages +
-          '">Ultima &raquo;</button>';
+          '">' +
+          esc(tt("dyn.pubIndex.last", "Última »")) +
+          "</button>";
       }
       html += "</div>";
     }
@@ -557,12 +653,29 @@
     if (!select) return;
     var currentYear = new Date().getFullYear();
     var minYear = 1990;
-    var opts = ['<option value="all">Todos los años</option>'];
+    var opts = [
+      '<option value="all">' +
+        esc(tt("dyn.pubIndex.allYears", "Todos los años")) +
+        "</option>"
+    ];
     for (var y = currentYear; y >= minYear; y--) {
       opts.push('<option value="' + y + '">' + y + "</option>");
     }
     select.innerHTML = opts.join("");
     select.value = yearFilter;
+  }
+
+  function refrescarChrome() {
+    construirOpcionesAnio();
+    actualizarContador();
+    actualizarBotonLimpiar();
+    actualizarResumenFiltros();
+    var status = el("pub-index-status");
+    if (loading && status) {
+      status.innerHTML = mensajeCarga();
+    } else if (loaded) {
+      dibujarGrilla();
+    }
   }
 
   function limpiarTodo() {
@@ -738,6 +851,8 @@
     window.addEventListener("hashchange", syncHashTab);
     syncHashTab();
   }
+
+  document.addEventListener("oia:langchange", refrescarChrome);
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initTabs);

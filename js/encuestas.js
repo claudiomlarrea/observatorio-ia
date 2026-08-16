@@ -39,9 +39,26 @@
   wire(informeInstLink, appsUrl(CFG.ACTION_INFORME_INSTITUCIONAL));
 
   if (estado && publica && CFG.DOCENTES_FORM_URL) {
-    estado.innerHTML =
-      "La encuesta está abierta para docentes. El equipo del Observatorio puede descargar las respuestas " +
-      "y publicar informes desde los enlaces de abajo (inicio de sesión Google con correo autorizado). Consultas: " +
-      '<a href="mailto:observatorioia@uccuyo.edu.ar">observatorioia@uccuyo.edu.ar</a>.';
+    var note =
+      window.I18N && typeof window.I18N.t === "function"
+        ? window.I18N.t("sec.encuestas.docentes.noteOpen")
+        : "";
+    if (!note || note === "sec.encuestas.docentes.noteOpen") {
+      note =
+        "La encuesta está abierta para docentes. El equipo del Observatorio puede descargar las respuestas " +
+        "y publicar informes desde los enlaces de abajo (inicio de sesión Google con correo autorizado). Consultas: " +
+        '<a href="mailto:observatorioia@uccuyo.edu.ar">observatorioia@uccuyo.edu.ar</a>.';
+    }
+    estado.innerHTML = note;
   }
+
+  document.addEventListener("oia:langchange", function () {
+    if (!(estado && publica && CFG.DOCENTES_FORM_URL)) return;
+    var note =
+      window.I18N && typeof window.I18N.t === "function"
+        ? window.I18N.t("sec.encuestas.docentes.noteOpen")
+        : "";
+    if (!note || note === "sec.encuestas.docentes.noteOpen") return;
+    estado.innerHTML = note;
+  });
 })();

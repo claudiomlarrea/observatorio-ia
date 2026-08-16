@@ -10,8 +10,11 @@ window.OBS_GALERIA = {
     {
       id: "webinar-evaluar-2026-08-13",
       title: "Webinar EvaluAR — 13 de agosto de 2026",
+      titleEn: "EvaluAR Webinar — August 13, 2026",
       description:
         "Primer webinar del Observatorio de Inteligencia Artificial: EvaluAR (examen en papel, corrección digital), a cargo del Dr. Claudio Larrea.",
+      descriptionEn:
+        "First webinar of the Artificial Intelligence Observatory: EvaluAR (paper exam, digital grading), by Dr. Claudio Larrea.",
       photos: [
         "assets/flayer-webinar-evaluar-13agosto-2026.png",
         "assets/galeria/webinar-evaluar-2026-08-13-meet-1.jpg?v=2",
@@ -21,8 +24,11 @@ window.OBS_GALERIA = {
     {
       id: "marimon",
       title: "Visita del asesor Frederic Marimon",
+      titleEn: "Visit by advisor Frederic Marimon",
       description:
         "Imágenes de la visita del asesor externo Frederic Marimon (Universitat Internacional de Catalunya) al Observatorio de IA de la Universidad Católica de Cuyo.",
+      descriptionEn:
+        "Photos from the visit of external advisor Frederic Marimon (Universitat Internacional de Catalunya) to the AI Observatory of the Universidad Católica de Cuyo.",
       /* Solo IDs de Drive: se muestran como fotos, sin nombres ni enlace al álbum. */
       photos: [
         "1R9PsaMhVaPeunHUJD3IimrJe0e2yxQDr",

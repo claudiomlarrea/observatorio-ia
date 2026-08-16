@@ -5,6 +5,20 @@
     return document.getElementById(id);
   }
 
+  function tt(key, fallback, vars) {
+    if (window.I18N && typeof window.I18N.t === "function") {
+      var v = window.I18N.t(key, vars);
+      if (v && v !== key) return v;
+    }
+    var text = fallback == null ? key : fallback;
+    if (vars && typeof vars === "object") {
+      Object.keys(vars).forEach(function (k) {
+        text = String(text).split("{" + k + "}").join(String(vars[k]));
+      });
+    }
+    return text;
+  }
+
   function adminUrl() {
     if (!CFG.APPS_SCRIPT_URL || !String(CFG.APPS_SCRIPT_URL).trim()) return "";
     var base = String(CFG.APPS_SCRIPT_URL).trim();
@@ -24,14 +38,10 @@
       "<a class=\"btn btn-ghost\" href=\"" +
       esc(url) +
       "\" target=\"_blank\" rel=\"noopener noreferrer\">" +
-      (window.I18N && window.I18N.t
-        ? window.I18N.t("dyn.pub.teamEntry")
-        : "Ingreso equipo · Cargar publicaciones") +
+      esc(tt("dyn.pub.teamEntry", "Ingreso equipo · Cargar publicaciones")) +
       "</a> " +
       "<small>" +
-      (window.I18N && window.I18N.t
-        ? window.I18N.t("dyn.pub.teamHint")
-        : "(iniciá sesión en Google con un correo autorizado)") +
+      esc(tt("dyn.pub.teamHint", "(iniciá sesión en Google con un correo autorizado)")) +
       "</small></p>";
   }
 
@@ -42,22 +52,27 @@
   }
 
   var filtrosDef = [
-    { id: "todas", label: "Ver todas", icono: "✨" },
-    { id: "papers", label: "Papers / artículos", icono: "📄" },
-    { id: "documentos", label: "Documentos de trabajo", icono: "📝" },
-    { id: "revistas", label: "Revistas", icono: "📑" },
-    { id: "libros", label: "Libros y capítulos", icono: "📚" },
-    { id: "repositorios", label: "Informes técnicos", icono: "🗂️" },
-    { id: "protocolos", label: "Protocolos", icono: "📋" },
-    { id: "datasets", label: "Datasets", icono: "📊" },
-    { id: "eventos", label: "Reuniones / eventos", icono: "🎓" },
-    { id: "diarios", label: "Medios / diarios", icono: "📰" }
+    { id: "todas", labelKey: "dyn.pub.filter.todas", labelEs: "Ver todas", icono: "✨" },
+    { id: "papers", labelKey: "dyn.pub.filter.papers", labelEs: "Papers / artículos", icono: "📄" },
+    { id: "documentos", labelKey: "dyn.pub.filter.documentos", labelEs: "Documentos de trabajo", icono: "📝" },
+    { id: "revistas", labelKey: "dyn.pub.filter.revistas", labelEs: "Revistas", icono: "📑" },
+    { id: "libros", labelKey: "dyn.pub.filter.libros", labelEs: "Libros y capítulos", icono: "📚" },
+    { id: "repositorios", labelKey: "dyn.pub.filter.repositorios", labelEs: "Informes técnicos", icono: "🗂️" },
+    { id: "protocolos", labelKey: "dyn.pub.filter.protocolos", labelEs: "Protocolos", icono: "📋" },
+    { id: "datasets", labelKey: "dyn.pub.filter.datasets", labelEs: "Datasets", icono: "📊" },
+    { id: "eventos", labelKey: "dyn.pub.filter.eventos", labelEs: "Reuniones / eventos", icono: "🎓" },
+    { id: "diarios", labelKey: "dyn.pub.filter.diarios", labelEs: "Medios / diarios", icono: "📰" }
   ];
 
   var items = [];
   var filtroActivo = "todas";
   var PAGE_SIZE = 10;
   var visibleLimit = PAGE_SIZE;
+  var hasLoaded = false;
+
+  function filtroLabel(f) {
+    return tt(f.labelKey, f.labelEs);
+  }
 
   function fetchJson(url) {
     return fetch(url, { method: "GET" }).then(function (r) {
@@ -104,6 +119,7 @@
     if (!url) {
       items = localItems();
       if (items.length) {
+        hasLoaded = true;
         var cwLocal = el("pub-count-wrap");
         if (cwLocal) cwLocal.hidden = false;
         renderTodo();
@@ -115,7 +131,10 @@
       return;
     }
 
-    status.innerHTML = "<div class=\"pub-msg pub-msg--loading\">Cargando publicaciones…</div>";
+    status.innerHTML =
+      "<div class=\"pub-msg pub-msg--loading\">" +
+      esc(tt("dyn.pub.loading", "Cargando publicaciones…")) +
+      "</div>";
 
     var urlLive =
       url +
@@ -126,6 +145,7 @@
       function (data) {
         if (!data || !data.ok || !Array.isArray(data.items)) throw new Error("format");
         items = mergeLocal(data.items);
+        hasLoaded = true;
         var cw = el("pub-count-wrap");
         if (cw) cw.hidden = false;
         renderTodo();
@@ -138,6 +158,7 @@
             }
             if (!data || !data.ok || !Array.isArray(data.items)) throw new Error("format");
             items = mergeLocal(data.items);
+            hasLoaded = true;
             var cw2 = el("pub-count-wrap");
             if (cw2) cw2.hidden = false;
             renderTodo();
@@ -145,16 +166,19 @@
           function () {
             items = localItems();
             if (items.length) {
+              hasLoaded = true;
               var cw3 = el("pub-count-wrap");
               if (cw3) cw3.hidden = false;
               renderTodo();
               return;
             }
             status.innerHTML =
-              "<div class=\"pub-msg pub-msg--error\">No se pudo conectar al servicio de publicaciones. " +
-              "Si acabás de republicar Apps Script, usá <strong>Administrar implementaciones → lápiz → Nueva versión</strong> " +
-              "(no crees una implementación nueva) y verificá que exista el archivo <code>EncuestaDocentesWeb</code>. " +
-              "Después recargá con <kbd>⌘⇧R</kbd>.</div>";
+              "<div class=\"pub-msg pub-msg--error\">" +
+              tt(
+                "dyn.pub.errorConnect",
+                "No se pudo conectar al servicio de publicaciones. Si acabás de republicar Apps Script, usá <strong>Administrar implementaciones → lápiz → Nueva versión</strong> (no crees una implementación nueva) y verificá que exista el archivo <code>EncuestaDocentesWeb</code>. Después recargá con <kbd>⌘⇧R</kbd>."
+              ) +
+              "</div>";
           }
         );
       }
@@ -206,8 +230,27 @@
     window.OBS_NUMEROS_API.set("publicaciones-oia", n);
   }
 
+  function actualizarContador(n) {
+    var wrap = el("pub-count-wrap");
+    var label = el("pub-count-label");
+    if (wrap) wrap.hidden = false;
+    if (label) {
+      var tpl = tt(
+        "sec.publicaciones.panel.registradas.count",
+        "Mostrando {n} en esta vista (filtradas para el Observatorio)."
+      );
+      label.innerHTML = tpl
+        .split("{n}")
+        .join('<strong id="pub-count">' + esc(String(n)) + "</strong>");
+      return;
+    }
+    var count = el("pub-count");
+    if (count) count.textContent = String(n);
+  }
+
   function renderTodo() {
     el("pub-status").innerHTML = "";
+    dibujarIngresoEquipo();
     dibujarFiltros();
     dibujarGrilla();
     syncNumerosPublicaciones();
@@ -230,7 +273,7 @@
           "<span class=\"pub-filter-icon\" aria-hidden=\"true\">" +
           esc(f.icono) +
           "</span> " +
-          esc(f.label) +
+          esc(filtroLabel(f)) +
           "</button>"
         );
       })
@@ -290,19 +333,20 @@
   }
 
   function textoChip(categoria) {
-    var m = {
-      papers: "Paper / artículo",
-      documentos: "Documento de trabajo",
-      revistas: "Revista",
-      libros: "Libro / capítulo",
-      repositorios: "Informe técnico",
-      protocolos: "Protocolo",
-      datasets: "Dataset",
-      eventos: "Evento científico",
-      diarios: "Medios",
-      otros: "Publicación"
+    var keys = {
+      papers: ["dyn.pub.chip.papers", "Paper / artículo"],
+      documentos: ["dyn.pub.chip.documentos", "Documento de trabajo"],
+      revistas: ["dyn.pub.chip.revistas", "Revista"],
+      libros: ["dyn.pub.chip.libros", "Libro / capítulo"],
+      repositorios: ["dyn.pub.chip.repositorios", "Informe técnico"],
+      protocolos: ["dyn.pub.chip.protocolos", "Protocolo"],
+      datasets: ["dyn.pub.chip.datasets", "Dataset"],
+      eventos: ["dyn.pub.chip.eventos", "Evento científico"],
+      diarios: ["dyn.pub.chip.diarios", "Medios"],
+      otros: ["dyn.pub.chip.otros", "Publicación"]
     };
-    return m[categoria] || m.otros;
+    var pair = keys[categoria] || keys.otros;
+    return tt(pair[0], pair[1]);
   }
 
   function doiToUrl(d) {
@@ -337,9 +381,9 @@
     var href = "";
     if (it.link) href = safeHref(it.link);
     else if (it.doi) href = doiToUrl(it.doi);
-    var label = "Abrir enlace";
-    if (/doi\.org/i.test(href)) label = "Ver DOI";
-    else if (/\.pdf(\?|#|$)/i.test(href)) label = "Ver flayer (PDF)";
+    var label = tt("dyn.pub.openLink", "Abrir enlace");
+    if (/doi\.org/i.test(href)) label = tt("dyn.pub.viewDoi", "Ver DOI");
+    else if (/\.pdf(\?|#|$)/i.test(href)) label = tt("dyn.pub.viewFlayer", "Ver flayer (PDF)");
     return { href: href, label: label };
   }
 
@@ -361,7 +405,10 @@
   function celdaUnidadAnioHTML(it) {
     var unidad = etiquetaUnidad(it);
     var tiempo = anioPublicacion(it);
-    var html = '<div class="pub-row-when" aria-label="Unidad académica y año">';
+    var html =
+      '<div class="pub-row-when" aria-label="' +
+      esc(tt("dyn.pub.ariaUnidad", "Unidad académica y año")) +
+      '">';
     if (unidad) {
       html +=
         '<span class="pub-row-unidad" style="display:block;font-size:0.7rem;font-weight:700;color:#5c4f54;line-height:1.25;text-align:right;max-width:12rem;" title="' +
@@ -391,7 +438,7 @@
           '" target="_blank" rel="noopener noreferrer">' +
           esc(link.label) +
           "</a>"
-        : '<span class="pub-row-nolink">Sin enlace</span>';
+        : '<span class="pub-row-nolink">' + esc(tt("dyn.pub.noLink", "Sin enlace")) + "</span>";
 
     return (
       '<article class="pub-row pub-row--' +
@@ -402,7 +449,7 @@
       "</div>" +
       '<div class="pub-row-main">' +
       '<h3 class="pub-row-title">' +
-      esc(it.titulo || "Sin título") +
+      esc(it.titulo || tt("dyn.pub.noTitle", "Sin título")) +
       "</h3>" +
       (meta ? '<p class="pub-row-meta">' + esc(meta) + "</p>" : "") +
       "</div>" +
@@ -418,28 +465,38 @@
     var grid = el("pub-grid");
     if (!grid) return;
     var list = aplicarFiltro(items);
-    el("pub-count").textContent = String(list.length);
+    actualizarContador(list.length);
 
     if (!list.length) {
       var filtro = filtrosDef.filter(function (f) {
         return f.id === filtroActivo;
       })[0];
-      var tituloFiltro = filtro ? filtro.label : "esta sección";
+      var tituloFiltro = filtro ? filtroLabel(filtro) : "esta sección";
       var cuerpo;
       if (!items.length) {
         cuerpo =
-          "<p><strong>Próximamente</strong></p>" +
-          "<p>Estamos incorporando las publicaciones del Observatorio de Inteligencia Artificial.</p>";
+          "<p><strong>" +
+          esc(tt("dyn.pub.emptySoon", "Próximamente")) +
+          "</strong></p>" +
+          "<p>" +
+          esc(
+            tt(
+              "dyn.pub.emptyBuilding",
+              "Estamos incorporando las publicaciones del Observatorio de Inteligencia Artificial."
+            )
+          ) +
+          "</p>";
       } else if (filtroActivo === "todas") {
-        cuerpo =
-          "<p>No hay publicaciones para mostrar en este momento.</p>" +
-          "<p>Volvé a consultar pronto.</p>";
+        cuerpo = tt(
+          "dyn.pub.emptyNone",
+          "<p>No hay publicaciones para mostrar en este momento.</p><p>Volvé a consultar pronto.</p>"
+        );
       } else {
-        cuerpo =
-          "<p>Todavía no hay publicaciones en <strong>" +
-          esc(tituloFiltro) +
-          "</strong>.</p>" +
-          "<p>Podés ver lo disponible en <strong>Ver todas</strong>.</p>";
+        cuerpo = tt(
+          "dyn.pub.emptyFilter",
+          "<p>Todavía no hay publicaciones en <strong>{filter}</strong>.</p><p>Podés ver lo disponible en <strong>Ver todas</strong>.</p>",
+          { filter: esc(tituloFiltro) }
+        );
       }
       grid.innerHTML = "<div class=\"pub-msg pub-msg--hint\">" + cuerpo + "</div>";
       return;
@@ -451,7 +508,15 @@
     var html =
       '<div class="pub-list" role="list">' +
       '<div class="pub-list-head" aria-hidden="true">' +
-      "<span>Tipo</span><span>Título</span><span>Unidad · Año</span><span>Enlace</span>" +
+      "<span>" +
+      esc(tt("dyn.pub.col.tipo", "Tipo")) +
+      "</span><span>" +
+      esc(tt("dyn.pub.col.titulo", "Título")) +
+      "</span><span>" +
+      esc(tt("dyn.pub.col.unidad", "Unidad · Año")) +
+      "</span><span>" +
+      esc(tt("dyn.pub.col.enlace", "Enlace")) +
+      "</span>" +
       "</div>" +
       shown.map(filaCompactaHTML).join("") +
       "</div>";
@@ -459,9 +524,9 @@
     if (restantes > 0) {
       html +=
         '<div class="pub-more-wrap">' +
-        '<button type="button" class="pub-more-btn" data-pub-more="1">Ver más (' +
-        restantes +
-        ")</button>" +
+        '<button type="button" class="pub-more-btn" data-pub-more="1">' +
+        esc(tt("dyn.pub.verMas", "Ver más ({n})", { n: restantes })) +
+        "</button>" +
         "</div>";
     }
 
@@ -475,6 +540,26 @@
       });
     }
   }
+
+  function onLangChange() {
+    dibujarIngresoEquipo();
+    if (!hasLoaded && !items.length) {
+      var status = el("pub-status");
+      if (status && status.querySelector(".pub-msg--loading")) {
+        status.innerHTML =
+          "<div class=\"pub-msg pub-msg--loading\">" +
+          esc(tt("dyn.pub.loading", "Cargando publicaciones…")) +
+          "</div>";
+      }
+      return;
+    }
+    if (hasLoaded || items.length) {
+      dibujarFiltros();
+      dibujarGrilla();
+    }
+  }
+
+  document.addEventListener("oia:langchange", onLangChange);
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", cargar);

@@ -6,6 +6,20 @@
     return document.getElementById(id);
   }
 
+  function tt(key, fallback, vars) {
+    if (window.I18N && typeof window.I18N.t === "function") {
+      var v = window.I18N.t(key, vars);
+      if (v && v !== key) return v;
+    }
+    var text = fallback == null ? key : fallback;
+    if (vars && typeof vars === "object") {
+      Object.keys(vars).forEach(function (k) {
+        text = String(text).split("{" + k + "}").join(String(vars[k]));
+      });
+    }
+    return text;
+  }
+
   function esc(s) {
     var d = document.createElement("div");
     d.textContent = s == null ? "" : String(s);
@@ -87,8 +101,12 @@
   function formatearFecha(raw) {
     var t = parseFecha(raw);
     if (!t) return String(raw || "");
+    var loc =
+      window.I18N && window.I18N.getLang && window.I18N.getLang() === "en"
+        ? "en-US"
+        : "es-AR";
     try {
-      return new Intl.DateTimeFormat("es-AR", {
+      return new Intl.DateTimeFormat(loc, {
         day: "numeric",
         month: "long",
         year: "numeric"
@@ -239,14 +257,24 @@
 
   function linkLabel(item) {
     if (item.origen === "observatorio" || item.origen === "observatorio_equipo") {
-      if (String(item.link || "").indexOf("#webinars") === 0) return "Ver webinar";
-      if (String(item.link || "").indexOf("#jornadas") === 0) return "Ver jornadas";
-      return "Ver en el sitio";
+      if (String(item.link || "").indexOf("#webinars") === 0) {
+        return tt("dyn.noticias.cta.webinar", "Ver webinar");
+      }
+      if (String(item.link || "").indexOf("#jornadas") === 0) {
+        return tt("dyn.noticias.cta.jornadas", "Ver jornadas");
+      }
+      return tt("dyn.noticias.cta.site", "Ver en el sitio");
     }
-    if (item.origen === "uccuyo_noticias") return "Leer en noticias.uccuyo.edu.ar";
-    if (item.origen === "google_news") return "Leer en el medio";
-    if (item.origen === "boletin") return "Ver boletín";
-    return "Ver nota";
+    if (item.origen === "uccuyo_noticias") {
+      return tt("dyn.noticias.cta.uccuyo", "Leer en noticias.uccuyo.edu.ar");
+    }
+    if (item.origen === "google_news") {
+      return tt("dyn.noticias.cta.media", "Leer en el medio");
+    }
+    if (item.origen === "boletin") {
+      return tt("dyn.noticias.cta.boletin", "Ver boletín");
+    }
+    return tt("dyn.noticias.cta.note", "Ver nota");
   }
 
   function chipClass(fuente) {
@@ -319,6 +347,7 @@
 
   var todos = [];
   var filtroTexto = "";
+  var cargando = false;
 
   function filtrarItems(items) {
     var q = normalizar(filtroTexto);
@@ -337,6 +366,17 @@
     var status = el("news-status");
     if (!lista) return;
 
+    if (cargando) {
+      if (status) {
+        status.className = "news-status news-status--loading";
+        status.textContent = tt(
+          "dyn.noticias.loading",
+          "Buscando noticias, boletines y menciones en medios…"
+        );
+      }
+      return;
+    }
+
     var visibles = filtrarItems(todos);
     if (count) {
       count.textContent = String(visibles.length);
@@ -349,20 +389,22 @@
       if (status) {
         status.className = "news-status news-status--empty";
         status.textContent = filtroTexto
-          ? "No hay resultados para esa búsqueda."
-          : "No se encontraron noticias por ahora. La búsqueda se actualiza al cargar la página.";
+          ? tt("dyn.noticias.emptyFilter", "No hay resultados para esa búsqueda.")
+          : tt(
+              "dyn.noticias.empty",
+              "No se encontraron noticias por ahora. La búsqueda se actualiza al cargar la página."
+            );
       }
       return;
     }
 
     if (status) {
       status.className = "news-status news-status--ok";
-      status.textContent =
-        "Mostrando " +
-        visibles.length +
-        " resultado" +
-        (visibles.length === 1 ? "" : "s") +
-        " (avisos del Observatorio, Noticias UCCuyo y otros medios; sin Diario de Cuyo).";
+      status.textContent = tt(
+        "dyn.noticias.showing",
+        "Mostrando {n} resultados (avisos del Observatorio, Noticias UCCuyo y otros medios; sin Diario de Cuyo).",
+        { n: visibles.length }
+      );
     }
     lista.innerHTML = visibles.map(renderItem).join("");
   }
@@ -376,18 +418,11 @@
       return;
     }
     var url = base + (base.indexOf("?") >= 0 ? "&" : "?") + "action=noticias_admin";
-    var label =
-      window.I18N && window.I18N.t
-        ? window.I18N.t("dyn.noticias.teamEntry")
-        : "Ingreso equipo · Cargar noticia";
-    var hint =
-      window.I18N && window.I18N.t
-        ? window.I18N.t("dyn.noticias.teamHint")
-        : "(iniciá sesión en Google con un correo autorizado)";
-    if (label === "dyn.noticias.teamEntry") label = "Ingreso equipo · Cargar noticia";
-    if (hint === "dyn.noticias.teamHint") {
-      hint = "(iniciá sesión en Google con un correo autorizado)";
-    }
+    var label = tt("dyn.noticias.teamEntry", "Ingreso equipo · Cargar noticia");
+    var hint = tt(
+      "dyn.noticias.teamHint",
+      "(iniciá sesión en Google con un correo autorizado)"
+    );
     box.innerHTML =
       '<p class="pub-intro" style="margin-top:0">' +
       '<a class="btn btn-ghost" href="' +
@@ -403,9 +438,13 @@
     var status = el("news-status");
     var destacadas = itemsDestacadas();
     dibujarIngresoEquipo();
+    cargando = true;
     if (status) {
       status.className = "news-status news-status--loading";
-      status.textContent = "Buscando noticias, boletines y menciones en medios…";
+      status.textContent = tt(
+        "dyn.noticias.loading",
+        "Buscando noticias, boletines y menciones en medios…"
+      );
     }
 
     Promise.all([
@@ -415,11 +454,13 @@
       })
     ])
       .then(function (partes) {
+        cargando = false;
         var externas = filtrarPermitidos(partes[0].concat(partes[1]));
         todos = ordenarItems(dedupePreferente(destacadas.concat(externas)));
         pintarLista();
       })
       .catch(function () {
+        cargando = false;
         if (destacadas.length) {
           todos = destacadas;
           pintarLista();
@@ -427,10 +468,28 @@
         }
         if (status) {
           status.className = "news-status news-status--error";
-          status.textContent =
-            "No se pudieron cargar las noticias. Probá recargar la página en unos minutos.";
+          status.textContent = tt(
+            "dyn.noticias.error",
+            "No se pudieron cargar las noticias. Probá recargar la página en unos minutos."
+          );
         }
       });
+  }
+
+  function onLangChange() {
+    dibujarIngresoEquipo();
+    if (cargando) {
+      var status = el("news-status");
+      if (status) {
+        status.className = "news-status news-status--loading";
+        status.textContent = tt(
+          "dyn.noticias.loading",
+          "Buscando noticias, boletines y menciones en medios…"
+        );
+      }
+      return;
+    }
+    pintarLista();
   }
 
   function init() {
@@ -443,7 +502,7 @@
     }
     dibujarIngresoEquipo();
     cargar();
-    document.addEventListener("oia:langchange", dibujarIngresoEquipo);
+    document.addEventListener("oia:langchange", onLangChange);
   }
 
   if (document.readyState === "loading") {

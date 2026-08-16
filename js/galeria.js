@@ -8,13 +8,34 @@
   var lightboxImg = null;
   var currentList = [];
   var currentIndex = 0;
+  var albumsCache = localAlbums.slice();
 
-  function tt(key, fallback) {
+  function tt(key, fallback, vars) {
     if (window.I18N && typeof window.I18N.t === "function") {
-      var v = window.I18N.t(key);
+      var v = window.I18N.t(key, vars);
       if (v && v !== key) return v;
     }
-    return fallback;
+    var text = fallback == null ? key : fallback;
+    if (vars && typeof vars === "object") {
+      Object.keys(vars).forEach(function (k) {
+        text = String(text).split("{" + k + "}").join(String(vars[k]));
+      });
+    }
+    return text;
+  }
+
+  function isEn() {
+    return window.I18N && window.I18N.getLang && window.I18N.getLang() === "en";
+  }
+
+  function albumTitle(album) {
+    if (isEn()) return album.titleEn || album.title || "";
+    return album.title || "";
+  }
+
+  function albumDescription(album) {
+    if (isEn()) return album.descriptionEn || album.description || "";
+    return album.description || "";
   }
 
   function esc(s) {
@@ -74,19 +95,57 @@
     );
   }
 
+  function updateLightboxLabels() {
+    if (!lightbox) return;
+    lightbox.setAttribute(
+      "aria-label",
+      tt("dyn.galeria.lightbox.label", "Vista ampliada de la foto")
+    );
+    var closeBtn = lightbox.querySelector(".gallery-lightbox-close");
+    var prevBtn = lightbox.querySelector(".gallery-lightbox-prev");
+    var nextBtn = lightbox.querySelector(".gallery-lightbox-next");
+    if (closeBtn) {
+      closeBtn.setAttribute("aria-label", tt("dyn.galeria.lightbox.close", "Cerrar"));
+    }
+    if (prevBtn) {
+      prevBtn.setAttribute(
+        "aria-label",
+        tt("dyn.galeria.lightbox.prev", "Foto anterior")
+      );
+    }
+    if (nextBtn) {
+      nextBtn.setAttribute(
+        "aria-label",
+        tt("dyn.galeria.lightbox.next", "Foto siguiente")
+      );
+    }
+  }
+
   function ensureLightbox() {
-    if (lightbox) return;
+    if (lightbox) {
+      updateLightboxLabels();
+      return;
+    }
     lightbox = document.createElement("div");
     lightbox.className = "gallery-lightbox";
     lightbox.hidden = true;
     lightbox.setAttribute("role", "dialog");
     lightbox.setAttribute("aria-modal", "true");
-    lightbox.setAttribute("aria-label", "Vista ampliada de la foto");
+    lightbox.setAttribute(
+      "aria-label",
+      tt("dyn.galeria.lightbox.label", "Vista ampliada de la foto")
+    );
     lightbox.innerHTML =
-      '<button type="button" class="gallery-lightbox-close" aria-label="Cerrar">×</button>' +
-      '<button type="button" class="gallery-lightbox-nav gallery-lightbox-prev" aria-label="Foto anterior">‹</button>' +
+      '<button type="button" class="gallery-lightbox-close" aria-label="' +
+      esc(tt("dyn.galeria.lightbox.close", "Cerrar")) +
+      '">×</button>' +
+      '<button type="button" class="gallery-lightbox-nav gallery-lightbox-prev" aria-label="' +
+      esc(tt("dyn.galeria.lightbox.prev", "Foto anterior")) +
+      '">‹</button>' +
       '<img class="gallery-lightbox-img" alt="" />' +
-      '<button type="button" class="gallery-lightbox-nav gallery-lightbox-next" aria-label="Foto siguiente">›</button>';
+      '<button type="button" class="gallery-lightbox-nav gallery-lightbox-next" aria-label="' +
+      esc(tt("dyn.galeria.lightbox.next", "Foto siguiente")) +
+      '">›</button>';
     document.body.appendChild(lightbox);
     lightboxImg = lightbox.querySelector(".gallery-lightbox-img");
 
@@ -135,7 +194,10 @@
       item.setAttribute("role", "listitem");
       item.setAttribute(
         "aria-label",
-        "Ver foto " + (i + 1) + " de " + photos.length
+        tt("dyn.galeria.viewPhoto", "Ver foto {i} de {n}", {
+          i: i + 1,
+          n: photos.length
+        })
       );
 
       var img = document.createElement("img");
@@ -166,6 +228,8 @@
     var photos = album.photos || [];
     var panelId = "galeria-panel-" + album.id;
     var titleId = "galeria-" + album.id;
+    var titleText = albumTitle(album);
+    var descText = albumDescription(album);
 
     var article = document.createElement("article");
     article.className = "gallery-event";
@@ -182,13 +246,13 @@
 
     var title = document.createElement("span");
     title.className = "gallery-toggle-title";
-    title.textContent = album.title || "";
+    title.textContent = titleText;
     titleWrap.appendChild(title);
 
     if (photos.length) {
       var meta = document.createElement("span");
       meta.className = "gallery-toggle-meta";
-      meta.textContent = photos.length + " fotos";
+      meta.textContent = tt("dyn.galeria.photos", "{n} fotos", { n: photos.length });
       titleWrap.appendChild(meta);
     }
 
@@ -206,10 +270,10 @@
     panel.setAttribute("role", "region");
     panel.setAttribute("aria-labelledby", titleId);
 
-    if (album.description) {
+    if (descText) {
       var p = document.createElement("p");
       p.className = "gallery-panel-desc";
-      p.textContent = album.description;
+      p.textContent = descText;
       panel.appendChild(p);
     }
 
@@ -249,8 +313,9 @@
   }
 
   function renderAll(list) {
+    albumsCache = list || [];
     root.innerHTML = "";
-    if (!list.length) {
+    if (!albumsCache.length) {
       root.innerHTML =
         '<p class="visitas-empty">' +
         tt(
@@ -260,7 +325,7 @@
         "</p>";
       return;
     }
-    list.forEach(function (album) {
+    albumsCache.forEach(function (album) {
       root.appendChild(renderAlbum(album));
     });
   }
@@ -337,5 +402,7 @@
 
   document.addEventListener("oia:langchange", function () {
     dibujarIngresoEquipo();
+    updateLightboxLabels();
+    renderAll(albumsCache.slice());
   });
 })();
