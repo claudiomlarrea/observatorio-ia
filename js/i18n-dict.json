@@ -688,8 +688,8 @@
     "en": "Reusable app for congresses and meetings: load the program and the button bar builds itself (schedule, workshops, posters, agenda, and offline mode)."
   },
   "sec.herramientas.consultaCongreso.item1": {
-    "es": "Carga JSON del evento + PDF (programa, talleres, pósteres)",
-    "en": "Load event JSON + PDFs (program, workshops, posters)"
+    "es": "Cargá PDF del programa, talleres, exposiciones, pósteres, etc.",
+    "en": "Load PDFs for the program, workshops, talks, posters, and more."
   },
   "sec.herramientas.consultaCongreso.item2": {
     "es": "Botones automáticos según el contenido del programa",
