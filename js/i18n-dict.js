@@ -1065,17 +1065,13 @@ window.I18N_DICT = {
     "es": "SGA incorpora, ordena por unidad académica y genera el OD del CS",
     "en": "SGA incorporates, sorts by academic unit, and generates the Superior Council agenda"
   },
-  "sec.herramientas.lumen.videoCaption": {
-    "es": "Demo 1 minuto · recorrido por las pantallas del sistema",
-    "en": "1-minute demo · walkthrough of the system screens"
-  },
-  "sec.herramientas.lumen.videoAria": {
-    "es": "Recorrido de un minuto por las pantallas de LUMEN",
-    "en": "One-minute walkthrough of the LUMEN screens"
+  "sec.herramientas.lumen.btnVideo": {
+    "es": "Ver demo en video",
+    "en": "Watch demo video"
   },
   "sec.herramientas.lumen.btnDemo": {
-    "es": "Para una demostración, comunicarse con el Observatorio",
-    "en": "For a demonstration, contact the Observatory"
+    "es": "Solicitar demostración",
+    "en": "Request a demonstration"
   },
   "sec.herramientas.rumbo.badge": {
     "es": "Demo · consulta",

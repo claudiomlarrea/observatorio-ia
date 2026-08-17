@@ -1554,16 +1554,6 @@ header.section-head--bar h2 {
   margin-top: 0.35rem;
 }
 
-.tool-card--lumen .tile-actions {
-  align-items: stretch;
-}
-
-.tool-card--lumen .tile-actions .btn {
-  white-space: normal;
-  text-align: center;
-  line-height: 1.3;
-}
-
 .tool-card-contact {
   margin: 0.55rem 0 0;
   font-size: 0.86rem;
