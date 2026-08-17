@@ -1,10 +1,11 @@
 /**
  * Cifras verificables del Observatorio (actualizar cuando cambien).
+ * sistemas se cuenta desde las tarjetas de #herramientas (fromHerramientas).
  * visits/provincias pueden sobreescribirse en runtime desde el mapa.
  */
 window.OBS_NUMEROS = {
   items: [
-    { id: "sistemas", value: 7, labelEs: "Sistemas desarrollados", labelEn: "Systems developed", href: "#herramientas" },
+    { id: "sistemas", value: 10, labelEs: "Sistemas desarrollados", labelEn: "Systems developed", href: "#herramientas", fromHerramientas: true },
     { id: "encuestas", value: 2, labelEs: "Encuestas institucionales", labelEn: "Institutional surveys", href: "#encuestas" },
     {
       id: "publicaciones-oia",

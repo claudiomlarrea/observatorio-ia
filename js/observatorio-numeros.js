@@ -37,8 +37,13 @@
 
   var state = {};
   (CFG.items || []).forEach(function (it) {
-    state[it.id] = it.value;
+    state[it.id] = it.fromHerramientas ? countHerramientas(it.value) : it.value;
   });
+
+  function countHerramientas(fallback) {
+    var n = document.querySelectorAll("#herramientas .tool-card").length;
+    return n > 0 ? n : fallback;
+  }
 
   function draw() {
     var html = "";
