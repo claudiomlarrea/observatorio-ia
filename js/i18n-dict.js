@@ -978,8 +978,8 @@ window.I18N_DICT = {
     "en": "AI Apps"
   },
   "sec.herramientas.intro": {
-    "es": "Sistemas y plataformas desarrollados por el Observatorio de Inteligencia Artificial de la UCCuyo para la comunidad universitaria e instituciones vinculadas: encuestas, datos, evaluación, auditoría académica, conversión curricular SACAU/CRE, programas de cátedra (SACAU Aula), planificación estratégica, prevención digital y más. Se amplían a medida que se incorporan nuevos desarrollos.",
-    "en": "Systems and platforms developed by the UCCuyo Artificial Intelligence Observatory for the university community and partner institutions: surveys, data, assessment, academic audit, SACAU/CRE curriculum conversion, course syllabi (SACAU Aula), strategic planning, digital prevention, and more. The catalog grows as new developments are added."
+    "es": "Sistemas y plataformas desarrollados por el Observatorio de Inteligencia Artificial de la UCCuyo para la comunidad universitaria e instituciones vinculadas: encuestas, datos, evaluación, auditoría académica, conversión curricular SACAU/CRE, programas de cátedra (SACAU Aula), orden del día institucional (LUMEN), planificación estratégica, prevención digital y más. Se amplían a medida que se incorporan nuevos desarrollos.",
+    "en": "Systems and platforms developed by the UCCuyo Artificial Intelligence Observatory for the university community and partner institutions: surveys, data, assessment, academic audit, SACAU/CRE curriculum conversion, course syllabi (SACAU Aula), institutional agenda (LUMEN), strategic planning, digital prevention, and more. The catalog grows as new developments are added."
   },
   "sec.herramientas.senalsegura.title": {
     "es": "Señal Segura",
@@ -1040,6 +1040,42 @@ window.I18N_DICT = {
   "sec.herramientas.consultaCongreso.btnCargar": {
     "es": "Cargar evento",
     "en": "Load event"
+  },
+  "sec.herramientas.lumen.badge": {
+    "es": "Demo · consulta",
+    "en": "Demo · inquiry"
+  },
+  "sec.herramientas.lumen.title": {
+    "es": "LUMEN",
+    "en": "LUMEN"
+  },
+  "sec.herramientas.lumen.lead": {
+    "es": "Registro único de temas para el orden del día de los consejos de unidad (CD, CI y CE), elevación al Consejo Superior, revisión de la Secretaría General Académica, Word institucional e impacto en el PEI y en Investigación.",
+    "en": "Single register of items for unit council agendas (CD, CI, and CE), elevation to the Superior Council, Academic General Secretariat review, institutional Word output, and PEI/Research impact."
+  },
+  "sec.herramientas.lumen.item1": {
+    "es": "Carga de temas con adjunto y trazabilidad del expediente",
+    "en": "Item intake with attachment and file traceability"
+  },
+  "sec.herramientas.lumen.item2": {
+    "es": "Aprobación en consejo de unidad y elevación al Consejo Superior",
+    "en": "Unit council approval and elevation to the Superior Council"
+  },
+  "sec.herramientas.lumen.item3": {
+    "es": "SGA incorpora, ordena por unidad académica y genera el OD del CS",
+    "en": "SGA incorporates, sorts by academic unit, and generates the Superior Council agenda"
+  },
+  "sec.herramientas.lumen.videoCaption": {
+    "es": "Demo 1 minuto · recorrido por las pantallas del sistema",
+    "en": "1-minute demo · walkthrough of the system screens"
+  },
+  "sec.herramientas.lumen.videoAria": {
+    "es": "Recorrido de un minuto por las pantallas de LUMEN",
+    "en": "One-minute walkthrough of the LUMEN screens"
+  },
+  "sec.herramientas.lumen.btnDemo": {
+    "es": "Para una demostración, comunicarse con el Observatorio",
+    "en": "For a demonstration, contact the Observatory"
   },
   "sec.herramientas.rumbo.badge": {
     "es": "Demo · consulta",

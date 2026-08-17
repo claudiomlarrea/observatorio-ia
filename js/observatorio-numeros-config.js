@@ -4,7 +4,7 @@
  */
 window.OBS_NUMEROS = {
   items: [
-    { id: "sistemas", value: 6, labelEs: "Sistemas desarrollados", labelEn: "Systems developed", href: "#herramientas" },
+    { id: "sistemas", value: 7, labelEs: "Sistemas desarrollados", labelEn: "Systems developed", href: "#herramientas" },
     { id: "encuestas", value: 2, labelEs: "Encuestas institucionales", labelEn: "Institutional surveys", href: "#encuestas" },
     {
       id: "publicaciones-oia",

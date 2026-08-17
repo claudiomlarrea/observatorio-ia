@@ -1,3 +1,5 @@
+.tmp/
+
 # Laboratorio local (no publicar datos de prueba)
 local-lab/datos/
 local-lab/salida/
