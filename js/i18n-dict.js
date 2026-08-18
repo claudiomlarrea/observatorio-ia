@@ -665,6 +665,42 @@ window.I18N_DICT = {
     "es": "Leer el proyecto (PDF)",
     "en": "Read the project (PDF)"
   },
+  "sec.semillero.slides.cta": {
+    "es": "Ver presentación",
+    "en": "View presentation"
+  },
+  "sec.semillero.slides.title": {
+    "es": "Presentación de la convocatoria",
+    "en": "Call for applications presentation"
+  },
+  "sec.semillero.slides.lead": {
+    "es": "Recorré las 10 diapositivas de la convocatoria 2026 para estudiantes.",
+    "en": "Browse the 10 slides of the 2026 student call."
+  },
+  "sec.semillero.slides.download": {
+    "es": "Descargar presentación (PDF)",
+    "en": "Download presentation (PDF)"
+  },
+  "sec.semillero.slides.aria": {
+    "es": "Presentación Convocatoria Semillero de IA 2026",
+    "en": "AI Seedbed 2026 call presentation"
+  },
+  "sec.semillero.slides.prev": {
+    "es": "Diapositiva anterior",
+    "en": "Previous slide"
+  },
+  "sec.semillero.slides.next": {
+    "es": "Diapositiva siguiente",
+    "en": "Next slide"
+  },
+  "sec.semillero.slides.status": {
+    "es": "{current} / {total}",
+    "en": "{current} / {total}"
+  },
+  "sec.semillero.slides.alt": {
+    "es": "Diapositiva {current} de {total}: Convocatoria Semillero de IA 2026",
+    "en": "Slide {current} of {total}: AI Seedbed 2026 call"
+  },
   "sec.semillero.form.title": {
     "es": "Formulario de inscripción",
     "en": "Enrollment form"

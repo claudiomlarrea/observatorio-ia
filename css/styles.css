@@ -3020,6 +3020,138 @@ form.simple-form small {
   align-items: center;
 }
 
+.semillero-deck {
+  margin-top: 0.25rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(var(--rgb-inst), 0.12);
+}
+
+.semillero-deck-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.25rem;
+  margin-bottom: 0.35rem;
+}
+
+.semillero-deck-head h3 {
+  margin: 0;
+  font-size: 1.35rem;
+  color: var(--color-institutional-dark);
+}
+
+.semillero-deck-lead {
+  margin: 0 0 1.1rem;
+  color: var(--color-text-soft);
+}
+
+.semillero-slides {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "prev frame next"
+    "dots dots dots";
+  gap: 0.65rem 0.5rem;
+  align-items: center;
+}
+
+.semillero-slide-frame {
+  grid-area: frame;
+  margin: 0;
+  border-radius: 0.85rem;
+  overflow: hidden;
+  background: #042f23;
+  box-shadow: 0 12px 32px rgba(40, 10, 20, 0.16);
+}
+
+.semillero-slide-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1400 / 788;
+  object-fit: contain;
+  background: #042f23;
+}
+
+.semillero-slide-status {
+  margin: 0;
+  padding: 0.45rem 0.75rem 0.55rem;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.88);
+  background: #042f23;
+}
+
+.semillero-slide-nav {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-institutional);
+  color: #fff;
+  font-size: 1.65rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.semillero-slide-nav--prev {
+  grid-area: prev;
+}
+
+.semillero-slide-nav--next {
+  grid-area: next;
+}
+
+.semillero-slide-nav:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.semillero-slide-nav:focus-visible {
+  outline: 3px solid var(--color-accent, #e8b923);
+  outline-offset: 2px;
+}
+
+.semillero-slide-dots {
+  grid-area: dots;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  padding-top: 0.15rem;
+}
+
+.semillero-slide-dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(var(--rgb-inst), 0.28);
+  cursor: pointer;
+}
+
+.semillero-slide-dot.is-active {
+  background: var(--color-institutional);
+}
+
+@media (max-width: 640px) {
+  .semillero-slides {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "frame frame"
+      "prev next"
+      "dots dots";
+    justify-items: center;
+  }
+
+  .semillero-slide-frame {
+    width: 100%;
+  }
+}
+
 .semillero-form-block {
   margin-top: 0.5rem;
   padding: 1.5rem 1.25rem 1.25rem;
