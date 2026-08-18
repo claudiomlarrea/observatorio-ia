@@ -3439,8 +3439,9 @@ body.gallery-lightbox-open {
   }
 }
 
-/* —— Encuestas e informes —— */
-.section--encuestas .text-intro {
+/* —— Encuestas —— */
+.section--encuestas .text-intro,
+.section--informes .text-intro {
   max-width: 42rem;
 }
 

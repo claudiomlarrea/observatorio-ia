@@ -72,8 +72,12 @@ window.I18N_DICT = {
     "en": "Observatory visits"
   },
   "nav.encuestas": {
-    "es": "Encuestas e informes",
-    "en": "Surveys & reports"
+    "es": "Encuestas",
+    "en": "Surveys"
+  },
+  "nav.informes": {
+    "es": "Informes",
+    "en": "Reports"
   },
   "nav.noticias": {
     "es": "Noticias",
@@ -152,8 +156,12 @@ window.I18N_DICT = {
     "en": "Observatory visits"
   },
   "hero.cta.encuestas": {
-    "es": "Encuestas e informes",
-    "en": "Surveys & reports"
+    "es": "Encuestas",
+    "en": "Surveys"
+  },
+  "hero.cta.informes": {
+    "es": "Informes",
+    "en": "Reports"
   },
   "hero.cta.noticias": {
     "es": "Noticias",
@@ -228,6 +236,7 @@ window.I18N_DICT = {
   },
   "sec.impacto.card2.cta1": { "es": "Jornadas", "en": "Conference" },
   "sec.impacto.card2.cta2": { "es": "Webinars", "en": "Webinars" },
+  "sec.impacto.card2.cta3": { "es": "Informes", "en": "Reports" },
   "sec.impacto.card3.tag": { "es": "Asesoramiento", "en": "Advisory" },
   "sec.impacto.card3.title": {
     "es": "Acompañamiento institucional",
@@ -263,12 +272,13 @@ window.I18N_DICT = {
     "en": "Estimated origin by country and province/region, with ranking and Argentina focus."
   },
   "sec.datos.card1.cta": { "es": "Ver mapa", "en": "View map" },
-  "sec.datos.card2.title": { "es": "Encuestas e informes", "en": "Surveys & reports" },
+  "sec.datos.card2.title": { "es": "Encuestas", "en": "Surveys" },
   "sec.datos.card2.body": {
-    "es": "Relevamientos a estudiantes y docentes, con informes ejecutivos e institucionales.",
-    "en": "Student and faculty surveys, with executive and institutional reports."
+    "es": "Relevamientos a estudiantes y docentes. Los PDF publicados están en Informes.",
+    "en": "Student and faculty surveys. Published PDFs are in Reports."
   },
   "sec.datos.card2.cta": { "es": "Ver encuestas", "en": "View surveys" },
+  "sec.datos.card2.ctaInformes": { "es": "Ver informes", "en": "View reports" },
   "sec.datos.card3.title": { "es": "Análisis EPH (INDEC)", "en": "EPH analysis (INDEC)" },
   "sec.datos.card3.body": {
     "es": "Microdatos de hogares: desigualdad, exclusión digital, modelos predictivos e interpretabilidad.",
@@ -518,16 +528,16 @@ window.I18N_DICT = {
     "en": "Webinars"
   },
   "sec.webinar.intro": {
-    "es": "Primer webinar del Observatorio de Inteligencia Artificial. Presentamos <strong>EvaluAR</strong>, la herramienta para parciales presenciales con corrección digital.",
-    "en": "First webinar of the Artificial Intelligence Observatory. We present <strong>EvaluAR</strong>, the tool for in-person exams with digital grading."
+    "es": "El 13 de agosto se realizó el <strong>2° webinar</strong> del Observatorio sobre <strong>EvaluAR</strong>, la herramienta para parciales presenciales con corrección digital. Hubo 110 inscripciones (107 personas únicas) de 21 instituciones.",
+    "en": "On August 13 the Observatory held its <strong>2nd webinar</strong> on <strong>EvaluAR</strong>, the tool for in-person exams with digital grading. There were 110 registrations (107 unique people) from 21 institutions."
   },
   "sec.webinar.download": {
     "es": "Descargar flayer (PDF)",
     "en": "Download flyer (PDF)"
   },
   "sec.webinar.badge": {
-    "es": "Primer webinar del Observatorio",
-    "en": "First Observatory webinar"
+    "es": "2° webinar · 13 de agosto de 2026",
+    "en": "2nd webinar · August 13, 2026"
   },
   "sec.webinar.eventTitle": {
     "es": "EvaluAR",
@@ -570,8 +580,16 @@ window.I18N_DICT = {
     "en": "Dr. Claudio Larrea · Director of the AI Observatory"
   },
   "sec.webinar.about": {
-    "es": "Dirigido a docentes, investigadores y demás interesados. Inscripción gratuita.",
-    "en": "For faculty, researchers, and anyone interested. Free registration."
+    "es": "Participaron sedes de la UCCuyo y docentes de otras universidades. El informe de padrón está publicado en Informes.",
+    "en": "Participants included UCCuyo campuses and faculty from other universities. The registration report is published under Reports."
+  },
+  "sec.webinar.ctaInforme": {
+    "es": "Ver informe del webinar (PDF)",
+    "en": "View webinar report (PDF)"
+  },
+  "sec.webinar.ctaInformes": {
+    "es": "Ir a Informes",
+    "en": "Go to Reports"
   },
   "sec.webinar.cta": {
     "es": "Inscribirme al webinar",
@@ -754,12 +772,12 @@ window.I18N_DICT = {
     "en": "Surveys"
   },
   "sec.actividades.encuestas.body": {
-    "es": "Diseño y aplicación de instrumentos para alumnos, docentes y otros actores de la comunidad universitaria. Ver <a href=\"#encuestas\">encuestas e informes</a> y <a href=\"#herramientas\">aplicaciones IA</a>.",
-    "en": "Design and administration of instruments for students, faculty, and other members of the university community. See <a href=\"#encuestas\">surveys & reports</a> and <a href=\"#herramientas\">AI Apps</a>."
+    "es": "Diseño y aplicación de instrumentos para alumnos, docentes y otros actores de la comunidad universitaria. Ver <a href=\"#encuestas\">encuestas</a>, <a href=\"#informes\">informes</a> y <a href=\"#herramientas\">aplicaciones IA</a>.",
+    "en": "Design and administration of instruments for students, faculty, and other members of the university community. See <a href=\"#encuestas\">surveys</a>, <a href=\"#informes\">reports</a>, and <a href=\"#herramientas\">AI Apps</a>."
   },
   "sec.actividades.encuestas.linkEncuestas": {
-    "es": "encuestas e informes",
-    "en": "surveys & reports"
+    "es": "encuestas",
+    "en": "surveys"
   },
   "sec.actividades.encuestas.linkHerramientas": {
     "es": "aplicaciones IA",
@@ -838,13 +856,52 @@ window.I18N_DICT = {
     "en": "Institutional diagnosis"
   },
   "sec.encuestas.title": {
-    "es": "Encuestas e informes",
-    "en": "Surveys & reports"
+    "es": "Encuestas",
+    "en": "Surveys"
   },
   "sec.encuestas.intro": {
-    "es": "Espacio del Observatorio para publicar resultados de encuestas sobre inteligencia artificial y preparar nuevos relevamientos a la comunidad universitaria.",
-    "en": "Observatory space to publish survey results on artificial intelligence and prepare new studies of the university community."
+    "es": "Espacio del Observatorio para publicar resultados de encuestas sobre inteligencia artificial y preparar nuevos relevamientos a la comunidad universitaria. Los PDF publicados están en <a href=\"#informes\">Informes</a>.",
+    "en": "Observatory space to publish survey results on artificial intelligence and prepare new studies of the university community. Published PDFs are in <a href=\"#informes\">Reports</a>."
   },
+  "sec.informes.kicker": {
+    "es": "Documentos",
+    "en": "Documents"
+  },
+  "sec.informes.title": {
+    "es": "Informes",
+    "en": "Reports"
+  },
+  "sec.informes.intro": {
+    "es": "Informes del Observatorio: padrón de actividades, resultados de relevamientos y documentos para la toma de decisiones.",
+    "en": "Observatory reports: activity registers, survey results, and documents for decision-making."
+  },
+  "sec.informes.webinar.title": {
+    "es": "2° Webinar EvaluAR — informe de padrón",
+    "en": "2nd EvaluAR webinar — registration report"
+  },
+  "sec.informes.webinar.body": {
+    "es": "Inscripciones al webinar del 13 de agosto de 2026: 107 personas únicas, 21 instituciones y 9 provincias. Lectura del alcance (UCCuyo y otras universidades) y recomendaciones para la próxima convocatoria.",
+    "en": "Registrations for the August 13, 2026 webinar: 107 unique people, 21 institutions, and 9 provinces. Reach analysis (UCCuyo and other universities) and recommendations for the next call."
+  },
+  "sec.informes.webinar.facts.personas.label": { "es": "Personas únicas", "en": "Unique people" },
+  "sec.informes.webinar.facts.personas.value": { "es": "107", "en": "107" },
+  "sec.informes.webinar.facts.envios.label": { "es": "Inscripciones", "en": "Registrations" },
+  "sec.informes.webinar.facts.envios.value": { "es": "110 envíos", "en": "110 submissions" },
+  "sec.informes.webinar.facts.instituciones.label": { "es": "Instituciones", "en": "Institutions" },
+  "sec.informes.webinar.facts.instituciones.value": { "es": "21 · 9 provincias", "en": "21 · 9 provinces" },
+  "sec.informes.webinar.btnVer": { "es": "Ver informe (PDF)", "en": "View report (PDF)" },
+  "sec.informes.webinar.btnDescargar": { "es": "Descargar PDF", "en": "Download PDF" },
+  "sec.informes.webinar.btnWebinar": { "es": "Ir a Webinars", "en": "Go to Webinars" },
+  "sec.informes.alumnos.title": {
+    "es": "Encuesta a estudiantes 2026 — informe ejecutivo",
+    "en": "2026 student survey — executive report"
+  },
+  "sec.informes.alumnos.body": {
+    "es": "Uso de herramientas de inteligencia artificial por estudiantes de la UCCuyo. Relevamiento a 348 estudiantes de San Juan, San Luis y Mendoza.",
+    "en": "Use of AI tools by UCCuyo students. Survey of 348 students in San Juan, San Luis, and Mendoza."
+  },
+  "sec.informes.alumnos.btnVer": { "es": "Ver informe ejecutivo (PDF)", "en": "View executive report (PDF)" },
+  "sec.informes.alumnos.btnEncuestas": { "es": "Ir a Encuestas", "en": "Go to Surveys" },
   "sec.encuestas.badge.disponible": {
     "es": "Disponible",
     "en": "Available"
@@ -1582,8 +1639,12 @@ window.I18N_DICT = {
     "en": "Observatory visits"
   },
   "footer.encuestas": {
-    "es": "Encuestas e informes",
-    "en": "Surveys & reports"
+    "es": "Encuestas",
+    "en": "Surveys"
+  },
+  "footer.informes": {
+    "es": "Informes",
+    "en": "Reports"
   },
   "footer.galeria": {
     "es": "Galería de Imágenes",

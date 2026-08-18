@@ -17,11 +17,11 @@ window.OBS_NOTICIAS = {
     {
       id: "obs-webinar-evaluar-2026-08-13",
       fuente: "Observatorio de IA",
-      medio: "Evento",
-      titulo: "Próximo webinar de IA: EvaluAR — jueves 13 de agosto",
+      medio: "Informe",
+      titulo: "2° Webinar EvaluAR: 110 inscriptos de 21 instituciones",
       excerpt:
-        "Primer webinar del Observatorio. Presentamos EvaluAR (examen en papel · corrección digital). Jueves 13 de agosto de 2026, 19:00–20:00 hs, virtual por Google Meet. Inscripción gratuita.",
-      link: "#webinars",
+        "El 13 de agosto se realizó el 2° webinar sobre EvaluAR. Informe de padrón: 107 personas únicas, 21 instituciones y 9 provincias. UCCuyo y universidades de AMBA, litoral y Cuyo.",
+      link: "docs/informes/informe-webinar-evaluar-13agosto-2026.pdf",
       fecha: "2026-08-13",
       origen: "observatorio"
     },
