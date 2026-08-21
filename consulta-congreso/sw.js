@@ -1,5 +1,5 @@
 /* Service worker — Gestor de Eventos Científicos (offline-first) */
-const CACHE = "consulta-congreso-v4";
+const CACHE = "consulta-congreso-v5";
 
 const CORE_ASSETS = [
   "./",
@@ -8,16 +8,16 @@ const CORE_ASSETS = [
   "./instalar.html",
   "./manifest.webmanifest",
   "./css/fonts.css?v=1",
-  "./css/styles.css?v=2",
+  "./css/styles.css?v=3",
   "./css/instalar.css?v=1",
   "./css/cargar.css?v=2",
   "./js/vendor/xlsx.full.min.js?v=1",
-  "./js/i18n-dict.js?v=4",
+  "./js/i18n-dict.js?v=5",
   "./js/i18n.js?v=1",
   "./js/store.js?v=1",
   "./js/normalize.js?v=2",
   "./js/excel-import.js?v=1",
-  "./js/app.js?v=4",
+  "./js/app.js?v=5",
   "./js/install.js?v=1",
   "./js/cargar.js?v=3",
   "./data/evento.ejemplo.json?v=1",
@@ -144,5 +144,21 @@ self.addEventListener("fetch", (event) => {
   }
   event.respondWith(
     staleWhileRevalidate(req).catch(async () => (await fromCache(req)) || Response.error())
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  event.waitUntil(
+    (async () => {
+      const all = await clients.matchAll({ type: "window", includeUncontrolled: true });
+      for (const client of all) {
+        if ("focus" in client) {
+          await client.focus();
+          return;
+        }
+      }
+      if (clients.openWindow) await clients.openWindow("./");
+    })()
   );
 });
