@@ -255,6 +255,52 @@ window.I18N_DICT = {
     en: "Clear agenda"
   },
 
+  "reminders.enable": {
+    es: "Activar avisos (10 min antes)",
+    en: "Enable alerts (10 min before)"
+  },
+  "reminders.enabled": {
+    es: "Avisos activados ✓",
+    en: "Alerts on ✓"
+  },
+  "reminders.hint": {
+    es: "Con la app abierta o instalada te avisamos 10 minutos antes. También podés bajar el .ics al calendario del celular.",
+    en: "With the app open or installed we alert you 10 minutes before. You can also download the .ics to your phone calendar."
+  },
+  "reminders.downloadIcs": {
+    es: "Descargar agenda (.ics)",
+    en: "Download agenda (.ics)"
+  },
+  "reminders.addCalendar": {
+    es: "Calendario (.ics)",
+    en: "Calendar (.ics)"
+  },
+  "reminders.googleCalendar": {
+    es: "Google Calendar",
+    en: "Google Calendar"
+  },
+  "reminders.denied": {
+    es: "El navegador bloqueó las notificaciones. Activalas en la configuración del sitio.",
+    en: "The browser blocked notifications. Enable them in the site settings."
+  },
+  "reminders.unsupported": {
+    es: "Este navegador no admite notificaciones. Usá la descarga .ics.",
+    en: "This browser does not support notifications. Use the .ics download."
+  },
+  "reminders.notifyTitle": {
+    es: "En 10 minutos",
+    en: "In 10 minutes"
+  },
+  "reminders.notifyBody": {
+    es: "{time} · {title}{sala}",
+    en: "{time} · {title}{sala}"
+  },
+  "reminders.alarmText": {
+    es: "Recordatorio: {title}",
+    en: "Reminder: {title}"
+  },
+
+
   "step.talleres.title": {
     es: "Elegí el día del taller",
     en: "Choose the workshop day"

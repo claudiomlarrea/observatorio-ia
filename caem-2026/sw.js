@@ -1,5 +1,5 @@
 /* Service worker — App de Consulta CAEM 2026 (offline-first) */
-const CACHE = "caem-2026-v16";
+const CACHE = "caem-2026-v17";
 const DATA_VERSION = "16";
 
 const CORE_ASSETS = [
@@ -7,13 +7,13 @@ const CORE_ASSETS = [
   "./index.html",
   "./instalar.html",
   "./manifest.webmanifest",
-  "./css/fonts.css?v=16",
-  "./css/styles.css?v=16",
-  "./css/instalar.css?v=16",
-  "./js/i18n-dict.js?v=16",
-  "./js/i18n.js?v=16",
-  "./js/app.js?v=16",
-  "./js/install.js?v=16",
+  "./css/fonts.css?v=17",
+  "./css/styles.css?v=17",
+  "./css/instalar.css?v=17",
+  "./js/i18n-dict.js?v=17",
+  "./js/i18n.js?v=17",
+  "./js/app.js?v=17",
+  "./js/install.js?v=17",
   `./data/programa.json?v=${DATA_VERSION}`,
   "./data/programa.json",
   "./assets/logo-caem.png",
@@ -167,5 +167,21 @@ self.addEventListener("fetch", (event) => {
       const cached = await fromCache(req);
       return cached || Response.error();
     })
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  event.waitUntil(
+    (async () => {
+      const all = await clients.matchAll({ type: "window", includeUncontrolled: true });
+      for (const client of all) {
+        if ("focus" in client) {
+          await client.focus();
+          return;
+        }
+      }
+      if (clients.openWindow) await clients.openWindow("./");
+    })()
   );
 });

@@ -24,6 +24,9 @@
   };
 
   const AGENDA_KEY = "caem_2026_agenda";
+  const AGENDA_NOTIFIED_KEY = "caem_2026_agenda_notified";
+  const AGENDA_REMINDERS_KEY = "caem_2026_agenda_reminders";
+  const REMINDER_LEAD_MIN = 10;
   const PROGRAM_STORE_KEY = "caem_2026_programa";
   const PROGRAM_VERSION = "16";
 
@@ -103,14 +106,26 @@
     if (!id) return false;
     const ids = loadAgendaIds();
     const idx = ids.indexOf(id);
-    if (idx >= 0) ids.splice(idx, 1);
-    else ids.push(id);
+    let added = false;
+    if (idx >= 0) {
+      ids.splice(idx, 1);
+      saveNotifiedIds(loadNotifiedIds().filter((x) => x !== id));
+    } else {
+      ids.push(id);
+      added = true;
+    }
     saveAgendaIds(ids);
+    if (added && remindersEnabled()) {
+      ensureNotificationPermission().then((p) => {
+        if (p === "granted") checkAgendaReminders();
+      });
+    }
     return ids.includes(id);
   }
 
   function clearAgenda() {
     saveAgendaIds([]);
+    saveNotifiedIds([]);
   }
 
   function updateAgendaBadge() {
@@ -150,6 +165,233 @@
     }
     return conflicts;
   }
+
+  // ---------------------------------------------------------------------
+  // Avisos de agenda + calendario
+  // ---------------------------------------------------------------------
+
+  function padClock(hhmm) {
+    const m = String(hhmm || "00:00").match(/^(\d{1,2}):(\d{2})/);
+    if (!m) return "00:00";
+    return `${String(m[1]).padStart(2, "0")}:${m[2]}`;
+  }
+
+  function sessionDate(session, which = "inicio") {
+    const clock = padClock(session[which] || session.inicio);
+    return new Date(`${session.dia}T${clock}:00-03:00`);
+  }
+
+  function remindersEnabled() {
+    try {
+      return localStorage.getItem(AGENDA_REMINDERS_KEY) === "1";
+    } catch (_e) {
+      return false;
+    }
+  }
+
+  function setRemindersEnabled(on) {
+    try {
+      localStorage.setItem(AGENDA_REMINDERS_KEY, on ? "1" : "0");
+    } catch (_e) {}
+  }
+
+  function loadNotifiedIds() {
+    try {
+      const raw = localStorage.getItem(AGENDA_NOTIFIED_KEY);
+      const ids = raw ? JSON.parse(raw) : [];
+      return Array.isArray(ids) ? ids.filter((id) => typeof id === "string") : [];
+    } catch (_e) {
+      return [];
+    }
+  }
+
+  function saveNotifiedIds(ids) {
+    try {
+      localStorage.setItem(AGENDA_NOTIFIED_KEY, JSON.stringify(ids));
+    } catch (_e) {}
+  }
+
+  function markNotified(id) {
+    const ids = loadNotifiedIds();
+    if (!ids.includes(id)) {
+      ids.push(id);
+      saveNotifiedIds(ids);
+    }
+  }
+
+  function clearNotifiedForMissing(validIds) {
+    const keep = new Set(validIds);
+    saveNotifiedIds(loadNotifiedIds().filter((id) => keep.has(id)));
+  }
+
+  async function ensureNotificationPermission() {
+    if (!("Notification" in window)) return "unsupported";
+    if (Notification.permission === "granted") return "granted";
+    if (Notification.permission === "denied") return "denied";
+    try {
+      return await Notification.requestPermission();
+    } catch (_e) {
+      return Notification.permission;
+    }
+  }
+
+  async function showAgendaNotification(session) {
+    const title = t("reminders.notifyTitle");
+    const sala = session.sala ? ` · ${session.sala}` : "";
+    const body = t("reminders.notifyBody", {
+      time: session.inicio,
+      title: session.titulo,
+      sala,
+    });
+    const opts = {
+      body,
+      tag: `caem-agenda-${session.id}`,
+      renotify: true,
+      icon: "assets/icon-192.png",
+      badge: "assets/icon-192.png",
+      data: { sessionId: session.id },
+    };
+    try {
+      if (navigator.serviceWorker) {
+        const reg = await navigator.serviceWorker.ready;
+        if (reg?.showNotification) {
+          await reg.showNotification(title, opts);
+          return;
+        }
+      }
+    } catch (_e) {}
+    try {
+      new Notification(title, opts);
+    } catch (_e) {}
+  }
+
+  async function checkAgendaReminders() {
+    if (!remindersEnabled() || !state.data) return;
+    if (!("Notification" in window) || Notification.permission !== "granted") return;
+    const now = Date.now();
+    const notified = new Set(loadNotifiedIds());
+    const sessions = agendaSessions();
+    clearNotifiedForMissing(sessions.map((s) => s.id));
+    for (const session of sessions) {
+      if (!session?.id || notified.has(session.id)) continue;
+      const start = sessionDate(session, "inicio").getTime();
+      if (Number.isNaN(start)) continue;
+      const leadMs = REMINDER_LEAD_MIN * 60 * 1000;
+      if (now >= start - leadMs && now < start) {
+        await showAgendaNotification(session);
+        markNotified(session.id);
+      }
+      if (now >= start) markNotified(session.id);
+    }
+  }
+
+  function startReminderWatcher() {
+    if (state.reminderTimer) return;
+    checkAgendaReminders();
+    state.reminderTimer = window.setInterval(checkAgendaReminders, 30000);
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") checkAgendaReminders();
+    });
+  }
+
+  function icsEscape(text) {
+    return String(text || "")
+      .replace(/\\/g, "\\\\")
+      .replace(/\n/g, "\\n")
+      .replace(/,/g, "\\,")
+      .replace(/;/g, "\\;");
+  }
+
+  function icsStamp(date) {
+    const y = date.getUTCFullYear();
+    const mo = String(date.getUTCMonth() + 1).padStart(2, "0");
+    const d = String(date.getUTCDate()).padStart(2, "0");
+    const h = String(date.getUTCHours()).padStart(2, "0");
+    const mi = String(date.getUTCMinutes()).padStart(2, "0");
+    const s = String(date.getUTCSeconds()).padStart(2, "0");
+    return `${y}${mo}${d}T${h}${mi}${s}Z`;
+  }
+
+  function icsLocal(session, which) {
+    const clock = padClock(session[which] || session.inicio).replace(":", "");
+    const day = String(session.dia || "").replace(/-/g, "");
+    return `${day}T${clock}00`;
+  }
+
+  function buildIcs(sessions) {
+    const eventTitle = state.data?.meta?.titulo || "CAEM 2026";
+    const lines = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//Observatorio IA UCCuyo//CAEM 2026//ES",
+      "CALSCALE:GREGORIAN",
+      "METHOD:PUBLISH",
+    ];
+    const stamp = icsStamp(new Date());
+    for (const session of sessions) {
+      if (!session?.dia || !session?.inicio) continue;
+      const uid = `${session.id || icsLocal(session, "inicio")}@caem-2026-uccuyo`;
+      lines.push("BEGIN:VEVENT");
+      lines.push(`UID:${uid}`);
+      lines.push(`DTSTAMP:${stamp}`);
+      lines.push(`DTSTART;TZID=America/Argentina/Buenos_Aires:${icsLocal(session, "inicio")}`);
+      lines.push(`DTEND;TZID=America/Argentina/Buenos_Aires:${icsLocal(session, "fin")}`);
+      lines.push(`SUMMARY:${icsEscape(session.titulo || eventTitle)}`);
+      if (session.sala) lines.push(`LOCATION:${icsEscape(session.sala)}`);
+      const descParts = [eventTitle];
+      if (session.disertantes?.length) descParts.push(session.disertantes.join("; "));
+      lines.push(`DESCRIPTION:${icsEscape(descParts.join(" — "))}`);
+      lines.push("BEGIN:VALARM");
+      lines.push(`TRIGGER:-PT${REMINDER_LEAD_MIN}M`);
+      lines.push("ACTION:DISPLAY");
+      lines.push(`DESCRIPTION:${icsEscape(t("reminders.alarmText", { title: session.titulo || "" }))}`);
+      lines.push("END:VALARM");
+      lines.push("END:VEVENT");
+    }
+    lines.push("END:VCALENDAR");
+    return `${lines.join("\r\n")}\r\n`;
+  }
+
+  function downloadIcs(sessions, filename) {
+    const blob = new Blob([buildIcs(sessions)], { type: "text/calendar;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename || "agenda-caem-2026.ics";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  function googleCalendarUrl(session) {
+    const start = sessionDate(session, "inicio");
+    const end = sessionDate(session, "fin");
+    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return "";
+    const dates = `${icsStamp(start).replace(/Z$/, "")}Z/${icsStamp(end).replace(/Z$/, "")}Z`;
+    const params = new URLSearchParams({
+      action: "TEMPLATE",
+      text: session.titulo || "",
+      dates,
+      details: (session.disertantes || []).join("; "),
+      location: session.sala || "",
+      ctz: "America/Argentina/Buenos_Aires",
+    });
+    return `https://calendar.google.com/calendar/render?${params.toString()}`;
+  }
+
+  async function enableAgendaReminders() {
+    const permission = await ensureNotificationPermission();
+    if (permission !== "granted") {
+      setRemindersEnabled(false);
+      return permission;
+    }
+    setRemindersEnabled(true);
+    startReminderWatcher();
+    await checkAgendaReminders();
+    return "granted";
+  }
+
 
   function normalize(text) {
     return String(text || "")
@@ -366,6 +608,17 @@
             aria-pressed="${saved ? "true" : "false"}"
           >${escapeHtml(saved ? t("agenda.saved") : t("agenda.add"))}</button>`
         : "";
+    const calBtn =
+      saved && session.id
+        ? `<div class="session-cal-actions">
+            <button type="button" class="cal-ics-btn" data-ics-id="${escapeHtml(session.id)}">${escapeHtml(
+              t("reminders.addCalendar")
+            )}</button>
+            <a class="cal-google-btn" href="${escapeHtml(googleCalendarUrl(session))}" target="_blank" rel="noopener noreferrer">${escapeHtml(
+              t("reminders.googleCalendar")
+            )}</a>
+          </div>`
+        : "";
     const conflictClass = options.conflictIds?.has(session.id) ? " is-conflict" : "";
 
     return `
@@ -383,6 +636,7 @@
         <h3 class="session-title">${highlight(session.titulo, query)}</h3>
         ${people.length ? `<ul class="session-people">${people.join("")}</ul>` : ""}
         ${agendaBtn}
+        ${calBtn}
       </article>
     `;
   }
@@ -499,11 +753,22 @@
         )}</p>`;
       }
       html += renderSessionsList(sessions, "", { conflictIds: conflicts });
+      const remindersOn =
+        remindersEnabled() &&
+        typeof Notification !== "undefined" &&
+        Notification.permission === "granted";
       html += `<div class="agenda-actions">
+        <button type="button" class="agenda-reminders${remindersOn ? " is-on" : ""}" id="agenda-reminders">
+          ${escapeHtml(remindersOn ? t("reminders.enabled") : t("reminders.enable"))}
+        </button>
+        <button type="button" class="agenda-ics" id="agenda-ics">
+          ${escapeHtml(t("reminders.downloadIcs"))}
+        </button>
         <button type="button" class="agenda-clear" id="agenda-clear" data-i18n="agenda.clear">
           ${escapeHtml(t("agenda.clear"))}
         </button>
-      </div>`;
+      </div>
+      <p class="agenda-reminders-hint">${escapeHtml(t("reminders.hint"))}</p>`;
     } else {
       html = `<p class="empty">${escapeHtml(t("agenda.empty"))}</p>
         <p class="agenda-empty-hint">${escapeHtml(t("agenda.emptyHint"))}</p>`;
@@ -907,6 +1172,28 @@
         showAgenda();
         return;
       }
+      const remindBtn = e.target.closest("#agenda-reminders");
+      if (remindBtn) {
+        enableAgendaReminders().then((status) => {
+          if (status === "granted") showAgenda();
+          else if (status === "denied") window.alert(t("reminders.denied"));
+          else if (status === "unsupported") window.alert(t("reminders.unsupported"));
+          else showAgenda();
+        });
+        return;
+      }
+      const icsAll = e.target.closest("#agenda-ics");
+      if (icsAll) {
+        downloadIcs(agendaSessions(), "agenda-caem-2026.ics");
+        return;
+      }
+      const icsOne = e.target.closest("[data-ics-id]");
+      if (icsOne) {
+        const sid = icsOne.dataset.icsId;
+        const session = (state.data?.sesiones || []).find((s) => s.id === sid);
+        if (session) downloadIcs([session], `caem-${sid}.ics`);
+        return;
+      }
       const toggle = e.target.closest("[data-agenda-id]");
       if (!toggle) return;
       const id = toggle.dataset.agendaId;
@@ -1026,6 +1313,7 @@
       state.data = data;
       bindEvents();
       updateAgendaBadge();
+      if (remindersEnabled()) startReminderWatcher();
       setMode("horario");
       if (fromStore || !navigator.onLine) {
         const banner = document.getElementById("offline-banner");
