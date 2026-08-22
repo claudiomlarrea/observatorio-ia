@@ -4,6 +4,7 @@ PDFs de uso para las herramientas del Observatorio.
 
 | Herramienta | Archivo |
 |-------------|---------|
+| Agenda Universitaria | [instructivo-agenda-universitaria.pdf](instructivo-agenda-universitaria.pdf) |
 | SACAU CRE | [instructivo-sacau-cre.pdf](instructivo-sacau-cre.pdf) |
 | EvaluAR | [instructivo-evaluar.pdf](instructivo-evaluar.pdf) |
 | Encuesta Clara | [instructivo-encuesta-clara.pdf](instructivo-encuesta-clara.pdf) |

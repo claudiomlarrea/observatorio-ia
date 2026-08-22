@@ -652,8 +652,8 @@
     "en": "AI Apps"
   },
   "sec.herramientas.intro": {
-    "es": "Sistemas y plataformas desarrollados por el Observatorio de Inteligencia Artificial de la UCCuyo para la comunidad universitaria e instituciones vinculadas: encuestas, datos, evaluación, auditoría académica, conversión curricular SACAU/CRE, programas de cátedra (SACAU Aula), planificación estratégica, prevención digital y más. Se amplían a medida que se incorporan nuevos desarrollos.",
-    "en": "Systems and platforms developed by the UCCuyo Artificial Intelligence Observatory for the university community and partner institutions: surveys, data, assessment, academic audit, SACAU/CRE curriculum conversion, course syllabi (SACAU Aula), strategic planning, digital prevention, and more. The catalog grows as new developments are added."
+    "es": "Sistemas y plataformas desarrollados por el Observatorio de Inteligencia Artificial de la UCCuyo para la comunidad universitaria e instituciones vinculadas: encuestas, datos, evaluación, agenda universitaria, auditoría académica, conversión curricular SACAU/CRE, programas de cátedra (SACAU Aula), planificación estratégica, prevención digital y más. Se amplían a medida que se incorporan nuevos desarrollos.",
+    "en": "Systems and platforms developed by the UCCuyo Artificial Intelligence Observatory for the university community and partner institutions: surveys, data, assessment, university agenda, academic audit, SACAU/CRE curriculum conversion, course syllabi (SACAU Aula), strategic planning, digital prevention, and more. The catalog grows as new developments are added."
   },
   "sec.herramientas.senalsegura.title": {
     "es": "Señal Segura",
@@ -830,6 +830,30 @@
   "sec.herramientas.evaluar.btnInstructivo": {
     "es": "Instructivo (PDF)",
     "en": "Guide (PDF, Spanish)"
+  },
+  "sec.herramientas.agenda.title": {
+    "es": "Agenda Universitaria",
+    "en": "Agenda Universitaria"
+  },
+  "sec.herramientas.agenda.lead": {
+    "es": "Lo que te llega al WhatsApp o al calendario aparece en las botoneras. Llevás a Mi Agenda solo lo que te importa: clases, reuniones, jornadas y avisos. En español e inglés.",
+    "en": "What arrives on WhatsApp or the calendar lands in the buttons. You move into My Agenda only what matters: classes, meetings, conference days and reminders. In Spanish and English."
+  },
+  "sec.herramientas.agenda.item1": {
+    "es": "Vincular WhatsApp (país y región) y el calendario",
+    "en": "Link WhatsApp (country and region) and the calendar"
+  },
+  "sec.herramientas.agenda.item2": {
+    "es": "Botones de horario, reuniones, clases, eventos y Mi Agenda",
+    "en": "Buttons for schedule, meetings, classes, events and My Agenda"
+  },
+  "sec.herramientas.agenda.item3": {
+    "es": "Carga de PDF, foto, Word o Excel; se instala en el celular",
+    "en": "Load a PDF, photo, Word or Excel file; install it on the phone"
+  },
+  "sec.herramientas.agenda.btnAbrir": {
+    "es": "Abrir Agenda Universitaria",
+    "en": "Open Agenda Universitaria"
   },
   "sec.herramientas.sacau.title": {
     "es": "SACAU CRE",
