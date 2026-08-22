@@ -679,6 +679,10 @@ window.I18N_DICT = {
     "es": "Inscribirme al Semillero",
     "en": "Apply to the Seedbed"
   },
+  "sec.semillero.portal": {
+    "es": "Ir al portal del Semillero",
+    "en": "Go to the Seedbed portal"
+  },
   "sec.semillero.doc": {
     "es": "Leer el proyecto (PDF)",
     "en": "Read the project (PDF)"
