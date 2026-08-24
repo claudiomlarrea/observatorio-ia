@@ -2692,6 +2692,12 @@ form.simple-form small {
   font-weight: 600;
 }
 
+.jornadas-workflow {
+  display: grid;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
 .jornadas-steps {
   display: grid;
   gap: 1.5rem;
@@ -2705,6 +2711,11 @@ form.simple-form small {
 }
 
 @media (min-width: 1100px) {
+  .jornadas-workflow {
+    grid-template-columns: minmax(0, 1fr) minmax(13.5rem, 15.5rem);
+    align-items: start;
+  }
+
   .jornadas-steps {
     grid-template-columns: 1fr 1fr 1fr;
   }
@@ -2828,27 +2839,38 @@ form.simple-form small {
 }
 
 .jornadas-catalogos {
-  margin-top: 1.75rem;
-  padding: 1.25rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  justify-content: center;
+  margin: 0;
+  padding: 0.35rem 0 0;
 }
 
-.jornadas-catalogos h3 {
-  margin: 0 0 0.5rem;
-  color: var(--color-institutional, #7a1532);
-  font-size: 1.15rem;
+@media (min-width: 1100px) {
+  .jornadas-catalogos {
+    align-self: stretch;
+    padding-top: 1.75rem;
+  }
 }
 
-.jornadas-catalogos p {
-  margin: 0 0 0.85rem;
+.jornadas-catalogos .btn {
+  width: 100%;
+  text-align: center;
+  white-space: normal;
+  line-height: 1.25;
 }
 
 .jornadas-catalogos-meta {
-  font-size: 0.9rem;
+  margin: 0;
+  font-size: 0.82rem;
   color: var(--color-text-soft, #5c4f54);
+  order: 3;
 }
 
 .jornadas-catalogos-pending {
-  font-size: 0.9rem;
+  margin: 0;
+  font-size: 0.85rem;
   color: var(--color-text-soft, #5c4f54);
   font-style: italic;
 }
