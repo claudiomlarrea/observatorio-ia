@@ -2692,12 +2692,6 @@ form.simple-form small {
   font-weight: 600;
 }
 
-.jornadas-workflow {
-  display: grid;
-  gap: 1.5rem;
-  align-items: stretch;
-}
-
 .jornadas-steps {
   display: grid;
   gap: 1.5rem;
@@ -2711,11 +2705,6 @@ form.simple-form small {
 }
 
 @media (min-width: 1100px) {
-  .jornadas-workflow {
-    grid-template-columns: minmax(0, 1fr) minmax(13.5rem, 15.5rem);
-    align-items: start;
-  }
-
   .jornadas-steps {
     grid-template-columns: 1fr 1fr 1fr;
   }
@@ -2724,6 +2713,8 @@ form.simple-form small {
 .jornadas-step {
   position: relative;
   padding-top: 1.75rem;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .jornadas-step-num {
@@ -2767,7 +2758,16 @@ form.simple-form small {
   flex-direction: column;
   flex-wrap: nowrap;
   gap: 0.45rem;
-  align-items: flex-start;
+  align-items: stretch;
+}
+
+.jornadas-step .tile-actions--jornadas .btn {
+  width: 100%;
+  max-width: 100%;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.25;
+  box-sizing: border-box;
 }
 
 .jornadas-label {
@@ -2839,37 +2839,44 @@ form.simple-form small {
 }
 
 .jornadas-catalogos {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  justify-content: center;
-  margin: 0;
-  padding: 0.35rem 0 0;
+  margin: 1.75rem 0 0;
+  padding: 1.35rem 1.4rem 1.45rem;
 }
 
-@media (min-width: 1100px) {
-  .jornadas-catalogos {
-    align-self: stretch;
-    padding-top: 1.75rem;
-  }
+.jornadas-catalogos h3 {
+  margin: 0 0 0.45rem;
+  font-size: 1.2rem;
+  color: var(--color-institutional-dark);
 }
 
-.jornadas-catalogos .btn {
-  width: 100%;
-  text-align: center;
+.jornadas-catalogos > p {
+  margin: 0 0 0.85rem;
+  max-width: 48rem;
+  color: var(--color-text-soft);
+}
+
+.jornadas-catalogos-actions {
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  gap: 0.65rem !important;
+}
+
+.jornadas-catalogos-actions .btn {
+  width: auto;
+  max-width: 100%;
   white-space: normal;
   line-height: 1.25;
 }
 
 .jornadas-catalogos-meta {
-  margin: 0;
-  font-size: 0.82rem;
+  margin: 0 0 0.85rem !important;
+  font-size: 0.88rem;
   color: var(--color-text-soft, #5c4f54);
-  order: 3;
+  font-weight: 600;
 }
 
 .jornadas-catalogos-pending {
-  margin: 0;
+  margin: 0.5rem 0 0;
   font-size: 0.85rem;
   color: var(--color-text-soft, #5c4f54);
   font-style: italic;

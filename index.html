@@ -19,7 +19,7 @@
       gtag("config", "G-C55ZPTW8C2");
     </script>
     <link rel="icon" type="image/png" href="assets/logo-observatorio-ia.png" />
-    <link rel="stylesheet" href="css/styles.css?v=68" />
+    <link rel="stylesheet" href="css/styles.css?v=69" />
   </head>
   <body>
     <a class="skip-link" href="#contenido" data-i18n="a11y.skipLink">Ir al contenido</a>
@@ -288,8 +288,7 @@
             </li>
           </ul>
 
-          <div class="jornadas-workflow">
-            <div class="jornadas-steps">
+          <div class="jornadas-steps">
             <article class="jornadas-step card" aria-labelledby="jornadas-paso1">
               <p class="jornadas-step-num" aria-hidden="true">1</p>
               <h3 id="jornadas-paso1" data-i18n="sec.jornadas.step1.title">Inscripción</h3>
@@ -398,27 +397,36 @@
             </article>
           </div>
 
-          <aside class="jornadas-catalogos" id="jornadas-catalogos" aria-label="Catálogos PDF">
+          <div class="jornadas-catalogos card" id="jornadas-catalogos" aria-labelledby="jornadas-catalogos-title">
+            <h3 id="jornadas-catalogos-title" data-i18n="sec.jornadas.catalogos.title">
+              Catálogos actualizados automáticamente
+            </h3>
+            <p data-i18n="sec.jornadas.catalogos.intro">
+              Listados en PDF (orden alfabético por título) de los artículos y las
+              presentaciones ya cargados en Drive. Se regeneran solos a medida que
+              el equipo sube archivos a las carpetas.
+            </p>
             <p class="jornadas-catalogos-meta" id="jornadas-catalogos-meta" hidden></p>
-            <a
-              id="jornadas-catalogo-articulos"
-              class="btn btn-primary"
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              data-i18n="sec.jornadas.catalogos.btnArticulos"
-              >Catálogo de artículos</a
-            >
-            <a
-              id="jornadas-catalogo-presentaciones"
-              class="btn btn-primary"
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              data-i18n="sec.jornadas.catalogos.btnPresentaciones"
-              >Catálogo de Presentaciones PowerPoint</a
-            >
-          </aside>
+            <p class="tile-actions tile-actions--jornadas jornadas-catalogos-actions">
+              <a
+                id="jornadas-catalogo-articulos"
+                class="btn btn-primary"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-i18n="sec.jornadas.catalogos.btnArticulos"
+                >Catálogo de artículos</a
+              >
+              <a
+                id="jornadas-catalogo-presentaciones"
+                class="btn btn-primary"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-i18n="sec.jornadas.catalogos.btnPresentaciones"
+                >Catálogo de Presentaciones PowerPoint</a
+              >
+            </p>
           </div>
 
           <p class="jornadas-contact">
