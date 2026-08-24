@@ -511,6 +511,22 @@ window.I18N_DICT = {
     "es": "Descargar plantilla PowerPoint (6 diapositivas)",
     "en": "Download PowerPoint template (6 slides)"
   },
+  "sec.jornadas.catalogos.title": {
+    "es": "Catálogos actualizados automáticamente",
+    "en": "Automatically updated catalogs"
+  },
+  "sec.jornadas.catalogos.intro": {
+    "es": "Listados en PDF (orden alfabético por título) de los artículos y las presentaciones ya cargados en Drive. Se regeneran solos a medida que el equipo sube archivos a las carpetas.",
+    "en": "Alphabetical PDF lists of articles and presentations already uploaded to Drive. They refresh automatically as files are added to the folders."
+  },
+  "sec.jornadas.catalogos.btnArticulos": {
+    "es": "Catálogo de artículos",
+    "en": "Articles catalog"
+  },
+  "sec.jornadas.catalogos.btnPresentaciones": {
+    "es": "Catálogo de Presentaciones PowerPoint",
+    "en": "PowerPoint presentations catalog"
+  },
   "sec.jornadas.contact.label": {
     "es": "Consultas:",
     "en": "Inquiries:"
