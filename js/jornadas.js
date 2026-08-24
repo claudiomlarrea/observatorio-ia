@@ -31,18 +31,22 @@ function wireCatalogos_(cfg) {
 
   if (!btnArt && !btnPpt) return;
 
-  // Descarga directa desde el sitio (mismo origen) — evita el sandbox de Apps Script
-  // y los UUID sin .pdf de Drive uc?export=download.
+  // Abrir PDF en pestaña (como el flayer e instructivos). El atributo download
+  // en Arc/Chromium a veces guarda un UUID sin .pdf y no se puede abrir.
   var artPdf = String(cfg.CATALOGO_ARTICULOS_PDF || "").trim();
   var pptPdf = String(cfg.CATALOGO_PRESENTACIONES_PDF || "").trim();
   if (btnArt && artPdf) {
     btnArt.href = artPdf;
-    btnArt.setAttribute("download", "catalogo-articulos-jornadas-ia-2026.pdf");
+    btnArt.removeAttribute("download");
+    btnArt.setAttribute("target", "_blank");
+    btnArt.setAttribute("rel", "noopener noreferrer");
     btnArt.removeAttribute("aria-disabled");
   }
   if (btnPpt && pptPdf) {
     btnPpt.href = pptPdf;
-    btnPpt.setAttribute("download", "catalogo-presentaciones-jornadas-ia-2026.pdf");
+    btnPpt.removeAttribute("download");
+    btnPpt.setAttribute("target", "_blank");
+    btnPpt.setAttribute("rel", "noopener noreferrer");
     btnPpt.removeAttribute("aria-disabled");
   }
 

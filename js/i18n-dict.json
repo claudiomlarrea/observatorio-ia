@@ -364,12 +364,12 @@
     "en": "Download the alphabetical PDF lists: one for articles and one for PowerPoint presentations. They update automatically as the team uploads files."
   },
   "sec.jornadas.catalogos.btnArticulos": {
-    "es": "Descargar catálogo de artículos (PDF)",
-    "en": "Download articles catalog (PDF)"
+    "es": "Abrir catálogo de artículos (PDF)",
+    "en": "Open articles catalog (PDF)"
   },
   "sec.jornadas.catalogos.btnPresentaciones": {
-    "es": "Descargar catálogo de PowerPoint (PDF)",
-    "en": "Download PowerPoint catalog (PDF)"
+    "es": "Abrir catálogo de PowerPoint (PDF)",
+    "en": "Open PowerPoint catalog (PDF)"
   },
   "sec.jornadas.contact.label": {
     "es": "Consultas:",
