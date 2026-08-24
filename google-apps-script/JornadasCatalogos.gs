@@ -175,7 +175,7 @@ function doGet(e) {
         pdfId: artId || "",
         pdfUrl: artId ? "https://drive.google.com/file/d/" + artId + "/view" : "",
         downloadUrl:
-          "https://observatorio-ia.uccuyo.edu.ar/docs/jornadas/" +
+          "https://observatorio-ia.uccuyo.edu.ar/assets/jornadas/" +
           CATALOGO_ARTICULOS_NAME
       },
       presentaciones: {
@@ -183,7 +183,7 @@ function doGet(e) {
         pdfId: pptId || "",
         pdfUrl: pptId ? "https://drive.google.com/file/d/" + pptId + "/view" : "",
         downloadUrl:
-          "https://observatorio-ia.uccuyo.edu.ar/docs/jornadas/" +
+          "https://observatorio-ia.uccuyo.edu.ar/assets/jornadas/" +
           CATALOGO_PRESENTACIONES_NAME
       }
     };
@@ -228,7 +228,7 @@ function servirPdfCatalogo_(tipo, overrideId) {
   // Descarga fiable desde el sitio (mismo origen). Drive uc?export=download
   // suele bajar un UUID sin .pdf; HtmlService tampoco puede servir el binario.
   var downloadUrl =
-    "https://observatorio-ia.uccuyo.edu.ar/docs/jornadas/" + safeName;
+    "https://observatorio-ia.uccuyo.edu.ar/assets/jornadas/" + safeName;
 
   var html =
     "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"utf-8\">" +

@@ -360,16 +360,16 @@
     "en": "Automatically updated catalogs"
   },
   "sec.jornadas.catalogos.intro": {
-    "es": "Listados en PDF (orden alfabético por título) de los artículos y las presentaciones ya cargados en Drive. Se regeneran solos a medida que el equipo sube archivos a las carpetas.",
-    "en": "Alphabetical PDF lists of articles and presentations already uploaded to Drive. They refresh automatically as files are added to the folders."
+    "es": "Descargá los listados en PDF (orden alfabético por título): uno de artículos y otro de presentaciones PowerPoint. Se actualizan solos a medida que el equipo carga archivos.",
+    "en": "Download the alphabetical PDF lists: one for articles and one for PowerPoint presentations. They update automatically as the team uploads files."
   },
   "sec.jornadas.catalogos.btnArticulos": {
-    "es": "Catálogo de artículos",
-    "en": "Articles catalog"
+    "es": "Descargar catálogo de artículos (PDF)",
+    "en": "Download articles catalog (PDF)"
   },
   "sec.jornadas.catalogos.btnPresentaciones": {
-    "es": "Catálogo de Presentaciones PowerPoint",
-    "en": "PowerPoint presentations catalog"
+    "es": "Descargar catálogo de PowerPoint (PDF)",
+    "en": "Download PowerPoint catalog (PDF)"
   },
   "sec.jornadas.contact.label": {
     "es": "Consultas:",

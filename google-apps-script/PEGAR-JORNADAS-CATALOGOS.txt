@@ -9,23 +9,21 @@ y presentaciones, regenera dos PDF y los guarda en Drive:
   catalogo-articulos-jornadas-ia-2026.pdf
   catalogo-presentaciones-jornadas-ia-2026.pdf
 
-La web del Observatorio descarga esos PDF desde:
+La web del Observatorio descarga esos PDF desde el propio sitio (sin abrir Drive):
 
-  docs/jornadas/catalogo-articulos-jornadas-ia-2026.pdf
-  docs/jornadas/catalogo-presentaciones-jornadas-ia-2026.pdf
-
-(así la descarga funciona siempre, sin sandbox de Apps Script ni UUID de Drive).
+  assets/jornadas/catalogo-articulos-jornadas-ia-2026.pdf
+  assets/jornadas/catalogo-presentaciones-jornadas-ia-2026.pdf
 
 
 Tras regenerar en Apps Script
 -----------------------------
 1. Ejecutá actualizarCatalogosJornadas
 2. Descargá los PDF desde la carpeta «OIA · Catálogos Jornadas IA 2026»
-3. Reemplazá los archivos en docs/jornadas/ del repo
+3. Reemplazá los archivos en assets/jornadas/ del repo
 4. Commit + push
 
 
-API (conteo / fecha en la web)
-------------------------------
+API (solo conteo / fecha en la web)
+-----------------------------------
   URL/exec?action=catalogos
   URL/exec?action=actualizar
