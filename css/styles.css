@@ -2827,6 +2827,37 @@ form.simple-form small {
   font-weight: 600;
 }
 
+.jornadas-catalogos {
+  margin-top: 1.75rem;
+  padding: 1.25rem 1.35rem;
+}
+
+.jornadas-catalogos h3 {
+  margin: 0 0 0.5rem;
+  color: var(--color-institutional, #7a1532);
+  font-size: 1.15rem;
+}
+
+.jornadas-catalogos p {
+  margin: 0 0 0.85rem;
+}
+
+.jornadas-catalogos-meta {
+  font-size: 0.9rem;
+  color: var(--color-text-soft, #5c4f54);
+}
+
+.jornadas-catalogos-pending {
+  font-size: 0.9rem;
+  color: var(--color-text-soft, #5c4f54);
+  font-style: italic;
+}
+
+.jornadas-catalogos a[aria-disabled="true"] {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
 /* —— Webinar —— */
 .section--webinar .text-intro {
   max-width: 42rem;

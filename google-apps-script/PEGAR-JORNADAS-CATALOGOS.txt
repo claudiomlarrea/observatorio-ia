@@ -1,0 +1,51 @@
+Catálogos automáticos de las Jornadas de IA (artículos + presentaciones)
+=======================================================================
+
+Qué hace
+--------
+Cada 15 minutos (o al ejecutar a mano) lee:
+
+  Artículos:      https://drive.google.com/drive/folders/1oEx8kOI1x4Hx2LppKv35DTIB6S48LXLa
+  Presentaciones: https://drive.google.com/drive/folders/10Ma7p_Lo3tObfE0N_nXEgwqZogqQzXQE
+
+Extrae el título (desde Area_Universidad_Apellido_Titulo… o el título del Doc/Slides)
+y regenera dos PDF en orden alfabético:
+
+  catalogo-articulos-jornadas-ia-2026.pdf
+  catalogo-presentaciones-jornadas-ia-2026.pdf
+
+en la carpeta Drive «OIA · Catálogos Jornadas IA 2026» (la crea el script).
+
+
+Instalación (cuenta investigacion@uccuyo.edu.ar o observatorioia@…)
+-------------------------------------------------------------------
+1. https://script.google.com → Nuevo proyecto
+   Nombre sugerido: OIA · Catálogos Jornadas IA
+
+2. Borrá el Code.gs vacío. Creá un archivo JornadasCatalogos.gs
+   y pegá TODO el contenido de JornadasCatalogos.gs del repo.
+
+3. Ejecutá una vez la función: actualizarCatalogosJornadas
+   (autorizá permisos de Drive, Docs, Slides y UrlFetch).
+
+4. Ejecutá una vez: instalarTriggerCatalogosJornadas
+   (crea el trigger cada 15 minutos).
+
+5. Desplegar → Nueva implementación → Tipo: Aplicación web
+   - Ejecutar como: Yo
+   - Quién tiene acceso: Cualquier persona
+   Copiá la URL /exec
+
+6. En el repo del Observatorio, pegá esa URL en:
+   js/jornadas-config.js → CATALOGOS_API_URL
+
+7. Commit + push. La sección #jornadas-ia mostrará los botones
+   «Catálogo de artículos (PDF)» y «Catálogo de presentaciones (PDF)».
+
+
+Probar
+------
+  URL/exec?action=catalogos     → JSON con links actuales
+  URL/exec?action=actualizar    → regenera PDF ya y devuelve JSON
+
+Manual: en Apps Script → Ejecutar → actualizarCatalogosJornadas
