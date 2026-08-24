@@ -174,21 +174,17 @@ function doGet(e) {
         count: Number(props.getProperty("jornadas_catalogo_articulos_n") || 0),
         pdfId: artId || "",
         pdfUrl: artId ? "https://drive.google.com/file/d/" + artId + "/view" : "",
-        downloadUrl: base
-          ? base + "?action=pdf&tipo=articulos"
-          : artId
-            ? "https://drive.google.com/uc?export=download&confirm=t&id=" + artId
-            : ""
+        downloadUrl:
+          "https://observatorio-ia.uccuyo.edu.ar/docs/jornadas/" +
+          CATALOGO_ARTICULOS_NAME
       },
       presentaciones: {
         count: Number(props.getProperty("jornadas_catalogo_presentaciones_n") || 0),
         pdfId: pptId || "",
         pdfUrl: pptId ? "https://drive.google.com/file/d/" + pptId + "/view" : "",
-        downloadUrl: base
-          ? base + "?action=pdf&tipo=presentaciones"
-          : pptId
-            ? "https://drive.google.com/uc?export=download&confirm=t&id=" + pptId
-            : ""
+        downloadUrl:
+          "https://observatorio-ia.uccuyo.edu.ar/docs/jornadas/" +
+          CATALOGO_PRESENTACIONES_NAME
       }
     };
     return jsonOut_(payload);
@@ -198,8 +194,8 @@ function doGet(e) {
 }
 
 /**
- * Sirve el PDF con nombre correcto (evita descargas UUID sin .pdf
- * que provoca el enlace uc?export=download de Drive en algunos navegadores).
+ * Página intermedia de descarga. No usa data: URI (HtmlService lo bloquea).
+ * Redirige a Drive con confirm=t o muestra enlaces claros.
  */
 function servirPdfCatalogo_(tipo, overrideId) {
   tipo = String(tipo || "articulos").toLowerCase();
@@ -220,44 +216,50 @@ function servirPdfCatalogo_(tipo, overrideId) {
     );
   }
 
-  var file = DriveApp.getFileById(id);
-  // Asegurar visibilidad pública por enlace
   try {
-    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+    DriveApp.getFileById(id).setSharing(
+      DriveApp.Access.ANYONE_WITH_LINK,
+      DriveApp.Permission.VIEW
+    );
   } catch (ignoreShare) {}
 
-  var bytes = file.getBlob().getBytes();
-  var b64 = Utilities.base64Encode(bytes);
-  var viewUrl = "https://drive.google.com/file/d/" + id + "/view";
   var safeName = String(fileName).replace(/"/g, "");
+  var viewUrl = "https://drive.google.com/file/d/" + id + "/view";
+  // Descarga fiable desde el sitio (mismo origen). Drive uc?export=download
+  // suele bajar un UUID sin .pdf; HtmlService tampoco puede servir el binario.
+  var downloadUrl =
+    "https://observatorio-ia.uccuyo.edu.ar/docs/jornadas/" + safeName;
 
   var html =
     "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"utf-8\">" +
-    "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">" +
+    '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+    '<meta http-equiv="refresh" content="0;url=' +
+    downloadUrl +
+    '">' +
     "<title>" +
     safeName +
     "</title>" +
     "<style>body{font-family:system-ui,sans-serif;max-width:32rem;margin:2rem auto;padding:0 1rem;line-height:1.45}" +
     "a.btn{display:inline-block;margin:.4rem .4rem .4rem 0;padding:.65rem 1rem;background:#7a1532;color:#fff;" +
     "text-decoration:none;border-radius:.5rem;font-weight:700}</style></head><body>" +
-    "<h1 style=\"font-size:1.15rem\">" +
+    '<h1 style="font-size:1.15rem">' +
     safeName +
     "</h1>" +
-    "<p>Si la descarga no empieza sola, usá el botón.</p>" +
-    '<a class="btn" id="dl" download="' +
+    "<p>Redirigiendo a la descarga…</p>" +
+    '<a class="btn" href="' +
+    downloadUrl +
+    '" download="' +
     safeName +
-    '" href="data:application/pdf;base64,' +
-    b64 +
     '">Descargar PDF</a> ' +
     '<a class="btn" href="' +
     viewUrl +
     '" target="_blank" rel="noopener">Abrir en Drive</a>' +
-    "<script>try{document.getElementById('dl').click();}catch(e){}</script>" +
+    "<script>window.location.replace(" +
+    JSON.stringify(downloadUrl) +
+    ");</script>" +
     "</body></html>";
 
-  return HtmlService.createHtmlOutput(html)
-    .setTitle(safeName)
-    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  return HtmlService.createHtmlOutput(html).setTitle(safeName);
 }
 
 function doOptions() {

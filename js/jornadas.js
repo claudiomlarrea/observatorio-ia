@@ -28,30 +28,28 @@ function wireCatalogos_(cfg) {
   var btnArt = document.getElementById("jornadas-catalogo-articulos");
   var btnPpt = document.getElementById("jornadas-catalogo-presentaciones");
   var meta = document.getElementById("jornadas-catalogos-meta");
-  var box = document.getElementById("jornadas-catalogos");
 
   if (!btnArt && !btnPpt) return;
 
+  // Descarga directa desde el sitio (mismo origen) — evita el sandbox de Apps Script
+  // y los UUID sin .pdf de Drive uc?export=download.
+  var artPdf = String(cfg.CATALOGO_ARTICULOS_PDF || "").trim();
+  var pptPdf = String(cfg.CATALOGO_PRESENTACIONES_PDF || "").trim();
+  if (btnArt && artPdf) {
+    btnArt.href = artPdf;
+    btnArt.setAttribute("download", "catalogo-articulos-jornadas-ia-2026.pdf");
+    btnArt.removeAttribute("aria-disabled");
+  }
+  if (btnPpt && pptPdf) {
+    btnPpt.href = pptPdf;
+    btnPpt.setAttribute("download", "catalogo-presentaciones-jornadas-ia-2026.pdf");
+    btnPpt.removeAttribute("aria-disabled");
+  }
+
   if (!api) {
-    // Sin API aún: ocultar bloque o dejar botones deshabilitados
-    if (box) {
-      var note = document.createElement("p");
-      note.className = "jornadas-catalogos-pending";
-      note.textContent =
-        "Los catálogos PDF se activan cuando el equipo despliega el script de Apps Script (ver google-apps-script/PEGAR-JORNADAS-CATALOGOS.txt).";
-      box.appendChild(note);
-    }
-    if (btnArt) {
-      btnArt.setAttribute("aria-disabled", "true");
-      btnArt.addEventListener("click", function (ev) {
-        ev.preventDefault();
-      });
-    }
-    if (btnPpt) {
-      btnPpt.setAttribute("aria-disabled", "true");
-      btnPpt.addEventListener("click", function (ev) {
-        ev.preventDefault();
-      });
+    if (meta) {
+      meta.hidden = false;
+      meta.textContent = "Catálogos PDF listos para descargar.";
     }
     return;
   }
@@ -63,29 +61,6 @@ function wireCatalogos_(cfg) {
     })
     .then(function (data) {
       if (!data || !data.ok) throw new Error((data && data.error) || "Sin catálogos");
-      var base = api.replace(/\?.*$/, "");
-      // Preferir el endpoint Apps Script (nombre .pdf correcto). Drive uc?export=download
-      // a veces baja un archivo UUID sin extensión en Chrome/Arc.
-      var artUrl =
-        base +
-        "?action=pdf&tipo=articulos" +
-        ((data.articulos && data.articulos.pdfId)
-          ? "&id=" + encodeURIComponent(data.articulos.pdfId)
-          : "");
-      var pptUrl =
-        base +
-        "?action=pdf&tipo=presentaciones" +
-        ((data.presentaciones && data.presentaciones.pdfId)
-          ? "&id=" + encodeURIComponent(data.presentaciones.pdfId)
-          : "");
-      if (btnArt) {
-        btnArt.href = artUrl;
-        btnArt.removeAttribute("aria-disabled");
-      }
-      if (btnPpt) {
-        btnPpt.href = pptUrl;
-        btnPpt.removeAttribute("aria-disabled");
-      }
       if (meta) {
         var nA = (data.articulos && data.articulos.count) || 0;
         var nP = (data.presentaciones && data.presentaciones.count) || 0;
@@ -105,10 +80,9 @@ function wireCatalogos_(cfg) {
       }
     })
     .catch(function () {
-      if (meta) {
+      if (meta && meta.hidden) {
         meta.hidden = false;
-        meta.textContent =
-          "No se pudo leer el catálogo automático. Probá más tarde o consultá a observatorioia@uccuyo.edu.ar.";
+        meta.textContent = "Catálogos PDF listos para descargar.";
       }
     });
 }
