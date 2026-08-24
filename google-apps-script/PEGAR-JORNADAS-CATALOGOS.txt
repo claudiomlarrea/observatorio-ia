@@ -45,7 +45,14 @@ Instalación (cuenta investigacion@uccuyo.edu.ar o observatorioia@…)
 
 Probar
 ------
-  URL/exec?action=catalogos     → JSON con links actuales
-  URL/exec?action=actualizar    → regenera PDF ya y devuelve JSON
+  URL/exec?action=catalogos              → JSON con links actuales
+  URL/exec?action=pdf&tipo=articulos     → descarga PDF con nombre correcto
+  URL/exec?action=pdf&tipo=presentaciones
+  URL/exec?action=actualizar             → regenera PDF ya y devuelve JSON
 
 Manual: en Apps Script → Ejecutar → actualizarCatalogosJornadas
+
+Si el navegador baja un archivo UUID sin .pdf
+---------------------------------------------
+Volvé a pegar JornadasCatalogos.gs (incluye action=pdf) y publicá
+Nueva versión de la implementación web. El sitio usa ese endpoint.

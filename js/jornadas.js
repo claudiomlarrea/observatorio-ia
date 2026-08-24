@@ -63,17 +63,26 @@ function wireCatalogos_(cfg) {
     })
     .then(function (data) {
       if (!data || !data.ok) throw new Error((data && data.error) || "Sin catálogos");
+      var base = api.replace(/\?.*$/, "");
+      // Preferir el endpoint Apps Script (nombre .pdf correcto). Drive uc?export=download
+      // a veces baja un archivo UUID sin extensión en Chrome/Arc.
       var artUrl =
-        (data.articulos && (data.articulos.downloadUrl || data.articulos.pdfUrl)) || "";
+        base +
+        "?action=pdf&tipo=articulos" +
+        ((data.articulos && data.articulos.pdfId)
+          ? "&id=" + encodeURIComponent(data.articulos.pdfId)
+          : "");
       var pptUrl =
-        (data.presentaciones &&
-          (data.presentaciones.downloadUrl || data.presentaciones.pdfUrl)) ||
-        "";
-      if (btnArt && artUrl) {
+        base +
+        "?action=pdf&tipo=presentaciones" +
+        ((data.presentaciones && data.presentaciones.pdfId)
+          ? "&id=" + encodeURIComponent(data.presentaciones.pdfId)
+          : "");
+      if (btnArt) {
         btnArt.href = artUrl;
         btnArt.removeAttribute("aria-disabled");
       }
-      if (btnPpt && pptUrl) {
+      if (btnPpt) {
         btnPpt.href = pptUrl;
         btnPpt.removeAttribute("aria-disabled");
       }

@@ -123,6 +123,18 @@ function doGet(e) {
     }
   }
 
+  if (action === "pdf" || action === "descargar") {
+    try {
+      return servirPdfCatalogo_(String(p.tipo || p.kind || "articulos"), String(p.id || ""));
+    } catch (errPdf) {
+      return HtmlService.createHtmlOutput(
+        "<p>No se pudo servir el PDF: " +
+          String(errPdf) +
+          "</p><p>Ejecutá <code>actualizarCatalogosJornadas</code> y volvé a intentar.</p>"
+      );
+    }
+  }
+
   if (action === "debug" || action === "listar") {
     try {
       return jsonOut_({
@@ -152,26 +164,100 @@ function doGet(e) {
     var props = PropertiesService.getScriptProperties();
     var artId = props.getProperty("jornadas_catalogo_articulos_id");
     var pptId = props.getProperty("jornadas_catalogo_presentaciones_id");
+    var base =
+      ScriptApp.getService().getUrl() ||
+      "";
     var payload = {
       ok: true,
       updatedAt: props.getProperty("jornadas_catalogo_updated_at") || "",
       articulos: {
         count: Number(props.getProperty("jornadas_catalogo_articulos_n") || 0),
         pdfId: artId || "",
-        pdfUrl: artId ? DriveApp.getFileById(artId).getUrl() : "",
-        downloadUrl: artId ? "https://drive.google.com/uc?export=download&id=" + artId : ""
+        pdfUrl: artId ? "https://drive.google.com/file/d/" + artId + "/view" : "",
+        downloadUrl: base
+          ? base + "?action=pdf&tipo=articulos"
+          : artId
+            ? "https://drive.google.com/uc?export=download&confirm=t&id=" + artId
+            : ""
       },
       presentaciones: {
         count: Number(props.getProperty("jornadas_catalogo_presentaciones_n") || 0),
         pdfId: pptId || "",
-        pdfUrl: pptId ? DriveApp.getFileById(pptId).getUrl() : "",
-        downloadUrl: pptId ? "https://drive.google.com/uc?export=download&id=" + pptId : ""
+        pdfUrl: pptId ? "https://drive.google.com/file/d/" + pptId + "/view" : "",
+        downloadUrl: base
+          ? base + "?action=pdf&tipo=presentaciones"
+          : pptId
+            ? "https://drive.google.com/uc?export=download&confirm=t&id=" + pptId
+            : ""
       }
     };
     return jsonOut_(payload);
   } catch (err2) {
     return jsonOut_({ ok: false, error: String(err2) });
   }
+}
+
+/**
+ * Sirve el PDF con nombre correcto (evita descargas UUID sin .pdf
+ * que provoca el enlace uc?export=download de Drive en algunos navegadores).
+ */
+function servirPdfCatalogo_(tipo, overrideId) {
+  tipo = String(tipo || "articulos").toLowerCase();
+  var props = PropertiesService.getScriptProperties();
+  var isPpt = tipo.indexOf("present") >= 0 || tipo === "ppt" || tipo === "pptx";
+  var id = String(overrideId || "").trim();
+  if (!id) {
+    id = isPpt
+      ? props.getProperty("jornadas_catalogo_presentaciones_id")
+      : props.getProperty("jornadas_catalogo_articulos_id");
+  }
+  var fileName = isPpt ? CATALOGO_PRESENTACIONES_NAME : CATALOGO_ARTICULOS_NAME;
+
+  if (!id) {
+    return HtmlService.createHtmlOutput(
+      "<p>Todavía no hay catálogo generado. En Apps Script ejecutá " +
+        "<code>actualizarCatalogosJornadas</code> y luego reintentá.</p>"
+    );
+  }
+
+  var file = DriveApp.getFileById(id);
+  // Asegurar visibilidad pública por enlace
+  try {
+    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  } catch (ignoreShare) {}
+
+  var bytes = file.getBlob().getBytes();
+  var b64 = Utilities.base64Encode(bytes);
+  var viewUrl = "https://drive.google.com/file/d/" + id + "/view";
+  var safeName = String(fileName).replace(/"/g, "");
+
+  var html =
+    "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"utf-8\">" +
+    "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">" +
+    "<title>" +
+    safeName +
+    "</title>" +
+    "<style>body{font-family:system-ui,sans-serif;max-width:32rem;margin:2rem auto;padding:0 1rem;line-height:1.45}" +
+    "a.btn{display:inline-block;margin:.4rem .4rem .4rem 0;padding:.65rem 1rem;background:#7a1532;color:#fff;" +
+    "text-decoration:none;border-radius:.5rem;font-weight:700}</style></head><body>" +
+    "<h1 style=\"font-size:1.15rem\">" +
+    safeName +
+    "</h1>" +
+    "<p>Si la descarga no empieza sola, usá el botón.</p>" +
+    '<a class="btn" id="dl" download="' +
+    safeName +
+    '" href="data:application/pdf;base64,' +
+    b64 +
+    '">Descargar PDF</a> ' +
+    '<a class="btn" href="' +
+    viewUrl +
+    '" target="_blank" rel="noopener">Abrir en Drive</a>' +
+    "<script>try{document.getElementById('dl').click();}catch(e){}</script>" +
+    "</body></html>";
+
+  return HtmlService.createHtmlOutput(html)
+    .setTitle(safeName)
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
 function doOptions() {
