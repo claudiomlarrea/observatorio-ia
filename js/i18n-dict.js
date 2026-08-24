@@ -36,8 +36,8 @@ window.I18N_DICT = {
     "en": "Home"
   },
   "nav.observatorio": {
-    "es": "El observatorio",
-    "en": "The observatory"
+    "es": "El Observatorio",
+    "en": "The Observatory"
   },
   "nav.equipo": {
     "es": "Equipo",
@@ -92,8 +92,8 @@ window.I18N_DICT = {
     "en": "AI Library"
   },
   "nav.numeros": {
-    "es": "En números",
-    "en": "In numbers"
+    "es": "El observatorio en números",
+    "en": "The observatory in numbers"
   },
   "nav.datos": {
     "es": "Datos del Observatorio",
@@ -192,8 +192,8 @@ window.I18N_DICT = {
     "en": "Indicators"
   },
   "sec.numeros.title": {
-    "es": "Observatorio en números",
-    "en": "Observatory in numbers"
+    "es": "El observatorio en números",
+    "en": "The observatory in numbers"
   },
   "sec.numeros.intro": {
     "es": "Cifras verificables de producción propia, actividad institucional y alcance. Algunas se actualizan con las visitas y la Biblioteca de IA.",
@@ -312,8 +312,8 @@ window.I18N_DICT = {
     "en": "Identity"
   },
   "sec.observatorio.title": {
-    "es": "El observatorio",
-    "en": "The observatory"
+    "es": "El Observatorio",
+    "en": "The Observatory"
   },
   "sec.observatorio.mision.title": {
     "es": "Misión",
@@ -1711,8 +1711,8 @@ window.I18N_DICT = {
     "en": "Impact"
   },
   "footer.numeros": {
-    "es": "En números",
-    "en": "In numbers"
+    "es": "El observatorio en números",
+    "en": "The observatory in numbers"
   },
   "footer.secretaria": {
     "es": "Secretaría de Investigación",
