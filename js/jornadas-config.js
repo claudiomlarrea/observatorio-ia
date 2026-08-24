@@ -15,6 +15,7 @@ window.JORNADAS_IA_2026 = {
     "https://drive.google.com/drive/folders/1oEx8kOI1x4Hx2LppKv35DTIB6S48LXLa",
   PRESENTACION_FOLDER_URL:
     "https://drive.google.com/drive/folders/10Ma7p_Lo3tObfE0N_nXEgwqZogqQzXQE",
-  /** Pegá aquí la URL /exec del despliegue de JornadasCatalogos.gs */
-  CATALOGOS_API_URL: "",
+  /** URL /exec del despliegue de JornadasCatalogos.gs */
+  CATALOGOS_API_URL:
+    "https://script.google.com/macros/s/AKfycbwqC9p3EUiTK2DnPHKLT30y0-I3yMcVLzO0S0yNWgvjQVhpDj6z3ScWqo3eJ7LkgDhwQA/exec",
 };
