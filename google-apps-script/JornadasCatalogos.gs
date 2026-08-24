@@ -123,6 +123,30 @@ function doGet(e) {
     }
   }
 
+  if (action === "debug" || action === "listar") {
+    try {
+      return jsonOut_({
+        ok: true,
+        articulosFolder: JORNADAS_ARTICULOS_FOLDER_ID,
+        presentacionesFolder: JORNADAS_PRESENTACIONES_FOLDER_ID,
+        articulosRaw: listarTodoCrudo_(JORNADAS_ARTICULOS_FOLDER_ID),
+        presentacionesRaw: listarTodoCrudo_(JORNADAS_PRESENTACIONES_FOLDER_ID),
+        articulosAceptados: listarEntradas_(
+          JORNADAS_ARTICULOS_FOLDER_ID,
+          ARTICULOS_MIME_OK,
+          "articulo"
+        ),
+        presentacionesAceptadas: listarEntradas_(
+          JORNADAS_PRESENTACIONES_FOLDER_ID,
+          PRESENTACIONES_MIME_OK,
+          "presentacion"
+        )
+      });
+    } catch (errDbg) {
+      return jsonOut_({ ok: false, error: String(errDbg) });
+    }
+  }
+
   // catalogos (default): metadatos + URLs actuales (sin forzar regeneración)
   try {
     var props = PropertiesService.getScriptProperties();
@@ -174,20 +198,68 @@ function getCatalogosFolder_() {
   return folder;
 }
 
+/** Lista cruda (nombre + mime) para diagnosticar por qué no entra un archivo. */
+function listarTodoCrudo_(folderId) {
+  var folder = DriveApp.getFolderById(folderId);
+  var out = [];
+  function walk(fol, depth) {
+    if (depth > 4) return;
+    var files = fol.getFiles();
+    while (files.hasNext()) {
+      var f = files.next();
+      out.push({
+        name: f.getName(),
+        mime: f.getMimeType(),
+        id: f.getId(),
+        folder: fol.getName()
+      });
+    }
+    var subs = fol.getFolders();
+    while (subs.hasNext()) walk(subs.next(), depth + 1);
+  }
+  walk(folder, 0);
+  return out;
+}
+
 function listarEntradas_(folderId, mimeOk, kind) {
   var folder = DriveApp.getFolderById(folderId);
   var out = [];
+  recolectarArchivos_(folder, mimeOk, kind, out, 0);
+  return out;
+}
+
+/**
+ * Recorre la carpeta y subcarpetas. Acepta por MIME o por extensión
+ * (.doc/.docx/.pdf o .ppt/.pptx), para no perder archivos con MIME raro.
+ */
+function recolectarArchivos_(folder, mimeOk, kind, out, depth) {
+  if (depth > 4) return;
+
   var files = folder.getFiles();
   while (files.hasNext()) {
     var f = files.next();
     var name = f.getName();
-    var mime = f.getMimeType();
+    var mime = String(f.getMimeType() || "");
     if (/^catalogo-/i.test(name)) continue;
-    if (!mimeOk[mime]) continue;
+    if (!archivoAceptado_(name, mime, mimeOk, kind)) continue;
+
+    // Atajo de Drive: intentar resolver destino
+    if (mime === "application/vnd.google-apps.shortcut") {
+      try {
+        var target = resolverAtajo_(f);
+        if (target) {
+          f = target;
+          name = f.getName();
+          mime = String(f.getMimeType() || "");
+          if (!archivoAceptado_(name, mime, mimeOk, kind)) continue;
+        }
+      } catch (ignoreShortcut) {
+        continue;
+      }
+    }
 
     var meta = parseNombreSugerido_(name);
     var title = meta.title;
-    // Si es Doc de Google, intentar título del documento / primer encabezado
     if (mime === "application/vnd.google-apps.document") {
       try {
         var docTitle = leerTituloGoogleDoc_(f.getId());
@@ -214,7 +286,41 @@ function listarEntradas_(folderId, mimeOk, kind) {
       updated: f.getLastUpdated() ? f.getLastUpdated().toISOString() : ""
     });
   }
-  return out;
+
+  var subs = folder.getFolders();
+  while (subs.hasNext()) {
+    recolectarArchivos_(subs.next(), mimeOk, kind, out, depth + 1);
+  }
+}
+
+function archivoAceptado_(name, mime, mimeOk, kind) {
+  if (mimeOk[mime]) return true;
+  var n = String(name || "").toLowerCase();
+  if (kind === "articulo") {
+    if (/\.(docx?|pdf|odt|rtf)$/i.test(n)) return true;
+    if (mime.indexOf("word") >= 0 || mime.indexOf("document") >= 0) return true;
+  }
+  if (kind === "presentacion") {
+    if (/\.(pptx?|pdf|odp)$/i.test(n)) return true;
+    if (mime.indexOf("presentation") >= 0 || mime.indexOf("powerpoint") >= 0) return true;
+  }
+  return false;
+}
+
+/** Resuelve un atajo de Drive si el servicio avanzado Drive está activo; si no, null. */
+function resolverAtajo_(shortcutFile) {
+  try {
+    if (typeof Drive === "undefined" || !Drive.Files) return null;
+    var meta = Drive.Files.get(shortcutFile.getId(), { fields: "shortcutDetails" });
+    var targetId =
+      meta && meta.shortcutDetails && meta.shortcutDetails.targetId
+        ? meta.shortcutDetails.targetId
+        : "";
+    if (!targetId) return null;
+    return DriveApp.getFileById(targetId);
+  } catch (e) {
+    return null;
+  }
 }
 
 /**
