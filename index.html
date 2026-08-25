@@ -19,7 +19,7 @@
       gtag("config", "G-C55ZPTW8C2");
     </script>
     <link rel="icon" type="image/png" href="assets/logo-observatorio-ia.png" />
-    <link rel="stylesheet" href="css/styles.css?v=76" />
+    <link rel="stylesheet" href="css/styles.css?v=77" />
   </head>
   <body>
     <a class="skip-link" href="#contenido" data-i18n="a11y.skipLink">Ir al contenido</a>
@@ -498,52 +498,90 @@
               </p>
             </div>
 
-            <div class="jornadas-programa card" id="jornadas-programa" aria-labelledby="jornadas-programa-title">
-              <div class="jornadas-programa-head">
-                <h3 id="jornadas-programa-title" data-i18n="sec.jornadas.programa.title">
-                  Programa (provisorio)
-                </h3>
-                <p class="jornadas-programa-badge" data-i18n="sec.jornadas.programa.badge">
-                  Borrador vivo · se actualiza con las cargas
-                </p>
+            <div class="jornadas-agenda card" id="jornadas-agenda" aria-labelledby="jornadas-agenda-title">
+              <div class="jornadas-agenda-head">
+                <span class="jornadas-agenda-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="28" height="28" focusable="false">
+                    <rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                    <path d="M8 3v4M16 3v4M3 10h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    <rect x="7" y="13" width="3" height="3" rx="0.5" fill="currentColor"/>
+                    <rect x="11.5" y="13" width="3" height="3" rx="0.5" fill="currentColor"/>
+                    <rect x="16" y="13" width="3" height="3" rx="0.5" fill="currentColor"/>
+                  </svg>
+                </span>
+                <div>
+                  <h3 id="jornadas-agenda-title" data-i18n="sec.jornadas.agenda.title">
+                    Agenda de consulta
+                  </h3>
+                  <p class="jornadas-agenda-badge" data-i18n="sec.jornadas.agenda.badge">
+                    App interactiva · celular y PC
+                  </p>
+                </div>
               </div>
-              <p data-i18n="sec.jornadas.programa.intro" data-i18n-html>
-                El 6 de octubre a las <strong>15:00</strong> (virtual). Apertura a
-                cargo de la Rectora y del Director del Observatorio; luego ponencias
-                de <strong>10 minutos</strong>. El orden de exposiciones se completa
-                a medida que se confirman artículos y presentaciones (cierre
-                expositores: 10 de septiembre).
+              <p data-i18n="sec.jornadas.agenda.intro">
+                Consultá horarios, ponencias, artículos, PowerPoint, área y
+                expositores. Podés armar tu propia agenda del día y agregar la app
+                al celular.
               </p>
-              <p class="jornadas-programa-nota" data-i18n="sec.jornadas.programa.notaSalas">
-                Formato previsto: una sola sala. Si al cierre hay 14 o más ponencias
-                confirmadas, se evaluará dividir en dos salas (p. ej. Tecnología /
-                Ciencias).
-              </p>
-              <p class="tile-actions tile-actions--jornadas jornadas-programa-actions">
+              <p class="tile-actions tile-actions--jornadas jornadas-agenda-actions">
                 <a
-                  class="btn btn-primary"
+                  class="btn btn-primary jornadas-agenda-btn"
                   href="jornadas-ia-2026/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  data-i18n="sec.jornadas.programa.btnApp"
-                  >Agenda de consulta de las Jornadas</a
+                  data-i18n="sec.jornadas.agenda.btnOpen"
+                  >Abrir agenda de consulta</a
                 >
                 <a
                   class="btn btn-ghost"
                   href="jornadas-ia-2026/instalar.html"
                   target="_blank"
                   rel="noopener noreferrer"
-                  data-i18n="sec.jornadas.programa.btnInstall"
+                  data-i18n="sec.jornadas.agenda.btnInstall"
                   >Agregar app al celular</a
                 >
               </p>
-              <ol class="jornadas-programa-list" id="jornadas-programa-list"></ol>
-              <p class="jornadas-programa-foot" data-i18n="sec.jornadas.programa.foot">
-                Las ponencias marcadas como provisionales figuran por haber cargado
-                artículo y/o PowerPoint; falta confirmación de exposición el día del
-                evento.
+            </div>
+          </div>
+
+          <div class="jornadas-programa card" id="jornadas-programa" aria-labelledby="jornadas-programa-title">
+            <div class="jornadas-programa-head">
+              <h3 id="jornadas-programa-title" data-i18n="sec.jornadas.programa.title">
+                Programa de las Jornadas
+              </h3>
+              <p class="jornadas-programa-badge" data-i18n="sec.jornadas.programa.badge">
+                PDF · se actualiza con las confirmaciones
               </p>
             </div>
+            <p data-i18n="sec.jornadas.programa.intro" data-i18n-html>
+              El 6 de octubre a las <strong>15:00</strong> (virtual). Apertura a
+              cargo de la Rectora y del Director del Observatorio; luego ponencias
+              de <strong>10 minutos</strong>. El orden oficial se publica en el PDF
+              del programa y se completa a medida que se confirman las exposiciones
+              (cierre expositores: 10 de septiembre).
+            </p>
+            <p class="jornadas-programa-nota" data-i18n="sec.jornadas.programa.notaSalas">
+              Formato previsto: una sola sala. Si al cierre hay 14 o más ponencias
+              confirmadas, se evaluará dividir en dos salas (p. ej. Tecnología /
+              Ciencias).
+            </p>
+            <p class="tile-actions tile-actions--jornadas jornadas-programa-actions">
+              <a
+                id="jornadas-programa-pdf"
+                class="btn btn-primary"
+                href="assets/jornadas/programa-jornadas-ia-2026.pdf?v=1"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-i18n="sec.jornadas.programa.btnPdf"
+                >Abrir programa (PDF)</a
+              >
+            </p>
+            <ol class="jornadas-programa-list" id="jornadas-programa-list"></ol>
+            <p class="jornadas-programa-foot" data-i18n="sec.jornadas.programa.foot">
+              Las ponencias marcadas como provisionales figuran por haber cargado
+              artículo y/o PowerPoint; falta confirmación de exposición el día del
+              evento.
+            </p>
           </div>
 
           <p class="jornadas-contact">
@@ -1991,7 +2029,7 @@
       </div>
     </footer>
 
-    <script src="js/i18n-dict.js?v=45"></script>
+    <script src="js/i18n-dict.js?v=46"></script>
     <script src="js/i18n.js?v=3"></script>
     <script src="js/observatorio-numeros-config.js?v=8" defer></script>
     <script src="js/observatorio-numeros.js?v=4" defer></script>

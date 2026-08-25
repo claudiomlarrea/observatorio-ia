@@ -547,29 +547,45 @@ window.I18N_DICT = {
     "es": "Abrir catálogo de PowerPoint (PDF)",
     "en": "Open PowerPoint catalog (PDF)"
   },
+  "sec.jornadas.agenda.title": {
+    "es": "Agenda de consulta",
+    "en": "Consultation agenda"
+  },
+  "sec.jornadas.agenda.badge": {
+    "es": "App interactiva · celular y PC",
+    "en": "Interactive app · phone and PC"
+  },
+  "sec.jornadas.agenda.intro": {
+    "es": "Consultá horarios, ponencias, artículos, PowerPoint, área y expositores. Podés armar tu propia agenda del día y agregar la app al celular.",
+    "en": "Browse schedules, talks, articles, PowerPoint, area and speakers. Build your own day agenda and add the app to your phone."
+  },
+  "sec.jornadas.agenda.btnOpen": {
+    "es": "Abrir agenda de consulta",
+    "en": "Open consultation agenda"
+  },
+  "sec.jornadas.agenda.btnInstall": {
+    "es": "Agregar app al celular",
+    "en": "Add app to phone"
+  },
   "sec.jornadas.programa.title": {
-    "es": "Programa (provisorio)",
-    "en": "Program (provisional)"
+    "es": "Programa de las Jornadas",
+    "en": "Jornadas program"
   },
   "sec.jornadas.programa.badge": {
-    "es": "Borrador vivo · se actualiza con las cargas",
-    "en": "Living draft · updated as submissions arrive"
+    "es": "PDF · se actualiza con las confirmaciones",
+    "en": "PDF · updated as talks are confirmed"
   },
   "sec.jornadas.programa.intro": {
-    "es": "El 6 de octubre a las <strong>15:00</strong> (virtual). Apertura a cargo de la Rectora y del Director del Observatorio; luego ponencias de <strong>10 minutos</strong>. El orden de exposiciones se completa a medida que se confirman artículos y presentaciones (cierre expositores: 10 de septiembre).",
-    "en": "October 6 at <strong>15:00</strong> (online). Opening remarks by the Rector and the Observatory Director, then <strong>10-minute</strong> presentations. The speaking order is completed as articles and slides are confirmed (presenter deadline: September 10)."
+    "es": "El 6 de octubre a las <strong>15:00</strong> (virtual). Apertura a cargo de la Rectora y del Director del Observatorio; luego ponencias de <strong>10 minutos</strong>. El orden oficial se publica en el PDF del programa y se completa a medida que se confirman las exposiciones (cierre expositores: 10 de septiembre).",
+    "en": "October 6 at <strong>15:00</strong> (online). Opening remarks by the Rector and the Observatory Director, then <strong>10-minute</strong> presentations. The official order is published in the program PDF and completed as talks are confirmed (presenter deadline: September 10)."
   },
   "sec.jornadas.programa.notaSalas": {
     "es": "Formato previsto: una sola sala. Si al cierre hay 14 o más ponencias confirmadas, se evaluará dividir en dos salas (p. ej. Tecnología / Ciencias).",
     "en": "Planned format: a single room. If 14 or more confirmed talks are reached by the deadline, splitting into two rooms (e.g. Technology / Sciences) will be considered."
   },
-  "sec.jornadas.programa.btnApp": {
-    "es": "Agenda de consulta de las Jornadas",
-    "en": "Jornadas consultation agenda"
-  },
-  "sec.jornadas.programa.btnInstall": {
-    "es": "Agregar app al celular",
-    "en": "Add app to phone"
+  "sec.jornadas.programa.btnPdf": {
+    "es": "Abrir programa (PDF)",
+    "en": "Open program (PDF)"
   },
   "sec.jornadas.programa.foot": {
     "es": "Las ponencias marcadas como provisionales figuran por haber cargado artículo y/o PowerPoint; falta confirmación de exposición el día del evento.",
