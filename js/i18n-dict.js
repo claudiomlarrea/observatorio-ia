@@ -31,6 +31,26 @@ window.I18N_DICT = {
     "es": "Principal",
     "en": "Main"
   },
+  "nav.group.observatorio": {
+    "es": "El Observatorio",
+    "en": "The Observatory"
+  },
+  "nav.group.programas": {
+    "es": "Programas",
+    "en": "Programs"
+  },
+  "nav.group.recursos": {
+    "es": "Recursos",
+    "en": "Resources"
+  },
+  "nav.group.noticias": {
+    "es": "Noticias",
+    "en": "News"
+  },
+  "nav.group.contacto": {
+    "es": "Contacto",
+    "en": "Contact"
+  },
   "nav.inicio": {
     "es": "Inicio",
     "en": "Home"
@@ -1689,6 +1709,10 @@ window.I18N_DICT = {
   "footer.brand": {
     "es": "Observatorio de Inteligencia Artificial · UCCuyo",
     "en": "Artificial Intelligence Observatory · UCCuyo"
+  },
+  "footer.mapLabel": {
+    "es": "Mapa del sitio",
+    "en": "Site map"
   },
   "footer.jornadas": {
     "es": "Jornadas de IA",

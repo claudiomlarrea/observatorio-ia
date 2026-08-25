@@ -19,7 +19,7 @@
       gtag("config", "G-C55ZPTW8C2");
     </script>
     <link rel="icon" type="image/png" href="assets/logo-observatorio-ia.png" />
-    <link rel="stylesheet" href="css/styles.css?v=73" />
+    <link rel="stylesheet" href="css/styles.css?v=74" />
   </head>
   <body>
     <a class="skip-link" href="#contenido" data-i18n="a11y.skipLink">Ir al contenido</a>
@@ -56,33 +56,105 @@
           <span class="nav-toggle-icon"></span>
         </button>
         <nav class="site-nav" id="site-nav" aria-label="Principal" data-i18n-attr="aria-label:nav.ariaLabel">
-          <ul>
+          <ul class="nav-root">
             <li><a href="#inicio" data-i18n="nav.inicio">Inicio</a></li>
-            <li><a href="#equipo" data-i18n="nav.equipo">Equipo</a></li>
-            <li><a href="#observatorio" data-i18n="nav.observatorio">El Observatorio</a></li>
-            <li><a href="#numeros" data-i18n="nav.numeros">El observatorio en números</a></li>
-            <li><a href="#herramientas" data-i18n="nav.herramientas">Aplicaciones IA</a></li>
-            <li><a href="#publicaciones" data-i18n="nav.publicaciones">Biblioteca de IA</a></li>
-            <li><a href="#datos" data-i18n="nav.datos">Datos del Observatorio</a></li>
-            <li><a href="#encuestas" data-i18n="nav.encuestas">Encuestas</a></li>
-            <li><a href="#informes" data-i18n="nav.informes">Informes</a></li>
-            <li><a href="#jornadas-ia" data-i18n="nav.jornadas">Jornadas de IA</a></li>
-            <li><a href="#semillero-ia" data-i18n="nav.semillero">Semillero de IA</a></li>
-            <li><a href="#webinars" data-i18n="nav.webinars">Webinars</a></li>
-            <li><a href="#galeria" data-i18n="nav.galeria">Galería de Imágenes</a></li>
-            <li><a href="#actividades" data-i18n="nav.actividades">Actividades</a></li>
-            <li><a href="#acompanamiento" data-i18n="nav.acompanamiento">Acompañamiento</a></li>
-            <li><a href="#impacto" data-i18n="nav.impacto">Impacto</a></li>
-            <li><a href="#visitas" data-i18n="nav.visitas">Visitas al Observatorio</a></li>
-            <li><a href="#noticias" data-i18n="nav.noticias">Noticias</a></li>
-            <li>
-              <a
-                href="https://claudiomlarrea.github.io/secretaria-investigacion/#inicio"
-                target="_blank"
-                rel="noopener noreferrer"
-                 data-i18n="nav.secretaria">Secretaría de Investigación</a>
+
+            <li class="nav-item has-submenu">
+              <button
+                type="button"
+                class="nav-submenu-toggle"
+                aria-expanded="false"
+                aria-controls="nav-sub-observatorio"
+                data-i18n="nav.group.observatorio"
+              >
+                El Observatorio
+              </button>
+              <ul class="nav-submenu" id="nav-sub-observatorio">
+                <li><a href="#observatorio" data-i18n="nav.observatorio">El Observatorio</a></li>
+                <li><a href="#equipo" data-i18n="nav.equipo">Equipo</a></li>
+                <li><a href="#numeros" data-i18n="nav.numeros">El observatorio en números</a></li>
+                <li><a href="#impacto" data-i18n="nav.impacto">Impacto</a></li>
+                <li><a href="#visitas" data-i18n="nav.visitas">Visitas al Observatorio</a></li>
+                <li><a href="#acompanamiento" data-i18n="nav.acompanamiento">Acompañamiento</a></li>
+              </ul>
             </li>
-            <li><a href="#contacto" data-i18n="nav.contacto">Contacto</a></li>
+
+            <li class="nav-item has-submenu">
+              <button
+                type="button"
+                class="nav-submenu-toggle"
+                aria-expanded="false"
+                aria-controls="nav-sub-programas"
+                data-i18n="nav.group.programas"
+              >
+                Programas
+              </button>
+              <ul class="nav-submenu" id="nav-sub-programas">
+                <li><a href="#jornadas-ia" data-i18n="nav.jornadas">Jornadas de IA</a></li>
+                <li><a href="#semillero-ia" data-i18n="nav.semillero">Semillero de IA</a></li>
+                <li><a href="#webinars" data-i18n="nav.webinars">Webinars</a></li>
+                <li><a href="#actividades" data-i18n="nav.actividades">Actividades</a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item has-submenu">
+              <button
+                type="button"
+                class="nav-submenu-toggle"
+                aria-expanded="false"
+                aria-controls="nav-sub-recursos"
+                data-i18n="nav.group.recursos"
+              >
+                Recursos
+              </button>
+              <ul class="nav-submenu" id="nav-sub-recursos">
+                <li><a href="#herramientas" data-i18n="nav.herramientas">Aplicaciones IA</a></li>
+                <li><a href="#publicaciones" data-i18n="nav.publicaciones">Biblioteca de IA</a></li>
+                <li><a href="#datos" data-i18n="nav.datos">Datos del Observatorio</a></li>
+                <li><a href="#encuestas" data-i18n="nav.encuestas">Encuestas</a></li>
+                <li><a href="#informes" data-i18n="nav.informes">Informes</a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item has-submenu">
+              <button
+                type="button"
+                class="nav-submenu-toggle"
+                aria-expanded="false"
+                aria-controls="nav-sub-noticias"
+                data-i18n="nav.group.noticias"
+              >
+                Noticias
+              </button>
+              <ul class="nav-submenu" id="nav-sub-noticias">
+                <li><a href="#noticias" data-i18n="nav.noticias">Noticias</a></li>
+                <li><a href="#galeria" data-i18n="nav.galeria">Galería de Imágenes</a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item has-submenu">
+              <button
+                type="button"
+                class="nav-submenu-toggle"
+                aria-expanded="false"
+                aria-controls="nav-sub-contacto"
+                data-i18n="nav.group.contacto"
+              >
+                Contacto
+              </button>
+              <ul class="nav-submenu" id="nav-sub-contacto">
+                <li><a href="#contacto" data-i18n="nav.contacto">Contacto</a></li>
+                <li>
+                  <a
+                    href="https://claudiomlarrea.github.io/secretaria-investigacion/#inicio"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-i18n="nav.secretaria"
+                    >Secretaría de Investigación</a
+                  >
+                </li>
+              </ul>
+            </li>
           </ul>
         </nav>
       </div>
@@ -109,13 +181,9 @@
             inteligencia artificial, con enfoque académico, ético y regional.
           </p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="#herramientas" data-i18n="hero.cta.herramientas">Aplicaciones IA</a>
             <a class="btn btn-primary" href="#jornadas-ia" data-i18n="hero.cta.jornadas">Jornadas de IA</a>
+            <a class="btn btn-primary" href="#herramientas" data-i18n="hero.cta.herramientas">Aplicaciones IA</a>
             <a class="btn btn-primary" href="#semillero-ia" data-i18n="hero.cta.semillero">Semillero de IA</a>
-            <a class="btn btn-primary" href="#webinars" data-i18n="hero.cta.webinars">Webinars</a>
-            <a class="btn btn-primary" href="#publicaciones" data-i18n="hero.cta.publicaciones">Biblioteca de IA</a>
-            <a class="btn btn-primary" href="#encuestas" data-i18n="hero.cta.encuestas">Encuestas</a>
-            <a class="btn btn-primary" href="#informes" data-i18n="hero.cta.informes">Informes</a>
             <a class="btn btn-primary" href="#contacto" data-i18n="hero.cta.contacto">Contacto</a>
           </div>
           <div class="hero-mail-row">
@@ -1876,31 +1944,54 @@
 
     <footer class="site-footer">
       <div class="footer-inner">
-        <span data-i18n="footer.brand">Observatorio de Inteligencia Artificial · UCCuyo</span>
-        <a href="mailto:observatorioia@uccuyo.edu.ar" data-i18n="hero.email">observatorioia@uccuyo.edu.ar</a>
-        <a href="#jornadas-ia" data-i18n="footer.jornadas">Jornadas de IA</a>
-        <a href="#semillero-ia" data-i18n="footer.semillero">Semillero de IA</a>
-        <a href="#webinars" data-i18n="footer.webinars">Webinars</a>
-        <a href="#acompanamiento" data-i18n="footer.acompanamiento">Acompañamiento</a>
-        <a href="#visitas" data-i18n="footer.visitas">Visitas al Observatorio</a>
-        <a href="#encuestas" data-i18n="footer.encuestas">Encuestas</a>
-        <a href="#informes" data-i18n="footer.informes">Informes</a>
-        <a href="#galeria" data-i18n="footer.galeria">Galería de Imágenes</a>
-        <a href="#herramientas" data-i18n="footer.herramientas">Aplicaciones IA</a>
-        <a href="#publicaciones" data-i18n="footer.publicaciones">Biblioteca de IA</a>
-        <a href="#datos" data-i18n="footer.datos">Datos del Observatorio</a>
-        <a href="#impacto" data-i18n="footer.impacto">Impacto</a>
-        <a href="#numeros" data-i18n="footer.numeros">El observatorio en números</a>
-        <a
-          href="https://claudiomlarrea.github.io/secretaria-investigacion/#inicio"
-          target="_blank"
-          rel="noopener noreferrer"
-           data-i18n="footer.secretaria">Secretaría de Investigación</a>
-        <a href="https://uccuyo.edu.ar/" rel="noopener noreferrer" data-i18n="footer.site">uccuyo.edu.ar</a>
+        <div class="footer-brand-block">
+          <span data-i18n="footer.brand">Observatorio de Inteligencia Artificial · UCCuyo</span>
+          <a href="mailto:observatorioia@uccuyo.edu.ar" data-i18n="hero.email">observatorioia@uccuyo.edu.ar</a>
+        </div>
+        <nav class="footer-map" aria-label="Mapa del sitio" data-i18n-attr="aria-label:footer.mapLabel">
+          <div class="footer-col">
+            <p class="footer-col-title" data-i18n="nav.group.observatorio">El Observatorio</p>
+            <a href="#observatorio" data-i18n="nav.observatorio">El Observatorio</a>
+            <a href="#equipo" data-i18n="nav.equipo">Equipo</a>
+            <a href="#numeros" data-i18n="footer.numeros">El observatorio en números</a>
+            <a href="#impacto" data-i18n="footer.impacto">Impacto</a>
+            <a href="#visitas" data-i18n="footer.visitas">Visitas al Observatorio</a>
+            <a href="#acompanamiento" data-i18n="footer.acompanamiento">Acompañamiento</a>
+          </div>
+          <div class="footer-col">
+            <p class="footer-col-title" data-i18n="nav.group.programas">Programas</p>
+            <a href="#jornadas-ia" data-i18n="footer.jornadas">Jornadas de IA</a>
+            <a href="#semillero-ia" data-i18n="footer.semillero">Semillero de IA</a>
+            <a href="#webinars" data-i18n="footer.webinars">Webinars</a>
+            <a href="#actividades" data-i18n="nav.actividades">Actividades</a>
+          </div>
+          <div class="footer-col">
+            <p class="footer-col-title" data-i18n="nav.group.recursos">Recursos</p>
+            <a href="#herramientas" data-i18n="footer.herramientas">Aplicaciones IA</a>
+            <a href="#publicaciones" data-i18n="footer.publicaciones">Biblioteca de IA</a>
+            <a href="#datos" data-i18n="footer.datos">Datos del Observatorio</a>
+            <a href="#encuestas" data-i18n="footer.encuestas">Encuestas</a>
+            <a href="#informes" data-i18n="footer.informes">Informes</a>
+          </div>
+          <div class="footer-col">
+            <p class="footer-col-title" data-i18n="nav.group.noticias">Noticias</p>
+            <a href="#noticias" data-i18n="nav.noticias">Noticias</a>
+            <a href="#galeria" data-i18n="footer.galeria">Galería de Imágenes</a>
+            <a href="#contacto" data-i18n="nav.contacto">Contacto</a>
+            <a
+              href="https://claudiomlarrea.github.io/secretaria-investigacion/#inicio"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-i18n="footer.secretaria"
+              >Secretaría de Investigación</a
+            >
+            <a href="https://uccuyo.edu.ar/" rel="noopener noreferrer" data-i18n="footer.site">uccuyo.edu.ar</a>
+          </div>
+        </nav>
       </div>
     </footer>
 
-    <script src="js/i18n-dict.js?v=44"></script>
+    <script src="js/i18n-dict.js?v=45"></script>
     <script src="js/i18n.js?v=3"></script>
     <script src="js/observatorio-numeros-config.js?v=8" defer></script>
     <script src="js/observatorio-numeros.js?v=4" defer></script>
@@ -1925,6 +2016,6 @@
         navigator.serviceWorker.register("sacau/sw.js").catch(function () {});
       }
     </script>
-    <script src="js/main.js?v=3" defer></script>
+    <script src="js/main.js?v=4" defer></script>
   </body>
 </html>
