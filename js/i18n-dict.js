@@ -544,8 +544,8 @@ window.I18N_DICT = {
     "en": "Planned format: a single room. If 14 or more confirmed talks are reached by the deadline, splitting into two rooms (e.g. Technology / Sciences) will be considered."
   },
   "sec.jornadas.programa.btnApp": {
-    "es": "Abrir app de consulta del programa",
-    "en": "Open program consultation app"
+    "es": "Agenda de consulta de las Jornadas",
+    "en": "Jornadas consultation agenda"
   },
   "sec.jornadas.programa.btnInstall": {
     "es": "Agregar app al celular",
