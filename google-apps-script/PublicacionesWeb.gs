@@ -1,6 +1,6 @@
 /**
  * Publicaciones OIA - API pública + panel privado con whitelist.
- * EDGE-PANEL-v4: guardado con google.script.run (sin redirect /echo).
+ * EDGE-PANEL-v5: guardado con google.script.run; Looker en pestaña liviana.
  *
  * Endpoints:
  * - GET  ?action=public (o sin action): JSON para la web pública.
@@ -45,7 +45,10 @@ var ESTADO_PUBLICABLE = "publicado";
 
 /** Planilla Looker Studio — se actualiza al guardar desde el panel. */
 var LOOKER_SHEET_ID = "10SKDfZJIZGSTOaOWgGmB46WPM0Bd0BvLe4aZ9jilA34";
+/** Índice OpenAlex (puede tener millones de filas: NO escribir ahí desde el panel). */
 var LOOKER_TAB = "indice_openalex";
+/** Pestaña chica para cargas manuales del panel (evita que «Guardando…» se cuelgue). */
+var LOOKER_MANUAL_TAB = "carga_manual_oia";
 var LOOKER_HEADERS = ["anio", "titulo", "autores", "doi", "url", "fuente", "fecha_sync"];
 
 /** Acceso equipo: solo correos Google autorizados (sin clave en el frontend). */
@@ -218,8 +221,9 @@ function panelSaveResponse_(ok, message, payload) {
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
-/** Llamado desde el panel HTML con google.script.run (no abre página en blanco). */
-function savePublicationAdmin_(payload) {
+/** Llamado desde el panel HTML con google.script.run (no abre página en blanco).
+ *  Nombre SIN guion bajo final: las funciones `_` son privadas y google.script.run no las llama. */
+function savePublicationAdmin(payload) {
   try {
     payload = payload || {};
     if (!isAuthorizedForPayload_(payload)) {
@@ -233,31 +237,44 @@ function savePublicationAdmin_(payload) {
     if (!row[0] || !row[1] || !row[6]) {
       return { ok: false, message: "Completá tipo, título y unidad." };
     }
+    // Primero la planilla del Observatorio (rápido). Luego Looker (no debe bloquear).
     getSheet_().appendRow(row);
     SpreadsheetApp.flush();
-    mirrorPublicationToLooker_(payload);
+    try {
+      mirrorPublicationToLooker_(payload);
+    } catch (mirrorErr) {
+      Logger.log("mirror after save: " + mirrorErr);
+    }
     return { ok: true, message: "Guardado" };
   } catch (err) {
     return { ok: false, message: String(err) };
   }
 }
 
-/** Copia la publicación a la planilla de Looker (mismas columnas que OpenAlex). */
+/** Alias legacy por si alguna implementación vieja todavía llama savePublicationAdmin_. */
+function savePublicationAdmin_(payload) {
+  return savePublicationAdmin(payload);
+}
+
+/** Copia la publicación a una pestaña liviana de Looker (no al índice OpenAlex gigante). */
 function mirrorPublicationToLooker_(p) {
   if (!LOOKER_SHEET_ID) return;
   try {
     var est = normalizar_(val_(p.estado) || ESTADO_PUBLICABLE);
     if (est === "borrador") return;
 
-    var sh = SpreadsheetApp.openById(LOOKER_SHEET_ID).getSheetByName(LOOKER_TAB);
-    if (!sh) sh = SpreadsheetApp.openById(LOOKER_SHEET_ID).insertSheet(LOOKER_TAB);
-
-    if (sh.getLastRow() === 0) {
+    var ss = SpreadsheetApp.openById(LOOKER_SHEET_ID);
+    // Nunca escribir en indice_openalex: getLastRow/append ahí cuelga el panel.
+    var sh = ss.getSheetByName(LOOKER_MANUAL_TAB);
+    if (!sh) {
+      sh = ss.insertSheet(LOOKER_MANUAL_TAB);
+      sh.getRange(1, 1, 1, LOOKER_HEADERS.length).setValues([LOOKER_HEADERS]);
+    } else if (!String(sh.getRange(1, 1).getValue() || "").trim()) {
       sh.getRange(1, 1, 1, LOOKER_HEADERS.length).setValues([LOOKER_HEADERS]);
     }
 
     var doi = normalizeDoiForLooker_(val_(p.doi));
-    if (doi && lookerHasDoi_(sh, doi)) return;
+    if (doi && lookerManualHasDoi_(sh, doi)) return;
 
     var anio = val_(p.anio);
     if (/^\d{4}\/\d/.test(anio)) {
@@ -290,10 +307,12 @@ function normalizeDoiForLooker_(raw) {
   return s.trim();
 }
 
-function lookerHasDoi_(sh, doi) {
+/** Deduplicación solo sobre la pestaña manual (pocas filas). */
+function lookerManualHasDoi_(sh, doi) {
   var last = sh.getLastRow();
   if (last < 2) return false;
-  var vals = sh.getRange(2, 4, last - 1, 1).getValues();
+  if (last > 5000) return false; // salvaguarda
+  var vals = sh.getRange(2, 4, last, 4).getValues();
   var needle = doi.toLowerCase();
   for (var i = 0; i < vals.length; i++) {
     if (normalizeDoiForLooker_(vals[i][0]).toLowerCase() === needle) return true;
@@ -303,7 +322,7 @@ function lookerHasDoi_(sh, doi) {
 
 /** En el editor: elegí esta función y ▶ Ejecutar (autoriza permisos de la planilla). */
 function authorizeSavePanel() {
-  var r = savePublicationAdmin_({
+  var r = savePublicationAdmin({
     tipo: "Diario",
     titulo: "Prueba permisos panel",
     unidad: "OIA- Observatorio de Inteligencia Artificial",
@@ -343,7 +362,7 @@ function buildAdminPanelHtml_(apiUrl, defaultUnidad) {
   return (
     "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"utf-8\">" +
     "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">" +
-    "<title>Carga de Publicaciones · Panel v4</title>" +
+    "<title>Carga de Publicaciones · Panel v5</title>" +
     "<style>" +
     "body{font-family:Arial,sans-serif;max-width:900px;margin:24px auto;padding:0 16px;color:#1b1b1b}" +
     "h1{margin:0 0 16px}p.help{margin-top:0;color:#444}" +
@@ -358,7 +377,7 @@ function buildAdminPanelHtml_(apiUrl, defaultUnidad) {
     ".ver{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;background:#e8f5f1;color:#0b6b5d;font-size:12px;font-weight:700}" +
     "@media(max-width:760px){form{grid-template-columns:1fr}}" +
     "</style></head><body>" +
-    "<h1>Carga de Publicaciones <span class=\"ver\">Panel v4</span></h1>" +
+    "<h1>Carga de Publicaciones <span class=\"ver\">Panel v5</span></h1>" +
     "<p class=\"help\">Sesión: <strong>" +
     (email || "(sin correo detectado)") +
     "</strong>. Completá los datos y guardá.</p>" +
@@ -396,7 +415,9 @@ function buildAdminPanelHtml_(apiUrl, defaultUnidad) {
     "var defaultUnidad=" +
     JSON.stringify(String(defaultUnidad || "")) +
     ";" +
+    "var saveTimer=null;" +
     "function setMsg(t,ok){m.textContent=t;m.className=ok?'ok':'err';}" +
+    "function unlock(){if(b)b.disabled=false;if(saveTimer){clearTimeout(saveTimer);saveTimer=null;}}" +
     "f.addEventListener('submit',function(ev){" +
     "ev.preventDefault();" +
     "if(!f.reportValidity())return;" +
@@ -406,16 +427,20 @@ function buildAdminPanelHtml_(apiUrl, defaultUnidad) {
     "var els=f.querySelectorAll('input,select,textarea');" +
     "for(var i=0;i<els.length;i++){var el=els[i];if(!el.name)continue;data[el.name]=el.value;}" +
     "if(typeof google==='undefined'||!google.script||!google.script.run){" +
-    "setMsg('Panel desactualizado. En Apps Script debe figurar «Panel v4» tras nueva implementación.',false);" +
-    "if(b)b.disabled=false;return;}" +
+    "setMsg('Panel desactualizado. En Apps Script debe figurar «Panel v5» tras nueva implementación.',false);" +
+    "unlock();return;}" +
+    "saveTimer=setTimeout(function(){" +
+    "unlock();" +
+    "setMsg('Tardó demasiado. Abrí la planilla: si ya está la fila, está guardado. Si no, reintentá.',false);" +
+    "},55000);" +
     "google.script.run.withSuccessHandler(function(r){" +
-    "if(b)b.disabled=false;" +
+    "unlock();" +
     "if(r&&r.ok){setMsg('Guardado correctamente.',true);f.reset();" +
     "var u=document.getElementById('unidad');if(u&&defaultUnidad)u.value=defaultUnidad;}" +
     "else{setMsg((r&&r.message)||'No se pudo guardar',false);}" +
     "}).withFailureHandler(function(err){" +
-    "if(b)b.disabled=false;setMsg(String(err||'Error'),false);" +
-    "}).savePublicationAdmin_(data);" +
+    "unlock();setMsg(String(err||'Error'),false);" +
+    "}).savePublicationAdmin(data);" +
     "});" +
     "})();</script></body></html>"
   );

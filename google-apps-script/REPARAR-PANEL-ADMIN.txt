@@ -1,19 +1,30 @@
-# Reparar panel de carga (si ves código al guardar)
+# Reparar panel de carga (quedó en «Guardando…»)
 
-Si al guardar aparece texto con panel-carga.html?saved=1:
-→ la implementación web TODAVÍA es la versión vieja.
-→ Igual el guardado suele haber funcionado (revisá la planilla).
+Causa típica (2026-08): al guardar, el script intentaba escribir en la pestaña
+gigante `indice_openalex` de Looker y el panel se congelaba.
 
 ## Cómo saber si ya está actualizado
-Al abrir el panel debe verse el sello verde **Panel v4** al lado del título.
-Si no está, la web sigue sirviendo código viejo.
+Al abrir el panel debe verse el sello verde **Panel v5**.
+Si dice Panel v4 (o no hay sello), la web sigue con código viejo.
 
 ## Pasos (obligatorio: Nueva versión)
-1. script.google.com → proyecto Publicaciones Página Web
-2. Pegá TODO PublicacionesWeb.gs del repo (Cmd+A / Cmd+C / Cmd+V) → Guardar
-3. Implementar → Administrar implementaciones → ícono lápiz
+1. https://script.google.com → proyecto **Publicaciones Página Web**
+   (cuenta investigacion@uccuyo.edu.ar)
+2. Abrí `PublicacionesWeb.gs` y pegá TODO el archivo del repo:
+   `observatorio-ia/google-apps-script/PublicacionesWeb.gs`
+   (Cmd+A → Cmd+C en Cursor → en Apps Script Cmd+A → Cmd+V → Cmd+S)
+3. Implementar → Administrar implementaciones → ícono lápiz (la de /exec)
 4. Versión: **Nueva versión** (no “Usar versión anterior”)
 5. Implementar
-6. Cerrá pestañas viejas del panel y abrí de nuevo desde el Observatorio
+6. Cerrá pestañas viejas del panel y abrí de nuevo:
+   https://observatorio-ia.uccuyo.edu.ar/#publicaciones
+   → «Ingreso equipo · Cargar publicaciones»
 
-Si solo guardás el .gs sin “Nueva versión”, el /exec sigue con el código viejo.
+## Comprobar
+- Debe decir **Panel v5**
+- Al guardar: «Guardado correctamente» (no se queda en Guardando…)
+- La fila aparece en la planilla:
+  https://docs.google.com/spreadsheets/d/18xXPRok4kVF81hkEDDlfDf8Vx-KI2HeywZNFSXkozwU/edit
+
+Si una carga quedó a medias, mirá la planilla antes de volver a guardar
+(para no duplicar «San Juan tendrá un gemelo»).
