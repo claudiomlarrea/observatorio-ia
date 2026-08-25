@@ -1,0 +1,223 @@
+{
+  "format": "planifica-deporte-backup",
+  "version": 1,
+  "title": "Deporte SA — PEI 2026–2030 (clase)",
+  "payload": {
+    "org": {
+      "nombre": "Deporte SA",
+      "tipo": "Asociación",
+      "pais": "Argentina",
+      "provincia": "Buenos Aires",
+      "region": "Argentina · Buenos Aires",
+      "contacto_nombre": "Dirección de planificación",
+      "contacto_email": "planificacion@deportesa.ejemplo",
+      "horizonte_anios": 5
+    },
+    "pei": {
+      "nombre": "Primer Plan Estratégico Institucional Deporte SA 2026–2030",
+      "periodo": "2026–2030",
+      "version": "1.0",
+      "aprobado_por": "Pendiente — Comisión directiva / Asamblea (demostración de clase)",
+      "fecha_aprobacion": ""
+    },
+    "proyecto_guia": {
+      "nombre": "Circuito formativo regional de iniciación deportiva",
+      "objetivo": "Aumentar la participación de niños y niñas de 6 a 12 años en programas federados, con medición trimestral de afiliados y clubes sede.",
+      "inicio": "2026",
+      "fin": "2028",
+      "gestor": "Área de desarrollo deportivo",
+      "vinculo_estrategico": "Prioridad 1 — Crecimiento de la base · Objetivo SMART: +15% afiliados infantiles en 24 meses.",
+      "criterios_exito": "Nº de sedes activas · Nº de participantes nuevos · % retención al segundo año · Satisfacción de clubes (encuesta ≥ 4/5).",
+      "presupuesto": "ARS 18.000.000 (estimado 2026–2027)"
+    },
+    "proyecto_preguntas": {
+      "alineacion_mision": true,
+      "normativa": true,
+      "recursos": true,
+      "medicion": true,
+      "partes_interesadas": true,
+      "riesgos": true
+    },
+    "foda": {
+      "fortalezas": "Red de clubes afiliados con presencia en varias ciudades.\nDirigentes con trayectoria y buena imagen pública.\nVoluntarios comprometidos en competencias y escuelas.\nMarca institucional reconocida en el ámbito local.",
+      "debilidades": "No hay PEI formal previo (se construye ahora).\nFormación desigual de entrenadores entre clubes.\nBase de datos de afiliados incompleta o desactualizada.\nDependencia alta de cuotas y pocos ingresos diversificados.",
+      "oportunidades": "Programas escolares y convenios con municipios.\nPatrocinio de empresas locales interesadas en deporte base.\nFondos públicos o privados para desarrollo e inclusión.\nCreciente demanda de deporte formativo y valores.",
+      "amenazas": "Competencia de otras disciplinas por el tiempo libre.\nRotación de dirigentes y pérdida de continuidad.\nInflación y costos de instalaciones/viajes.\nBaja retención de voluntarios en eventos grandes."
+    },
+    "cimientos": {
+      "vision": "Ser la organización de referencia en la provincia por el desarrollo deportivo formativo, la transparencia de gestión y la articulación con clubes, escuelas y familias hacia 2030.",
+      "mision": "Planificar, coordinar y evaluar el deporte federado de Deporte SA: formar entrenadores, fortalecer clubes, organizar competencias formativas y promover valores olímpicos con indicadores claros y participación de la comunidad.",
+      "valores": "Respeto · Excelencia · Transparencia · Inclusión · Trabajo en equipo · Responsabilidad social"
+    },
+    "prioridades": "1. Crecimiento de la base formativa\n2. Formación y certificación de entrenadores\n3. Competencias y visibilidad institucional\n4. Sostenibilidad financiera y diversificación de ingresos\n5. Gobernanza, datos y evaluación continua",
+    "objetivos_smart": "Aumentar afiliados infantiles (6–12) un 15% en 24 meses.\nCapacitar y certificar a 60 entrenadores en 18 meses.\nOrganizar 8 torneos/circuitos formativos por año con sede rotativa.\nIncorporar 4 sponsors o convenios institucionales antes de fin de 2027.\nPublicar un informe de avance del PEI cada trimestre al comité.",
+    "acciones": [
+      {
+        "prioridad": "Crecimiento de la base formativa",
+        "accion": "Abrir escuelas de iniciación en 12 clubes afiliados",
+        "responsable": "Área de desarrollo",
+        "plazo": "2026–2027",
+        "kpi": "Escuelas de iniciación activas",
+        "recursos": "Material didáctico, tatamis/equipamiento, becas parciales",
+        "estado": "En curso"
+      },
+      {
+        "prioridad": "Formación y certificación de entrenadores",
+        "accion": "Ciclo anual de cursos de certificación (2 cohortes/año)",
+        "responsable": "Secretaría técnica",
+        "plazo": "2026–2028",
+        "kpi": "Entrenadores certificados en el período",
+        "recursos": "Docentes, aula/virtual, material COI/federativo",
+        "estado": "Planificado"
+      },
+      {
+        "prioridad": "Competencias y visibilidad institucional",
+        "accion": "Calendario de 8 eventos formativos con difusión unificada",
+        "responsable": "Comisión de competencias + comunicación",
+        "plazo": "Anual 2026–2030",
+        "kpi": "Eventos formativos realizados",
+        "recursos": "Sedés, jueces, live/redes, protocolo",
+        "estado": "Planificado"
+      },
+      {
+        "prioridad": "Sostenibilidad financiera y diversificación de ingresos",
+        "accion": "Cartera de patrocinio y convenios municipales",
+        "responsable": "Presidencia / marketing",
+        "plazo": "2026–2027",
+        "kpi": "Sponsors o convenios firmados",
+        "recursos": "Dossier comercial, CRM básico, eventos de networking",
+        "estado": "En curso"
+      },
+      {
+        "prioridad": "Gobernanza, datos y evaluación continua",
+        "accion": "Publicar informe trimestral de avance del PEI al comité ejecutivo",
+        "responsable": "Dirección de planificación",
+        "plazo": "Trimestral 2026–2030",
+        "kpi": "Informes de avance del PEI publicados",
+        "recursos": "Tablero Rumbo Deporte, actas, planilla de KPI",
+        "estado": "En curso"
+      }
+    ],
+    "rendimiento": {
+      "kpis": "Escuelas de iniciación activas\nEntrenadores certificados en el período\nEventos formativos realizados\nSponsors o convenios firmados\nInformes de avance del PEI publicados",
+      "frecuencia_evaluacion": "Seguimiento mensual operativo (tablero de actividades).\nRevisión trimestral de KPI vs. meta en comité ejecutivo.\nEvaluación anual del PEI (esperado vs. real) con ajuste de acciones.",
+      "informes_comite": "Informe mensual de avance de actividades (módulo Tablero).\nInforme trimestral al comité: semáforo de prioridades, riesgos y decisiones.\nInforme anual a asamblea: cumplimiento de objetivos SMART y propuesta de ajuste."
+    },
+    "rrhh": {
+      "roles_clave": "Director/a de planificación · Secretario/a técnico/a · Coordinador/a de desarrollo de clubes · Responsable de competencias · Comunicación y marketing · Tesorero/a · Referentes de voluntariado por sede.",
+      "brechas_formacion": "Gestión de proyectos y PEI en dirigentes.\nUso de indicadores y tableros.\nFormación pedagógica de entrenadores en iniciación.\nHerramientas digitales básicas (planillas, CRM, difusión).",
+      "reclutamiento": "Perfiles por competencias (técnicas + liderazgo + comunicación).\nPriorizar referentes de clubes con trayectoria formativa.\nConvenios con universidades / tecnicaturas en deporte para pasantías."
+    },
+    "voluntarios": {
+      "necesidades": "Mesas de control en torneos · logística de sedes · difusión · acompañamiento en escuelas infantiles · fotografía/redes · apoyo médico básico en eventos.",
+      "motivaciones": "Servicio a la comunidad · familia en el deporte · prestigio y pertenencia · experiencia profesional / CV · networking.",
+      "formacion": "Inducción de 2 h antes de cada evento grande.\nGuía escrita de roles.\nCapacitación anual en primeros auxilios y protocolo de menores.",
+      "reconocimiento": "Acreditación visible · certificado anual · mención en asamblea · acceso preferente a cursos · feedback post-evento."
+    },
+    "proyectos_cartera": [],
+    "actividades": [
+      {
+        "id": "act_clase_1",
+        "titulo": "Abrir 6 escuelas de iniciación en clubes del conurbano",
+        "prioridad": "Crecimiento de la base formativa",
+        "objetivo": "Aumentar afiliados infantiles (6–12) un 15% en 24 meses.",
+        "accion_pei": "Abrir escuelas de iniciación en 12 clubes afiliados",
+        "responsable": "Área de desarrollo",
+        "periodo": "2026-S1",
+        "fecha_inicio": "2026-02-01",
+        "fecha_fin": "2026-07-31",
+        "estado": "En curso",
+        "kpi_nombre": "Escuelas de iniciación activas",
+        "meta": 6,
+        "avance": 3,
+        "unidad": "escuelas",
+        "notas": "Ejemplo de clase: avance a mitad de camino — útil para mostrar semáforo en el tablero."
+      },
+      {
+        "id": "act_clase_2",
+        "titulo": "Cohorte 1 — certificación de entrenadores",
+        "prioridad": "Formación y certificación de entrenadores",
+        "objetivo": "Capacitar y certificar a 60 entrenadores en 18 meses.",
+        "accion_pei": "Ciclo anual de cursos de certificación (2 cohortes/año)",
+        "responsable": "Secretaría técnica",
+        "periodo": "2026-Q1",
+        "fecha_inicio": "2026-03-01",
+        "fecha_fin": "2026-05-15",
+        "estado": "Cumplida",
+        "kpi_nombre": "Entrenadores certificados en el período",
+        "meta": 25,
+        "avance": 28,
+        "unidad": "personas",
+        "notas": "Meta superada — ejemplo de Cumplida en tablero."
+      },
+      {
+        "id": "act_clase_3",
+        "titulo": "Torneo formativo regional — sede La Plata",
+        "prioridad": "Competencias y visibilidad institucional",
+        "objetivo": "Organizar 8 torneos/circuitos formativos por año con sede rotativa.",
+        "accion_pei": "Calendario de 8 eventos formativos con difusión unificada",
+        "responsable": "Comisión de competencias",
+        "periodo": "2026-Q2",
+        "fecha_inicio": "2026-05-10",
+        "fecha_fin": "2026-05-11",
+        "estado": "Planificada",
+        "kpi_nombre": "Eventos formativos realizados",
+        "meta": 1,
+        "avance": 0,
+        "unidad": "eventos",
+        "notas": "Aún no ejecutada — aparece en tablero como Planificada."
+      },
+      {
+        "id": "act_clase_4",
+        "titulo": "Firma de 2 convenios de patrocinio local",
+        "prioridad": "Sostenibilidad financiera y diversificación de ingresos",
+        "objetivo": "Incorporar 4 sponsors o convenios institucionales antes de fin de 2027.",
+        "accion_pei": "Cartera de patrocinio y convenios municipales",
+        "responsable": "Marketing / Presidencia",
+        "periodo": "2026",
+        "fecha_inicio": "2026-01-15",
+        "fecha_fin": "2026-12-15",
+        "estado": "En curso",
+        "kpi_nombre": "Sponsors o convenios firmados",
+        "meta": 2,
+        "avance": 1,
+        "unidad": "convenios",
+        "notas": "1 de 2 — ejemplo de avance parcial."
+      },
+      {
+        "id": "act_clase_5",
+        "titulo": "Informe trimestral Q1 al comité ejecutivo",
+        "prioridad": "Gobernanza, datos y evaluación continua",
+        "objetivo": "Publicar un informe de avance del PEI cada trimestre al comité.",
+        "accion_pei": "Publicar informe trimestral de avance del PEI al comité ejecutivo",
+        "responsable": "Dirección de planificación",
+        "periodo": "2026-Q1",
+        "fecha_inicio": "2026-03-20",
+        "fecha_fin": "2026-04-05",
+        "estado": "Cumplida",
+        "kpi_nombre": "Informes de avance del PEI publicados",
+        "meta": 1,
+        "avance": 1,
+        "unidad": "informes",
+        "notas": "Vincula el módulo Indicadores (KPI) con el Tablero."
+      },
+      {
+        "id": "act_clase_6",
+        "titulo": "Borrador de campaña de captación escolar (no monitorear aún)",
+        "prioridad": "Crecimiento de la base formativa",
+        "objetivo": "Aumentar afiliados infantiles (6–12) un 15% en 24 meses.",
+        "accion_pei": "Abrir escuelas de iniciación en 12 clubes afiliados",
+        "responsable": "Área de desarrollo",
+        "periodo": "2026",
+        "fecha_inicio": "",
+        "fecha_fin": "",
+        "estado": "Borrador",
+        "kpi_nombre": "Escuelas de iniciación activas",
+        "meta": 5,
+        "avance": 0,
+        "unidad": "escuelas",
+        "notas": "Ejemplo didáctico: los Borradores NO entran al tablero hasta cambiar de estado."
+      }
+    ]
+  }
+}
