@@ -362,10 +362,10 @@ function recolectarArchivos_(folder, mimeOk, kind, out, depth) {
     }
 
     out.push({
-      title: title || name,
-      author: meta.author || "",
-      area: meta.area || "",
-      universidad: meta.universidad || "",
+      title: normalizarTituloCatalogo_(title || name),
+      author: normalizarTituloCatalogo_(meta.author || ""),
+      area: normalizarTituloCatalogo_(meta.area || ""),
+      universidad: normalizarTituloCatalogo_(meta.universidad || ""),
       fileName: name,
       fileId: f.getId(),
       fileUrl: f.getUrl(),
@@ -496,6 +496,76 @@ function leerTituloGoogleSlides_(fileId) {
   return parsed.title || name;
 }
 
+/**
+ * Si el título viene casi todo en MAYÚSCULAS (típico de diapositiva o nombre
+ * de archivo), lo pasa a mayúsculas iniciales para que el PDF no “cambie” de
+ * tipografía respecto de ítems en minúsculas/mixtas.
+ */
+function esMayusculasDominante_(s) {
+  var letters = String(s || "").replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g, "");
+  if (letters.length < 4) return false;
+  var up = 0;
+  for (var i = 0; i < letters.length; i++) {
+    var ch = letters.charAt(i);
+    if (ch === ch.toUpperCase() && ch !== ch.toLowerCase()) up++;
+  }
+  return up / letters.length >= 0.75;
+}
+
+function normalizarTituloCatalogo_(s) {
+  s = String(s || "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!s || !esMayusculasDominante_(s)) return s;
+  var lower = s.toLocaleLowerCase("es-AR");
+  var small = {
+    de: 1,
+    del: 1,
+    la: 1,
+    las: 1,
+    el: 1,
+    los: 1,
+    y: 1,
+    e: 1,
+    o: 1,
+    u: 1,
+    en: 1,
+    a: 1,
+    al: 1,
+    por: 1,
+    para: 1,
+    con: 1,
+    un: 1,
+    una: 1,
+    unos: 1,
+    unas: 1
+  };
+  return lower.replace(/(^|[\s\-—·\/:(])([^\s\-—·\/:(]+)/g, function (m, sep, word) {
+    var bare = word.replace(/[.,;:!?»«"'”]+$/g, "");
+    var trail = word.slice(bare.length);
+    if (sep !== "" && small[bare]) return sep + bare + trail;
+    if (!bare) return sep + word;
+    return (
+      sep +
+      bare.charAt(0).toLocaleUpperCase("es-AR") +
+      bare.slice(1) +
+      trail
+    );
+  });
+}
+
+/** Fuerza la misma familia/tamaño en todo el catálogo (evita saltos al exportar PDF). */
+function estiloCatalogo_(p, sizePt, opt) {
+  opt = opt || {};
+  p.setFontFamily("Arial");
+  p.setFontSize(sizePt);
+  if (opt.bold) p.setBold(true);
+  if (opt.color) p.setForegroundColor(opt.color);
+  if (opt.align) p.setAlignment(opt.align);
+  if (opt.spacingAfter != null) p.setSpacingAfter(opt.spacingAfter);
+  return p;
+}
+
 function escribirCatalogoPdf_(folder, fileName, titulo, subtitulo, items, labelPlural) {
   // Borrar PDF previo con el mismo nombre en la carpeta de catálogos
   var existing = folder.getFilesByName(fileName);
@@ -506,38 +576,56 @@ function escribirCatalogoPdf_(folder, fileName, titulo, subtitulo, items, labelP
   var doc = DocumentApp.create("TMP · " + fileName.replace(/\.pdf$/i, ""));
   var body = doc.getBody();
   body.clear();
+  // Atributos por defecto del documento: una sola tipografía
+  body.setFontFamily("Arial");
+  body.setFontSize(11);
 
-  var h = body.appendParagraph("UNIVERSIDAD CATÓLICA DE CUYO");
-  h.setHeading(DocumentApp.ParagraphHeading.HEADING2);
-  h.setAlignment(DocumentApp.HorizontalAlignment.CENTER);
+  var center = DocumentApp.HorizontalAlignment.CENTER;
 
-  var h2 = body.appendParagraph("Observatorio de Inteligencia Artificial");
-  h2.setAlignment(DocumentApp.HorizontalAlignment.CENTER);
+  estiloCatalogo_(body.appendParagraph("UNIVERSIDAD CATÓLICA DE CUYO"), 12, {
+    bold: true,
+    align: center,
+    spacingAfter: 2
+  });
 
-  var h3 = body.appendParagraph(titulo);
-  h3.setHeading(DocumentApp.ParagraphHeading.HEADING1);
-  h3.setAlignment(DocumentApp.HorizontalAlignment.CENTER);
+  estiloCatalogo_(body.appendParagraph("Observatorio de Inteligencia Artificial"), 11, {
+    align: center,
+    spacingAfter: 8
+  });
 
-  var sub = body.appendParagraph(subtitulo);
-  sub.setAlignment(DocumentApp.HorizontalAlignment.CENTER);
+  estiloCatalogo_(body.appendParagraph(titulo), 16, {
+    bold: true,
+    align: center,
+    spacingAfter: 4
+  });
 
-  var meta = body.appendParagraph(
-    "Actualizado: " +
-      Utilities.formatDate(new Date(), "America/Argentina/Buenos_Aires", "dd/MM/yyyy HH:mm") +
-      " (Argentina) · " +
-      items.length +
-      " " +
-      labelPlural +
-      " · Orden alfabético por título"
+  estiloCatalogo_(body.appendParagraph(subtitulo), 11, {
+    align: center,
+    spacingAfter: 4
+  });
+
+  estiloCatalogo_(
+    body.appendParagraph(
+      "Actualizado: " +
+        Utilities.formatDate(new Date(), "America/Argentina/Buenos_Aires", "dd/MM/yyyy HH:mm") +
+        " (Argentina) · " +
+        items.length +
+        " " +
+        labelPlural +
+        " · Orden alfabético por título"
+    ),
+    9,
+    { align: center, color: "#555555", spacingAfter: 12 }
   );
-  meta.setAlignment(DocumentApp.HorizontalAlignment.CENTER);
-
-  body.appendParagraph("");
 
   if (!items.length) {
-    body.appendParagraph(
-      "Todavía no hay archivos cargados en la carpeta correspondiente. " +
-        "Este catálogo se actualizará automáticamente cuando se suban nuevos trabajos."
+    estiloCatalogo_(
+      body.appendParagraph(
+        "Todavía no hay archivos cargados en la carpeta correspondiente. " +
+          "Este catálogo se actualizará automáticamente cuando se suban nuevos trabajos."
+      ),
+      11,
+      {}
     );
   } else {
     for (var i = 0; i < items.length; i++) {
@@ -545,22 +633,26 @@ function escribirCatalogoPdf_(folder, fileName, titulo, subtitulo, items, labelP
       var line = i + 1 + ". " + it.title;
       if (it.author) line += " — " + it.author;
       if (it.area) line += " (" + it.area + ")";
-      var p = body.appendParagraph(line);
-      p.setSpacingAfter(6);
+      estiloCatalogo_(body.appendParagraph(line), 11, {
+        bold: true,
+        spacingAfter: 2
+      });
       if (it.fileName && it.fileName !== it.title) {
-        var fn = body.appendParagraph("    Archivo: " + it.fileName);
-        fn.setForegroundColor("#555555");
-        fn.setFontSize(9);
+        estiloCatalogo_(body.appendParagraph("    Archivo: " + it.fileName), 9, {
+          color: "#555555",
+          spacingAfter: 10
+        });
       }
     }
   }
 
-  body.appendParagraph("");
-  var foot = body.appendParagraph(
-    "Generado automáticamente por el Observatorio de IA · UCCuyo · observatorioia@uccuyo.edu.ar"
+  estiloCatalogo_(
+    body.appendParagraph(
+      "Generado automáticamente por el Observatorio de IA · UCCuyo · observatorioia@uccuyo.edu.ar"
+    ),
+    9,
+    { color: "#666666", spacingAfter: 0 }
   );
-  foot.setFontSize(9);
-  foot.setForegroundColor("#666666");
 
   doc.saveAndClose();
 
