@@ -55,33 +55,51 @@
     });
   });
 
-  /* Desktop: mantener el submenú abierto al pasar el mouse (sin hueco) */
-  nav.querySelectorAll(".has-submenu").forEach(function (item) {
+  /* Desktop: un solo submenú activo; cierre con demora al salir */
+  (function () {
+    var desktopHover = window.matchMedia("(hover: hover) and (pointer: fine)");
     var closeTimer = null;
-    var btn = item.querySelector(".nav-submenu-toggle");
+    var activeItem = null;
 
-    function openItem() {
+    function setOpen(item, open) {
+      if (!item) return;
+      item.classList.toggle("is-open", open);
+      var btn = item.querySelector(".nav-submenu-toggle");
+      if (btn) btn.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+
+    function openItem(item) {
       if (closeTimer) {
         clearTimeout(closeTimer);
         closeTimer = null;
       }
-      cerrarSubmenus(item);
-      item.classList.add("is-open");
-      if (btn) btn.setAttribute("aria-expanded", "true");
+      if (activeItem && activeItem !== item) setOpen(activeItem, false);
+      activeItem = item;
+      setOpen(item, true);
     }
 
-    function scheduleClose() {
+    function scheduleClose(item) {
       if (closeTimer) clearTimeout(closeTimer);
       closeTimer = setTimeout(function () {
-        item.classList.remove("is-open");
-        if (btn) btn.setAttribute("aria-expanded", "false");
+        if (activeItem === item) {
+          setOpen(item, false);
+          activeItem = null;
+        }
         closeTimer = null;
-      }, 180);
+      }, 320);
     }
 
-    item.addEventListener("mouseenter", openItem);
-    item.addEventListener("mouseleave", scheduleClose);
-  });
+    nav.querySelectorAll(".has-submenu").forEach(function (item) {
+      item.addEventListener("mouseenter", function () {
+        if (!desktopHover.matches) return;
+        openItem(item);
+      });
+      item.addEventListener("mouseleave", function () {
+        if (!desktopHover.matches) return;
+        scheduleClose(item);
+      });
+    });
+  })();
 
   nav.querySelectorAll('a:not([href="#inicio"])').forEach(function (link) {
     link.addEventListener("click", function () {
