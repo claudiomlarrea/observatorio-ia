@@ -11,6 +11,7 @@ html {
   scroll-behavior: smooth;
   /* Compensa el header sticky al ir a #anclas (p. ej. desde el flayer) */
   scroll-padding-top: calc(var(--header-h) + 1rem);
+  overflow-x: clip;
 }
 
 body {
@@ -20,6 +21,7 @@ body {
   line-height: 1.65;
   color: var(--color-text);
   background: var(--color-surface);
+  overflow-x: clip;
 }
 
 img {
@@ -113,12 +115,15 @@ a:hover {
 .header-inner {
   max-width: var(--max);
   margin: 0 auto;
-  padding: 0 1rem 0 0.45rem;
-  height: 100%;
+  padding: 0.5rem 1rem;
+  min-height: var(--header-bar-h);
+  width: 100%;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: 0.5rem 0.75rem;
+  min-width: 0;
 }
 
 .lang-switcher {
@@ -194,8 +199,8 @@ a:hover {
   gap: 0.55rem;
   text-decoration: none;
   color: inherit;
-  flex-shrink: 0;
   min-width: 0;
+  flex: 1 1 auto;
 }
 
 /* Logo PNG: recorte circular para evitar esquinas blancas del lienzo cuadrado */
@@ -241,7 +246,7 @@ a:hover {
   display: flex;
   flex-direction: column;
   line-height: 1.2;
-  white-space: nowrap;
+  min-width: 0;
 }
 
 .brand-kicker {
@@ -250,7 +255,6 @@ a:hover {
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--color-on-dark-muted);
-  white-space: nowrap;
 }
 
 .brand-title {
@@ -258,11 +262,11 @@ a:hover {
   font-size: 1rem;
   font-weight: 600;
   color: var(--color-on-dark);
-  white-space: nowrap;
 }
 
 .nav-toggle {
   display: none;
+  flex-shrink: 0;
   border: 1px solid rgba(255, 255, 255, 0.35);
   background: rgba(255, 255, 255, 0.1);
   border-radius: var(--radius);
@@ -2057,13 +2061,25 @@ form.simple-form small {
   }
 
   .header-inner {
-    padding: 0 1rem;
+    padding: 0.45rem 0.75rem;
+    gap: 0.4rem;
   }
 
-  .brand-text,
-  .brand-kicker,
+  .brand-kicker {
+    font-size: 0.58rem;
+    letter-spacing: 0.03em;
+  }
+
   .brand-title {
-    white-space: normal;
+    font-size: 0.92rem;
+  }
+
+  .lang-switcher__flag {
+    display: none;
+  }
+
+  .lang-switcher__btn {
+    padding: 0.32rem 0.45rem;
   }
 
   .site-nav {
