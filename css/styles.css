@@ -2711,19 +2711,15 @@ form.simple-form small {
 }
 
 .jornadas-step {
-  position: relative;
-  padding-top: 1.75rem;
   min-width: 0;
   overflow: hidden;
 }
 
 .jornadas-step-num {
-  position: absolute;
-  top: -0.65rem;
-  left: 1.25rem;
+  position: static;
   width: 2.15rem;
   height: 2.15rem;
-  margin: 0;
+  margin: 0 0 0.85rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2750,7 +2746,7 @@ form.simple-form small {
 }
 
 .jornadas-step h3 {
-  margin-top: 0.25rem;
+  margin-top: 0;
 }
 
 .jornadas-step .tile-actions--jornadas {
