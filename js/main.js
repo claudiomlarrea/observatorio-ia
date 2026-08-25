@@ -45,6 +45,7 @@
   nav.querySelectorAll(".nav-submenu-toggle").forEach(function (btn) {
     btn.addEventListener("click", function (e) {
       e.preventDefault();
+      e.stopPropagation();
       var item = btn.closest(".has-submenu");
       if (!item) return;
       var willOpen = !item.classList.contains("is-open");
@@ -52,6 +53,34 @@
       item.classList.toggle("is-open", willOpen);
       btn.setAttribute("aria-expanded", willOpen ? "true" : "false");
     });
+  });
+
+  /* Desktop: mantener el submenú abierto al pasar el mouse (sin hueco) */
+  nav.querySelectorAll(".has-submenu").forEach(function (item) {
+    var closeTimer = null;
+    var btn = item.querySelector(".nav-submenu-toggle");
+
+    function openItem() {
+      if (closeTimer) {
+        clearTimeout(closeTimer);
+        closeTimer = null;
+      }
+      cerrarSubmenus(item);
+      item.classList.add("is-open");
+      if (btn) btn.setAttribute("aria-expanded", "true");
+    }
+
+    function scheduleClose() {
+      if (closeTimer) clearTimeout(closeTimer);
+      closeTimer = setTimeout(function () {
+        item.classList.remove("is-open");
+        if (btn) btn.setAttribute("aria-expanded", "false");
+        closeTimer = null;
+      }, 180);
+    }
+
+    item.addEventListener("mouseenter", openItem);
+    item.addEventListener("mouseleave", scheduleClose);
   });
 
   nav.querySelectorAll('a:not([href="#inicio"])').forEach(function (link) {
@@ -65,7 +94,7 @@
   });
 
   document.addEventListener("click", function (e) {
-    if (!nav.contains(e.target) && !toggle.contains(e.target)) {
+    if (!nav.contains(e.target) && !(toggle && toggle.contains(e.target))) {
       cerrarSubmenus();
     }
   });

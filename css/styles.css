@@ -298,6 +298,12 @@ a:hover {
   position: relative;
 }
 
+.site-nav .has-submenu {
+  /* Amplía el área de hover hacia abajo para no “perder” el menú */
+  padding-bottom: 0.55rem;
+  margin-bottom: -0.55rem;
+}
+
 .site-nav a,
 .site-nav .nav-submenu-toggle {
   color: var(--color-on-dark-muted);
@@ -337,17 +343,26 @@ a:hover {
 .site-nav .nav-submenu {
   display: none;
   position: absolute;
-  top: calc(100% + 0.35rem);
+  top: 100%;
   right: 0;
   min-width: 14.5rem;
-  padding: 0.45rem;
   margin: 0;
+  padding: 0.45rem;
   list-style: none;
   background: #fff;
   border: 1px solid rgba(122, 21, 50, 0.14);
   border-radius: 10px;
   box-shadow: 0 14px 32px rgba(40, 10, 20, 0.22);
-  z-index: 40;
+  z-index: 200;
+}
+
+.site-nav .nav-submenu::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -0.65rem;
+  height: 0.65rem;
 }
 
 .site-nav .nav-submenu a {
@@ -369,7 +384,8 @@ a:hover {
 
 @media (hover: hover) and (pointer: fine) {
   .site-nav .has-submenu:hover > .nav-submenu,
-  .site-nav .has-submenu:focus-within > .nav-submenu {
+  .site-nav .has-submenu:focus-within > .nav-submenu,
+  .site-nav .has-submenu.is-open > .nav-submenu {
     display: block;
   }
 
@@ -382,6 +398,11 @@ a:hover {
 
 .site-nav .has-submenu.is-open > .nav-submenu {
   display: block;
+}
+
+.site-nav {
+  position: relative;
+  z-index: 60;
 }
 
 .btn {
@@ -2068,6 +2089,15 @@ form.simple-form small {
 
   .site-nav .nav-item {
     width: 100%;
+  }
+
+  .site-nav .has-submenu {
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+
+  .site-nav .nav-submenu::before {
+    display: none;
   }
 
   .site-nav a,
