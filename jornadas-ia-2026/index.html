@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="App de Consulta · Jornadas IA 2026: horario, ponencias, artículos, PowerPoint, área y expositores."
+    />
+    <meta name="theme-color" content="#7A1532" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Jornadas IA" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <title>App de Consulta · Jornadas IA 2026</title>
+    <link rel="icon" type="image/png" href="assets/icon-192.png" />
+    <link rel="apple-touch-icon" href="assets/icon-180.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="css/fonts.css?v=1" />
+    <link rel="stylesheet" href="css/styles.css?v=1" />
+    <link rel="stylesheet" href="css/instalar.css?v=1" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido" data-i18n="a11y.skipLink">Ir al contenido</a>
+    <div id="offline-banner" class="offline-banner" hidden role="status">
+      <span data-i18n="offline.banner">Sin conexión — usando la versión guardada en este celular</span>
+    </div>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <img
+          class="brand-logo"
+          src="assets/logo-observatorio-ia.png"
+          width="96"
+          height="96"
+          alt="Observatorio de Inteligencia Artificial — UCCuyo"
+          decoding="async"
+          data-i18n-attr="alt:a11y.logoAlt"
+        />
+        <div class="brand-copy">
+          <p class="brand-kicker" data-i18n="brand.kicker">
+            Jornadas IA 2026 · Observatorio de IA · UCCuyo
+          </p>
+          <h1 class="brand-title" data-i18n="brand.title">App de Consulta</h1>
+          <p class="brand-sub" data-i18n="brand.sub">¿Qué querés encontrar?</p>
+          <p class="brand-dates" data-i18n="brand.dates">6 de octubre de 2026 · 15:00 · Virtual</p>
+          <p class="brand-status" data-i18n="brand.status">Programa provisorio · se actualiza con las cargas</p>
+          <a
+            class="pdf-download"
+            href="../assets/jornadas/catalogo-articulos-jornadas-ia-2026.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span data-i18n="pdf.articulos">Catálogo de artículos (PDF)</span>
+          </a>
+          <a
+            class="pdf-download"
+            href="../assets/jornadas/catalogo-presentaciones-jornadas-ia-2026.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span data-i18n="pdf.presentaciones">Catálogo de PowerPoint (PDF)</span>
+          </a>
+          <a class="install-guide-link" href="instalar.html" data-i18n="install.howToShort"
+            >Agregar a la pantalla del celular</a
+          >
+          <a
+            class="install-guide-link"
+            href="../#jornadas-ia"
+            data-i18n="brand.backSite"
+            >Volver a las Jornadas en el sitio</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <nav class="botonera" aria-label="Cómo buscar" id="botonera" data-i18n-attr="aria-label:a11y.botonera">
+      <button type="button" class="mode-btn is-active" data-mode="horario">
+        <span class="mode-icon" aria-hidden="true">Hr</span>
+        <span data-i18n="mode.horario">Horario</span>
+      </button>
+      <button type="button" class="mode-btn" data-mode="ponencias">
+        <span class="mode-icon" aria-hidden="true">Po</span>
+        <span data-i18n="mode.ponencias">Ponencias</span>
+      </button>
+      <button type="button" class="mode-btn" data-mode="articulos">
+        <span class="mode-icon" aria-hidden="true">Ar</span>
+        <span data-i18n="mode.articulos">Artículos</span>
+      </button>
+      <button type="button" class="mode-btn" data-mode="powerpoint">
+        <span class="mode-icon" aria-hidden="true">PP</span>
+        <span data-i18n="mode.powerpoint">PowerPoint</span>
+      </button>
+      <button type="button" class="mode-btn" data-mode="area">
+        <span class="mode-icon" aria-hidden="true">Ár</span>
+        <span data-i18n="mode.area">Área</span>
+      </button>
+      <button type="button" class="mode-btn" data-mode="expositor">
+        <span class="mode-icon" aria-hidden="true">Ex</span>
+        <span data-i18n="mode.expositor">Expositor</span>
+      </button>
+      <button type="button" class="mode-btn mode-btn-agenda" data-mode="agenda">
+        <span class="mode-icon" aria-hidden="true">Ag</span>
+        <span data-i18n="mode.agenda">Agenda</span>
+        <span class="mode-count" id="agenda-count" hidden>0</span>
+      </button>
+      <button type="button" class="mode-btn mode-btn-now" data-mode="ahora">
+        <span class="mode-icon" aria-hidden="true">Now</span>
+        <span data-i18n="mode.ahora">Ahora</span>
+      </button>
+    </nav>
+
+    <main id="contenido" class="main">
+      <section class="step-panel" id="step-panel" aria-live="polite">
+        <div class="step-head">
+          <h2 class="step-title" id="step-title">Elegí un horario</h2>
+          <p class="step-help" id="step-help">Después vas a ver las actividades de ese tramo.</p>
+        </div>
+        <div class="step-tools" id="step-tools" hidden>
+          <label class="sr-only" for="person-filter" data-i18n="a11y.personFilter"
+            >Filtrar nombres</label
+          >
+          <input
+            id="person-filter"
+            class="person-filter"
+            type="search"
+            placeholder="Escribí un apellido o nombre…"
+            autocomplete="off"
+            data-i18n-attr="placeholder:person.filterPlaceholder"
+          />
+        </div>
+        <div
+          class="option-grid"
+          id="option-grid"
+          role="listbox"
+          aria-label="Opciones"
+          data-i18n-attr="aria-label:a11y.options"
+        ></div>
+      </section>
+
+      <section
+        class="results"
+        id="results"
+        aria-label="Resultados"
+        data-i18n-attr="aria-label:a11y.results"
+        hidden
+      >
+        <div class="results-head">
+          <h2 class="results-title" id="results-title" data-i18n="results.title">Resultados</h2>
+          <button type="button" class="back-btn" id="back-btn" data-i18n="back.filter">
+            ← Volver
+          </button>
+        </div>
+        <div id="results-body"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        <a
+          class="pdf-download-footer"
+          href="../assets/jornadas/catalogo-articulos-jornadas-ia-2026.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-i18n="pdf.articulos"
+          >Catálogo de artículos (PDF)</a
+        >
+        ·
+        <a
+          class="pdf-download-footer"
+          href="../assets/jornadas/catalogo-presentaciones-jornadas-ia-2026.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-i18n="pdf.presentaciones"
+          >Catálogo de PowerPoint (PDF)</a
+        >
+      </p>
+      <p>
+        <span data-i18n="footer.source"
+          >Fuente: programa provisional de las 1° Jornadas internas de IA · UCCuyo.</span
+        >
+        <a
+          href="https://observatorio-ia.uccuyo.edu.ar/#jornadas-ia"
+          data-i18n="footer.official"
+          >Sitio del Observatorio</a
+        >
+      </p>
+      <p class="footer-note" data-i18n="footer.note">
+        App de Consulta · Observatorio de IA · UCCuyo
+      </p>
+    </footer>
+
+    <script src="js/i18n-dict.js?v=1"></script>
+    <script src="js/i18n.js?v=1"></script>
+    <script src="js/install.js?v=1"></script>
+    <script src="js/app.js?v=1" defer></script>
+  </body>
+</html>

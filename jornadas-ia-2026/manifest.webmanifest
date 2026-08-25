@@ -1,0 +1,35 @@
+{
+  "name": "App de Consulta Jornadas IA 2026",
+  "short_name": "Jornadas IA",
+  "description": "Horario, ponencias, artículos, PowerPoint, área y expositores de las Jornadas de IA 2026.",
+  "id": "/observatorio-ia/jornadas-ia-2026/",
+  "start_url": "./?utm_source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#7A1532",
+  "theme_color": "#7A1532",
+  "lang": "es-AR",
+  "dir": "ltr",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

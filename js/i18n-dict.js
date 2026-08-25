@@ -543,6 +543,14 @@ window.I18N_DICT = {
     "es": "Formato previsto: una sola sala. Si al cierre hay 14 o más ponencias confirmadas, se evaluará dividir en dos salas (p. ej. Tecnología / Ciencias).",
     "en": "Planned format: a single room. If 14 or more confirmed talks are reached by the deadline, splitting into two rooms (e.g. Technology / Sciences) will be considered."
   },
+  "sec.jornadas.programa.btnApp": {
+    "es": "Abrir app de consulta del programa",
+    "en": "Open program consultation app"
+  },
+  "sec.jornadas.programa.btnInstall": {
+    "es": "Agregar app al celular",
+    "en": "Add app to phone"
+  },
   "sec.jornadas.programa.foot": {
     "es": "Las ponencias marcadas como provisionales figuran por haber cargado artículo y/o PowerPoint; falta confirmación de exposición el día del evento.",
     "en": "Talks marked provisional appear because an article and/or PowerPoint was uploaded; speaking confirmation for the event day is still pending."

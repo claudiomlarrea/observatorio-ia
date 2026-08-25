@@ -2924,6 +2924,10 @@ form.simple-form small {
   color: var(--color-text-soft, #5c4f54);
 }
 
+.jornadas-programa-actions {
+  margin: 0.25rem 0 0.85rem;
+}
+
 .jornadas-programa-list {
   list-style: none;
   margin: 1rem 0 0.75rem;

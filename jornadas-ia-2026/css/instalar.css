@@ -1,0 +1,241 @@
+.install-page .install-header {
+  padding-bottom: 1.5rem;
+}
+
+.install-main {
+  display: grid;
+  gap: 1rem;
+}
+
+.install-hero-cta {
+  display: grid;
+  gap: 0.75rem;
+  justify-items: center;
+  text-align: center;
+  padding: 1.15rem 1rem 1.25rem;
+  background:
+    radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, #7a1f32 18%, white), transparent 55%),
+    #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 28px rgba(11, 31, 74, 0.08);
+}
+
+.install-cta-btn {
+  appearance: none;
+  border: 0;
+  width: min(100%, 18rem);
+  min-height: 3.35rem;
+  padding: 0.9rem 1.35rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #9a2a40, #7a1f32);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(122, 31, 50, 0.35);
+  touch-action: manipulation;
+}
+
+.install-cta-btn:hover {
+  background: linear-gradient(180deg, #b8334d, #921f3a);
+}
+
+.install-cta-btn:disabled {
+  opacity: 0.72;
+  cursor: default;
+  box-shadow: none;
+}
+
+.install-cta-status {
+  margin: 0;
+  max-width: 26rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.install-cta-back {
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.install-steps-lead {
+  margin: 0 0 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.install-steps-grid {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.install-steps-grid h3 {
+  margin: 0 0 0.45rem;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--navy);
+}
+
+.install-card.is-highlight,
+#ios.is-highlight,
+#android.is-highlight {
+  outline: 3px solid color-mix(in srgb, #7a1f32 55%, white);
+  outline-offset: 2px;
+  transition: outline-color 0.2s ease;
+}
+
+.install-url {
+  margin: 0;
+  padding: 0.95rem 1rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  word-break: break-word;
+}
+
+.install-url a {
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.install-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.05rem 1.1rem;
+}
+
+.install-card h2 {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--navy);
+}
+
+.install-steps {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--text);
+}
+
+.install-steps li {
+  margin: 0.45rem 0;
+  line-height: 1.4;
+}
+
+.install-note p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.install-qr-card {
+  text-align: center;
+}
+
+.install-qr-help {
+  margin: 0 0 0.85rem;
+  color: var(--text-muted);
+}
+
+.install-qr {
+  width: min(100%, 16rem);
+  height: auto;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  background: #fff;
+  padding: 0.65rem;
+}
+
+.install-video {
+  width: 100%;
+  max-width: 22rem;
+  display: block;
+  margin: 0 auto;
+  border-radius: 0.75rem;
+  background: #000;
+}
+
+.install-video-note {
+  margin: 0.65rem 0 0;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.install-video-note a {
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.install-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 50;
+  padding: 0.65rem 0.85rem calc(0.65rem + env(safe-area-inset-bottom));
+  background: color-mix(in srgb, var(--navy) 96%, black);
+  color: #fff;
+  box-shadow: 0 -8px 24px rgba(11, 31, 74, 0.2);
+}
+
+.install-bar-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.install-bar-text {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  flex: 1 1 12rem;
+}
+
+.install-bar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.install-btn {
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--navy);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.82rem;
+  padding: 0.55rem 0.9rem;
+  cursor: pointer;
+}
+
+.install-help {
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.install-dismiss {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.2rem 0.35rem;
+}
