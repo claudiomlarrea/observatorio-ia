@@ -351,14 +351,21 @@ function recolectarArchivos_(folder, mimeOk, kind, out, depth) {
     if (mime === "application/vnd.google-apps.document") {
       try {
         var docTitle = leerTituloGoogleDoc_(f.getId());
-        if (docTitle) title = docTitle;
+        if (docTitle && !esTituloInstitucionalBoilerplate_(docTitle)) title = docTitle;
       } catch (ignoreDoc) {}
     }
     if (mime === "application/vnd.google-apps.presentation") {
       try {
         var slidesTitle = leerTituloGoogleSlides_(f.getId());
-        if (slidesTitle) title = slidesTitle;
+        // Portada institucional ≠ título de la ponencia: preferir nombre de archivo
+        if (slidesTitle && !esTituloInstitucionalBoilerplate_(slidesTitle)) {
+          title = slidesTitle;
+        }
       } catch (ignoreSlides) {}
+    }
+    // Si el título quedó vacío o es basura de portada, usar el del nombre sugerido
+    if (!title || esTituloInstitucionalBoilerplate_(title)) {
+      title = meta.title || name;
     }
 
     out.push({
@@ -497,9 +504,24 @@ function leerTituloGoogleSlides_(fileId) {
 }
 
 /**
+ * Portadas de PPT/Docs institucionales: no sirven como título de catálogo.
+ */
+function esTituloInstitucionalBoilerplate_(t) {
+  var s = String(t || "").replace(/\s+/g, " ").trim();
+  if (!s) return true;
+  if (/^universidad\s+cat[oó]lica\s+de\s+cuyo/i.test(s)) return true;
+  if (/observatorio\s+de\s+(inteligencia\s+artificial|ia)\b/i.test(s) && s.length < 80) {
+    return true;
+  }
+  if (/^uccuyo\b/i.test(s) && s.length < 40) return true;
+  return false;
+}
+
+/**
  * Si el título viene casi todo en MAYÚSCULAS (típico de diapositiva o nombre
  * de archivo), lo pasa a mayúsculas iniciales para que el PDF no “cambie” de
  * tipografía respecto de ítems en minúsculas/mixtas.
+ * También normaliza palabras SUELTAS en MAYÚSCULAS dentro de un título mixto.
  */
 function esMayusculasDominante_(s) {
   var letters = String(s || "").replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g, "");
@@ -512,12 +534,24 @@ function esMayusculasDominante_(s) {
   return up / letters.length >= 0.75;
 }
 
+function palabraTodoMayusculas_(w) {
+  var letters = String(w || "").replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g, "");
+  if (letters.length < 2) return false;
+  for (var i = 0; i < letters.length; i++) {
+    var ch = letters.charAt(i);
+    if (ch !== ch.toUpperCase() || ch === ch.toLowerCase()) return false;
+  }
+  return true;
+}
+
 function normalizarTituloCatalogo_(s) {
   s = String(s || "")
     .replace(/\s+/g, " ")
     .trim();
-  if (!s || !esMayusculasDominante_(s)) return s;
-  var lower = s.toLocaleLowerCase("es-AR");
+  if (!s) return s;
+  // Unificar guiones tipográficos (evitan rarezas al exportar PDF)
+  s = s.replace(/[—–−]/g, "-").replace(/[·•]/g, "-");
+
   var small = {
     de: 1,
     del: 1,
@@ -540,17 +574,44 @@ function normalizarTituloCatalogo_(s) {
     unos: 1,
     unas: 1
   };
-  return lower.replace(/(^|[\s\-—·\/:(])([^\s\-—·\/:(]+)/g, function (m, sep, word) {
+
+  function capitalizarPalabra(word, isFirst, preserveAcronym) {
     var bare = word.replace(/[.,;:!?»«"'”]+$/g, "");
     var trail = word.slice(bare.length);
-    if (sep !== "" && small[bare]) return sep + bare + trail;
-    if (!bare) return sep + word;
-    return (
-      sep +
-      bare.charAt(0).toLocaleUpperCase("es-AR") +
-      bare.slice(1) +
-      trail
-    );
+    var letters = bare.replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g, "");
+    // Siglas cortas (IA, EPH, GEMEPH…): no pasar a “Ia” / “Gemeph”
+    if (preserveAcronym && palabraTodoMayusculas_(bare) && letters.length >= 2 && letters.length <= 8) {
+      return bare + trail;
+    }
+    var low = bare.toLocaleLowerCase("es-AR");
+    if (!isFirst && small[low]) return low + trail;
+    if (!bare) return word;
+    return low.charAt(0).toLocaleUpperCase("es-AR") + low.slice(1) + trail;
+  }
+
+  if (esMayusculasDominante_(s)) {
+    var parts = s.toLocaleLowerCase("es-AR").split(/(\s+|[-/:(])/);
+    var out = [];
+    var firstWord = true;
+    for (var i = 0; i < parts.length; i++) {
+      var part = parts[i];
+      if (!part || /^(\s+|[-/:(])$/.test(part)) {
+        out.push(part);
+        continue;
+      }
+      out.push(capitalizarPalabra(part, firstWord, false));
+      firstWord = false;
+    }
+    return out.join("");
+  }
+
+  // Título mixto: solo corregir tokens 100% MAYÚSCULAS largos de frase;
+  // preservar siglas cortas (GEMEPH, IA, EPH…).
+  return s.replace(/[^\s\-—·\/:(]+/g, function (word, offset) {
+    if (!palabraTodoMayusculas_(word)) return word;
+    var letters = word.replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g, "");
+    if (letters.length <= 8) return word; // sigla
+    return capitalizarPalabra(word, offset === 0, false);
   });
 }
 
@@ -631,7 +692,7 @@ function escribirCatalogoPdf_(folder, fileName, titulo, subtitulo, items, labelP
     for (var i = 0; i < items.length; i++) {
       var it = items[i];
       var line = i + 1 + ". " + it.title;
-      if (it.author) line += " — " + it.author;
+      if (it.author) line += " - " + it.author;
       if (it.area) line += " (" + it.area + ")";
       estiloCatalogo_(body.appendParagraph(line), 11, {
         bold: true,
