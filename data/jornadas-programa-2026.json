@@ -1,0 +1,91 @@
+{
+  "version": "2026-08-25",
+  "estado": "provisorio",
+  "evento": {
+    "titulo": "1° Jornadas internas de Inteligencia Artificial",
+    "fecha": "2026-10-06",
+    "fechaTexto": "6 de octubre de 2026",
+    "horaInicio": "15:00",
+    "modalidad": "Virtual",
+    "minutosPorPonencia": 10,
+    "formatoSalas": "una_sala",
+    "notaFormato": "Por ahora una sola sala virtual. Se evaluará dividir en dos salas (p. ej. Tecnología / Ciencias) si al cierre de expositores (10/9) hay 14 o más ponencias confirmadas."
+  },
+  "items": [
+    {
+      "orden": 1,
+      "hora": "15:00",
+      "horaFin": "15:10",
+      "tipo": "apertura",
+      "titulo": "Palabras de apertura",
+      "persona": "Lic. María Laura Simonassi",
+      "rol": "Rectora",
+      "area": "",
+      "sala": "Plenario",
+      "articuloOk": null,
+      "pptOk": null,
+      "confirmado": true,
+      "notas": ""
+    },
+    {
+      "orden": 2,
+      "hora": "15:10",
+      "horaFin": "15:20",
+      "tipo": "apertura",
+      "titulo": "Presentación del Observatorio de Inteligencia Artificial",
+      "persona": "Dr. Claudio Larrea",
+      "rol": "Director del Observatorio de IA",
+      "area": "Observatorio IA",
+      "sala": "Plenario",
+      "articuloOk": null,
+      "pptOk": null,
+      "confirmado": true,
+      "notas": ""
+    },
+    {
+      "orden": 3,
+      "hora": "15:20",
+      "horaFin": "15:25",
+      "tipo": "indicaciones",
+      "titulo": "Indicaciones técnicas y dinámica de las ponencias",
+      "persona": "Observatorio de IA",
+      "rol": "Coordinación",
+      "area": "",
+      "sala": "Plenario",
+      "articuloOk": null,
+      "pptOk": null,
+      "confirmado": true,
+      "notas": "10 minutos por ponencia"
+    },
+    {
+      "orden": 4,
+      "hora": "15:25",
+      "horaFin": "15:35",
+      "tipo": "ponencia",
+      "titulo": "Sistema de alerta temprana en epidemiología veterinaria",
+      "persona": "Giboin",
+      "rol": "Expositor/a",
+      "area": "Veterinaria",
+      "sala": "Plenario",
+      "articuloOk": true,
+      "pptOk": true,
+      "confirmado": false,
+      "notas": "Incluido desde catálogos Drive (provisorio)"
+    },
+    {
+      "orden": 5,
+      "hora": "15:35",
+      "horaFin": "15:45",
+      "tipo": "ponencia",
+      "titulo": "GEMEPH: gemelo digital sociodemográfico de la EPH-INDEC para simular exclusión digital, vulnerabilidad y brechas territoriales en Argentina",
+      "persona": "Larrea",
+      "rol": "Expositor/a",
+      "area": "Investigación",
+      "sala": "Plenario",
+      "articuloOk": true,
+      "pptOk": true,
+      "confirmado": false,
+      "notas": "Incluido desde catálogos Drive (provisorio)"
+    }
+  ]
+}

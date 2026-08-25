@@ -21,7 +21,91 @@
   }
 
   wireCatalogos_(cfg);
+  wirePrograma_();
 })();
+
+function wirePrograma_() {
+  var list = document.getElementById("jornadas-programa-list");
+  if (!list) return;
+
+  var url = "data/jornadas-programa-2026.json?v=1";
+  fetch(url, { credentials: "omit" })
+    .then(function (r) {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    })
+    .then(function (data) {
+      renderPrograma_(list, data);
+    })
+    .catch(function () {
+      list.innerHTML =
+        "<li class=\"jornadas-programa-item\"><div class=\"jornadas-programa-body\">" +
+        "<p class=\"jornadas-programa-titulo\">No se pudo cargar el programa. Reintentá más tarde.</p>" +
+        "</div></li>";
+    });
+}
+
+function renderPrograma_(list, data) {
+  var items = (data && data.items) || [];
+  if (!items.length) {
+    list.innerHTML = "";
+    return;
+  }
+
+  var tipoLabel = {
+    apertura: "Apertura",
+    indicaciones: "Indicaciones",
+    ponencia: "Ponencia",
+    cierre: "Cierre",
+  };
+
+  var html = "";
+  for (var i = 0; i < items.length; i++) {
+    var it = items[i];
+    var hora =
+      it.hora + (it.horaFin ? "–" + it.horaFin : "");
+    var tipo = tipoLabel[it.tipo] || it.tipo || "";
+    var persona = [it.persona, it.rol].filter(Boolean).join(" · ");
+    var area = it.area ? " · " + it.area : "";
+    var tag = "";
+    if (it.tipo === "ponencia") {
+      if (it.confirmado) {
+        tag =
+          '<span class="jornadas-programa-tag jornadas-programa-tag--ok">Confirmada</span>';
+      } else {
+        tag = '<span class="jornadas-programa-tag">Provisional</span>';
+      }
+    }
+    html +=
+      '<li class="jornadas-programa-item">' +
+      '<p class="jornadas-programa-hora">' +
+      escapeHtml_(hora) +
+      "</p>" +
+      '<div class="jornadas-programa-body">' +
+      (tipo
+        ? '<p class="jornadas-programa-tipo">' + escapeHtml_(tipo) + "</p>"
+        : "") +
+      '<p class="jornadas-programa-titulo">' +
+      escapeHtml_(it.titulo || "") +
+      (tag ? " " + tag : "") +
+      "</p>" +
+      (persona
+        ? '<p class="jornadas-programa-meta">' +
+          escapeHtml_(persona + area) +
+          "</p>"
+        : "") +
+      "</div></li>";
+  }
+  list.innerHTML = html;
+}
+
+function escapeHtml_(s) {
+  return String(s || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
 
 function wireCatalogos_(cfg) {
   var api = String(cfg.CATALOGOS_API_URL || "").trim();
