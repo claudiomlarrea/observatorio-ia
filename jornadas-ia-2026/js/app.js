@@ -467,13 +467,29 @@
   }
 
   function personLastName(full) {
-    const cleaned = full.replace(/\([^)]*\)/g, "").trim();
+    let cleaned = String(full || "")
+      .replace(/\([^)]*\)/g, "")
+      .trim();
+    // Catálogo: "Larrea et al." / "La Malfa et al." → no usar "al." como apellido
+    cleaned = cleaned
+      .replace(/\s+et\s+al\.?\s*$/i, "")
+      .replace(/\s+y\s+cols\.?\s*$/i, "")
+      .trim();
     const parts = cleaned.split(/\s+/).filter(Boolean);
     const withoutTitle = parts.filter(
       (p) =>
         !/^(dr\.?|dra\.?|lic\.?|mg\.?|mgtr\.?|mgter\.?|ing\.?|téc\.?|bioq\.?|periodista)$/i.test(p)
     );
-    return withoutTitle[withoutTitle.length - 1] || cleaned;
+    if (!withoutTitle.length) return cleaned;
+    // Partículas al inicio: "La Malfa" → letra L (no M)
+    const particle =
+      /^(della|delle|del|de|la|las|los|san|santa|van|von|di|da|dos|das)$/i;
+    if (withoutTitle.length >= 2 && particle.test(withoutTitle[0])) {
+      let i = 0;
+      while (i < withoutTitle.length - 1 && particle.test(withoutTitle[i])) i += 1;
+      return withoutTitle.slice(0, i + 1).join(" ");
+    }
+    return withoutTitle[withoutTitle.length - 1];
   }
 
   function collectPeople() {
