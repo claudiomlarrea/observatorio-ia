@@ -665,7 +665,8 @@ body.is-offline .botonera {
   border-left-color: var(--aula-taller);
 }
 
-.session[data-sala="Plenario"] {
+.session[data-sala="Plenario"],
+.session[data-sala="Ponencia"] {
   border-left-color: var(--plenario);
 }
 
