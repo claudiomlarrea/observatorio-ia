@@ -22,7 +22,8 @@
   const AGENDA_REMINDERS_KEY = "jornadas_ia_2026_agenda_reminders";
   const REMINDER_LEAD_MIN = 10;
   const PROGRAM_STORE_KEY = "jornadas_ia_2026_programa";
-  const PROGRAM_VERSION = "1";
+  const PROGRAM_VERSION_KEY = "jornadas_ia_2026_programa_version";
+  const PROGRAM_VERSION = "2";
 
   const state = {
     data: null,
@@ -1148,8 +1149,21 @@
       if (retry) retry.addEventListener("click", () => init());
     };
 
+    const persistProgram = (data) => {
+      try {
+        localStorage.setItem(PROGRAM_STORE_KEY, JSON.stringify(data));
+        localStorage.setItem(PROGRAM_VERSION_KEY, PROGRAM_VERSION);
+      } catch (_e) {}
+    };
+
     const readStoredProgram = () => {
       try {
+        const storedVer = localStorage.getItem(PROGRAM_VERSION_KEY) || "";
+        if (storedVer !== PROGRAM_VERSION) {
+          localStorage.removeItem(PROGRAM_STORE_KEY);
+          localStorage.removeItem(PROGRAM_VERSION_KEY);
+          return null;
+        }
         const raw = localStorage.getItem(PROGRAM_STORE_KEY);
         if (!raw) return null;
         const data = JSON.parse(raw);
@@ -1158,12 +1172,6 @@
       } catch (_e) {
         return null;
       }
-    };
-
-    const persistProgram = (data) => {
-      try {
-        localStorage.setItem(PROGRAM_STORE_KEY, JSON.stringify(data));
-      } catch (_e) {}
     };
 
     const fetchProgram = async () => {
@@ -1179,7 +1187,7 @@
       let lastErr = null;
       for (const url of candidates) {
         try {
-          const res = await fetch(url, { cache: "default" });
+          const res = await fetch(url, { cache: "no-store" });
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const data = await res.json();
           if (!data?.sesiones?.length) throw new Error("empty program");

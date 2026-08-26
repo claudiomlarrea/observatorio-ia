@@ -1,6 +1,6 @@
 /* Service worker — App de Consulta Jornadas IA 2026 (offline-first) */
-const CACHE = "jornadas-ia-2026-v1";
-const DATA_VERSION = "1";
+const CACHE = "jornadas-ia-2026-v2";
+const DATA_VERSION = "2";
 
 const CORE_ASSETS = [
   "./",
@@ -12,7 +12,7 @@ const CORE_ASSETS = [
   "./css/instalar.css?v=1",
   "./js/i18n-dict.js?v=1",
   "./js/i18n.js?v=1",
-  "./js/app.js?v=1",
+  "./js/app.js?v=2",
   "./js/install.js?v=1",
   `./data/programa.json?v=${DATA_VERSION}`,
   "./data/programa.json",
@@ -148,6 +148,12 @@ self.addEventListener("fetch", (event) => {
   if (!sameOrigin(url)) return;
 
   if (isNavigation(req)) {
+    event.respondWith(networkFirst(req));
+    return;
+  }
+
+  // El programa debe ir a red primero (si no, la agenda queda con datos viejos)
+  if (url.pathname.endsWith("/data/programa.json") || url.pathname.endsWith("programa.json")) {
     event.respondWith(networkFirst(req));
     return;
   }
