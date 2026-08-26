@@ -310,7 +310,7 @@ body.is-offline .botonera {
   border-radius: 0.45rem;
   min-height: 3.4rem;
   padding: 0.45rem 0.25rem;
-  background: linear-gradient(180deg, #1a3a78, var(--navy));
+  background: linear-gradient(180deg, #9a2a48, #7a1532);
   color: #fff;
   font-family: var(--font-display);
   font-size: 0.76rem;
@@ -338,11 +338,31 @@ body.is-offline .botonera {
 }
 
 .mode-btn.is-active {
-  background: linear-gradient(180deg, #3f7fd8, #1f4f9c);
   box-shadow:
     0 0 0 2px #fff,
     0 0 0 4px color-mix(in srgb, var(--accent) 70%, white),
     inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  filter: brightness(1.06);
+}
+
+/* Cada modo con color propio (menos monótono) */
+.mode-btn[data-mode="horario"] {
+  background: linear-gradient(180deg, #9a2a48, #7a1532);
+}
+.mode-btn[data-mode="ponencias"] {
+  background: linear-gradient(180deg, #2f5fad, #1a3a78);
+}
+.mode-btn[data-mode="articulos"] {
+  background: linear-gradient(180deg, #2d8a6a, #1a5c48);
+}
+.mode-btn[data-mode="powerpoint"] {
+  background: linear-gradient(180deg, #8b5cf6, #5b21b6);
+}
+.mode-btn[data-mode="area"] {
+  background: linear-gradient(180deg, #3d7a3d, #245524);
+}
+.mode-btn[data-mode="expositor"] {
+  background: linear-gradient(180deg, #3f7fd8, #1f4f9c);
 }
 
 .mode-btn-now {
@@ -370,15 +390,15 @@ body.is-offline .botonera {
 }
 
 .mode-btn-agenda {
-  background: linear-gradient(180deg, #b45309, #92400e);
+  background: linear-gradient(180deg, #d97706, #b45309);
   position: relative;
 }
 
 .mode-btn-agenda.is-active {
-  background: linear-gradient(180deg, #d97706, #b45309);
+  background: linear-gradient(180deg, #f59e0b, #d97706);
   box-shadow:
     0 0 0 2px #fff,
-    0 0 0 4px color-mix(in srgb, #b45309 55%, white),
+    0 0 0 4px color-mix(in srgb, #d97706 55%, white),
     inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 

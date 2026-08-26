@@ -1,14 +1,14 @@
 /* Service worker — App de Consulta Jornadas IA 2026 (offline-first) */
-const CACHE = "jornadas-ia-2026-v4";
+const CACHE = "jornadas-ia-2026-v5";
 const DATA_VERSION = "4";
 
 const CORE_ASSETS = [
   "./",
   "./index.html",
   "./instalar.html",
-  "./manifest.webmanifest",
+  "./manifest.webmanifest?v=2",
   "./css/fonts.css?v=1",
-  "./css/styles.css?v=1",
+  "./css/styles.css?v=2",
   "./css/instalar.css?v=1",
   "./js/i18n-dict.js?v=1",
   "./js/i18n.js?v=1",
@@ -18,10 +18,10 @@ const CORE_ASSETS = [
   "./data/programa.json",
   "./assets/logo-observatorio-ia.png",
   "./assets/logo-observatorio-ia-circle.png",
-  "./assets/icon-180.png",
-  "./assets/icon-192.png",
-  "./assets/icon-512.png",
-  "./assets/icon-512-maskable.png",
+  "./assets/icon-180.png?v=2",
+  "./assets/icon-192.png?v=2",
+  "./assets/icon-512.png?v=2",
+  "./assets/icon-512-maskable.png?v=2",
   "./fonts/montserrat-latin-600-normal.woff2",
   "./fonts/montserrat-latin-700-normal.woff2",
   "./fonts/montserrat-latin-800-normal.woff2",
