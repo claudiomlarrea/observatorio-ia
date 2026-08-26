@@ -23,7 +23,7 @@
   const REMINDER_LEAD_MIN = 10;
   const PROGRAM_STORE_KEY = "jornadas_ia_2026_programa";
   const PROGRAM_VERSION_KEY = "jornadas_ia_2026_programa_version";
-  const PROGRAM_VERSION = "2";
+  const PROGRAM_VERSION = "3";
 
   const state = {
     data: null,
@@ -479,9 +479,12 @@
   function collectPeople() {
     const set = new Map();
     for (const s of state.data.sesiones) {
+      // Solo ponencias: no listar Rectora, Director, "Observatorio de IA", etc.
+      if (s.tipo !== "ponencia") continue;
       for (const role of ["disertantes", "moderadores"]) {
         for (const name of s[role] || []) {
           if (!name) continue;
+          if (esNombreInstitucional_(name)) continue;
           if (!set.has(name)) set.set(name, { name, roles: new Set(), count: 0 });
           set
             .get(name)
@@ -493,6 +496,16 @@
     return [...set.values()].sort((a, b) =>
       normalize(personLastName(a.name)).localeCompare(normalize(personLastName(b.name)), "es")
     );
+  }
+
+  function esNombreInstitucional_(name) {
+    const n = normalize(String(name || ""));
+    if (!n) return true;
+    if (n.includes("observatorio")) return true;
+    if (n.includes("universidad")) return true;
+    if (n.includes("facultad")) return true;
+    if (n.includes("coordinacion") || n.includes("coordinación")) return true;
+    return false;
   }
 
   function collectAreas() {
