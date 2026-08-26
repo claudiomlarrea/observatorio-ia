@@ -348,6 +348,7 @@ function recolectarArchivos_(folder, mimeOk, kind, out, depth) {
 
     var meta = parseNombreSugerido_(name);
     var title = meta.title;
+    var author = meta.author || "";
     try {
       var docTitle = leerTituloDesdeArchivo_(f.getId(), mime);
       if (docTitle && !esTituloInstitucionalBoilerplate_(docTitle)) {
@@ -368,9 +369,16 @@ function recolectarArchivos_(folder, mimeOk, kind, out, depth) {
       title = meta.title || name;
     }
 
+    // Varios autores en el cuerpo del artículo → "Apellido et al."
+    try {
+      if (documentoTieneVariosAutores_(f.getId(), mime) && author) {
+        author = formatearAutorEtAl_(author);
+      }
+    } catch (ignoreAut) {}
+
     out.push({
       title: normalizarTituloCatalogo_(title || name),
-      author: normalizarTituloCatalogo_(meta.author || ""),
+      author: normalizarTituloCatalogo_(author),
       area: normalizarTituloCatalogo_(meta.area || ""),
       universidad: normalizarTituloCatalogo_(meta.universidad || ""),
       fileName: name,
@@ -453,6 +461,117 @@ function parseNombreSugerido_(fileName) {
     author: "",
     title: base.replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim()
   };
+}
+
+/**
+ * Detecta lista de coautores en el cuerpo (p. ej. "C. Larrea Arnau¹, J. La Malfa, …").
+ * Conserva el apellido del nombre de archivo y agrega "et al." si hay 2+.
+ */
+function documentoTieneVariosAutores_(fileId, mime) {
+  mime = String(mime || "");
+  var line = "";
+  try {
+    if (mime === "application/vnd.google-apps.document") {
+      line = leerLineaAutoresGoogleDoc_(fileId);
+    } else if (
+      mime === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+      mime === "application/msword"
+    ) {
+      line = leerLineaAutoresWord_(fileId);
+    }
+  } catch (e) {
+    return false;
+  }
+  return contarAutoresEnLinea_(line) >= 2;
+}
+
+function leerLineaAutoresWord_(fileId) {
+  try {
+    if (typeof Drive === "undefined" || !Drive.Files) return "";
+    var copied = Drive.Files.copy(
+      { title: "TMP · extract authors jornadas" },
+      fileId,
+      { convert: true }
+    );
+    if (!copied || !copied.id) return "";
+    try {
+      return leerLineaAutoresGoogleDoc_(copied.id);
+    } finally {
+      try {
+        DriveApp.getFileById(copied.id).setTrashed(true);
+      } catch (ignoreTrash) {}
+    }
+  } catch (e) {
+    return "";
+  }
+}
+
+function leerLineaAutoresGoogleDoc_(fileId) {
+  var doc = DocumentApp.openById(fileId);
+  var body = doc.getBody();
+  var n = body.getNumChildren();
+  var vioTitulo = false;
+  for (var i = 0; i < Math.min(n, 24); i++) {
+    var child = body.getChild(i);
+    if (child.getType() !== DocumentApp.ElementType.PARAGRAPH) continue;
+    var t = String(child.asParagraph().getText() || "")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (!t) continue;
+    if (!vioTitulo) {
+      if (!esLineaNoTituloArticulo_(t) && t.length >= 20) {
+        vioTitulo = true;
+      }
+      continue;
+    }
+    // Primera línea sustancial tras el título: suele ser autores
+    if (esLineaAutoresArticulo_(t)) return t;
+    if (/^Resumen$/i.test(t) || /^Abstract$/i.test(t) || /^Introducci[oó]n$/i.test(t)) {
+      return "";
+    }
+  }
+  return "";
+}
+
+function esLineaAutoresArticulo_(t) {
+  t = String(t || "").replace(/\s+/g, " ").trim();
+  if (!t || t.length < 8) return false;
+  if (esLineaNoTituloArticulo_(t) && !/^[A-ZÁÉÍÓÚÑ]\.\s+/.test(t)) return false;
+  // Inicial + apellido, o varios separados por coma / "y"
+  if (/^[A-ZÁÉÍÓÚÑ]\.\s+[A-Za-zÁÉÍÓÚáéíóúñÑ]/.test(t)) return true;
+  if (/,/.test(t) && /\b(y|and)\b/i.test(t)) return true;
+  if ((t.match(/,/g) || []).length >= 1 && /[A-Za-zÁÉÍÓÚáéíóúñÑ]{2,}/.test(t)) {
+    // "Apellido1, Apellido2" sin iniciales
+    if (!/@/.test(t) && !/^Observatorio/i.test(t)) return true;
+  }
+  return false;
+}
+
+function contarAutoresEnLinea_(line) {
+  var t = String(line || "")
+    .replace(/[¹º²³⁰-⁹]/g, "")
+    .replace(/\d+/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!t) return 0;
+  // Separar por coma y por " y " / " and "
+  var parts = t.split(/\s*,\s*|\s+y\s+|\s+and\s+/i).filter(function (p) {
+    p = String(p || "").trim();
+    if (!p || p.length < 2) return false;
+    if (/^Observatorio/i.test(p)) return false;
+    if (/Universidad/i.test(p)) return false;
+    return true;
+  });
+  return parts.length;
+}
+
+function formatearAutorEtAl_(author) {
+  var a = String(author || "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!a) return a;
+  if (/\bet\s*al\.?\s*$/i.test(a)) return a.replace(/\s*\bet\s*al\.?\s*$/i, "").trim() + " et al.";
+  return a + " et al.";
 }
 
 function leerTituloDesdeArchivo_(fileId, mime) {

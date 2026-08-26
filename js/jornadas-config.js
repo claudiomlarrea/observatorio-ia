@@ -20,7 +20,7 @@ window.JORNADAS_IA_2026 = {
     "https://script.google.com/macros/s/AKfycbwqC9p3EUiTK2DnPHKLT30y0-I3yMcVLzO0S0yNWgvjQVhpDj6z3ScWqo3eJ7LkgDhwQA/exec",
   /** PDFs publicados en el sitio (descarga directa; sin pasar por Drive). */
   CATALOGO_ARTICULOS_PDF:
-    "assets/jornadas/catalogo-articulos-jornadas-ia-2026.pdf?v=5",
+    "assets/jornadas/catalogo-articulos-jornadas-ia-2026.pdf?v=6",
   CATALOGO_PRESENTACIONES_PDF:
-    "assets/jornadas/catalogo-presentaciones-jornadas-ia-2026.pdf?v=5",
+    "assets/jornadas/catalogo-presentaciones-jornadas-ia-2026.pdf?v=6",
 };

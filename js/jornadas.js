@@ -28,7 +28,7 @@ function wirePrograma_() {
   var list = document.getElementById("jornadas-programa-list");
   if (!list) return;
 
-  var url = "data/jornadas-programa-2026.json?v=3";
+  var url = "data/jornadas-programa-2026.json?v=4";
   fetch(url, { credentials: "omit" })
     .then(function (r) {
       if (!r.ok) throw new Error("HTTP " + r.status);
