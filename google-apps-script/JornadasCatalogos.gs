@@ -348,12 +348,12 @@ function recolectarArchivos_(folder, mimeOk, kind, out, depth) {
 
     var meta = parseNombreSugerido_(name);
     var title = meta.title;
-    if (mime === "application/vnd.google-apps.document") {
-      try {
-        var docTitle = leerTituloGoogleDoc_(f.getId());
-        if (docTitle && !esTituloInstitucionalBoilerplate_(docTitle)) title = docTitle;
-      } catch (ignoreDoc) {}
-    }
+    try {
+      var docTitle = leerTituloDesdeArchivo_(f.getId(), mime);
+      if (docTitle && !esTituloInstitucionalBoilerplate_(docTitle)) {
+        title = docTitle;
+      }
+    } catch (ignoreDoc) {}
     if (mime === "application/vnd.google-apps.presentation") {
       try {
         var slidesTitle = leerTituloGoogleSlides_(f.getId());
@@ -455,32 +455,103 @@ function parseNombreSugerido_(fileName) {
   };
 }
 
+function leerTituloDesdeArchivo_(fileId, mime) {
+  mime = String(mime || "");
+  if (mime === "application/vnd.google-apps.document") {
+    return leerTituloGoogleDoc_(fileId);
+  }
+  // .docx / .doc: convertir a Google Doc temporal (servicio avanzado Drive)
+  if (
+    mime === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+    mime === "application/msword"
+  ) {
+    return leerTituloWordConvirtiendo_(fileId);
+  }
+  return "";
+}
+
+/**
+ * Convierte Word → Google Doc, lee el título del cuerpo y elimina la copia.
+ * Requiere: Servicios → Drive API (avanzado) activado en el proyecto.
+ */
+function leerTituloWordConvirtiendo_(fileId) {
+  try {
+    if (typeof Drive === "undefined" || !Drive.Files) return "";
+    var copied = Drive.Files.copy(
+      { title: "TMP · extract title jornadas" },
+      fileId,
+      { convert: true }
+    );
+    if (!copied || !copied.id) return "";
+    try {
+      return leerTituloGoogleDoc_(copied.id);
+    } finally {
+      try {
+        DriveApp.getFileById(copied.id).setTrashed(true);
+      } catch (ignoreTrash) {}
+    }
+  } catch (e) {
+    return "";
+  }
+}
+
+function esLineaNoTituloArticulo_(t) {
+  t = String(t || "").replace(/\s+/g, " ").trim();
+  if (!t || t.length < 12) return true;
+  if (/^INSTRUCCIONES/i.test(t)) return true;
+  if (/^Texto del artículo/i.test(t)) return true;
+  if (/^N\.\s*Apellido/i.test(t)) return true;
+  if (/^Resumen$/i.test(t)) return true;
+  if (/^Abstract$/i.test(t)) return true;
+  if (/^Palabras\s*clave/i.test(t)) return true;
+  if (/^Keywords$/i.test(t)) return true;
+  if (/@/.test(t)) return true;
+  if (/artículo\s+científico/i.test(t) && t.length < 90) return true;
+  if (/^\d+\s*Observatorio/i.test(t)) return true;
+  if (/Observatorio de Inteligencia Artificial,\s*Universidad/i.test(t)) return true;
+  if (/Universidad Católica de Cuyo,\s*Argentina/i.test(t) && t.length < 120) return true;
+  // Lista de autores: "C. Larrea Arnau¹, B. Arias¹, … y S. Young¹"
+  if (
+    /^[A-ZÁÉÍÓÚÑ]\.\s+[A-Za-zÁÉÍÓÚáéíóúñÑ]/.test(t) &&
+    (/[,;]/.test(t) || /[¹º]|\d/.test(t) || /\by\s+[A-ZÁÉÍÓÚÑ]\./.test(t))
+  ) {
+    return true;
+  }
+  return false;
+}
+
 function leerTituloGoogleDoc_(fileId) {
   var doc = DocumentApp.openById(fileId);
   var name = doc.getName();
   var body = doc.getBody();
-  // Buscar primer párrafo con estilo Heading o texto sustancial
   var n = body.getNumChildren();
-  for (var i = 0; i < Math.min(n, 12); i++) {
+  var candidatos = [];
+  for (var i = 0; i < Math.min(n, 20); i++) {
     var child = body.getChild(i);
     if (child.getType() !== DocumentApp.ElementType.PARAGRAPH) continue;
     var p = child.asParagraph();
-    var t = String(p.getText() || "").trim();
-    if (!t || t.length < 8) continue;
+    var t = String(p.getText() || "").replace(/\s+/g, " ").trim();
+    if (esLineaNoTituloArticulo_(t)) continue;
     var attr = p.getHeading();
+    var score = t.length;
     if (
       attr === DocumentApp.ParagraphHeading.TITLE ||
-      attr === DocumentApp.ParagraphHeading.HEADING1 ||
-      attr === DocumentApp.ParagraphHeading.HEADING2 ||
-      i <= 2
+      attr === DocumentApp.ParagraphHeading.HEADING1
     ) {
-      // Evitar líneas de instrucciones de plantilla
-      if (/^INSTRUCCIONES/i.test(t)) continue;
-      if (/^Texto del artículo/i.test(t)) continue;
-      if (/^N\.\s*Apellido/i.test(t)) continue;
-      return t;
+      score += 1000;
+    } else if (attr === DocumentApp.ParagraphHeading.HEADING2) {
+      score += 500;
+    } else if (i <= 3) {
+      score += 200;
     }
+    // Preferir títulos descriptivos (más de ~40 caracteres)
+    if (t.length >= 40) score += 150;
+    candidatos.push({ t: t, score: score });
   }
+  candidatos.sort(function (a, b) {
+    return b.score - a.score;
+  });
+  if (candidatos.length) return candidatos[0].t;
   var parsed = parseNombreSugerido_(name);
   return parsed.title || name;
 }
@@ -618,13 +689,47 @@ function normalizarTituloCatalogo_(s) {
 /** Fuerza la misma familia/tamaño en todo el catálogo (evita saltos al exportar PDF). */
 function estiloCatalogo_(p, sizePt, opt) {
   opt = opt || {};
+  // Google Docs suele marcar el 1.er ítem como Heading/Title (serif distinta).
+  p.setHeading(DocumentApp.ParagraphHeading.NORMAL);
   p.setFontFamily("Arial");
   p.setFontSize(sizePt);
-  if (opt.bold) p.setBold(true);
+  p.setBold(!!opt.bold);
   if (opt.color) p.setForegroundColor(opt.color);
   if (opt.align) p.setAlignment(opt.align);
   if (opt.spacingAfter != null) p.setSpacingAfter(opt.spacingAfter);
+
+  // Atributos a nivel de run de texto: el export PDF a veces ignora el del párrafo.
+  try {
+    var text = p.editAsText();
+    var n = text.getText().length;
+    if (n > 0) {
+      text.setFontFamily(0, n - 1, "Arial");
+      text.setFontSize(0, n - 1, sizePt);
+      text.setBold(0, n - 1, !!opt.bold);
+      if (opt.color) text.setForegroundColor(0, n - 1, opt.color);
+    }
+  } catch (ignoreText) {}
   return p;
+}
+
+/** Recorre el cuerpo y vuelve a fijar Arial + NORMAL en cada párrafo. */
+function forzarTipografiaCatalogo_(body) {
+  var n = body.getNumChildren();
+  for (var i = 0; i < n; i++) {
+    var child = body.getChild(i);
+    if (child.getType() !== DocumentApp.ElementType.PARAGRAPH) continue;
+    var p = child.asParagraph();
+    p.setHeading(DocumentApp.ParagraphHeading.NORMAL);
+    try {
+      var text = p.editAsText();
+      var len = text.getText().length;
+      if (len > 0) {
+        var size = p.getFontSize() || 11;
+        text.setFontFamily(0, len - 1, "Arial");
+        text.setFontSize(0, len - 1, size);
+      }
+    } catch (ignore) {}
+  }
 }
 
 function escribirCatalogoPdf_(folder, fileName, titulo, subtitulo, items, labelPlural) {
@@ -637,7 +742,14 @@ function escribirCatalogoPdf_(folder, fileName, titulo, subtitulo, items, labelP
   var doc = DocumentApp.create("TMP · " + fileName.replace(/\.pdf$/i, ""));
   var body = doc.getBody();
   body.clear();
-  // Atributos por defecto del documento: una sola tipografía
+
+  // Estilo base NORMAL (evita Title/Heading del documento nuevo)
+  var baseAttrs = {};
+  baseAttrs[DocumentApp.Attribute.FONT_FAMILY] = "Arial";
+  baseAttrs[DocumentApp.Attribute.FONT_SIZE] = 11;
+  baseAttrs[DocumentApp.Attribute.BOLD] = false;
+  baseAttrs[DocumentApp.Attribute.HEADING] = DocumentApp.ParagraphHeading.NORMAL;
+  body.setAttributes(baseAttrs);
   body.setFontFamily("Arial");
   body.setFontSize(11);
 
@@ -654,7 +766,8 @@ function escribirCatalogoPdf_(folder, fileName, titulo, subtitulo, items, labelP
     spacingAfter: 8
   });
 
-  estiloCatalogo_(body.appendParagraph(titulo), 16, {
+  // Título del catálogo: mismo sans-serif, un poco más grande (NO Heading)
+  estiloCatalogo_(body.appendParagraph(titulo), 14, {
     bold: true,
     align: center,
     spacingAfter: 4
@@ -692,8 +805,9 @@ function escribirCatalogoPdf_(folder, fileName, titulo, subtitulo, items, labelP
     for (var i = 0; i < items.length; i++) {
       var it = items[i];
       var line = i + 1 + ". " + it.title;
-      if (it.author) line += " - " + it.author;
+      if (it.author) line += " — " + it.author;
       if (it.area) line += " (" + it.area + ")";
+      // Todos los ítems (incluido el 1.º) con el mismo estilo
       estiloCatalogo_(body.appendParagraph(line), 11, {
         bold: true,
         spacingAfter: 2
@@ -715,6 +829,7 @@ function escribirCatalogoPdf_(folder, fileName, titulo, subtitulo, items, labelP
     { color: "#666666", spacingAfter: 0 }
   );
 
+  forzarTipografiaCatalogo_(body);
   doc.saveAndClose();
 
   var pdfBlob = exportDocAsPdf_(doc.getId(), fileName);

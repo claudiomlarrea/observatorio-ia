@@ -8,9 +8,14 @@ Cada 15 minutos (o al ejecutar a mano) lee:
   Artículos:      https://drive.google.com/drive/folders/1oEx8kOI1x4Hx2LppKv35DTIB6S48LXLa
   Presentaciones: https://drive.google.com/drive/folders/10Ma7p_Lo3tObfE0N_nXEgwqZogqQzXQE
 
-Extrae el título (desde Area_Universidad_Apellido_Titulo… o el título del Doc/Slides),
-normaliza MAYÚSCULAS a mayúsculas iniciales (misma tipografía Arial en todo el PDF)
-y regenera dos PDF en orden alfabético:
+Extrae el título:
+  - Google Docs / Word (.docx): lee el título del cuerpo del artículo
+    (no el nombre corto del archivo). Para Word hace falta el servicio
+    avanzado Drive API (convertir a Doc temporal).
+  - Si no puede leer el cuerpo, usa Area_Universidad_Apellido_Titulo…
+Normaliza MAYÚSCULAS a mayúsculas iniciales y fuerza Arial + estilo NORMAL
+en todos los párrafos (evita que el 1.er ítem salga en tipografía distinta).
+Regenera dos PDF en orden alfabético:
 
   catalogo-articulos-jornadas-ia-2026.pdf
   catalogo-presentaciones-jornadas-ia-2026.pdf
@@ -24,10 +29,11 @@ La web del Observatorio descarga esos PDF desde el propio sitio (sin abrir Drive
 Tras regenerar en Apps Script
 -----------------------------
 1. Pegá el JornadasCatalogos.gs actualizado en el proyecto de Apps Script
-2. Ejecutá actualizarCatalogosJornadas
-3. Descargá los PDF desde la carpeta «OIA · Catálogos Jornadas IA 2026»
-4. Reemplazá los archivos en assets/jornadas/ del repo
-5. Commit + push
+2. Activá Servicios → Drive API (avanzado) — hace falta para leer títulos de .docx
+3. Ejecutá actualizarCatalogosJornadas
+4. Descargá los PDF desde la carpeta «OIA · Catálogos Jornadas IA 2026»
+5. Reemplazá los archivos en assets/jornadas/ del repo
+6. Commit + push
 
 
 API (solo conteo / fecha en la web)
