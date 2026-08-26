@@ -4,3 +4,4 @@ orden,hora,hora_fin,tipo,titulo,persona,rol,area,sala,articulo_ok,ppt_ok,confirm
 3,15:20,15:25,indicaciones,Indicaciones técnicas y dinámica de las ponencias,Observatorio de IA,Coordinación,,Plenario,,,sí,10 minutos por ponencia
 4,15:25,15:35,ponencia,Sistema de alerta temprana en epidemiología veterinaria,Giboin,Expositor/a,Veterinaria,Plenario,sí,sí,no,Desde catálogos Drive — confirmar exposición
 5,15:35,15:45,ponencia,"GEMEPH: gemelo digital sociodemográfico de la EPH-INDEC para simular exclusión digital, vulnerabilidad y brechas territoriales en Argentina",Larrea,Expositor/a,Investigación,Plenario,sí,sí,no,Desde catálogos Drive — confirmar exposición
+6,15:45,15:55,ponencia,Uso de IA en estudiantes,La Malfa,Expositor/a,Investigación,Plenario,sí,sí,no,Desde catálogos Drive — confirmar exposición

@@ -98,6 +98,23 @@
       "pptOk": true,
       "confirmado": false,
       "notas": "Incluido desde catálogos Drive (provisorio)"
+    },
+    {
+      "id": "j-ponencia-lamalfa",
+      "dia": "2026-10-06",
+      "inicio": "15:45",
+      "fin": "15:55",
+      "sala": "Plenario",
+      "tipo": "ponencia",
+      "titulo": "Uso de IA en estudiantes",
+      "disertantes": ["La Malfa"],
+      "moderadores": [],
+      "area": "Investigación",
+      "rol": "Expositor/a",
+      "articuloOk": true,
+      "pptOk": true,
+      "confirmado": false,
+      "notas": "Incluido desde catálogos Drive (provisorio)"
     }
   ]
 }

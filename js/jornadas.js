@@ -28,7 +28,7 @@ function wirePrograma_() {
   var list = document.getElementById("jornadas-programa-list");
   if (!list) return;
 
-  var url = "data/jornadas-programa-2026.json?v=1";
+  var url = "data/jornadas-programa-2026.json?v=2";
   fetch(url, { credentials: "omit" })
     .then(function (r) {
       if (!r.ok) throw new Error("HTTP " + r.status);
@@ -149,6 +149,20 @@ function wireCatalogos_(cfg) {
     })
     .then(function (data) {
       if (!data || !data.ok) throw new Error((data && data.error) || "Sin catálogos");
+      // Preferir PDF regenerado en Drive (Apps Script) para que las cargas
+      // nuevas impacten sin esperar un commit de assets/jornadas/.
+      if (btnArt && data.articulos && data.articulos.pdfId) {
+        btnArt.href =
+          "https://drive.google.com/file/d/" +
+          encodeURIComponent(data.articulos.pdfId) +
+          "/view";
+      }
+      if (btnPpt && data.presentaciones && data.presentaciones.pdfId) {
+        btnPpt.href =
+          "https://drive.google.com/file/d/" +
+          encodeURIComponent(data.presentaciones.pdfId) +
+          "/view";
+      }
       if (meta) {
         var nA = (data.articulos && data.articulos.count) || 0;
         var nP = (data.presentaciones && data.presentaciones.count) || 0;

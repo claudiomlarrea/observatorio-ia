@@ -1,5 +1,5 @@
 {
-  "version": "2026-08-25",
+  "version": "2026-08-26",
   "estado": "provisorio",
   "evento": {
     "titulo": "1° Jornadas internas de Inteligencia Artificial",
@@ -79,6 +79,21 @@
       "tipo": "ponencia",
       "titulo": "GEMEPH: gemelo digital sociodemográfico de la EPH-INDEC para simular exclusión digital, vulnerabilidad y brechas territoriales en Argentina",
       "persona": "Larrea",
+      "rol": "Expositor/a",
+      "area": "Investigación",
+      "sala": "Plenario",
+      "articuloOk": true,
+      "pptOk": true,
+      "confirmado": false,
+      "notas": "Incluido desde catálogos Drive (provisorio)"
+    },
+    {
+      "orden": 6,
+      "hora": "15:45",
+      "horaFin": "15:55",
+      "tipo": "ponencia",
+      "titulo": "Uso de IA en estudiantes",
+      "persona": "La Malfa",
       "rol": "Expositor/a",
       "area": "Investigación",
       "sala": "Plenario",
