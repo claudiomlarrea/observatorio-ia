@@ -67,6 +67,14 @@
     "es": "Jornadas de IA",
     "en": "AI Conference"
   },
+  "nav.semillero": {
+    "es": "Semillero de IA",
+    "en": "AI Seedbed"
+  },
+  "nav.webinars": {
+    "es": "Webinars",
+    "en": "Webinars"
+  },
   "nav.galeria": {
     "es": "Galería de Imágenes",
     "en": "Image Gallery"
@@ -84,8 +92,12 @@
     "en": "Observatory visits"
   },
   "nav.encuestas": {
-    "es": "Encuestas e informes",
-    "en": "Surveys & reports"
+    "es": "Encuestas",
+    "en": "Surveys"
+  },
+  "nav.informes": {
+    "es": "Informes",
+    "en": "Reports"
   },
   "nav.noticias": {
     "es": "Noticias",
@@ -98,6 +110,18 @@
   "nav.publicaciones": {
     "es": "Biblioteca de IA",
     "en": "AI Library"
+  },
+  "nav.numeros": {
+    "es": "El observatorio en números",
+    "en": "The observatory in numbers"
+  },
+  "nav.datos": {
+    "es": "Datos del Observatorio",
+    "en": "Observatory data"
+  },
+  "nav.impacto": {
+    "es": "Impacto",
+    "en": "Impact"
   },
   "nav.secretaria": {
     "es": "Secretaría de Investigación",
@@ -127,6 +151,14 @@
     "es": "Jornadas de IA",
     "en": "AI Conference"
   },
+  "hero.cta.semillero": {
+    "es": "Semillero de IA",
+    "en": "AI Seedbed"
+  },
+  "hero.cta.webinars": {
+    "es": "Webinars",
+    "en": "Webinars"
+  },
   "hero.cta.galeria": {
     "es": "Galería de Imágenes",
     "en": "Image Gallery"
@@ -144,8 +176,12 @@
     "en": "Observatory visits"
   },
   "hero.cta.encuestas": {
-    "es": "Encuestas e informes",
-    "en": "Surveys & reports"
+    "es": "Encuestas",
+    "en": "Surveys"
+  },
+  "hero.cta.informes": {
+    "es": "Informes",
+    "en": "Reports"
   },
   "hero.cta.noticias": {
     "es": "Noticias",
@@ -170,6 +206,186 @@
   "hero.email": {
     "es": "observatorioia@uccuyo.edu.ar",
     "en": "observatorioia@uccuyo.edu.ar"
+  },
+  "sec.numeros.kicker": {
+    "es": "Indicadores",
+    "en": "Indicators"
+  },
+  "sec.numeros.title": {
+    "es": "El observatorio en números",
+    "en": "The observatory in numbers"
+  },
+  "sec.numeros.intro": {
+    "es": "Cifras verificables de producción propia, actividad institucional y alcance. Algunas se actualizan con las visitas y la Biblioteca de IA.",
+    "en": "Verifiable figures on in-house production, institutional activity, and reach. Some update from visits and the AI Library."
+  },
+  "sec.numeros.editorial": {
+    "es": "Ritmo editorial: al menos un producto al mes (informe, indicador, encuesta o herramienta).",
+    "en": "Editorial cadence: at least one product per month (report, indicator, survey, or tool)."
+  },
+  "sec.impacto.kicker": {
+    "es": "Alcance institucional",
+    "en": "Institutional reach"
+  },
+  "sec.impacto.title": {
+    "es": "Impacto",
+    "en": "Impact"
+  },
+  "sec.impacto.intro": {
+    "es": "Presencia en medios, actividades abiertas y líneas de acompañamiento a instituciones.",
+    "en": "Media presence, open activities, and institutional support lines."
+  },
+  "sec.impacto.card1.tag": {
+    "es": "Medios",
+    "en": "Media"
+  },
+  "sec.impacto.card1.title": {
+    "es": "Creación del Observatorio en la prensa",
+    "en": "Observatory launch in the press"
+  },
+  "sec.impacto.card1.body": {
+    "es": "Cobertura en Noticias UCCuyo y medios digitales sobre la creación del Observatorio de IA.",
+    "en": "Coverage in UCCuyo News and digital media on the creation of the AI Observatory."
+  },
+  "sec.impacto.card1.cta": {
+    "es": "Ver noticias",
+    "en": "See news"
+  },
+  "sec.impacto.card2.tag": {
+    "es": "Formación",
+    "en": "Training"
+  },
+  "sec.impacto.card2.title": {
+    "es": "Jornadas y webinars",
+    "en": "Conference and webinars"
+  },
+  "sec.impacto.card2.body": {
+    "es": "Espacios de capacitación y difusión: Jornadas internas de IA y webinars abiertos (EvaluAR y próximos).",
+    "en": "Training and outreach spaces: internal AI Conference and open webinars (EvaluAR and upcoming)."
+  },
+  "sec.impacto.card2.cta1": {
+    "es": "Jornadas",
+    "en": "Conference"
+  },
+  "sec.impacto.card2.cta2": {
+    "es": "Webinars",
+    "en": "Webinars"
+  },
+  "sec.impacto.card2.cta3": {
+    "es": "Informes",
+    "en": "Reports"
+  },
+  "sec.impacto.card3.tag": {
+    "es": "Asesoramiento",
+    "en": "Advisory"
+  },
+  "sec.impacto.card3.title": {
+    "es": "Acompañamiento institucional",
+    "en": "Institutional support"
+  },
+  "sec.impacto.card3.body": {
+    "es": "Sitios interactivos, encuestas, planes estratégicos y programas a medida para equipos e instituciones.",
+    "en": "Interactive sites, surveys, strategic plans, and tailored programs for teams and institutions."
+  },
+  "sec.impacto.card3.cta": {
+    "es": "Ver acompañamiento",
+    "en": "See support"
+  },
+  "sec.impacto.card4.tag": {
+    "es": "Desarrollos",
+    "en": "Developments"
+  },
+  "sec.impacto.card4.title": {
+    "es": "Herramientas propias en uso",
+    "en": "In-house tools in use"
+  },
+  "sec.impacto.card4.body": {
+    "es": "Encuesta Clara, EPH, SAVT, EvaluAR, MDeIA, Agenda Universitaria, SACAU y Rumbo Deporte: sistemas abiertos a la comunidad universitaria.",
+    "en": "Encuesta Clara, EPH, SAVT, EvaluAR, MDeIA, Agenda Universitaria, SACAU, and Rumbo Deporte: systems open to the university community."
+  },
+  "sec.impacto.card4.cta": {
+    "es": "Abrir aplicaciones IA",
+    "en": "Open AI Apps"
+  },
+  "sec.datos.kicker": {
+    "es": "Evidencia",
+    "en": "Evidence"
+  },
+  "sec.datos.title": {
+    "es": "Datos del Observatorio",
+    "en": "Observatory data"
+  },
+  "sec.datos.intro": {
+    "es": "Hub de datos ya disponibles: mapa de visitas, encuestas institucionales y herramientas de análisis. Los tableros nacionales ampliados se irán sumando sobre esta base.",
+    "en": "Hub of available data: visits map, institutional surveys, and analysis tools. Broader national dashboards will build on this foundation."
+  },
+  "sec.datos.card1.title": {
+    "es": "Mapa de visitas",
+    "en": "Visits map"
+  },
+  "sec.datos.card1.body": {
+    "es": "Origen estimado por país y provincia/región, con ranking y foco Argentina.",
+    "en": "Estimated origin by country and province/region, with ranking and Argentina focus."
+  },
+  "sec.datos.card1.cta": {
+    "es": "Ver mapa",
+    "en": "View map"
+  },
+  "sec.datos.card2.title": {
+    "es": "Encuestas",
+    "en": "Surveys"
+  },
+  "sec.datos.card2.body": {
+    "es": "Relevamientos a estudiantes y docentes. Los PDF publicados están en Informes.",
+    "en": "Student and faculty surveys. Published PDFs are in Reports."
+  },
+  "sec.datos.card2.cta": {
+    "es": "Ver encuestas",
+    "en": "View surveys"
+  },
+  "sec.datos.card2.ctaInformes": {
+    "es": "Ver informes",
+    "en": "View reports"
+  },
+  "sec.datos.card3.title": {
+    "es": "Análisis EPH (INDEC)",
+    "en": "EPH analysis (INDEC)"
+  },
+  "sec.datos.card3.body": {
+    "es": "Microdatos de hogares: desigualdad, exclusión digital, modelos predictivos e interpretabilidad.",
+    "en": "Household microdata: inequality, digital exclusion, predictive models, and interpretability."
+  },
+  "sec.datos.card3.cta": {
+    "es": "Abrir EPH",
+    "en": "Open EPH"
+  },
+  "sec.datos.card4.title": {
+    "es": "Encuesta Clara",
+    "en": "Encuesta Clara"
+  },
+  "sec.datos.card4.body": {
+    "es": "De Excel de formularios a tablas, cruces y análisis cualitativo en español.",
+    "en": "From form spreadsheets to tables, cross-tabs, and qualitative analysis in Spanish."
+  },
+  "sec.datos.card4.cta": {
+    "es": "Abrir Encuesta Clara",
+    "en": "Open Encuesta Clara"
+  },
+  "sec.datos.card5.title": {
+    "es": "Documentos del Observatorio",
+    "en": "Observatory documents"
+  },
+  "sec.datos.card5.body": {
+    "es": "Resoluciones del Consejo Superior: creación del Observatorio y aprobación de las 1° Jornadas internas de IA.",
+    "en": "Superior Council resolutions: Observatory creation and approval of the 1st internal AI Conference."
+  },
+  "sec.datos.card5.doc1": {
+    "es": "Resolución 741-CS-2025 (creación)",
+    "en": "Resolution 741-CS-2025 (creation)"
+  },
+  "sec.datos.card5.doc2": {
+    "es": "Resolución 914-CS-2026 (Jornadas IA)",
+    "en": "Resolution 914-CS-2026 (AI Conference)"
   },
   "sec.observatorio.kicker": {
     "es": "Identidad",
@@ -296,16 +512,16 @@
     "en": "Presenter deadline"
   },
   "sec.jornadas.facts.cierreExpositores.value": {
-    "es": "Artículo y PPT hasta el 10 de septiembre",
-    "en": "Article and PPT due by September 10"
+    "es": "Artículo y PPT hasta el <strong>10 de septiembre</strong>",
+    "en": "Article and PPT due by <strong>September 10</strong>"
   },
   "sec.jornadas.facts.cierreAsistentes.label": {
     "es": "Cierre asistentes",
     "en": "Attendee deadline"
   },
   "sec.jornadas.facts.cierreAsistentes.value": {
-    "es": "Inscripción hasta el 28 de septiembre",
-    "en": "Registration open until September 28"
+    "es": "Inscripción hasta el <strong>28 de septiembre</strong>",
+    "en": "Registration open until <strong>September 28</strong>"
   },
   "sec.jornadas.step1.title": {
     "es": "Inscripción",
@@ -443,6 +659,230 @@
     "es": "Flayer PDF (descargar)",
     "en": "Flyer PDF (download, Spanish)"
   },
+  "sec.webinar.kicker": {
+    "es": "Ciclo 2026",
+    "en": "2026 series"
+  },
+  "sec.webinars.title": {
+    "es": "Webinars",
+    "en": "Webinars"
+  },
+  "sec.webinar.intro": {
+    "es": "El 13 de agosto se realizó el <strong>2° webinar</strong> del Observatorio sobre <strong>EvaluAR</strong>, la herramienta para parciales presenciales con corrección digital. Hubo 110 inscripciones (107 personas únicas) de 21 instituciones.",
+    "en": "On August 13 the Observatory held its <strong>2nd webinar</strong> on <strong>EvaluAR</strong>, the tool for in-person exams with digital grading. There were 110 registrations (107 unique people) from 21 institutions."
+  },
+  "sec.webinar.download": {
+    "es": "Descargar flayer (PDF)",
+    "en": "Download flyer (PDF)"
+  },
+  "sec.webinar.badge": {
+    "es": "2° webinar · 13 de agosto de 2026",
+    "en": "2nd webinar · August 13, 2026"
+  },
+  "sec.webinar.eventTitle": {
+    "es": "EvaluAR",
+    "en": "EvaluAR"
+  },
+  "sec.webinar.tagline": {
+    "es": "Examen en papel · Corrección digital",
+    "en": "Paper exam · Digital grading"
+  },
+  "sec.webinar.facts.fecha.label": {
+    "es": "Fecha",
+    "en": "Date"
+  },
+  "sec.webinar.facts.fecha.value": {
+    "es": "Jueves 13 de agosto de 2026",
+    "en": "Thursday, August 13, 2026"
+  },
+  "sec.webinar.facts.horario.label": {
+    "es": "Horario",
+    "en": "Time"
+  },
+  "sec.webinar.facts.horario.value": {
+    "es": "19:00 – 20:00 hs",
+    "en": "7:00 – 8:00 p.m."
+  },
+  "sec.webinar.facts.modalidad.label": {
+    "es": "Modalidad",
+    "en": "Format"
+  },
+  "sec.webinar.facts.modalidad.value": {
+    "es": "Virtual (Google Meet)",
+    "en": "Online (Google Meet)"
+  },
+  "sec.webinar.facts.disertante.label": {
+    "es": "Disertante",
+    "en": "Speaker"
+  },
+  "sec.webinar.facts.disertante.value": {
+    "es": "Dr. Claudio Larrea · Director del Observatorio de IA",
+    "en": "Dr. Claudio Larrea · Director of the AI Observatory"
+  },
+  "sec.webinar.about": {
+    "es": "Participaron sedes de la UCCuyo y docentes de otras universidades. El informe de padrón está publicado en Informes.",
+    "en": "Participants included UCCuyo campuses and faculty from other universities. The registration report is published under Reports."
+  },
+  "sec.webinar.ctaInforme": {
+    "es": "Ver informe del webinar (PDF)",
+    "en": "View webinar report (PDF)"
+  },
+  "sec.webinar.ctaInformes": {
+    "es": "Ir a Informes",
+    "en": "Go to Reports"
+  },
+  "sec.webinar.cta": {
+    "es": "Inscribirme al webinar",
+    "en": "Register for the webinar"
+  },
+  "sec.webinar.ctaMeet": {
+    "es": "Ingresar al webinar",
+    "en": "Join the webinar"
+  },
+  "sec.webinar.meetHint": {
+    "es": "Google Meet · jueves 13 de agosto · 19:00 – 20:00 (Argentina)",
+    "en": "Google Meet · Thursday, August 13 · 7:00 – 8:00 p.m. (Argentina)"
+  },
+  "sec.semillero.kicker": {
+    "es": "Programa institucional",
+    "en": "Institutional program"
+  },
+  "sec.semillero.title": {
+    "es": "Semillero de IA",
+    "en": "AI Seedbed"
+  },
+  "sec.semillero.intro": {
+    "es": "El <strong>Semillero de Inteligencia Artificial (SIA-UCCuyo)</strong> es el programa institucional permanente del Observatorio de IA para identificar, formar y acompañar a estudiantes de todas las carreras en proyectos de investigación, innovación y desarrollo tecnológico con Inteligencia Artificial.",
+    "en": "The <strong>Artificial Intelligence Seedbed (SIA-UCCuyo)</strong> is the Observatory’s permanent institutional program to identify, train, and mentor students from all degree programs in research, innovation, and technology projects with Artificial Intelligence."
+  },
+  "sec.semillero.flyer.aria": {
+    "es": "Abrir flayer PDF del Semillero de IA",
+    "en": "Open AI Seedbed flyer PDF"
+  },
+  "sec.semillero.flyer.download": {
+    "es": "Descargar flayer (PDF)",
+    "en": "Download flyer (PDF)"
+  },
+  "sec.semillero.badge": {
+    "es": "Convocatoria abierta",
+    "en": "Open call"
+  },
+  "sec.semillero.eventTitle": {
+    "es": "SIA-UCCuyo",
+    "en": "SIA-UCCuyo"
+  },
+  "sec.semillero.tagline": {
+    "es": "Formación · Mentoría · Proyectos reales con IA",
+    "en": "Training · Mentoring · Real AI projects"
+  },
+  "sec.semillero.facts.ariaLabel": {
+    "es": "Datos del Semillero",
+    "en": "Seedbed facts"
+  },
+  "sec.semillero.facts.para.label": {
+    "es": "Para quién",
+    "en": "Who"
+  },
+  "sec.semillero.facts.para.value": {
+    "es": "Estudiantes de pregrado, grado y posgrado · todas las carreras",
+    "en": "Undergraduate and graduate students · all degree programs"
+  },
+  "sec.semillero.facts.requisitos.label": {
+    "es": "Requisitos",
+    "en": "Requirements"
+  },
+  "sec.semillero.facts.requisitos.value": {
+    "es": "No se requieren conocimientos previos de programación ni de IA",
+    "en": "No prior programming or AI knowledge required"
+  },
+  "sec.semillero.facts.depende.label": {
+    "es": "Dependencia",
+    "en": "Affiliation"
+  },
+  "sec.semillero.facts.depende.value": {
+    "es": "Observatorio de IA · Secretaría de Investigación",
+    "en": "AI Observatory · Research Secretariat"
+  },
+  "sec.semillero.facts.enfoque.label": {
+    "es": "Enfoque",
+    "en": "Focus"
+  },
+  "sec.semillero.facts.enfoque.value": {
+    "es": "IA ética, interdisciplinaria y orientada al bien común",
+    "en": "Ethical, interdisciplinary AI for the common good"
+  },
+  "sec.semillero.about": {
+    "es": "Un espacio para transformar ideas estudiantiles en proyectos con potencial de investigación, desarrollo tecnológico y transferencia, con acompañamiento de mentores y un programa de formación progresivo.",
+    "en": "A space to turn student ideas into projects with research, technology development, and transfer potential, with mentor support and a progressive training pathway."
+  },
+  "sec.semillero.cta": {
+    "es": "Inscribirme al Semillero",
+    "en": "Apply to the Seedbed"
+  },
+  "sec.semillero.portal": {
+    "es": "Ir al portal del Semillero",
+    "en": "Go to the Seedbed portal"
+  },
+  "sec.semillero.doc": {
+    "es": "Leer el proyecto (PDF)",
+    "en": "Read the project (PDF)"
+  },
+  "sec.semillero.slides.cta": {
+    "es": "Ver presentación",
+    "en": "View presentation"
+  },
+  "sec.semillero.slides.title": {
+    "es": "Presentación de la convocatoria",
+    "en": "Call for applications presentation"
+  },
+  "sec.semillero.slides.lead": {
+    "es": "Recorré las 10 diapositivas de la convocatoria 2026 para estudiantes.",
+    "en": "Browse the 10 slides of the 2026 student call."
+  },
+  "sec.semillero.slides.download": {
+    "es": "Descargar presentación (PDF)",
+    "en": "Download presentation (PDF)"
+  },
+  "sec.semillero.slides.aria": {
+    "es": "Presentación Convocatoria Semillero de IA 2026",
+    "en": "AI Seedbed 2026 call presentation"
+  },
+  "sec.semillero.slides.prev": {
+    "es": "Diapositiva anterior",
+    "en": "Previous slide"
+  },
+  "sec.semillero.slides.next": {
+    "es": "Diapositiva siguiente",
+    "en": "Next slide"
+  },
+  "sec.semillero.slides.status": {
+    "es": "{current} / {total}",
+    "en": "{current} / {total}"
+  },
+  "sec.semillero.slides.alt": {
+    "es": "Diapositiva {current} de {total}: Convocatoria Semillero de IA 2026",
+    "en": "Slide {current} of {total}: AI Seedbed 2026 call"
+  },
+  "sec.semillero.form.title": {
+    "es": "Formulario de inscripción",
+    "en": "Enrollment form"
+  },
+  "sec.semillero.form.lead": {
+    "es": "Completá el formulario para postularte al Semillero de Inteligencia Artificial.",
+    "en": "Fill out the form to apply to the Artificial Intelligence Seedbed."
+  },
+  "sec.semillero.form.iframeTitle": {
+    "es": "Formulario de inscripción al Semillero de IA",
+    "en": "AI Seedbed enrollment form"
+  },
+  "sec.semillero.form.fallback": {
+    "es": "Si el formulario no se muestra,",
+    "en": "If the form does not load,"
+  },
+  "sec.semillero.form.open": {
+    "es": "abrilo en una pestaña nueva",
+    "en": "open it in a new tab"
+  },
   "sec.galeria.kicker": {
     "es": "Archivo visual",
     "en": "Visual archive"
@@ -476,12 +916,12 @@
     "en": "Surveys"
   },
   "sec.actividades.encuestas.body": {
-    "es": "Diseño y aplicación de instrumentos para alumnos, docentes y otros actores de la comunidad universitaria. Ver encuestas e informes y análisis con herramientas de análisis.",
-    "en": "Design and administration of instruments for students, faculty, and other members of the university community. See surveys & reports and analysis with analysis tools."
+    "es": "Diseño y aplicación de instrumentos para alumnos, docentes y otros actores de la comunidad universitaria. Ver <a href=\"#encuestas\">encuestas</a>, <a href=\"#informes\">informes</a> y <a href=\"#herramientas\">aplicaciones IA</a>.",
+    "en": "Design and administration of instruments for students, faculty, and other members of the university community. See <a href=\"#encuestas\">surveys</a>, <a href=\"#informes\">reports</a>, and <a href=\"#herramientas\">AI Apps</a>."
   },
   "sec.actividades.encuestas.linkEncuestas": {
-    "es": "encuestas e informes",
-    "en": "surveys & reports"
+    "es": "encuestas",
+    "en": "surveys"
   },
   "sec.actividades.encuestas.linkHerramientas": {
     "es": "aplicaciones IA",
@@ -560,12 +1000,84 @@
     "en": "Institutional diagnosis"
   },
   "sec.encuestas.title": {
-    "es": "Encuestas e informes",
-    "en": "Surveys & reports"
+    "es": "Encuestas",
+    "en": "Surveys"
   },
   "sec.encuestas.intro": {
-    "es": "Espacio del Observatorio para publicar resultados de encuestas sobre inteligencia artificial y preparar nuevos relevamientos a la comunidad universitaria.",
-    "en": "Observatory space to publish survey results on artificial intelligence and prepare new studies of the university community."
+    "es": "Espacio del Observatorio para publicar resultados de encuestas sobre inteligencia artificial y preparar nuevos relevamientos a la comunidad universitaria. Los PDF publicados están en <a href=\"#informes\">Informes</a>.",
+    "en": "Observatory space to publish survey results on artificial intelligence and prepare new studies of the university community. Published PDFs are in <a href=\"#informes\">Reports</a>."
+  },
+  "sec.informes.kicker": {
+    "es": "Documentos",
+    "en": "Documents"
+  },
+  "sec.informes.title": {
+    "es": "Informes",
+    "en": "Reports"
+  },
+  "sec.informes.intro": {
+    "es": "Informes del Observatorio: padrón de actividades, resultados de relevamientos y documentos para la toma de decisiones.",
+    "en": "Observatory reports: activity registers, survey results, and documents for decision-making."
+  },
+  "sec.informes.webinar.title": {
+    "es": "2° Webinar EvaluAR — informe de padrón",
+    "en": "2nd EvaluAR webinar — registration report"
+  },
+  "sec.informes.webinar.body": {
+    "es": "Inscripciones al webinar del 13 de agosto de 2026: 107 personas únicas, 21 instituciones y 9 provincias. Lectura del alcance (UCCuyo y otras universidades) y recomendaciones para la próxima convocatoria.",
+    "en": "Registrations for the August 13, 2026 webinar: 107 unique people, 21 institutions, and 9 provinces. Reach analysis (UCCuyo and other universities) and recommendations for the next call."
+  },
+  "sec.informes.webinar.facts.personas.label": {
+    "es": "Personas únicas",
+    "en": "Unique people"
+  },
+  "sec.informes.webinar.facts.personas.value": {
+    "es": "107",
+    "en": "107"
+  },
+  "sec.informes.webinar.facts.envios.label": {
+    "es": "Inscripciones",
+    "en": "Registrations"
+  },
+  "sec.informes.webinar.facts.envios.value": {
+    "es": "110 envíos",
+    "en": "110 submissions"
+  },
+  "sec.informes.webinar.facts.instituciones.label": {
+    "es": "Instituciones",
+    "en": "Institutions"
+  },
+  "sec.informes.webinar.facts.instituciones.value": {
+    "es": "21 · 9 provincias",
+    "en": "21 · 9 provinces"
+  },
+  "sec.informes.webinar.btnVer": {
+    "es": "Ver informe (PDF)",
+    "en": "View report (PDF)"
+  },
+  "sec.informes.webinar.btnDescargar": {
+    "es": "Descargar PDF",
+    "en": "Download PDF"
+  },
+  "sec.informes.webinar.btnWebinar": {
+    "es": "Ir a Webinars",
+    "en": "Go to Webinars"
+  },
+  "sec.informes.alumnos.title": {
+    "es": "Encuesta a estudiantes 2026 — informe ejecutivo",
+    "en": "2026 student survey — executive report"
+  },
+  "sec.informes.alumnos.body": {
+    "es": "Uso de herramientas de inteligencia artificial por estudiantes de la UCCuyo. Relevamiento a 348 estudiantes de San Juan, San Luis y Mendoza.",
+    "en": "Use of AI tools by UCCuyo students. Survey of 348 students in San Juan, San Luis, and Mendoza."
+  },
+  "sec.informes.alumnos.btnVer": {
+    "es": "Ver informe ejecutivo (PDF)",
+    "en": "View executive report (PDF)"
+  },
+  "sec.informes.alumnos.btnEncuestas": {
+    "es": "Ir a Encuestas",
+    "en": "Go to Surveys"
   },
   "sec.encuestas.badge.disponible": {
     "es": "Disponible",
@@ -628,8 +1140,8 @@
     "en": "Faculty survey"
   },
   "sec.encuestas.docentes.body": {
-    "es": "Desde el Observatorio de Inteligencia Artificial invitamos al cuerpo docente de la UCCuyo a responder una encuesta anónima sobre percepción, conocimiento y uso de la IA en la enseñanza, la evaluación y la gestión académica. Las respuestas alimentan el diagnóstico institucional y se analizan con Encuesta Clara; el equipo puede publicar los informes en esta misma sección.",
-    "en": "The Artificial Intelligence Observatory invites UCCuyo faculty to complete an anonymous survey on perception, knowledge, and use of AI in teaching, assessment, and academic management. Responses feed the institutional diagnosis and are analyzed with Encuesta Clara; the team may publish reports in this same section."
+    "es": "Desde el Observatorio de Inteligencia Artificial invitamos al cuerpo docente de la UCCuyo a responder una encuesta anónima sobre <strong>percepción, conocimiento y uso de la IA</strong> en la enseñanza, la evaluación y la gestión académica. Las respuestas alimentan el diagnóstico institucional y se analizan con Encuesta Clara; el equipo puede publicar los informes en esta misma sección.",
+    "en": "The Artificial Intelligence Observatory invites UCCuyo faculty to complete an anonymous survey on <strong>perception, knowledge, and use of AI</strong> in teaching, assessment, and academic management. Responses feed the institutional diagnosis and are analyzed with Encuesta Clara; the team may publish reports in this same section."
   },
   "sec.encuestas.docentes.steps.ariaLabel": {
     "es": "Flujo",
@@ -662,6 +1174,10 @@
   "sec.encuestas.docentes.note": {
     "es": "La encuesta está en laboratorio y todavía no está abierta al público. Cuando se publique, el formulario estará disponible aquí. Consultas: <a href=\"mailto:observatorioia@uccuyo.edu.ar\">observatorioia@uccuyo.edu.ar</a>.",
     "en": "The survey is in the lab and not yet open to the public. When published, the form will be available here. Contact: <a href=\"mailto:observatorioia@uccuyo.edu.ar\">observatorioia@uccuyo.edu.ar</a>."
+  },
+  "sec.encuestas.docentes.noteOpen": {
+    "es": "La encuesta está abierta para docentes. El equipo del Observatorio puede descargar las respuestas y publicar informes desde los enlaces de abajo (inicio de sesión Google con correo autorizado). Consultas: <a href=\"mailto:observatorioia@uccuyo.edu.ar\">observatorioia@uccuyo.edu.ar</a>.",
+    "en": "The survey is open for faculty. The Observatory team can download responses and publish reports from the links below (Google sign-in with an authorized email). Contact: <a href=\"mailto:observatorioia@uccuyo.edu.ar\">observatorioia@uccuyo.edu.ar</a>."
   },
   "sec.encuestas.docentes.btnResponder": {
     "es": "Responder encuesta a docentes",
@@ -724,16 +1240,16 @@
     "en": "Searching news, bulletins, and media mentions…"
   },
   "sec.herramientas.kicker": {
-    "es": "Productos",
-    "en": "Products"
+    "es": "Desarrollos propios",
+    "en": "In-house developments"
   },
   "sec.herramientas.title": {
     "es": "Aplicaciones IA",
     "en": "AI Apps"
   },
   "sec.herramientas.intro": {
-    "es": "Sistemas y plataformas desarrollados por el Observatorio de Inteligencia Artificial de la UCCuyo para la comunidad universitaria e instituciones vinculadas: encuestas, datos, evaluación, agenda universitaria, auditoría académica, conversión curricular SACAU/CRE, programas de cátedra (SACAU Aula), planificación estratégica, prevención digital y más. Se amplían a medida que se incorporan nuevos desarrollos.",
-    "en": "Systems and platforms developed by the UCCuyo Artificial Intelligence Observatory for the university community and partner institutions: surveys, data, assessment, university agenda, academic audit, SACAU/CRE curriculum conversion, course syllabi (SACAU Aula), strategic planning, digital prevention, and more. The catalog grows as new developments are added."
+    "es": "Sistemas y plataformas desarrollados por el Observatorio de Inteligencia Artificial de la UCCuyo para la comunidad universitaria e instituciones vinculadas: encuestas, datos, evaluación, madurez digital e IA (MDeIA), agenda universitaria, auditoría académica, conversión curricular SACAU/CRE, programas de cátedra (SACAU Aula), orden del día institucional (LUMEN), planificación estratégica, prevención digital y más. Se amplían a medida que se incorporan nuevos desarrollos.",
+    "en": "Systems and platforms developed by the UCCuyo Artificial Intelligence Observatory for the university community and partner institutions: surveys, data, assessment, digital and AI maturity (MDeIA), university agenda, academic audit, SACAU/CRE curriculum conversion, course syllabi (SACAU Aula), institutional agenda (LUMEN), strategic planning, digital prevention, and more. The catalog grows as new developments are added."
   },
   "sec.herramientas.senalsegura.title": {
     "es": "Señal Segura",
@@ -794,6 +1310,90 @@
   "sec.herramientas.consultaCongreso.btnCargar": {
     "es": "Cargar evento",
     "en": "Load event"
+  },
+  "sec.herramientas.lumen.badge": {
+    "es": "Demo · consulta",
+    "en": "Demo · inquiry"
+  },
+  "sec.herramientas.lumen.title": {
+    "es": "LUMEN",
+    "en": "LUMEN"
+  },
+  "sec.herramientas.lumen.lead": {
+    "es": "Registro único de temas para el orden del día de los consejos de unidad (CD, CI y CE), elevación al Consejo Superior, revisión de la Secretaría General Académica, Word institucional e impacto en el PEI y en Investigación.",
+    "en": "Single register of items for unit council agendas (CD, CI, and CE), elevation to the Superior Council, Academic General Secretariat review, institutional Word output, and PEI/Research impact."
+  },
+  "sec.herramientas.lumen.item1": {
+    "es": "Carga de temas con adjunto y trazabilidad del expediente",
+    "en": "Item intake with attachment and file traceability"
+  },
+  "sec.herramientas.lumen.item2": {
+    "es": "Aprobación en consejo de unidad y elevación al Consejo Superior",
+    "en": "Unit council approval and elevation to the Superior Council"
+  },
+  "sec.herramientas.lumen.item3": {
+    "es": "SGA incorpora, ordena por unidad académica y genera el OD del CS",
+    "en": "SGA incorporates, sorts by academic unit, and generates the Superior Council agenda"
+  },
+  "sec.herramientas.lumen.btnVideo": {
+    "es": "Ver demo en video",
+    "en": "Watch demo video"
+  },
+  "sec.herramientas.lumen.btnDemo": {
+    "es": "Solicitar demostración",
+    "en": "Request a demonstration"
+  },
+  "sec.herramientas.rumbo.badge": {
+    "es": "Demo · consulta",
+    "en": "Demo · inquiry"
+  },
+  "sec.herramientas.rumbo.title": {
+    "es": "Rumbo Deporte",
+    "en": "Rumbo Deporte"
+  },
+  "sec.herramientas.rumbo.lead": {
+    "es": "Plan Estratégico Institucional (PEI) + actividades + tablero de monitoreo para clubes, federaciones y asociaciones, alineado a la metodología COI.",
+    "en": "Institutional Strategic Plan (PEI) + activities + monitoring dashboard for clubs, federations, and associations, aligned with IOC methodology."
+  },
+  "sec.herramientas.rumbo.item1": {
+    "es": "FODA, visión, prioridades, plan de acción y KPI",
+    "en": "SWOT, vision, priorities, action plan, and KPIs"
+  },
+  "sec.herramientas.rumbo.item2": {
+    "es": "Actividades de ejecución y tablero meta vs. avance",
+    "en": "Execution activities and target vs. progress dashboard"
+  },
+  "sec.herramientas.rumbo.item3": {
+    "es": "Exportación Word / Markdown y respaldo JSON",
+    "en": "Word / Markdown export and JSON backup"
+  },
+  "sec.herramientas.rumbo.videoCaption": {
+    "es": "Demo 30 segundos · principales pantallas del sistema",
+    "en": "30-second demo · main system screens"
+  },
+  "sec.herramientas.rumbo.videoHint": {
+    "es": "Hacer doble clic en el video",
+    "en": "Double-click the video"
+  },
+  "sec.herramientas.rumbo.btnVideo": {
+    "es": "Ver demo en video",
+    "en": "Watch demo video"
+  },
+  "sec.herramientas.rumbo.btnConsulta": {
+    "es": "Consultar por correo",
+    "en": "Inquire by email"
+  },
+  "sec.herramientas.rumbo.videoOpenAria": {
+    "es": "Abrir demo de Rumbo Deporte en una pestaña nueva con doble clic",
+    "en": "Open Rumbo Deporte demo in a new tab with a double-click"
+  },
+  "sec.herramientas.rumbo.btnAbrir": {
+    "es": "Abrir Rumbo Deporte",
+    "en": "Open Rumbo Deporte"
+  },
+  "sec.herramientas.rumbo.contactPrefix": {
+    "es": "Para más información o asesoramiento, comunicarse con",
+    "en": "For more information or advice, contact"
   },
   "sec.herramientas.badge.disponible": {
     "es": "Disponible",
@@ -910,6 +1510,30 @@
   "sec.herramientas.evaluar.btnInstructivo": {
     "es": "Instructivo (PDF)",
     "en": "Guide (PDF, Spanish)"
+  },
+  "sec.herramientas.mdeia.title": {
+    "es": "MDeIA UCCuyo",
+    "en": "MDeIA UCCuyo"
+  },
+  "sec.herramientas.mdeia.lead": {
+    "es": "Modelo de Madurez Digital e Inteligencia Artificial para unidades académicas y ámbitos institucionales: autodiagnóstico, índice IMD, encuestas por audiencia e informe ejecutivo.",
+    "en": "Digital and AI Maturity Model for academic units and institutional areas: self-assessment, IMD index, audience surveys, and executive report."
+  },
+  "sec.herramientas.mdeia.item1": {
+    "es": "Indicadores de madurez digital e IA por unidad",
+    "en": "Digital and AI maturity indicators by unit"
+  },
+  "sec.herramientas.mdeia.item2": {
+    "es": "Autodiagnóstico, piloto Fase 1 e informe IMD",
+    "en": "Self-assessment, Phase 1 pilot, and IMD report"
+  },
+  "sec.herramientas.mdeia.item3": {
+    "es": "Encuestas por audiencia y exportación de resultados",
+    "en": "Audience surveys and results export"
+  },
+  "sec.herramientas.mdeia.btnAbrir": {
+    "es": "Abrir MDeIA",
+    "en": "Open MDeIA"
   },
   "sec.herramientas.agenda.title": {
     "es": "Agenda Universitaria",
@@ -1036,8 +1660,12 @@
     "en": "AI Library"
   },
   "sec.publicaciones.intro": {
-    "es": "Consultá la producción del Observatorio cargada por el equipo o explorá un índice global con más de 19 millones de artículos científicos sobre inteligencia artificial, disponibles para consultar y descargar.",
-    "en": "Browse Observatory output uploaded by the team, or explore a global index of more than 19 million scientific articles on artificial intelligence, available to view and download."
+    "es": "Producción del Observatorio tipificada (papers, documentos de trabajo, informes técnicos, protocolos, datasets, eventos y medios) e índice global OpenAlex con literatura científica sobre IA.",
+    "en": "Typed Observatory output (papers, working papers, technical reports, protocols, datasets, events, and media) plus a global OpenAlex index of AI scientific literature."
+  },
+  "sec.publicaciones.editorial": {
+    "es": "Compromiso editorial: al menos un producto al mes — informe, indicador, encuesta o herramienta.",
+    "en": "Editorial commitment: at least one product per month — report, indicator, survey, or tool."
   },
   "sec.publicaciones.tabs.ariaLabel": {
     "es": "Vistas de la Biblioteca de IA",
@@ -1064,8 +1692,8 @@
     "en": "Filter by type"
   },
   "sec.publicaciones.panel.global.intro": {
-    "es": "Resultados globales desde OpenAlex, Crossref, Semantic Scholar y Europe PMC (incluye PubMed), con enlaces de acceso abierto vía Unpaywall, para trabajos relacionados con inteligencia artificial. Puede haber faltantes, duplicados o registros a revisar.",
-    "en": "Global results from OpenAlex, Crossref, Semantic Scholar, and Europe PMC (including PubMed), with open-access links via Unpaywall, for works related to artificial intelligence. There may be gaps, duplicates, or records to review."
+    "es": "Resultados globales desde <a href=\"https://openalex.org\" target=\"_blank\" rel=\"noopener noreferrer\">OpenAlex</a>, <a href=\"https://www.crossref.org\" target=\"_blank\" rel=\"noopener noreferrer\">Crossref</a>, <a href=\"https://www.semanticscholar.org\" target=\"_blank\" rel=\"noopener noreferrer\">Semantic Scholar</a> y <a href=\"https://europepmc.org\" target=\"_blank\" rel=\"noopener noreferrer\">Europe PMC</a> (incluye PubMed), con enlaces de acceso abierto vía <a href=\"https://unpaywall.org\" target=\"_blank\" rel=\"noopener noreferrer\">Unpaywall</a>, para trabajos relacionados con inteligencia artificial. Puede haber faltantes, duplicados o registros a revisar.",
+    "en": "Global results from <a href=\"https://openalex.org\" target=\"_blank\" rel=\"noopener noreferrer\">OpenAlex</a>, <a href=\"https://www.crossref.org\" target=\"_blank\" rel=\"noopener noreferrer\">Crossref</a>, <a href=\"https://www.semanticscholar.org\" target=\"_blank\" rel=\"noopener noreferrer\">Semantic Scholar</a>, and <a href=\"https://europepmc.org\" target=\"_blank\" rel=\"noopener noreferrer\">Europe PMC</a> (including PubMed), with open-access links via <a href=\"https://unpaywall.org\" target=\"_blank\" rel=\"noopener noreferrer\">Unpaywall</a>, for works related to artificial intelligence. There may be gaps, duplicates, or records to review."
   },
   "sec.publicaciones.panel.global.badge": {
     "es": "Resultados aproximados",
@@ -1223,6 +1851,14 @@
     "es": "Jornadas de IA",
     "en": "AI Conference"
   },
+  "footer.semillero": {
+    "es": "Semillero de IA",
+    "en": "AI Seedbed"
+  },
+  "footer.webinars": {
+    "es": "Webinars",
+    "en": "Webinars"
+  },
   "footer.acompanamiento": {
     "es": "Acompañamiento",
     "en": "Support & consulting"
@@ -1232,8 +1868,12 @@
     "en": "Observatory visits"
   },
   "footer.encuestas": {
-    "es": "Encuestas e informes",
-    "en": "Surveys & reports"
+    "es": "Encuestas",
+    "en": "Surveys"
+  },
+  "footer.informes": {
+    "es": "Informes",
+    "en": "Reports"
   },
   "footer.galeria": {
     "es": "Galería de Imágenes",
@@ -1243,6 +1883,22 @@
     "es": "Aplicaciones IA",
     "en": "AI Apps"
   },
+  "footer.publicaciones": {
+    "es": "Biblioteca de IA",
+    "en": "AI Library"
+  },
+  "footer.datos": {
+    "es": "Datos del Observatorio",
+    "en": "Observatory data"
+  },
+  "footer.impacto": {
+    "es": "Impacto",
+    "en": "Impact"
+  },
+  "footer.numeros": {
+    "es": "El observatorio en números",
+    "en": "The observatory in numbers"
+  },
   "footer.secretaria": {
     "es": "Secretaría de Investigación",
     "en": "Research Secretariat"
@@ -1250,5 +1906,429 @@
   "footer.site": {
     "es": "uccuyo.edu.ar",
     "en": "uccuyo.edu.ar"
+  },
+  "dyn.visitantes": {
+    "es": "Visitas a las páginas web: Secretaría {sec} · Observatorio {obs}",
+    "en": "Website visits: Secretariat {sec} · Observatory {obs}"
+  },
+  "dyn.visitas.loading": {
+    "es": "Cargando origen de visitas…",
+    "en": "Loading visit origins…"
+  },
+  "dyn.visitas.error": {
+    "es": "No se pudo cargar el origen de las visitas.",
+    "en": "Could not load visit origins."
+  },
+  "dyn.visitas.errorMap": {
+    "es": "No se pudo cargar el mapa de visitas.",
+    "en": "Could not load the visits map."
+  },
+  "dyn.visitas.errorOrigin": {
+    "es": "No se pudo obtener el origen de las visitas.",
+    "en": "Could not get visit origins."
+  },
+  "dyn.visitas.empty": {
+    "es": "Todavía no hay orígenes registrados. El mapa se irá completando con las nuevas visitas.",
+    "en": "No origins recorded yet. The map will fill in with new visits."
+  },
+  "dyn.visitas.countries": {
+    "es": "Países",
+    "en": "Countries"
+  },
+  "dyn.visitas.regions": {
+    "es": "Provincias / regiones",
+    "en": "Provinces / regions"
+  },
+  "dyn.visitas.verMas": {
+    "es": "Ver más",
+    "en": "See more"
+  },
+  "dyn.visitas.withOrigin": {
+    "es": "Con origen",
+    "en": "With origin"
+  },
+  "dyn.visitas.main": {
+    "es": "Principal",
+    "en": "Top"
+  },
+  "dyn.visitas.topRegion": {
+    "es": "Provincia destacada",
+    "en": "Top province"
+  },
+  "dyn.visitas.world": {
+    "es": "Mundo",
+    "en": "World"
+  },
+  "dyn.visitas.argentina": {
+    "es": "Argentina",
+    "en": "Argentina"
+  },
+  "dyn.visitas.legend": {
+    "es": "Más visitas → círculo más grande y tono más intenso",
+    "en": "More visits → larger circle and stronger color"
+  },
+  "dyn.visitas.mapFail": {
+    "es": "No se pudo cargar el mapa interactivo. La lista de orígenes sigue disponible.",
+    "en": "Could not load the interactive map. The origin list remains available."
+  },
+  "dyn.pub.loading": {
+    "es": "Cargando publicaciones…",
+    "en": "Loading publications…"
+  },
+  "dyn.pub.teamEntry": {
+    "es": "Ingreso equipo · Cargar publicaciones",
+    "en": "Team access · Upload publications"
+  },
+  "dyn.pub.teamHint": {
+    "es": "(iniciá sesión en Google con un correo autorizado)",
+    "en": "(sign in to Google with an authorized email)"
+  },
+  "dyn.pub.filter.todas": {
+    "es": "Ver todas",
+    "en": "View all"
+  },
+  "dyn.pub.filter.papers": {
+    "es": "Papers / artículos",
+    "en": "Papers / articles"
+  },
+  "dyn.pub.filter.documentos": {
+    "es": "Documentos de trabajo",
+    "en": "Working papers"
+  },
+  "dyn.pub.filter.revistas": {
+    "es": "Revistas",
+    "en": "Journals"
+  },
+  "dyn.pub.filter.libros": {
+    "es": "Libros y capítulos",
+    "en": "Books and chapters"
+  },
+  "dyn.pub.filter.repositorios": {
+    "es": "Informes técnicos",
+    "en": "Technical reports"
+  },
+  "dyn.pub.filter.protocolos": {
+    "es": "Protocolos",
+    "en": "Protocols"
+  },
+  "dyn.pub.filter.datasets": {
+    "es": "Datasets",
+    "en": "Datasets"
+  },
+  "dyn.pub.filter.eventos": {
+    "es": "Reuniones / eventos",
+    "en": "Meetings / events"
+  },
+  "dyn.pub.filter.diarios": {
+    "es": "Medios / diarios",
+    "en": "Media / newspapers"
+  },
+  "dyn.pub.chip.papers": {
+    "es": "Paper / artículo",
+    "en": "Paper / article"
+  },
+  "dyn.pub.chip.documentos": {
+    "es": "Documento de trabajo",
+    "en": "Working paper"
+  },
+  "dyn.pub.chip.revistas": {
+    "es": "Revista",
+    "en": "Journal"
+  },
+  "dyn.pub.chip.libros": {
+    "es": "Libro / capítulo",
+    "en": "Book / chapter"
+  },
+  "dyn.pub.chip.repositorios": {
+    "es": "Informe técnico",
+    "en": "Technical report"
+  },
+  "dyn.pub.chip.protocolos": {
+    "es": "Protocolo",
+    "en": "Protocol"
+  },
+  "dyn.pub.chip.datasets": {
+    "es": "Dataset",
+    "en": "Dataset"
+  },
+  "dyn.pub.chip.eventos": {
+    "es": "Evento científico",
+    "en": "Scientific event"
+  },
+  "dyn.pub.chip.diarios": {
+    "es": "Medios",
+    "en": "Media"
+  },
+  "dyn.pub.chip.otros": {
+    "es": "Publicación",
+    "en": "Publication"
+  },
+  "dyn.pub.openLink": {
+    "es": "Abrir enlace",
+    "en": "Open link"
+  },
+  "dyn.pub.viewDoi": {
+    "es": "Ver DOI",
+    "en": "View DOI"
+  },
+  "dyn.pub.viewFlayer": {
+    "es": "Ver flayer (PDF)",
+    "en": "View flyer (PDF)"
+  },
+  "dyn.pub.noLink": {
+    "es": "Sin enlace",
+    "en": "No link"
+  },
+  "dyn.pub.noTitle": {
+    "es": "Sin título",
+    "en": "Untitled"
+  },
+  "dyn.pub.verMas": {
+    "es": "Ver más ({n})",
+    "en": "Show more ({n})"
+  },
+  "dyn.pub.emptySoon": {
+    "es": "Próximamente",
+    "en": "Coming soon"
+  },
+  "dyn.pub.emptyBuilding": {
+    "es": "Estamos incorporando las publicaciones del Observatorio de Inteligencia Artificial.",
+    "en": "We are adding publications from the Artificial Intelligence Observatory."
+  },
+  "dyn.pub.emptyNone": {
+    "es": "<p>No hay publicaciones para mostrar en este momento.</p><p>Volvé a consultar pronto.</p>",
+    "en": "<p>There are no publications to show right now.</p><p>Please check back soon.</p>"
+  },
+  "dyn.pub.emptyFilter": {
+    "es": "<p>Todavía no hay publicaciones en <strong>{filter}</strong>.</p><p>Podés ver lo disponible en <strong>Ver todas</strong>.</p>",
+    "en": "<p>There are no publications under <strong>{filter}</strong> yet.</p><p>Browse available items under <strong>View all</strong>.</p>"
+  },
+  "dyn.pub.errorConnect": {
+    "es": "No se pudo conectar al servicio de publicaciones. Si acabás de republicar Apps Script, usá <strong>Administrar implementaciones → lápiz → Nueva versión</strong> (no crees una implementación nueva) y verificá que exista el archivo <code>EncuestaDocentesWeb</code>. Después recargá con <kbd>⌘⇧R</kbd>.",
+    "en": "Could not connect to the publications service. If you just redeployed Apps Script, use <strong>Manage deployments → pencil → New version</strong> (do not create a new deployment) and confirm the <code>EncuestaDocentesWeb</code> file exists. Then reload with <kbd>⌘⇧R</kbd>."
+  },
+  "dyn.pub.col.tipo": {
+    "es": "Tipo",
+    "en": "Type"
+  },
+  "dyn.pub.col.titulo": {
+    "es": "Título",
+    "en": "Title"
+  },
+  "dyn.pub.col.unidad": {
+    "es": "Unidad · Año",
+    "en": "Unit · Year"
+  },
+  "dyn.pub.col.enlace": {
+    "es": "Enlace",
+    "en": "Link"
+  },
+  "dyn.pub.ariaUnidad": {
+    "es": "Unidad académica y año",
+    "en": "Academic unit and year"
+  },
+  "dyn.pubIndex.loading": {
+    "es": "Cargando en OpenAlex, Crossref, Semantic Scholar y Europe PMC...",
+    "en": "Loading from OpenAlex, Crossref, Semantic Scholar, and Europe PMC..."
+  },
+  "dyn.pubIndex.error": {
+    "es": "No se pudo cargar el índice desde las fuentes abiertas. Probá de nuevo en unos minutos.",
+    "en": "Could not load the index from open sources. Try again in a few minutes."
+  },
+  "dyn.pubIndex.emptySearch": {
+    "es": "<p>No hay publicaciones de IA que coincidan por <strong>{mode}</strong> con \"{q}\".</p><p>Probá otro criterio (título, DOI o autor/a) o usá <strong>Limpiar</strong>.</p>",
+    "en": "<p>No AI publications match <strong>{mode}</strong> for \"{q}\".</p><p>Try another criterion (title, DOI, or author) or use <strong>Clear</strong>.</p>"
+  },
+  "dyn.pubIndex.emptyPage": {
+    "es": "<p>No hay registros para mostrar en esta página.</p>",
+    "en": "<p>No records to show on this page.</p>"
+  },
+  "dyn.pubIndex.year": {
+    "es": "Año",
+    "en": "Year"
+  },
+  "dyn.pubIndex.mode": {
+    "es": "Modo",
+    "en": "Mode"
+  },
+  "dyn.pubIndex.sort": {
+    "es": "Orden",
+    "en": "Sort"
+  },
+  "dyn.pubIndex.pageSize": {
+    "es": "Página",
+    "en": "Page size"
+  },
+  "dyn.pubIndex.search": {
+    "es": "Búsqueda",
+    "en": "Search"
+  },
+  "dyn.pubIndex.filtersActive": {
+    "es": "Filtros activos: {parts}",
+    "en": "Active filters: {parts}"
+  },
+  "dyn.pubIndex.prev": {
+    "es": "← Anterior",
+    "en": "← Previous"
+  },
+  "dyn.pubIndex.first": {
+    "es": "« Primera",
+    "en": "« First"
+  },
+  "dyn.pubIndex.next": {
+    "es": "Siguiente →",
+    "en": "Next →"
+  },
+  "dyn.pubIndex.last": {
+    "es": "Última »",
+    "en": "Last »"
+  },
+  "dyn.pubIndex.pageOf": {
+    "es": "Página {n} de {total} · {count} resultados",
+    "en": "Page {n} of {total} · {count} results"
+  },
+  "dyn.pubIndex.allYears": {
+    "es": "Todos los años",
+    "en": "All years"
+  },
+  "dyn.pubIndex.openAccess": {
+    "es": "Acceso abierto",
+    "en": "Open access"
+  },
+  "dyn.pubIndex.sort.dateAsc": {
+    "es": "Fecha ascendente",
+    "en": "Date ascending"
+  },
+  "dyn.pubIndex.sort.dateDesc": {
+    "es": "Fecha descendente",
+    "en": "Date descending"
+  },
+  "dyn.pubIndex.sort.relevance": {
+    "es": "Relevancia",
+    "en": "Relevance"
+  },
+  "dyn.pubIndex.mode.coincidencias": {
+    "es": "coincidencias",
+    "en": "matches"
+  },
+  "dyn.pubIndex.mode.titulo": {
+    "es": "titulo",
+    "en": "title"
+  },
+  "dyn.pubIndex.mode.autor": {
+    "es": "autor/a",
+    "en": "author"
+  },
+  "dyn.pubIndex.partialFail": {
+    "es": "Algunas fuentes no respondieron ({sources}). Se muestran resultados de las demás.",
+    "en": "Some sources did not respond ({sources}). Showing results from the others."
+  },
+  "dyn.pubIndex.head.tipo": {
+    "es": "Tipo",
+    "en": "Type"
+  },
+  "dyn.pubIndex.head.titulo": {
+    "es": "Título",
+    "en": "Title"
+  },
+  "dyn.pubIndex.head.ano": {
+    "es": "Año",
+    "en": "Year"
+  },
+  "dyn.pubIndex.head.enlace": {
+    "es": "Enlace",
+    "en": "Link"
+  },
+  "dyn.galeria.teamEntry": {
+    "es": "Ingreso equipo · Cargar álbum",
+    "en": "Team access · Upload album"
+  },
+  "dyn.galeria.teamHint": {
+    "es": "(iniciá sesión en Google con un correo autorizado)",
+    "en": "(sign in to Google with an authorized email)"
+  },
+  "dyn.galeria.empty": {
+    "es": "Todavía no hay álbumes publicados. El equipo puede cargar eventos desde el ingreso autorizado.",
+    "en": "No albums published yet. The team can add events via authorized access."
+  },
+  "dyn.galeria.photos": {
+    "es": "{n} fotos",
+    "en": "{n} photos"
+  },
+  "dyn.galeria.viewPhoto": {
+    "es": "Ver foto {i} de {n}",
+    "en": "View photo {i} of {n}"
+  },
+  "dyn.galeria.lightbox.label": {
+    "es": "Vista ampliada de la foto",
+    "en": "Enlarged photo view"
+  },
+  "dyn.galeria.lightbox.close": {
+    "es": "Cerrar",
+    "en": "Close"
+  },
+  "dyn.galeria.lightbox.prev": {
+    "es": "Foto anterior",
+    "en": "Previous photo"
+  },
+  "dyn.galeria.lightbox.next": {
+    "es": "Foto siguiente",
+    "en": "Next photo"
+  },
+  "dyn.noticias.loading": {
+    "es": "Buscando noticias, boletines y menciones en medios…",
+    "en": "Searching news, newsletters, and media mentions…"
+  },
+  "dyn.noticias.empty": {
+    "es": "No se encontraron noticias por ahora. La búsqueda se actualiza al cargar la página.",
+    "en": "No news found for now. The search refreshes when the page loads."
+  },
+  "dyn.noticias.emptyFilter": {
+    "es": "No hay resultados para esa búsqueda.",
+    "en": "No results for that search."
+  },
+  "dyn.noticias.error": {
+    "es": "No se pudieron cargar las noticias. Probá recargar la página en unos minutos.",
+    "en": "Could not load the news. Try reloading the page in a few minutes."
+  },
+  "dyn.noticias.showing": {
+    "es": "Mostrando {n} resultados (avisos del Observatorio, Noticias UCCuyo y otros medios; sin Diario de Cuyo).",
+    "en": "Showing {n} results (Observatory notices, UCCuyo News, and other media; excluding Diario de Cuyo)."
+  },
+  "dyn.noticias.cta.webinar": {
+    "es": "Ver webinar",
+    "en": "View webinar"
+  },
+  "dyn.noticias.cta.jornadas": {
+    "es": "Ver jornadas",
+    "en": "View conference"
+  },
+  "dyn.noticias.cta.site": {
+    "es": "Ver en el sitio",
+    "en": "View on site"
+  },
+  "dyn.noticias.cta.uccuyo": {
+    "es": "Leer en noticias.uccuyo.edu.ar",
+    "en": "Read on noticias.uccuyo.edu.ar"
+  },
+  "dyn.noticias.cta.media": {
+    "es": "Leer en el medio",
+    "en": "Read in the media"
+  },
+  "dyn.noticias.cta.boletin": {
+    "es": "Ver boletín",
+    "en": "View newsletter"
+  },
+  "dyn.noticias.cta.note": {
+    "es": "Ver nota",
+    "en": "View article"
+  },
+  "dyn.noticias.teamEntry": {
+    "es": "Ingreso equipo · Cargar noticia",
+    "en": "Team access · Post news"
+  },
+  "dyn.noticias.teamHint": {
+    "es": "(iniciá sesión en Google con un correo autorizado)",
+    "en": "(sign in to Google with an authorized email)"
   }
 }

@@ -273,8 +273,8 @@ window.I18N_DICT = {
     "en": "In-house tools in use"
   },
   "sec.impacto.card4.body": {
-    "es": "Encuesta Clara, EPH, SAVT, EvaluAR, Agenda Universitaria y Rumbo Deporte: sistemas abiertos a la comunidad universitaria.",
-    "en": "Encuesta Clara, EPH, SAVT, EvaluAR, Agenda Universitaria, and Rumbo Deporte: systems open to the university community."
+    "es": "Encuesta Clara, EPH, SAVT, EvaluAR, MDeIA, Agenda Universitaria, SACAU y Rumbo Deporte: sistemas abiertos a la comunidad universitaria.",
+    "en": "Encuesta Clara, EPH, SAVT, EvaluAR, MDeIA, Agenda Universitaria, SACAU, and Rumbo Deporte: systems open to the university community."
   },
   "sec.impacto.card4.cta": { "es": "Abrir aplicaciones IA", "en": "Open AI Apps" },
   "sec.datos.kicker": { "es": "Evidencia", "en": "Evidence" },
@@ -1155,8 +1155,8 @@ window.I18N_DICT = {
     "en": "AI Apps"
   },
   "sec.herramientas.intro": {
-    "es": "Sistemas y plataformas desarrollados por el Observatorio de Inteligencia Artificial de la UCCuyo para la comunidad universitaria e instituciones vinculadas: encuestas, datos, evaluación, agenda universitaria, auditoría académica, conversión curricular SACAU/CRE, programas de cátedra (SACAU Aula), orden del día institucional (LUMEN), planificación estratégica, prevención digital y más. Se amplían a medida que se incorporan nuevos desarrollos.",
-    "en": "Systems and platforms developed by the UCCuyo Artificial Intelligence Observatory for the university community and partner institutions: surveys, data, assessment, university agenda, academic audit, SACAU/CRE curriculum conversion, course syllabi (SACAU Aula), institutional agenda (LUMEN), strategic planning, digital prevention, and more. The catalog grows as new developments are added."
+    "es": "Sistemas y plataformas desarrollados por el Observatorio de Inteligencia Artificial de la UCCuyo para la comunidad universitaria e instituciones vinculadas: encuestas, datos, evaluación, madurez digital e IA (MDeIA), agenda universitaria, auditoría académica, conversión curricular SACAU/CRE, programas de cátedra (SACAU Aula), orden del día institucional (LUMEN), planificación estratégica, prevención digital y más. Se amplían a medida que se incorporan nuevos desarrollos.",
+    "en": "Systems and platforms developed by the UCCuyo Artificial Intelligence Observatory for the university community and partner institutions: surveys, data, assessment, digital and AI maturity (MDeIA), university agenda, academic audit, SACAU/CRE curriculum conversion, course syllabi (SACAU Aula), institutional agenda (LUMEN), strategic planning, digital prevention, and more. The catalog grows as new developments are added."
   },
   "sec.herramientas.senalsegura.title": {
     "es": "Señal Segura",
@@ -1417,6 +1417,30 @@ window.I18N_DICT = {
   "sec.herramientas.evaluar.btnInstructivo": {
     "es": "Instructivo (PDF)",
     "en": "Guide (PDF, Spanish)"
+  },
+  "sec.herramientas.mdeia.title": {
+    "es": "MDeIA UCCuyo",
+    "en": "MDeIA UCCuyo"
+  },
+  "sec.herramientas.mdeia.lead": {
+    "es": "Modelo de Madurez Digital e Inteligencia Artificial para unidades académicas y ámbitos institucionales: autodiagnóstico, índice IMD, encuestas por audiencia e informe ejecutivo.",
+    "en": "Digital and AI Maturity Model for academic units and institutional areas: self-assessment, IMD index, audience surveys, and executive report."
+  },
+  "sec.herramientas.mdeia.item1": {
+    "es": "Indicadores de madurez digital e IA por unidad",
+    "en": "Digital and AI maturity indicators by unit"
+  },
+  "sec.herramientas.mdeia.item2": {
+    "es": "Autodiagnóstico, piloto Fase 1 e informe IMD",
+    "en": "Self-assessment, Phase 1 pilot, and IMD report"
+  },
+  "sec.herramientas.mdeia.item3": {
+    "es": "Encuestas por audiencia y exportación de resultados",
+    "en": "Audience surveys and results export"
+  },
+  "sec.herramientas.mdeia.btnAbrir": {
+    "es": "Abrir MDeIA",
+    "en": "Open MDeIA"
   },
   "sec.herramientas.agenda.title": {
     "es": "Agenda Universitaria",
