@@ -68,15 +68,19 @@ function configurarFormIdsJornadas_(asistentesFormId, expositoresFormId) {
 }
 
 /**
- * Instalá UNA vez (después de configurar IDs de Forms):
+ * Instalá UNA vez:
  * Ejecutar → instalarTriggersNotificacionesJornadas
  *
- * - Trigger horario cada 15 min para cargas nuevas en Drive (artículos / PPT)
- * - Triggers onFormSubmit para asistentes y expositores (si hay IDs)
+ * - Trigger cada 5 min: revisarCargasDriveJornadas (mails de artículos/PPT)
+ * - Asegura trigger de catálogos cada 15 min si falta
+ * - Forms solo si hay IDs configurados
+ *
+ * Luego: icono reloj (Activadores) a la izquierda → debe verse revisarCargasDriveJornadas.
  */
 function instalarTriggersNotificacionesJornadas() {
   var handlers = ScriptApp.getProjectTriggers();
   var i;
+  var hasCatalog = false;
   for (i = 0; i < handlers.length; i++) {
     var name = handlers[i].getHandlerFunction();
     if (
@@ -85,9 +89,16 @@ function instalarTriggersNotificacionesJornadas() {
     ) {
       ScriptApp.deleteTrigger(handlers[i]);
     }
+    if (name === "actualizarCatalogosJornadas") {
+      hasCatalog = true;
+    }
   }
 
-  ScriptApp.newTrigger("revisarCargasDriveJornadas").timeBased().everyMinutes(15).create();
+  ScriptApp.newTrigger("revisarCargasDriveJornadas").timeBased().everyMinutes(5).create();
+
+  if (!hasCatalog) {
+    ScriptApp.newTrigger("actualizarCatalogosJornadas").timeBased().everyMinutes(15).create();
+  }
 
   var asistId = formIdAsistentes_();
   var expoId = formIdExpositores_();
@@ -101,18 +112,56 @@ function instalarTriggersNotificacionesJornadas() {
     forms.push("expositores:" + expoId);
   }
 
-  // Activa vigilancia Drive (Forms solo si ya hay IDs configurados)
-  revisarCargasDriveJornadas();
+  var pass = revisarCargasDriveJornadas();
 
   return {
     ok: true,
-    driveTrigger: "revisarCargasDriveJornadas cada 15 min",
+    driveTrigger: "revisarCargasDriveJornadas cada 5 min",
+    catalogTrigger: hasCatalog
+      ? "actualizarCatalogosJornadas (ya existía)"
+      : "actualizarCatalogosJornadas cada 15 min (creado)",
     forms: forms,
+    primeraPasada: pass,
+    triggersAhora: listarTriggersJornadas_(),
     aviso:
-      forms.length < 2
-        ? "Drive cubierto. Forms: opcional con configurarFormIdsJornadas_."
-        : "Forms y Drive listos."
+      "Confirmá en Activadores (reloj) que figura revisarCargasDriveJornadas."
   };
+}
+
+/**
+ * Ejecutar para ver si los activadores están instalados (registro de ejecución).
+ */
+function verificarTriggersNotificacionesJornadas() {
+  var seenRaw =
+    PropertiesService.getScriptProperties().getProperty(JORNADAS_PROP_SEEN) || "{}";
+  var seen = {};
+  try {
+    seen = JSON.parse(seenRaw) || {};
+  } catch (e) {
+    seen = {};
+  }
+  return {
+    ok: true,
+    triggers: listarTriggersJornadas_(),
+    seenCount: Object.keys(seen).length,
+    seeded:
+      PropertiesService.getScriptProperties().getProperty(JORNADAS_PROP_SEEDED) === "1"
+  };
+}
+
+function listarTriggersJornadas_() {
+  var handlers = ScriptApp.getProjectTriggers();
+  var out = [];
+  var i;
+  for (i = 0; i < handlers.length; i++) {
+    var t = handlers[i];
+    out.push({
+      funcion: t.getHandlerFunction(),
+      tipo: String(t.getEventType()),
+      fuente: String(t.getTriggerSource())
+    });
+  }
+  return out;
 }
 
 /**
