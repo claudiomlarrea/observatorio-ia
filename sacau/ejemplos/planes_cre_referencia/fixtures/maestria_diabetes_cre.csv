@@ -1,0 +1,13 @@
+codigo,nombre,anio,area,regimen,tipologia,horas_teoricas,horas_practicas,horas_autonomas_override,cre_origen,notas
+01,"Fundamentos biomédicos, epidemiología, salud pública y prevención",1,FB,S,teorica,80,0,320,16.0,Cuadro CRE Maestría Diabetes; 1 CRE=25h
+02,"Diagnóstico, clasificación y clínica de la diabetes",1,FP,S,practica_supervisada,80,0,160,9.6,
+03,Farmacología clínica y terapias no insulínicas,1,FP,S,teorica,80,0,200,11.2,
+04,"Insulinoterapia, tecnología y dispositivos",1,FP,S,taller,80,0,160,9.6,
+05,"Nutrición, ejercicio y trastornos de la conducta alimentaria",1,FP,S,taller,77,0,163,9.6,
+06,Cosmovisión Cristiana,1,FCI,S,teorica,40,0,10,2.0,
+07,"Complicaciones crónicas, agudas y enfermedades asociadas",2,FP,S,teorica,80,0,220,12.0,
+08,Diabetes gestacional y salud reproductiva,2,FP,S,practica_supervisada,80,0,200,11.2,
+09,"Diabetes, salud mental y educación terapéutica",2,FP,S,taller,80,0,160,9.6,
+10,"Diabetes, bioética y gestión de la atención",2,FP,S,teorica,80,0,220,12.0,
+11,"Investigación clínica, innovación y Trabajo Final Individual y escrito",2,FP,A,tif,77,0,403,19.2,
+12,"Iglesia, Cultura y Transformación Social",2,FCI,S,teorica,40,0,10,2.0,

@@ -36,8 +36,15 @@
     { re: /trabajo integrador|t\.?i\.?f|tesis|trabajo final/i, tipologia: "tif" },
     { re: /taller|seminario/i, tipologia: "taller" },
     { re: /optativa|electiva/i, tipologia: "optativa" },
-    { re: /pr[aá]ctica|exploraci[oó]n|psicodiagn/i, tipologia: "practica_supervisada" },
+    { re: /formaci[oó]n pr[aá]ctica|pr[aá]ctica supervisada|pr[aá]ctica cl[ií]nica/i, tipologia: "practica_supervisada" },
+    { re: /formaci[oó]n te[oó]rico[- ]?pr[aá]ctica/i, tipologia: "taller" },
+    { re: /formaci[oó]n te[oó]rica/i, tipologia: "teorica" },
+    { re: /pr[aá]ctica|exploraci[oó]n|psicodiagn|precl[ií]nica|cl[ií]nica /i, tipologia: "practica_supervisada" },
   ];
+
+  /** Filas de planes ya en SACAU/CRE: Interacción + Autónomo + Total + CRE. */
+  const CRE_ROW_TAIL =
+    /^(?:(.+?)\s+)?(?:(Anual|C1|C2|Cuatrimestral|Semestral|A|S)\s+)?(\d{1,4})\s+(\d{1,4})\s+(\d{1,4})\s+(\d{1,3}(?:[.,]\d{1,2})?)\s*$/i;
 
   let currentDataBase = "data";
 
@@ -66,13 +73,30 @@
       .trim();
   }
 
+  function parseNum(v) {
+    if (v == null || v === "") return null;
+    const n = Number(String(v).replace(",", "."));
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function looksLikeCreQuad(inter, auto, total, cre) {
+    if (![inter, auto, total, cre].every((n) => Number.isFinite(n) && n >= 0)) return false;
+    if (total < 20) return false;
+    if (Math.abs(inter + auto - total) > 2) return false;
+    // 1 CRE ≈ 25 h (planes UCCuyo recientes); tolerancia amplia por redondeo
+    const expected = total / 25;
+    return Math.abs(expected - cre) <= 0.35 || Math.abs(Math.round(expected) - cre) <= 0.05;
+  }
+
   function makeAsignatura(partial, index) {
     const nombre = cleanNombre(partial.nombre || "");
     if (!nombre || nombre.length < 3) return null;
     if (SKIP_LINE.test(nombre)) return null;
+    if (/^(subtotal|total\b)/i.test(nombre)) return null;
     const teo = Number(partial.horas_teoricas || 0);
     const prac = Number(partial.horas_practicas || 0);
     if (teo + prac <= 0 && !partial.allowZero) return null;
+    const ovAuto = parseNum(partial.horas_autonomas_override);
     return {
       codigo: String(partial.codigo || String(index + 1).padStart(2, "0")),
       nombre,
@@ -82,8 +106,8 @@
       tipologia: partial.tipologia || guessTipologia(nombre),
       horas_teoricas: teo,
       horas_practicas: prac,
-      horas_autonomas_override: null,
-      valor_cre_override: null,
+      horas_autonomas_override: ovAuto,
+      valor_cre_override: parseNum(partial.valor_cre_override),
       horas_estimadas: Boolean(partial.horas_estimadas),
       notas: partial.notas || "",
     };
@@ -128,6 +152,139 @@
     // fragmentos basura del PDF de correlatividades
     if (/^(final materias|materias|para cursarla|para rendir final)$/i.test(n)) return false;
     return true;
+  }
+
+  /**
+   * Planes UCCuyo ya en créditos (Diabetes, Odontología, etc.):
+   * Nombre [Anual|C1|C2] INTER AUTO TOTAL CRE
+   * o "1º Módulo…" + línea "80 320 400 16.00"
+   */
+  function parseCreFormatLines(text) {
+    const raw = String(text || "")
+      .split(/\r?\n/)
+      .map(normalizeSpaces)
+      .filter(Boolean);
+    const lines = [];
+    for (let i = 0; i < raw.length; i++) {
+      let cur = raw[i];
+      if (/cuadro\s+de\s+cr[eé]ditos|criterio\s+de|horas\s+curriculares\s+supervisadas/i.test(cur)) {
+        lines.push(cur);
+        continue;
+      }
+      // Une nombre partido + cola numérica CRE
+      while (i + 1 < raw.length) {
+        const next = raw[i + 1];
+        const hasCreTail = CRE_ROW_TAIL.test(next) || CRE_ROW_TAIL.test(`${cur} ${next}`);
+        const curHasNums = /\d{2,4}\s+\d{1,4}\s+\d{2,4}/.test(cur);
+        if (
+          /[A-Za-zÁÉÍÓÚáéíóúñÑ]{4,}/.test(cur) &&
+          !curHasNums &&
+          (CRE_ROW_TAIL.test(next) || /^\d{1,4}\s+\d{1,4}\s+\d{1,4}\s+\d/.test(next))
+        ) {
+          cur = `${cur} ${next}`.replace(/\s+/g, " ").trim();
+          i += 1;
+          continue;
+        }
+        if (
+          /[A-Za-zÁÉÍÓÚáéíóúñÑ]$/.test(cur) &&
+          !curHasNums &&
+          next.length < 90 &&
+          !/^(subtotal|total|año|cuadro)/i.test(next) &&
+          !detectAnioFromLine(next)
+        ) {
+          // nombre multilínea antes de los números
+          if (!/\d{2,}/.test(next) || /[A-Za-zÁÉÍÓÚáéíóúñÑ]{3,}/.test(next)) {
+            const probe = `${cur} ${next}`;
+            if (!CRE_ROW_TAIL.test(probe) && i + 2 < raw.length) {
+              const probe2 = `${probe} ${raw[i + 2]}`;
+              if (CRE_ROW_TAIL.test(probe2) || /^\d{1,4}\s+\d{1,4}\s+\d{1,4}\s+\d/.test(raw[i + 2])) {
+                cur = probe.replace(/\s+/g, " ").trim();
+                i += 1;
+                continue;
+              }
+            }
+            if (hasCreTail || CRE_ROW_TAIL.test(probe)) {
+              cur = probe.replace(/\s+/g, " ").trim();
+              i += 1;
+              continue;
+            }
+          }
+        }
+        break;
+      }
+      lines.push(cur);
+    }
+
+    const found = [];
+    let currentAnio = 1;
+    let inCreBlock = false;
+    for (const line of lines) {
+      const anioDetected = detectAnioFromLine(line);
+      if (anioDetected != null) currentAnio = anioDetected;
+      if (/cuadro\s+de\s+cr[eé]ditos|horas\s+de\s+estudio\s+aut[oó]nomo|interacci[oó]n\s+pedag[oó]gica/i.test(line)) {
+        inCreBlock = true;
+      }
+      if (/^(subtotal|total\s+carrera|total\s+\d)/i.test(line)) continue;
+
+      let m = line.match(
+        /^(?:(\d{1,2})\s*[º°o.]?\s+)?(.+?)\s+(Anual|C1|C2|Cuatrimestral|Semestral)\s+(\d{1,4})\s+(\d{1,4})\s+(\d{1,4})\s+(\d{1,3}(?:[.,]\d{1,2})?)\s*$/i
+      );
+      let nombre;
+      let regimen = "S";
+      let inter;
+      let auto;
+      let total;
+      let cre;
+      let anio = currentAnio;
+
+      if (m) {
+        if (m[1]) anio = Number(m[1]);
+        nombre = m[2];
+        regimen = /anual/i.test(m[3]) ? "A" : "S";
+        inter = Number(m[4]);
+        auto = Number(m[5]);
+        total = Number(m[6]);
+        cre = Number(String(m[7]).replace(",", "."));
+      } else {
+        m = line.match(
+          /^(?:(\d{1,2})\s*[º°o.]?\s+)?(.+?)\s+(\d{1,4})\s+(\d{1,4})\s+(\d{1,4})\s+(\d{1,3}(?:[.,]\d{1,2})?)\s*$/
+        );
+        if (!m) continue;
+        if (m[1]) anio = Number(m[1]);
+        nombre = m[2];
+        // si el "nombre" es solo régimen, descartar
+        if (/^(Anual|C1|C2|Cuatrimestral|Semestral)$/i.test(nombre.trim())) continue;
+        inter = Number(m[3]);
+        auto = Number(m[4]);
+        total = Number(m[5]);
+        cre = Number(String(m[6]).replace(",", "."));
+      }
+
+      if (!looksLikeCreQuad(inter, auto, total, cre)) continue;
+      if (!isLikelySubjectName(nombre) && !/[A-Za-zÁÉÍÓÚáéíóúñÑ]{6,}/.test(nombre || "")) continue;
+      // Evitar cabeceras / restos fusionados
+      if (/^(a[nñ]o|m[oó]dulo|nombre|espacio|horas|cre)\b/i.test(nombre)) continue;
+      if (/cuadro\s+de\s+cr[eé]ditos|criterio\s+de\s+conversi[oó]n|desoliegue|carga horaria/i.test(nombre)) continue;
+      // Si el nombre arrastra el título del cuadro, quedarse con la cola de asignatura
+      const stripped = nombre.replace(/^.*?\b(CRE\)?\s+)/i, "").trim();
+      if (stripped !== nombre && isLikelySubjectName(stripped)) nombre = stripped;
+
+      inCreBlock = true;
+      const asig = makeAsignatura(
+        {
+          nombre,
+          anio,
+          regimen,
+          horas_teoricas: inter,
+          horas_practicas: 0,
+          horas_autonomas_override: auto,
+          notas: `Origen CRE: ${cre} (IP ${inter} + TA ${auto} = ${total} h)`,
+        },
+        found.length
+      );
+      if (asig) found.push(asig);
+    }
+    return { asignaturas: found, formatoCre: inCreBlock && found.length >= 3 };
   }
 
   function extractPlanMeta(text, meta) {
@@ -406,8 +563,44 @@
           currentAnio = Number(anioMatch[1]);
           continue;
         }
-        if (/asignatura|materia|unidad curricular|h\.?\s*totales|te[oó]ricas|c[oó]digo/i.test(joined) && cells.length <= 8) {
+        if (/asignatura|materia|unidad curricular|espacio curricular|h\.?\s*totales|te[oó]ricas|c[oó]digo|aut[oó]nom|interacci|cr[eé]dito/i.test(joined) && cells.length <= 10) {
+          // Cabecera: anotar índices si es tabla CRE
+          const low = cells.map((c) => c.toLowerCase());
+          table._creIdx = {
+            nombre: low.findIndex((h) => /espacio|asignatura|materia|m[oó]dulo|nombre|actividad/.test(h)),
+            inter: low.findIndex((h) => /interacci|supervisad|ip\b|pedag[oó]gica/.test(h) && !/aut[oó]nom/.test(h)),
+            auto: low.findIndex((h) => /aut[oó]nom|ta\b|estudio/.test(h)),
+            teo: low.findIndex((h) => /te[oó]rica/.test(h)),
+            prac: low.findIndex((h) => /pr[aá]ctica/.test(h) && !/supervisad/.test(h)),
+          };
           continue;
+        }
+
+        // Formato CRE (Word/HTML): nombre | IP/inter | TA/auto | total | CRE
+        const creIdx = table._creIdx;
+        if (creIdx && creIdx.nombre >= 0 && (creIdx.inter >= 0 || creIdx.teo >= 0) && creIdx.auto >= 0) {
+          const nombre = cells[creIdx.nombre];
+          const inter =
+            creIdx.inter >= 0
+              ? Number(String(cells[creIdx.inter] || "0").replace(",", "."))
+              : Number(String(cells[creIdx.teo] || "0").replace(",", ".")) +
+                Number(String(cells[creIdx.prac >= 0 ? creIdx.prac : -1] || "0").replace(",", "."));
+          const auto = Number(String(cells[creIdx.auto] || "0").replace(",", "."));
+          if (nombre && Number.isFinite(inter) && Number.isFinite(auto) && inter + auto > 0) {
+            const asig = makeAsignatura(
+              {
+                nombre,
+                anio: currentAnio,
+                horas_teoricas: inter,
+                horas_practicas: 0,
+                horas_autonomas_override: auto,
+                notas: "Importado desde tabla CRE (interacción + autónomo).",
+              },
+              found.length
+            );
+            if (asig) found.push(asig);
+            continue;
+          }
         }
 
         // Formato ejemplo UCCuyo: código | área | asignatura | teo | prac | régimen | año
@@ -512,14 +705,22 @@
   }
 
   function parsePlanFromText(text, meta) {
+    const creParsed = parseCreFormatLines(text);
     const fromLines = parseTextLines(text);
-    const asignaturas = dedupeAsignaturas(fromLines);
+    // Preferir grilla CRE cuando hay suficientes filas válidas (planes ya creditizados)
+    const preferCre = creParsed.formatoCre && creParsed.asignaturas.length >= Math.max(3, fromLines.length * 0.5);
+    const asignaturas = dedupeAsignaturas(preferCre ? creParsed.asignaturas : [...creParsed.asignaturas, ...fromLines]);
     const enriched = extractPlanMeta(text, meta || {});
     const conHoras = asignaturas.filter((a) => a.horas_teoricas + a.horas_practicas > 0).length;
     const sinHoras = asignaturas.length - conHoras;
+    const conAuto = asignaturas.filter((a) => a.horas_autonomas_override != null).length;
     let advertencia =
       "Revisá y corregí las asignaturas detectadas. Los PDF escaneados o tablas complejas pueden requerir edición manual.";
-    if (asignaturas.length && sinHoras > 0 && conHoras === 0) {
+    if (preferCre || (conAuto >= 3 && conAuto >= conHoras * 0.5)) {
+      advertencia =
+        `Se detectó un cuadro ya en formato CRE (${asignaturas.length} espacios). ` +
+        "Interacción → horas teóricas; autónomas → override. El motor recalcula CRE (enteros); el origen puede usar decimales.";
+    } else if (asignaturas.length && sinHoras > 0 && conHoras === 0) {
       advertencia =
         `Se detectaron ${asignaturas.length} materias sin carga horaria en el archivo (p. ej. plan de correlatividades). ` +
         "Completá horas teóricas/prácticas en la tabla o usá un PDF/CSV que informe horas.";
@@ -539,6 +740,7 @@
       carrera_clave: "",
       metadata: {
         fuente: enriched.fuente || "archivo",
+        formato: preferCre || conAuto >= 3 ? "cre_listo" : "horas",
         advertencia,
         texto_extraido: String(text || "").slice(0, 20000),
       },
@@ -829,31 +1031,82 @@
     throw new Error("Formato no soportado. Usá PDF, Word (.docx) o CSV.");
   }
 
+  function splitCsvLine(line, sep) {
+    const out = [];
+    let cur = "";
+    let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') {
+        if (inQuotes && line[i + 1] === '"') {
+          cur += '"';
+          i += 1;
+        } else {
+          inQuotes = !inQuotes;
+        }
+        continue;
+      }
+      if (ch === sep && !inQuotes) {
+        out.push(cur.trim());
+        cur = "";
+        continue;
+      }
+      cur += ch;
+    }
+    out.push(cur.trim());
+    return out;
+  }
+
   function parseCsvPlan(text, meta) {
+    meta = meta || {};
     const lines = text.split(/\r?\n/).filter((l) => l.trim());
     if (!lines.length) return parsePlanFromText(text, meta);
-    const sep = lines[0].includes(";") ? ";" : ",";
-    const headers = lines[0].split(sep).map((h) => h.trim().toLowerCase().replace(/^\ufeff/, ""));
+    const sep = lines[0].includes(";") && !lines[0].includes(",") ? ";" : ",";
+    const headers = splitCsvLine(lines[0], sep).map((h) => h.trim().toLowerCase().replace(/^\ufeff/, ""));
     const idx = (names) => headers.findIndex((h) => names.some((n) => h.includes(n)));
-    const iNombre = idx(["nombre", "asignatura", "materia"]);
+    const iNombre = idx(["nombre", "asignatura", "materia", "espacio curricular", "espacio", "módulo", "modulo", "actividad"]);
     const iCod = idx(["codigo", "código", "cod"]);
     const iAnio = idx(["anio", "año", "year"]);
     const iArea = idx(["area", "área"]);
     const iTeo = idx(["teorica", "teórica", "teo"]);
     const iPrac = idx(["practica", "práctica", "prac"]);
-    const iTotal = idx(["total", "horas_totales", "horas"]);
+    // Columnas de planes ya en CRE (Diabetes / Odontología / plantilla CRE)
+    const iInter = idx(["interaccion", "interacción", "supervisadas", "horas_interaccion"]);
+    const iAuto = idx(["horas_autonomas_override", "override_autonom", "horas_autonomas", "autonomo", "autónomo", "autonom"]);
+    const iTotal = idx(["horas_totales_estudiante", "horas_totales", "total"]);
     const iTipo = idx(["tipologia", "tipología", "tipo"]);
     const iReg = idx(["regimen", "régimen"]);
+    const iCre = idx(["cre_origen", "cre", "credito", "crédito"]);
+    const iNotas = idx(["notas", "nota", "observ"]);
 
     if (iNombre < 0) return parsePlanFromText(text, meta);
 
     const asignaturas = [];
     for (let r = 1; r < lines.length; r++) {
-      const cols = lines[r].split(sep).map((c) => c.trim().replace(/^"|"$/g, ""));
+      const cols = splitCsvLine(lines[r], sep).map((c) => c.replace(/^"|"$/g, ""));
       if (!cols[iNombre]) continue;
       let teo = iTeo >= 0 ? Number(cols[iTeo] || 0) : 0;
       let prac = iPrac >= 0 ? Number(cols[iPrac] || 0) : 0;
-      if (!teo && !prac && iTotal >= 0) teo = Number(cols[iTotal] || 0);
+      let ovAuto = null;
+      if (iInter >= 0) {
+        const inter = Number(String(cols[iInter] || "0").replace(",", "."));
+        if (Number.isFinite(inter) && inter > 0) {
+          teo = inter;
+          prac = 0;
+        }
+      }
+      if (iAuto >= 0 && cols[iAuto] !== "" && cols[iAuto] != null) {
+        ovAuto = Number(String(cols[iAuto]).replace(",", "."));
+        if (!Number.isFinite(ovAuto)) ovAuto = null;
+      }
+      // Solo total (plan en horas sin teo/prac): asumir interacción = total
+      if (!teo && !prac && iTotal >= 0 && ovAuto == null) teo = Number(cols[iTotal] || 0);
+      const creOrigen = iCre >= 0 ? cols[iCre] : "";
+      const notasBase = iNotas >= 0 ? cols[iNotas] : "";
+      const notas =
+        creOrigen && Number(String(creOrigen).replace(",", ".")) > 0
+          ? `${notasBase}${notasBase ? " · " : ""}CRE origen: ${creOrigen}`.trim()
+          : notasBase;
       asignaturas.push(
         makeAsignatura(
           {
@@ -865,11 +1118,16 @@
             regimen: iReg >= 0 ? cols[iReg] : "S",
             horas_teoricas: teo,
             horas_practicas: prac,
+            horas_autonomas_override: ovAuto,
+            notas,
           },
           asignaturas.length
         )
       );
     }
+    const cleaned = dedupeAsignaturas(asignaturas.filter(Boolean));
+    const conAuto = cleaned.filter((a) => a.horas_autonomas_override != null).length;
+    const formatoCre = iInter >= 0 || conAuto >= 3;
     return {
       id: meta.id || "plan-csv",
       nombre: meta.nombre || "Plan CSV",
@@ -878,8 +1136,14 @@
       normativa: "",
       duracion_anios: 0,
       carrera_clave: "",
-      metadata: { fuente: meta.fuente || "csv" },
-      asignaturas: dedupeAsignaturas(asignaturas.filter(Boolean)),
+      metadata: {
+        fuente: meta.fuente || "csv",
+        formato: formatoCre ? "cre_listo" : "horas",
+        advertencia: formatoCre
+          ? "CSV con columnas CRE (interacción/autónomas). Revisá tipologías; el motor recalcula CRE en enteros."
+          : undefined,
+      },
+      asignaturas: cleaned,
     };
   }
 
@@ -905,6 +1169,7 @@
     parsePlanFromText,
     parsePlanFromHtml,
     parseCsvPlan,
+    parseCreFormatLines,
     emptyPlan,
     guessArea,
     guessTipologia,
