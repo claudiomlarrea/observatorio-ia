@@ -1,0 +1,77 @@
+Notificaciones Jornadas IA → Secretaría de Investigación
+========================================================
+
+Igual que en Consejo de Investigación (Streamlit): cuando un investigador
+se inscribe o carga materiales, el aviso llega a Investigación — NO a
+miembros del Observatorio de IA.
+
+
+Destinatarios
+-------------
+  investigacion@uccuyo.edu.ar
+  jose.lamalfa@uccuyosl.edu.ar
+  vincutec@uccuyo.edu.ar
+  asistente.inv@uccuyo.edu.ar
+  phd.ariasv@gmail.com
+  laurapizarro92@gmail.com
+
+
+Qué cubre
+---------
+  1. Formulario asistentes
+  2. Formulario expositores
+  3. Carpeta Drive artículos
+     https://drive.google.com/drive/folders/1oEx8kOI1x4Hx2LppKv35DTIB6S48LXLa
+  4. Carpeta Drive PowerPoint
+     https://drive.google.com/drive/folders/10Ma7p_Lo3tObfE0N_nXEgwqZogqQzXQE
+
+
+Instalación (cuenta investigacion@uccuyo.edu.ar)
+------------------------------------------------
+1. Abrí el proyecto Apps Script de catálogos Jornadas (el mismo de
+   JornadasCatalogos.gs).
+
+2. Creá un archivo nuevo: JornadasNotificaciones.gs
+   Pegá el contenido de google-apps-script/JornadasNotificaciones.gs
+
+3. Actualizá también JornadasCatalogos.gs con la versión del repo
+   (llama a las notificaciones al regenerar catálogos).
+
+4. Ejecutá: probarNotificacionJornadas
+   — autorizá Gmail/Mail si lo pide —
+   Confirmá que llega el mail de prueba a la lista.
+
+5. Forms (obligatorio para inscripciones):
+   a. Abrí cada formulario en modo edición
+      (URL …/forms/d/ID_LARGO/edit).
+   b. Copiá el ID_LARGO de asistentes y de expositores.
+   c. En Apps Script, ejecutá en el editor (pegá IDs reales):
+
+        configurarFormIdsJornadas_("ID_ASISTENTES", "ID_EXPOSITORES");
+
+6. Ejecutá: instalarTriggersNotificacionesJornadas
+   — Autorizá Forms + Drive + Mail —
+   Queda:
+     · trigger cada 15 min para archivos nuevos en Drive
+     · onFormSubmit en ambos formularios
+
+7. Desactivá avisos nativos del Observatorio (importante):
+   En cada Form → pestaña Respuestas → menú ⋮ →
+   desmarcá «Recibir notificaciones de nuevas respuestas»
+   en cuentas tipo observatorioia@ / miembros OIA.
+   En Drive, quitá notificaciones de carpetas para esas cuentas
+   (Compartir → no hace falta quitar acceso de lectura si lo necesitan;
+   solo que no reciban el mail de “archivo nuevo”).
+
+
+Comportamiento
+--------------
+- Primera corrida de Drive: registra archivos ya existentes sin mandar
+  correo histórico.
+- Cada archivo NUEVO después de eso → un mail a la lista.
+- Cada envío de Form → un mail con las respuestas.
+
+
+Sitio
+-----
+  https://observatorio-ia.uccuyo.edu.ar/#jornadas-ia

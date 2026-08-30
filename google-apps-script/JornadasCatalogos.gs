@@ -73,9 +73,20 @@ function actualizarCatalogosJornadas() {
   props.setProperty("jornadas_catalogo_articulos_n", String(arts.length));
   props.setProperty("jornadas_catalogo_presentaciones_n", String(ppts.length));
 
+  // Avisos a Investigación (no Observatorio). Ver JornadasNotificaciones.gs
+  var notify = null;
+  try {
+    if (typeof notificarNuevasCargasDriveJornadas_ === "function") {
+      notify = notificarNuevasCargasDriveJornadas_(arts, ppts);
+    }
+  } catch (errNotify) {
+    notify = { ok: false, error: String(errNotify) };
+  }
+
   return {
     ok: true,
     updatedAt: updatedAt,
+    notify: notify,
     articulos: {
       count: arts.length,
       pdfId: pdfArts.getId(),

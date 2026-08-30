@@ -35,6 +35,11 @@ Tras regenerar en Apps Script
 5. Reemplazá los archivos en assets/jornadas/ del repo
 6. Commit + push
 
+Notificaciones a Investigación (no Observatorio)
+------------------------------------------------
+Ver PEGAR-JORNADAS-NOTIFICACIONES.txt y el archivo JornadasNotificaciones.gs
+(mismo proyecto Apps Script).
+
 
 API (solo conteo / fecha en la web)
 -----------------------------------
