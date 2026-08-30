@@ -130,6 +130,29 @@ function revisarCargasDriveJornadas() {
 }
 
 /**
+ * Una sola vez si subiste archivos y no llegó mail:
+ * trata TODO lo que hay hoy en las carpetas como “nuevo” y avisa.
+ * (Puede reenviar aviso de archivos viejos si ya estaban.)
+ */
+function notificarTodasLasCargasActualesJornadas() {
+  var props = PropertiesService.getScriptProperties();
+  props.setProperty(JORNADAS_PROP_SEEDED, "1");
+  props.setProperty(JORNADAS_PROP_SEEN, "{}");
+  return revisarCargasDriveJornadas();
+}
+
+/**
+ * Reinicia el seguimiento: la próxima corrida siembra sin mails;
+ * a partir de ahí solo avisa archivos realmente nuevos.
+ */
+function reiniciarSeguimientoCargasJornadas() {
+  var props = PropertiesService.getScriptProperties();
+  props.deleteProperty(JORNADAS_PROP_SEEN);
+  props.deleteProperty(JORNADAS_PROP_SEEDED);
+  return revisarCargasDriveJornadas();
+}
+
+/**
  * Trigger de Google Forms (asistentes o expositores).
  */
 function onFormSubmitJornadas(e) {
