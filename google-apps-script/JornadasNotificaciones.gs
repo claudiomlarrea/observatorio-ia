@@ -101,7 +101,7 @@ function instalarTriggersNotificacionesJornadas() {
     forms.push("expositores:" + expoId);
   }
 
-  // Primera pasada: marca archivos actuales sin mandar correo de histórico
+  // Activa vigilancia Drive (Forms solo si ya hay IDs configurados)
   revisarCargasDriveJornadas();
 
   return {
@@ -110,7 +110,7 @@ function instalarTriggersNotificacionesJornadas() {
     forms: forms,
     aviso:
       forms.length < 2
-        ? "Falta configurar IDs de Forms (configurarFormIdsJornadas_). Drive ya queda cubierto."
+        ? "Drive cubierto. Forms: opcional con configurarFormIdsJornadas_."
         : "Forms y Drive listos."
   };
 }
@@ -214,8 +214,10 @@ function onFormSubmitJornadas(e) {
 }
 
 /**
- * Diff de archivos vs última corrida. Primera vez solo “siembra” (sin mail histórico).
- * Llamado desde JornadasCatalogos.actualizarCatalogosJornadas.
+ * Diff de archivos vs última corrida.
+ * - Primera vez: siembra históricos SIN mail, pero AVISA los de los últimos 3 días
+ *   (para no perder cargas recién hechas).
+ * - Después: un mail por cada fileId nuevo.
  */
 function notificarNuevasCargasDriveJornadas_(arts, ppts) {
   arts = arts || [];
@@ -228,21 +230,29 @@ function notificarNuevasCargasDriveJornadas_(arts, ppts) {
     prev = {};
   }
   var seeded = props.getProperty(JORNADAS_PROP_SEEDED) === "1";
+  var recentCutoff = Date.now() - 3 * 24 * 60 * 60 * 1000;
 
   var next = {};
   var nuevos = [];
   var i;
   for (i = 0; i < arts.length; i++) {
-    markEntrada_(arts[i], "artículo científico", prev, next, seeded, nuevos);
+    markEntrada_(arts[i], "artículo científico", prev, next, seeded, recientesOk_(arts[i], recentCutoff), nuevos);
   }
   for (i = 0; i < ppts.length; i++) {
-    markEntrada_(ppts[i], "presentación PowerPoint", prev, next, seeded, nuevos);
+    markEntrada_(
+      ppts[i],
+      "presentación PowerPoint",
+      prev,
+      next,
+      seeded,
+      recientesOk_(ppts[i], recentCutoff),
+      nuevos
+    );
   }
 
   props.setProperty(JORNADAS_PROP_SEEN, JSON.stringify(next));
   if (!seeded) {
     props.setProperty(JORNADAS_PROP_SEEDED, "1");
-    return { ok: true, seeded: true, nuevos: 0 };
   }
 
   for (i = 0; i < nuevos.length; i++) {
@@ -272,14 +282,37 @@ function notificarNuevasCargasDriveJornadas_(arts, ppts) {
     );
   }
 
-  return { ok: true, seeded: false, nuevos: nuevos.length, items: nuevos };
+  return {
+    ok: true,
+    seeded: seeded,
+    justSeeded: !seeded,
+    nuevos: nuevos.length,
+    items: nuevos
+  };
 }
 
-function markEntrada_(entry, tipoLabel, prev, next, seeded, nuevos) {
+function recientesOk_(entry, recentCutoff) {
+  if (!entry || !entry.fileId) return false;
+  try {
+    var f = DriveApp.getFileById(String(entry.fileId));
+    var t = Math.max(f.getLastUpdated().getTime(), f.getDateCreated().getTime());
+    return t >= recentCutoff;
+  } catch (e) {
+    return false;
+  }
+}
+
+function markEntrada_(entry, tipoLabel, prev, next, seeded, isRecent, nuevos) {
   if (!entry || !entry.fileId) return;
   var id = String(entry.fileId);
   next[id] = true;
-  if (seeded && !prev[id]) {
+  var avisar = false;
+  if (!seeded) {
+    avisar = !!isRecent;
+  } else if (!prev[id]) {
+    avisar = true;
+  }
+  if (avisar) {
     nuevos.push({
       tipo: tipoLabel,
       title: entry.title || entry.fileName || id,
