@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Cache-Control" content="no-store" />
+    <title>Agenda vacía</title>
+    <style>
+      html,
+      body {
+        min-height: 100%;
+        margin: 0;
+        background: #0b1f3a;
+        color: #fff;
+        font-family: Arial, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 1.5rem;
+      }
+      p {
+        max-width: 22rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <p>La agenda de esta pantalla quedó vacía.</p>
+    <script>
+      (function () {
+        try {
+          var keys = [];
+          for (var i = 0; i < localStorage.length; i++) {
+            var key = localStorage.key(i);
+            if (key && (key.indexOf("agenda-uni") === 0 || key.indexOf("agenda-viva") === 0)) {
+              keys.push(key);
+            }
+          }
+          keys.forEach(function (key) {
+            localStorage.removeItem(key);
+          });
+        } catch (err) {}
+        window.location.replace("/?v=" + Date.now());
+      })();
+    </script>
+  </body>
+</html>

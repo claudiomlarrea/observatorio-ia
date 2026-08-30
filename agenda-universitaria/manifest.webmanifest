@@ -1,0 +1,20 @@
+{
+  "name": "Agenda Universitaria",
+  "short_name": "Agenda Uni",
+  "description": "Lo que llega por WhatsApp o el calendario aparece en las botoneras. Mi Agenda es lo que vos elijas.",
+  "start_url": "/observatorio-ia/agenda-universitaria/",
+  "scope": "/observatorio-ia/agenda-universitaria/",
+  "id": "/observatorio-ia/agenda-universitaria/",
+  "display": "browser",
+  "background_color": "#0b1f3a",
+  "theme_color": "#0b1f3a",
+  "lang": "es-AR",
+  "icons": [
+    {
+      "src": "/observatorio-ia/agenda-universitaria/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

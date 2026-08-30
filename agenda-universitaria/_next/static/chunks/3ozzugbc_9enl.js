@@ -1,0 +1,1 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,74402,t=>{"use strict";t.i(47167);let e="/observatorio-ia/agenda-universitaria".replace(/\/$/,"");t.s(["apiUrl",0,function(t){let i;return i=t.startsWith("/")?t:`/${t}`,`${e}${i}`}])}]);
