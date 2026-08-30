@@ -264,80 +264,133 @@ function onFormSubmitJornadas(e) {
 
 /**
  * Diff de archivos vs última corrida.
- * - Primera vez: siembra históricos SIN mail, pero AVISA los de los últimos 3 días
- *   (para no perder cargas recién hechas).
- * - Después: un mail por cada fileId nuevo.
+ * IMPORTANTE: solo marca “visto” DESPUÉS de enviar el mail.
+ * Si se marcaba antes, un fallo de MailApp dejaba el archivo silenciado para siempre
+ * (y solo reaparecía al forzar notificarTodasLasCargasActualesJornadas).
  */
 function notificarNuevasCargasDriveJornadas_(arts, ppts) {
   arts = arts || [];
   ppts = ppts || [];
-  var props = PropertiesService.getScriptProperties();
-  var prev = {};
+
+  var lock = LockService.getScriptLock();
+  var gotLock = false;
   try {
-    prev = JSON.parse(props.getProperty(JORNADAS_PROP_SEEN) || "{}") || {};
-  } catch (errParse) {
-    prev = {};
-  }
-  var seeded = props.getProperty(JORNADAS_PROP_SEEDED) === "1";
-  var recentCutoff = Date.now() - 3 * 24 * 60 * 60 * 1000;
-
-  var next = {};
-  var nuevos = [];
-  var i;
-  for (i = 0; i < arts.length; i++) {
-    markEntrada_(arts[i], "artículo científico", prev, next, seeded, recientesOk_(arts[i], recentCutoff), nuevos);
-  }
-  for (i = 0; i < ppts.length; i++) {
-    markEntrada_(
-      ppts[i],
-      "presentación PowerPoint",
-      prev,
-      next,
-      seeded,
-      recientesOk_(ppts[i], recentCutoff),
-      nuevos
-    );
+    gotLock = lock.tryLock(30000);
+  } catch (ignoreLock) {
+    gotLock = false;
   }
 
-  props.setProperty(JORNADAS_PROP_SEEN, JSON.stringify(next));
-  if (!seeded) {
+  try {
+    var props = PropertiesService.getScriptProperties();
+    var prev = {};
+    try {
+      prev = JSON.parse(props.getProperty(JORNADAS_PROP_SEEN) || "{}") || {};
+    } catch (errParse) {
+      prev = {};
+    }
+    var seeded = props.getProperty(JORNADAS_PROP_SEEDED) === "1";
+    var recentCutoff = Date.now() - 3 * 24 * 60 * 60 * 1000;
+
+    var currentIds = {};
+    var nuevos = [];
+    var i;
+    for (i = 0; i < arts.length; i++) {
+      collectEntrada_(
+        arts[i],
+        "artículo científico",
+        prev,
+        currentIds,
+        seeded,
+        recientesOk_(arts[i], recentCutoff),
+        nuevos
+      );
+    }
+    for (i = 0; i < ppts.length; i++) {
+      collectEntrada_(
+        ppts[i],
+        "presentación PowerPoint",
+        prev,
+        currentIds,
+        seeded,
+        recientesOk_(ppts[i], recentCutoff),
+        nuevos
+      );
+    }
+
+    var enviados = [];
+    var fallidos = [];
+    for (i = 0; i < nuevos.length; i++) {
+      var n = nuevos[i];
+      var cuerpo =
+        "Se cargó un nuevo archivo en las Jornadas de IA 2026.\n\n" +
+        "Tipo: " +
+        n.tipo +
+        "\n" +
+        "Título / nombre: " +
+        n.title +
+        "\n" +
+        (n.author ? "Autor/expositor: " + n.author + "\n" : "") +
+        (n.area ? "Área: " + n.area + "\n" : "") +
+        "Archivo: " +
+        n.fileName +
+        "\n" +
+        (n.fileId
+          ? "Enlace Drive: https://drive.google.com/file/d/" + n.fileId + "/view\n"
+          : "") +
+        "\nSección Jornadas: " +
+        JORNADAS_SITE_URL +
+        "\n";
+      try {
+        enviarNotificacionJornadas_(
+          "[Jornadas IA] Nueva carga — " + n.tipo,
+          cuerpo
+        );
+        enviados.push(n.fileId);
+      } catch (errSend) {
+        fallidos.push({ id: n.fileId, error: String(errSend) });
+        Logger.log("Jornadas notify fail " + n.fileId + ": " + errSend);
+      }
+    }
+
+    // Vistos = previos que siguen + actuales que no fallaron el mail (o no pedían mail)
+    var next = {};
+    var id;
+    for (id in currentIds) {
+      if (!currentIds.hasOwnProperty(id)) continue;
+      var failed = false;
+      for (i = 0; i < fallidos.length; i++) {
+        if (fallidos[i].id === id) {
+          failed = true;
+          break;
+        }
+      }
+      if (failed) continue; // reintentar en la próxima corrida
+      next[id] = true;
+    }
+    // Conservar ids previos ya notificados aunque salgan de la carpeta
+    for (id in prev) {
+      if (prev.hasOwnProperty(id)) next[id] = true;
+    }
+
+    props.setProperty(JORNADAS_PROP_SEEN, JSON.stringify(next));
     props.setProperty(JORNADAS_PROP_SEEDED, "1");
-  }
 
-  for (i = 0; i < nuevos.length; i++) {
-    var n = nuevos[i];
-    var cuerpo =
-      "Se cargó un nuevo archivo en las Jornadas de IA 2026.\n\n" +
-      "Tipo: " +
-      n.tipo +
-      "\n" +
-      "Título / nombre: " +
-      n.title +
-      "\n" +
-      (n.author ? "Autor/expositor: " + n.author + "\n" : "") +
-      (n.area ? "Área: " + n.area + "\n" : "") +
-      "Archivo: " +
-      n.fileName +
-      "\n" +
-      (n.fileId
-        ? "Enlace Drive: https://drive.google.com/file/d/" + n.fileId + "/view\n"
-        : "") +
-      "\nSección Jornadas: " +
-      JORNADAS_SITE_URL +
-      "\n";
-    enviarNotificacionJornadas_(
-      "[Jornadas IA] Nueva carga — " + n.tipo,
-      cuerpo
-    );
+    return {
+      ok: fallidos.length === 0,
+      seeded: seeded,
+      justSeeded: !seeded,
+      nuevos: nuevos.length,
+      enviados: enviados.length,
+      fallidos: fallidos,
+      items: nuevos
+    };
+  } finally {
+    if (gotLock) {
+      try {
+        lock.releaseLock();
+      } catch (ignoreRelease) {}
+    }
   }
-
-  return {
-    ok: true,
-    seeded: seeded,
-    justSeeded: !seeded,
-    nuevos: nuevos.length,
-    items: nuevos
-  };
 }
 
 function recientesOk_(entry, recentCutoff) {
@@ -347,30 +400,34 @@ function recientesOk_(entry, recentCutoff) {
     var t = Math.max(f.getLastUpdated().getTime(), f.getDateCreated().getTime());
     return t >= recentCutoff;
   } catch (e) {
-    return false;
+    return true; // si no se puede leer fecha, mejor avisar
   }
 }
 
-function markEntrada_(entry, tipoLabel, prev, next, seeded, isRecent, nuevos) {
+/**
+ * Decide si un archivo debe generar mail.
+ * currentIds: todos los ids actuales (para el set “visto”).
+ */
+function collectEntrada_(entry, tipoLabel, prev, currentIds, seeded, isRecent, nuevos) {
   if (!entry || !entry.fileId) return;
   var id = String(entry.fileId);
-  next[id] = true;
+  currentIds[id] = true;
   var avisar = false;
+  if (prev[id]) return; // ya notificado
   if (!seeded) {
-    avisar = !!isRecent;
-  } else if (!prev[id]) {
-    avisar = true;
+    avisar = !!isRecent; // primera vez: solo recientes
+  } else {
+    avisar = true; // nuevo fileId
   }
-  if (avisar) {
-    nuevos.push({
-      tipo: tipoLabel,
-      title: entry.title || entry.fileName || id,
-      author: entry.author || "",
-      area: entry.area || "",
-      fileName: entry.fileName || "",
-      fileId: id
-    });
-  }
+  if (!avisar) return;
+  nuevos.push({
+    tipo: tipoLabel,
+    title: entry.title || entry.fileName || id,
+    author: entry.author || "",
+    area: entry.area || "",
+    fileName: entry.fileName || "",
+    fileId: id
+  });
 }
 
 function formIdAsistentes_() {
