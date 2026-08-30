@@ -191,6 +191,87 @@ function notificarTodasLasCargasActualesJornadas() {
 }
 
 /**
+ * Si llegó mail del artículo pero NO del PPT: olvidá las presentaciones
+ * ya “marcadas” y volvé a avisar solo esas.
+ */
+function forzarAvisoPresentacionesJornadas() {
+  return forzarAvisoPorKind_("presentacion");
+}
+
+/** Idem para artículos. */
+function forzarAvisoArticulosJornadas() {
+  return forzarAvisoPorKind_("articulo");
+}
+
+function forzarAvisoPorKind_(kind) {
+  kind = String(kind || "");
+  var props = PropertiesService.getScriptProperties();
+  var prev = {};
+  try {
+    prev = JSON.parse(props.getProperty(JORNADAS_PROP_SEEN) || "{}") || {};
+  } catch (e) {
+    prev = {};
+  }
+  var entries =
+    kind === "articulo"
+      ? listarEntradas_(JORNADAS_ARTICULOS_FOLDER_ID, ARTICULOS_MIME_OK, "articulo")
+      : listarEntradas_(
+          JORNADAS_PRESENTACIONES_FOLDER_ID,
+          PRESENTACIONES_MIME_OK,
+          "presentacion"
+        );
+  var i;
+  for (i = 0; i < entries.length; i++) {
+    if (entries[i] && entries[i].fileId) {
+      delete prev[String(entries[i].fileId)];
+    }
+  }
+  props.setProperty(JORNADAS_PROP_SEEN, JSON.stringify(prev));
+  props.setProperty(JORNADAS_PROP_SEEDED, "1");
+  var result = revisarCargasDriveJornadas();
+  result.forzado = kind;
+  result.olvidados = entries.length;
+  return result;
+}
+
+/**
+ * Diagnóstico: qué ve el script en cada carpeta (sin mandar mails).
+ */
+function diagnosticarCargasDriveJornadas() {
+  var arts = listarEntradas_(JORNADAS_ARTICULOS_FOLDER_ID, ARTICULOS_MIME_OK, "articulo");
+  var ppts = listarEntradas_(
+    JORNADAS_PRESENTACIONES_FOLDER_ID,
+    PRESENTACIONES_MIME_OK,
+    "presentacion"
+  );
+  var props = PropertiesService.getScriptProperties();
+  var prev = {};
+  try {
+    prev = JSON.parse(props.getProperty(JORNADAS_PROP_SEEN) || "{}") || {};
+  } catch (e) {
+    prev = {};
+  }
+  function mapItems(list) {
+    return list.map(function (x) {
+      return {
+        title: x.title,
+        fileName: x.fileName,
+        fileId: x.fileId,
+        mime: x.mime,
+        yaVisto: !!prev[String(x.fileId)]
+      };
+    });
+  }
+  return {
+    ok: true,
+    articulos: mapItems(arts),
+    presentaciones: mapItems(ppts),
+    seeded: props.getProperty(JORNADAS_PROP_SEEDED) === "1",
+    seenTotal: Object.keys(prev).length
+  };
+}
+
+/**
  * Reinicia el seguimiento: la próxima corrida siembra sin mails;
  * a partir de ahí solo avisa archivos realmente nuevos.
  */
