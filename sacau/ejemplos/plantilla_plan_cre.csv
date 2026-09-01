@@ -1,0 +1,2 @@
+codigo,nombre,anio,area,regimen,tipologia,horas_teoricas,horas_practicas,horas_autonomas_override,cre_origen,notas
+01,Espacio curricular ejemplo,1,FB,S,teorica,80,0,320,16.00,"Interacción=80 · Autónomo=320 · Total=400 · CRE origen 16 (1 CRE=25 h)"

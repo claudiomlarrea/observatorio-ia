@@ -1,0 +1,10 @@
+codigo,nombre,anio,area,regimen,tipologia,horas_teoricas,horas_practicas,horas_autonomas_override,cre_origen,notas
+01,Introducción Preclínica Integrada I,1,FP,A,practica_supervisada,224,0,103,13.08,IP+TA; 1 CRE=25h
+02,"Persona, cuerpo y territorio: bases integrales de la salud bucodental",1,FB,A,teorica,224,0,103,13.08,
+03,Odontología Preventiva y Comunitaria I,1,FP,A,practica_supervisada,160,0,74,9.36,
+04,Educación en Salud Bucal,1,FP,S,taller,80,0,37,4.68,
+05,De la molécula al tejido: fundamentos biofísicos e histológicos,1,FB,S,teorica,96,0,44,5.6,
+06,Metodología de la Investigación,1,FB,S,teorica,16,0,7,0.92,
+07,Biofisicoquímica bucal,1,FB,S,teorica,112,0,52,6.56,
+08,"Arquitectura funcional, diagnóstico y tecnologías del sistema estomatognático",1,FP,S,taller,80,0,38,4.72,
+09,Filosofía y Antropología I,1,FCI,S,teorica,40,0,10,2.0,
