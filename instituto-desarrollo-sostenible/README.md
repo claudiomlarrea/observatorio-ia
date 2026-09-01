@@ -17,6 +17,7 @@ Secciones armadas a partir de la presentación institucional, *Web IDS*, el Regl
 - Docencia (Diplomatura RSE)
 - Extensión, redes y Hub Sostenible
 - Documentos descargables
+- Contador y mapa de visitas (mismo backend que Observatorio / Plan AURA)
 
 Paleta: verde dominante, rojo subordinado y oro de acento del *Manual de normas de identidad visual* UCCuyo (2017), con la preponderancia verde de la landing institucional.
 

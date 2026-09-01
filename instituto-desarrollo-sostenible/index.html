@@ -9,7 +9,7 @@
     />
     <title>Instituto de Desarrollo Sostenible | Universidad Católica de Cuyo</title>
     <link rel="icon" type="image/png" href="assets/favicon.png" />
-    <link rel="stylesheet" href="css/styles.css?v=4" />
+    <link rel="stylesheet" href="css/styles.css?v=5" />
   </head>
   <body>
     <a class="skip-link" href="#contenido">Ir al contenido</a>
@@ -64,6 +64,7 @@
               <li><a href="#extension">Extensión</a></li>
               <li><a href="#hub">Hub Sostenible</a></li>
               <li><a href="#documentos">Documentos</a></li>
+              <li><a href="#visitas">Visitas</a></li>
               <li><a href="#contacto">Contacto</a></li>
             </ul>
           </nav>
@@ -105,7 +106,9 @@
               <a class="btn-pill btn-pill--gold" href="#instituto">El Instituto</a>
               <a class="btn-pill btn-pill--ghost" href="#investigacion">Investigación</a>
               <a class="btn-pill btn-pill--ghost" href="#documentos">Documentos</a>
+              <a class="btn-pill btn-pill--ghost" href="#visitas">Visitas</a>
             </div>
+            <p id="visitantes-widget" class="visitantes-widget visitantes-widget--hero" aria-live="polite" hidden></p>
             <div class="filter-card">
               <h2>Áreas de acción</h2>
               <div class="filter-toggles">
@@ -131,6 +134,7 @@
             <a href="#extension">Extensión</a>
             <a href="#hub">Hub Sostenible</a>
             <a href="#documentos">Normativa</a>
+            <a href="#visitas">Visitas</a>
             <a href="#contacto">Contacto</a>
           </nav>
         </div>
@@ -880,6 +884,37 @@
         </div>
       </section>
 
+      <section class="section section--visitas" id="visitas" aria-labelledby="sec-visitas">
+        <div class="section-inner">
+          <header class="section-head">
+            <p class="section-kicker">Alcance</p>
+            <h2 id="sec-visitas">Visitas al Instituto</h2>
+          </header>
+          <p class="text-intro">
+            Estimación del país y, cuando está disponible, de la provincia o
+            región desde donde se consulta el sitio del Instituto de Desarrollo
+            Sostenible. Tocá un origen en la lista para enfocarlo en el mapa. El
+            dato es aproximado (geolocalización por IP): no identifica personas
+            ni guarda la dirección IP.
+          </p>
+          <p id="visitas-total" class="visitas-total" hidden></p>
+          <p id="visitas-status" class="visitas-status" aria-live="polite"></p>
+          <div class="visitas-layout">
+            <div
+              id="visitas-mapa"
+              class="visitas-mapa"
+              role="img"
+              aria-label="Mapa de origen estimado de las visitas"
+            ></div>
+            <div id="visitas-lista" class="visitas-lista"></div>
+          </div>
+          <p class="visitas-note">
+            El origen es una estimación por IP. Redes móviles, VPN y campus
+            universitarios pueden desplazar la ubicación estimada.
+          </p>
+        </div>
+      </section>
+
       <section class="section section--muted" id="contacto" aria-labelledby="sec-contacto">
         <div class="section-inner">
           <header class="section-head">
@@ -934,6 +969,7 @@
             <li><a href="#publicaciones">Publicaciones</a></li>
             <li><a href="#hub">Hub Sostenible</a></li>
             <li><a href="#documentos">Documentos</a></li>
+            <li><a href="#visitas">Visitas</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -956,5 +992,9 @@
     </footer>
 
     <script src="js/main.js?v=3" defer></script>
+    <script src="js/publicaciones-config.js?v=1" defer></script>
+    <script src="js/visitantes-config.js?v=1" defer></script>
+    <script src="js/visitantes.js?v=1" defer></script>
+    <script src="js/visitas-mapa.js?v=1" defer></script>
   </body>
 </html>

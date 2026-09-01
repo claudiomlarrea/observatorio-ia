@@ -1,0 +1,28 @@
+PARCHE — Visitas Instituto de Desarrollo Sostenible (site=ids)
+==============================================================
+
+El frontend de instituto-desarrollo-sostenible/ ya usa SITE: "ids".
+Hay que publicar una nueva versión de Apps Script o el mapa
+responderá {"ok":false,"error":"invalid_site"} y el contador no
+mostrará el campo "ids".
+
+1. Abrí en Cursor:
+   google-apps-script/PublicacionesWeb.gs
+2. Cmd+A → copiar
+3. Proyecto Apps Script «Publicaciones Página Web»
+   (cuenta investigacion@uccuyo.edu.ar)
+4. PublicacionesWeb.gs → Cmd+A → pegar → Guardar
+5. Implementar → Administrar implementaciones → lápiz (/exec)
+   → Nueva versión → Implementar
+
+Atajo: ./activar-visitas.sh (copia el .gs al portapapeles y abre el proyecto).
+
+Cambios incluidos:
+- Contador visitas_web_ids
+- visitgeo / visitmap aceptan site=ids
+- Respuesta de visit incluye campo "ids"
+
+Luego:
+  https://observatorio-ia.uccuyo.edu.ar/instituto-desarrollo-sostenible/#visitas
+
+No afecta los contadores observatorio / secretaria / agua / aura / semillero.

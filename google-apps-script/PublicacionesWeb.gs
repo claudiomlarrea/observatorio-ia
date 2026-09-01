@@ -5,10 +5,10 @@
  * Endpoints:
  * - GET  ?action=public (o sin action): JSON para la web pública.
  * - GET  ?action=admin: panel HTML de carga (solo emails autorizados).
- * - GET  ?action=visit&site=secretaria|observatorio|agua|aura|semillero: +1 visita a esa página web (GitHub Pages).
- * - GET  ?action=visitgeo&site=observatorio|secretaria|agua|aura|semillero&country=AR&countryName=Argentina&region=San Juan:
+ * - GET  ?action=visit&site=secretaria|observatorio|agua|aura|semillero|ids: +1 visita a esa página web (GitHub Pages).
+ * - GET  ?action=visitgeo&site=observatorio|secretaria|agua|aura|semillero|ids&country=AR&countryName=Argentina&region=San Juan:
  *       +1 a contador agregado de origen (sin IP).
- * - GET  ?action=visitmap&site=observatorio|secretaria|agua|aura|semillero: JSON de países/regiones para el mapa público.
+ * - GET  ?action=visitmap&site=observatorio|secretaria|agua|aura|semillero|ids: JSON de países/regiones para el mapa público.
  * - GET  ?action=sacau_plan: +1 plan cargado en el Convertidor SACAU → CRE (devuelve total).
  * - GET  ?action=sacau_stats: consulta el total de planes cargados (sin incrementar).
  * - GET  ?action=sacau_aula_programa: +1 programa de cátedra cargado en SACAU Aula (devuelve total).
@@ -839,7 +839,8 @@ function isVisitasSite_(site) {
     site === "secretaria" ||
     site === "agua" ||
     site === "aura" ||
-    site === "semillero"
+    site === "semillero" ||
+    site === "ids"
   );
 }
 
@@ -851,6 +852,7 @@ function registrarVisita_(site) {
   var agua = parseInt(props.getProperty("visitas_web_agua") || "0", 10) || 0;
   var aura = parseInt(props.getProperty("visitas_web_aura") || "0", 10) || 0;
   var semillero = parseInt(props.getProperty("visitas_web_semillero") || "0", 10) || 0;
+  var ids = parseInt(props.getProperty("visitas_web_ids") || "0", 10) || 0;
   if (site === "secretaria") {
     sec++;
     props.setProperty("visitas_web_secretaria", String(sec));
@@ -866,6 +868,9 @@ function registrarVisita_(site) {
   } else if (site === "semillero") {
     semillero++;
     props.setProperty("visitas_web_semillero", String(semillero));
+  } else if (site === "ids") {
+    ids++;
+    props.setProperty("visitas_web_ids", String(ids));
   }
   return {
     ok: true,
@@ -875,12 +880,14 @@ function registrarVisita_(site) {
     agua: agua,
     aura: aura,
     semillero: semillero,
+    ids: ids,
     paginas: {
       secretaria: "https://claudiomlarrea.github.io/secretaria-investigacion/",
       observatorio: "https://claudiomlarrea.github.io/observatorio-ia/",
       agua: "https://claudiomlarrea.github.io/observatorio-ia/instituto-del-agua/",
       aura: "https://plan-aura.com.ar/",
-      semillero: "https://jose2026-market.github.io/sia-uccuyo/"
+      semillero: "https://jose2026-market.github.io/sia-uccuyo/",
+      ids: "https://observatorio-ia.uccuyo.edu.ar/instituto-desarrollo-sostenible/"
     }
   };
 }
@@ -937,7 +944,7 @@ function registrarProgramaSacauAula_() {
 
 /**
  * Origen aproximado de visitas (país / región). No recibe ni guarda IP.
- * Sitios: observatorio | secretaria | agua | aura | semillero.
+ * Sitios: observatorio | secretaria | agua | aura | semillero | ids.
  */
 function registrarVisitaGeo_(site, country, countryName, region) {
   site = normalizar_(site);
