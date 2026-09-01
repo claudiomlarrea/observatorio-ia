@@ -1,0 +1,46 @@
+/**
+ * Paleta UCCuyo (Manual de normas de identidad visual, 2017)
+ * + acento del isologo IDS.
+ *
+ * Dominante: verde institucional (preponderancia, como en la landing UCCuyo).
+ * Subordinado: rojo institucional (uso acotado).
+ * Acento: oro / llama (manual + llama del IDS).
+ * Unidad académica FCEyE: azul Pantone 294 C (uso puntual).
+ */
+:root {
+  --color-green: #064a31;
+  --color-green-mid: #0a5e40;
+  --color-green-dark: #043524;
+  --color-green-deep: #022319;
+  --rgb-green: 6, 74, 49;
+
+  --color-gold: #e38a00;
+  --color-gold-mid: #f0a020;
+  --color-gold-dark: #b86e00;
+  --rgb-gold: 227, 138, 0;
+
+  --color-red: #7d1b1c;
+  --color-red-dark: #5a1213;
+  --rgb-red: 125, 27, 28;
+
+  --color-faculty: #1b3b82;
+
+  --color-surface: #ffffff;
+  --color-muted: #f3f6f4;
+  --color-line: rgba(6, 74, 49, 0.12);
+  --color-text: #12211b;
+  --color-text-soft: #4a5c54;
+  --color-on-dark: #ffffff;
+  --color-on-dark-muted: rgba(255, 255, 255, 0.88);
+
+  --font-sans: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Droid Serif", Georgia, "Times New Roman", serif;
+
+  --radius-pill: 999px;
+  --radius-card: 1.35rem;
+  --radius-box: 1.1rem;
+  --shadow-card: 0 18px 44px rgba(6, 74, 49, 0.12);
+  --max: 74rem;
+  --header-h: 4.35rem;
+}
