@@ -1440,8 +1440,8 @@ tr:last-child td {
 }
 
 .visitas-mapa {
-  min-height: 24rem;
-  height: clamp(24rem, 52vw, 32rem);
+  min-height: 16rem;
+  height: clamp(16rem, 36vw, 22rem);
   border-radius: var(--radius-box);
   border: 1px solid var(--color-line);
   background: #e8f0ec;

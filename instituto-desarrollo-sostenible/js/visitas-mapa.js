@@ -770,20 +770,11 @@
           [-55.2, -73.6],
           [-21.5, -53.4]
         ],
-        { padding: [28, 28], maxZoom: 5 }
+        { padding: [28, 28], maxZoom: 4 }
       );
       return;
     }
-    if (mapApi._visitasBounds && mapApi._visitasBounds.length > 1) {
-      mapApi.fitBounds(mapApi._visitasBounds, {
-        padding: [36, 36],
-        maxZoom: 4
-      });
-    } else if (mapApi._visitasBounds && mapApi._visitasBounds.length === 1) {
-      mapApi.setView(mapApi._visitasBounds[0], 3);
-    } else {
-      mapApi.setView([-15, -40], 2);
-    }
+    mapApi.setView([12, -40], 1);
   }
 
   function bindFocusButtons() {
@@ -806,14 +797,16 @@
     var map = L.map(mapRoot, {
       scrollWheelZoom: false,
       worldCopyJump: true,
-      zoomControl: true
-    }).setView([-15, -40], 2);
+      zoomControl: true,
+      minZoom: 1,
+      maxZoom: 8
+    }).setView([12, -40], 1);
     mapApi = map;
 
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 8,
       attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
     var countries = data.countries || [];
@@ -914,14 +907,11 @@
     });
 
     map._visitasBounds = bounds;
-    if (bounds.length === 1) {
-      map.setView(bounds[0], plottedRegions.length ? 5 : 3);
-    } else if (bounds.length > 1) {
-      map.fitBounds(bounds, { padding: [36, 36], maxZoom: plottedRegions.length ? 5 : 4 });
-    }
+    applyFocus("all");
 
     window.setTimeout(function () {
       map.invalidateSize();
+      applyFocus("all");
     }, 200);
   }
 
@@ -1023,7 +1013,9 @@
   document.addEventListener("ids:page", function (ev) {
     if (ev.detail !== "visitas") return;
     window.setTimeout(function () {
-      if (mapApi) mapApi.invalidateSize();
+      if (!mapApi) return;
+      mapApi.invalidateSize();
+      applyFocus("all");
     }, 150);
   });
 })();
