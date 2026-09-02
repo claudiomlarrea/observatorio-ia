@@ -508,8 +508,6 @@ a:hover {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .site-nav .has-submenu:hover > .nav-submenu,
-  .site-nav .has-submenu:focus-within > .nav-submenu,
   .site-nav .has-submenu.is-open > .nav-submenu {
     display: block;
   }
