@@ -765,16 +765,10 @@
       );
     }
     if (mode === "ar") {
-      mapApi.fitBounds(
-        [
-          [-55.2, -73.6],
-          [-21.5, -53.4]
-        ],
-        { padding: [28, 28], maxZoom: 4 }
-      );
+      mapApi.setView([-38.5, -63.5], 3, { animate: false });
       return;
     }
-    mapApi.setView([12, -40], 1);
+    mapApi.setView([20, 10], 0, { animate: false });
   }
 
   function bindFocusButtons() {
@@ -798,13 +792,14 @@
       scrollWheelZoom: false,
       worldCopyJump: true,
       zoomControl: true,
-      minZoom: 1,
+      minZoom: 0,
       maxZoom: 8
-    }).setView([12, -40], 1);
+    }).setView([20, 10], 0);
     mapApi = map;
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 8,
+      detectRetina: false,
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
