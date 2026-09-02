@@ -946,7 +946,7 @@
       });
   }
 
-  document.addEventListener("oia:langchange", function () {
+  window.addEventListener("oia:langchange", function () {
     if (!lastPaintData) {
       refreshChromeLabels();
       return;

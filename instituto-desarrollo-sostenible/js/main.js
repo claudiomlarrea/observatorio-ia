@@ -31,6 +31,15 @@
     contacto: "Contacto · Instituto de Desarrollo Sostenible"
   };
 
+  function pageTitle(id) {
+    var key = "page." + id;
+    if (window.I18N && typeof window.I18N.t === "function") {
+      var v = window.I18N.t(key);
+      if (v && v !== key) return v;
+    }
+    return pageTitles[id] || baseTitle;
+  }
+
   function pageIdFromHash(hash) {
     var id = String(hash || "").replace(/^#/, "");
     if (!id) return "inicio";
@@ -48,7 +57,7 @@
     });
     panel.classList.add("is-active");
     window.scrollTo(0, 0);
-    document.title = pageTitles[id] || baseTitle;
+    document.title = pageTitle(id);
     if (header) header.classList.toggle("is-solid", id !== "inicio");
     document.querySelectorAll('a[href^="#"]').forEach(function (link) {
       var href = link.getAttribute("href") || "";
@@ -115,6 +124,10 @@
   });
 
   window.addEventListener("scroll", updateHeader, { passive: true });
+
+  window.addEventListener("oia:langchange", function () {
+    showPage(location.hash || "#inicio", false);
+  });
 
   showPage(location.hash || "#inicio", false);
   updateHeader();

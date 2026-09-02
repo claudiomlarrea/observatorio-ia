@@ -8,11 +8,25 @@
   var site = CFG.SITE && String(CFG.SITE).trim();
   if (!base || !site) return;
 
+  var lastCount = null;
+
+  function tt(key, fallback) {
+    if (window.I18N && typeof window.I18N.t === "function") {
+      var v = window.I18N.t(key);
+      if (v && v !== key) return v;
+    }
+    return fallback;
+  }
+
   function fmt(n) {
     var x = Number(n);
     if (!isFinite(x)) return "—";
+    var loc =
+      window.I18N && window.I18N.getLang && window.I18N.getLang() === "en"
+        ? "en-US"
+        : "es-AR";
     try {
-      return x.toLocaleString("es-AR");
+      return x.toLocaleString(loc);
     } catch (e) {
       return String(x);
     }
@@ -20,12 +34,20 @@
 
   function pintar(data) {
     if (!data || !data.ok || data.ids == null || Array.isArray(data.items)) return;
+    lastCount = data.ids;
     root.hidden = false;
     root.innerHTML =
-      '<a href="#visitas">Visitas al Instituto: <strong>' +
+      '<a href="#visitas">' +
+      tt("dyn.visitas.widget", "Visitas al Instituto:") +
+      " <strong>" +
       fmt(data.ids) +
       "</strong></a>";
   }
+
+  window.addEventListener("oia:langchange", function () {
+    if (lastCount == null) return;
+    pintar({ ok: true, ids: lastCount });
+  });
 
   function fetchJson(url) {
     return fetch(url, { method: "GET" }).then(function (r) {

@@ -12,10 +12,10 @@
   };
 
   var filtrosDef = [
-    { id: "todas", label: "Ver todas", icono: "✨" },
-    { id: "libros", label: "Libros", icono: "📚" },
-    { id: "articulos", label: "Artículos científicos", icono: "📄" },
-    { id: "reuniones", label: "Participación en reuniones científicas", icono: "🎓" }
+    { id: "todas", labelKey: "dyn.biblio.filter.todas", icono: "✨" },
+    { id: "libros", labelKey: "dyn.biblio.filter.libros", icono: "📚" },
+    { id: "articulos", labelKey: "dyn.biblio.filter.articulos", icono: "📄" },
+    { id: "reuniones", labelKey: "dyn.biblio.filter.reuniones", icono: "🎓" }
   ];
 
   var itemsLocal = ((window.IDS_BIBLIOTECA || {}).items || []).slice();
@@ -46,8 +46,26 @@
     return d.innerHTML;
   }
 
+  function tt(key, fallback, vars) {
+    if (window.I18N && typeof window.I18N.t === "function") {
+      var v = window.I18N.t(key, vars);
+      if (v && v !== key) return v;
+    }
+    var text = fallback == null ? key : fallback;
+    if (vars && typeof vars === "object") {
+      Object.keys(vars).forEach(function (k) {
+        text = String(text).split("{" + k + "}").join(String(vars[k]));
+      });
+    }
+    return text;
+  }
+
   function formatInt(n) {
-    return Number(n || 0).toLocaleString("es-AR");
+    var loc =
+      window.I18N && window.I18N.getLang && window.I18N.getLang() === "en"
+        ? "en-US"
+        : "es-AR";
+    return Number(n || 0).toLocaleString(loc);
   }
 
   function hashId() {
@@ -111,21 +129,28 @@
     return partes.join(" · ");
   }
 
+  function tipoLocal(it) {
+    if (it.categoria === "libros") return tt("dyn.biblio.chip.libro", "Libro");
+    if (it.categoria === "articulos") return tt("dyn.biblio.chip.articulo", "Artículo científico");
+    if (it.categoria === "reuniones") return tt("dyn.biblio.chip.reunion", "Reunión científica");
+    return it.tipo || tt("dyn.biblio.chip.articulo", "Publicación");
+  }
+
   function filaLocalHTML(it) {
     var href = it.link || doiToUrl(it.doi);
     var linkHtml = href
       ? '<a class="pub-btn-link" href="' +
         esc(href) +
         '" target="_blank" rel="noopener noreferrer">' +
-        (it.doi ? "Ver DOI" : "Abrir enlace") +
+        (it.doi ? tt("dyn.biblio.viewDoi", "Ver DOI") : tt("dyn.biblio.openLink", "Abrir enlace")) +
         "</a>"
-      : '<span class="pub-row-nolink">Sin enlace</span>';
+      : '<span class="pub-row-nolink">' + tt("dyn.biblio.noLink", "Sin enlace") + "</span>";
     return (
       '<article class="pub-row">' +
       '<div class="pub-row-type"><span class="pub-chip pub-chip--' +
       chipClass(it.categoria) +
       '">' +
-      esc(it.tipo || "Publicación") +
+      esc(tipoLocal(it)) +
       "</span></div>" +
       '<div class="pub-row-main"><h3 class="pub-row-title">' +
       esc(it.titulo || "Sin título") +
@@ -157,7 +182,7 @@
           '"><span class="pub-filter-icon" aria-hidden="true">' +
           esc(f.icono) +
           "</span> " +
-          esc(f.label) +
+          esc(tt(f.labelKey, f.id)) +
           "</button>"
         );
       })
@@ -183,27 +208,40 @@
     if (count) count.textContent = String(list.length);
     if (!list.length) {
       grid.innerHTML =
-        '<div class="pub-msg pub-msg--hint"><p>No hay registros en este filtro.</p><p>Elegí <strong>Ver todas</strong> para ver la producción del Instituto.</p></div>';
+        '<div class="pub-msg pub-msg--hint">' +
+        tt(
+          "dyn.biblio.emptyFilter",
+          "<p>No hay registros en este filtro.</p><p>Elegí <strong>Ver todas</strong> para ver la producción del Instituto.</p>"
+        ) +
+        "</div>";
       return;
     }
     grid.innerHTML =
       '<div class="pub-results" role="list">' +
-      '<div class="pub-list-head" aria-hidden="true"><span>Tipo</span><span>Título</span><span>Año</span><span>Enlace</span></div>' +
+      '<div class="pub-list-head" aria-hidden="true"><span>' +
+      tt("dyn.biblio.col.tipo", "Tipo") +
+      "</span><span>" +
+      tt("dyn.biblio.col.titulo", "Título") +
+      "</span><span>" +
+      tt("dyn.biblio.col.ano", "Año") +
+      "</span><span>" +
+      tt("dyn.biblio.col.enlace", "Enlace") +
+      "</span></div>" +
       list.map(filaLocalHTML).join("") +
       "</div>";
   }
 
   function etiquetaModo() {
-    if (searchMode === "title") return "título";
-    if (searchMode === "author") return "autor/a";
+    if (searchMode === "title") return tt("dyn.biblio.mode.titulo", "título");
+    if (searchMode === "author") return tt("dyn.biblio.mode.autor", "autor/a");
     if (searchMode === "doi") return "DOI";
-    return "coincidencias";
+    return tt("dyn.biblio.mode.coincidencias", "coincidencias");
   }
 
   function etiquetaOrden() {
-    if (sortMode === "date_asc") return "Fecha ascendente";
-    if (sortMode === "relevance") return "Relevancia";
-    return "Fecha descendente";
+    if (sortMode === "date_asc") return tt("dyn.biblio.sort.dateAsc", "Fecha ascendente");
+    if (sortMode === "relevance") return tt("dyn.biblio.sort.relevance", "Relevancia");
+    return tt("dyn.biblio.sort.dateDesc", "Fecha descendente");
   }
 
   function actualizarContador() {
@@ -211,8 +249,9 @@
     var label = el("pub-index-count-label");
     if (wrap) wrap.hidden = false;
     if (label) {
-      label.innerHTML =
-        formatInt(metaTotal) + " trabajos aproximados (referencia OpenAlex, ODS)";
+      label.innerHTML = tt("dyn.biblio.approx", "{n} trabajos aproximados (referencia OpenAlex, ODS)", {
+        n: formatInt(metaTotal)
+      });
     }
   }
 
@@ -227,25 +266,32 @@
     var box = el("pub-index-active");
     if (!box) return;
     var parts = [];
-    if (yearFilter !== "all") parts.push("Año: " + yearFilter);
-    if (searchMode !== "auto") parts.push("Modo: " + etiquetaModo());
-    parts.push("Orden: " + etiquetaOrden());
-    parts.push("Página: " + pageSize);
-    if (searchQuery.trim()) parts.push('Búsqueda: "' + searchQuery.trim() + '"');
-    box.textContent = parts.length ? "Filtros activos: " + parts.join(" · ") : "";
+    if (yearFilter !== "all") parts.push(tt("dyn.biblio.year", "Año") + ": " + yearFilter);
+    if (searchMode !== "auto") parts.push(tt("dyn.biblio.mode", "Modo") + ": " + etiquetaModo());
+    parts.push(tt("dyn.biblio.orden", "Orden") + ": " + etiquetaOrden());
+    parts.push(tt("dyn.biblio.pageSize", "Página") + ": " + pageSize);
+    if (searchQuery.trim()) parts.push(tt("dyn.biblio.search", "Búsqueda") + ': "' + searchQuery.trim() + '"');
+    box.textContent = parts.length
+      ? tt("dyn.biblio.filtersActive", "Filtros activos: {parts}", { parts: parts.join(" · ") })
+      : "";
   }
 
   function mensajeCarga() {
     if (searchQuery.trim()) {
       return (
         '<div class="pub-msg pub-msg--loading">' +
-        esc('Buscando por ' + etiquetaModo() + ': "' + searchQuery.trim() + '"…') +
+        esc(
+          tt("dyn.biblio.searching", 'Buscando por {mode}: "{q}"…', {
+            mode: etiquetaModo(),
+            q: searchQuery.trim()
+          })
+        ) +
         "</div>"
       );
     }
     return (
       '<div class="pub-msg pub-msg--loading">' +
-      esc("Cargando en OpenAlex, Crossref, Semantic Scholar, Europe PMC, OpenAIRE y DOAJ…") +
+      esc(tt("dyn.biblio.loading", "Cargando en OpenAlex, Crossref, Semantic Scholar, Europe PMC, OpenAIRE y DOAJ…")) +
       "</div>"
     );
   }
@@ -256,17 +302,17 @@
       ? '<a class="pub-btn-link" href="' +
         esc(link) +
         '" target="_blank" rel="noopener noreferrer">' +
-        (it.doi ? "Ver DOI" : "Abrir enlace") +
+        (it.doi ? tt("dyn.biblio.viewDoi", "Ver DOI") : tt("dyn.biblio.openLink", "Abrir enlace")) +
         "</a>"
-      : '<span class="pub-row-nolink">Sin enlace</span>';
+      : '<span class="pub-row-nolink">' + tt("dyn.biblio.noLink", "Sin enlace") + "</span>";
     var meta = it.autores || "";
     if (it.doi) meta += (meta ? " · " : "") + "DOI: " + it.doi;
     if (it.fuente) meta += (meta ? " · " : "") + it.fuente;
-    if (it.oaUrl) meta += (meta ? " · " : "") + "Acceso abierto";
+    if (it.oaUrl) meta += (meta ? " · " : "") + tt("dyn.biblio.oa", "Acceso abierto");
     return (
       '<article class="pub-row">' +
       '<div class="pub-row-type"><span class="pub-chip pub-chip--revistas">' +
-      esc(it.tipo || "Trabajo") +
+      esc(it.tipo || tt("dyn.biblio.chip.trabajo", "Trabajo")) +
       "</span></div>" +
       '<div class="pub-row-main"><h3 class="pub-row-title">' +
       highlightText(it.titulo) +
@@ -287,44 +333,60 @@
     if (!grid) return;
     if (!items.length) {
       grid.innerHTML = searchQuery.trim()
-        ? '<div class="pub-msg pub-msg--hint"><p>No hay publicaciones de desarrollo sostenible que coincidan por <strong>' +
-          esc(etiquetaModo()) +
-          '</strong> con "' +
-          esc(searchQuery.trim()) +
-          '".</p><p>Probá otro criterio o usá <strong>Limpiar</strong>.</p></div>'
-        : '<div class="pub-msg pub-msg--hint"><p>No hay registros para mostrar en esta página.</p></div>';
+        ? '<div class="pub-msg pub-msg--hint">' +
+          tt("dyn.biblio.emptySearch", "", { mode: esc(etiquetaModo()), q: esc(searchQuery.trim()) }) +
+          "</div>"
+        : '<div class="pub-msg pub-msg--hint">' +
+          tt("dyn.biblio.emptyPage", "<p>No hay registros para mostrar en esta página.</p>") +
+          "</div>";
       return;
     }
     var html =
       '<div class="pub-results" role="list">' +
-      '<div class="pub-list-head pub-list-head--index" aria-hidden="true"><span>Tipo</span><span>Título</span><span>Año</span><span>Enlace</span></div>' +
+      '<div class="pub-list-head pub-list-head--index" aria-hidden="true"><span>' +
+      tt("dyn.biblio.col.tipo", "Tipo") +
+      "</span><span>" +
+      tt("dyn.biblio.col.titulo", "Título") +
+      "</span><span>" +
+      tt("dyn.biblio.col.ano", "Año") +
+      "</span><span>" +
+      tt("dyn.biblio.col.enlace", "Enlace") +
+      "</span></div>" +
       items.map(filaGlobalHTML).join("") +
       "</div>";
     if (totalPages > 1) {
       html += '<div class="pub-index-pager">';
       if (currentPage > 1) {
         html +=
-          '<button type="button" class="pub-more-btn pub-index-nav" data-pub-index-page="1">« Primera</button>' +
+          '<button type="button" class="pub-more-btn pub-index-nav" data-pub-index-page="1">' +
+          tt("dyn.biblio.first", "« Primera") +
+          "</button>" +
           '<button type="button" class="pub-more-btn pub-index-nav" data-pub-index-page="' +
           (currentPage - 1) +
-          '">← Anterior</button>';
+          '">' +
+          tt("dyn.biblio.prev", "← Anterior") +
+          "</button>";
       }
       html +=
-        '<span class="pub-index-page-info">Página ' +
-        currentPage +
-        " de " +
-        totalPages +
-        " · " +
-        formatInt(metaTotal) +
-        " resultados</span>";
+        '<span class="pub-index-page-info">' +
+        tt("dyn.biblio.pageOf", "Página {n} de {total} · {count} resultados", {
+          n: currentPage,
+          total: totalPages,
+          count: formatInt(metaTotal)
+        }) +
+        "</span>";
       if (currentPage < totalPages) {
         html +=
           '<button type="button" class="pub-more-btn pub-index-nav" data-pub-index-page="' +
           (currentPage + 1) +
-          '">Siguiente →</button>' +
+          '">' +
+          tt("dyn.biblio.next", "Siguiente →") +
+          "</button>" +
           '<button type="button" class="pub-more-btn pub-index-nav" data-pub-index-page="' +
           totalPages +
-          '">Última »</button>';
+          '">' +
+          tt("dyn.biblio.last", "Última »") +
+          "</button>";
       }
       html += "</div>";
     }
@@ -358,7 +420,9 @@
       var statusErr = el("pub-index-status");
       if (statusErr) {
         statusErr.innerHTML =
-          '<div class="pub-msg pub-msg--error">No se pudo cargar el buscador de fuentes abiertas.</div>';
+          '<div class="pub-msg pub-msg--error">' +
+          tt("dyn.biblio.errorScript", "No se pudo cargar el buscador de fuentes abiertas.") +
+          "</div>";
       }
       return;
     }
@@ -393,9 +457,11 @@
         if (status) {
           if (res.fuentesFallidas && res.fuentesFallidas.length) {
             status.innerHTML =
-              '<div class="pub-msg pub-msg--hint">Algunas fuentes no respondieron (' +
-              esc(res.fuentesFallidas.join(", ")) +
-              "). Se muestran resultados de las demás.</div>";
+              '<div class="pub-msg pub-msg--hint">' +
+              tt("dyn.biblio.partial", "Algunas fuentes no respondieron ({sources}). Se muestran resultados de las demás.", {
+                sources: esc(res.fuentesFallidas.join(", "))
+              }) +
+              "</div>";
           } else {
             status.innerHTML = "";
           }
@@ -407,7 +473,12 @@
         loading = false;
         if (status) {
           status.innerHTML =
-            '<div class="pub-msg pub-msg--error">No se pudo cargar el índice desde las fuentes abiertas. Probá de nuevo en unos minutos.</div>';
+            '<div class="pub-msg pub-msg--error">' +
+            tt(
+              "dyn.biblio.error",
+              "No se pudo cargar el índice desde las fuentes abiertas. Probá de nuevo en unos minutos."
+            ) +
+            "</div>";
         }
         ejecutarPendiente();
       });
@@ -434,7 +505,9 @@
     var select = el("pub-index-year");
     if (!select) return;
     var currentYear = new Date().getFullYear();
-    var opts = ['<option value="all">Todos los años</option>'];
+    var opts = [
+      '<option value="all">' + esc(tt("dyn.biblio.allYears", "Todos los años")) + "</option>"
+    ];
     for (var y = currentYear; y >= 1990; y--) {
       opts.push('<option value="' + y + '">' + y + "</option>");
     }
@@ -601,6 +674,14 @@
       }
     });
     syncHashTab();
+    window.addEventListener("oia:langchange", function () {
+      dibujarFiltros();
+      dibujarLocal();
+      construirOpcionesAnio();
+      actualizarContador();
+      actualizarResumenFiltros();
+      if (loaded) dibujarGrillaGlobal();
+    });
   }
 
   if (document.readyState === "loading") {

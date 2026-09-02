@@ -232,6 +232,14 @@ a:hover {
   .brand-text {
     display: none;
   }
+
+  .lang-switcher__flag {
+    display: none;
+  }
+
+  .lang-switcher__btn {
+    padding: 0.32rem 0.45rem;
+  }
 }
 
 .btn-pill {
@@ -290,9 +298,61 @@ a:hover {
   color: var(--color-green-dark);
 }
 
-.nav-toggle {
-  margin-left: auto;
+.lang-switcher {
   display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.2rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  margin-left: auto;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.18);
+}
+
+.lang-switcher__btn {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.32rem 0.55rem;
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.88);
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  line-height: 1;
+}
+
+.lang-switcher__flag {
+  font-size: 1.05rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.25));
+}
+
+.lang-switcher__code {
+  font-size: 0.7rem;
+}
+
+.lang-switcher__btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.lang-switcher__btn.is-active {
+  color: var(--color-green-dark);
+  background: #fff;
+}
+
+.nav-toggle {
+  margin-left: 0;
+  display: none;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
@@ -461,12 +521,19 @@ a:hover {
 }
 
 @media (max-width: 959px) {
+  .lang-switcher {
+    margin-left: auto;
+    order: 2;
+  }
+
   .nav-toggle {
     display: inline-flex;
+    order: 3;
   }
 
   .site-nav {
     display: block;
+    order: 4;
     position: absolute;
     left: 0;
     right: 0;
@@ -546,6 +613,12 @@ a:hover {
     margin-left: auto;
     flex: 1 1 auto;
     display: block;
+    order: 2;
+  }
+
+  .lang-switcher {
+    margin-left: 0;
+    order: 3;
   }
 }
 

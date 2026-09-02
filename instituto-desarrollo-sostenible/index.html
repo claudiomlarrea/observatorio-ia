@@ -9,13 +9,13 @@
     />
     <title>Instituto de Desarrollo Sostenible | Universidad Católica de Cuyo</title>
     <link rel="icon" type="image/png" href="assets/favicon.png" />
-    <link rel="stylesheet" href="css/styles.css?v=11" />
+    <link rel="stylesheet" href="css/styles.css?v=13" />
   </head>
   <body>
-    <a class="skip-link" href="#contenido">Ir al contenido</a>
+    <a class="skip-link" href="#contenido" data-i18n="a11y.skipLink">Ir al contenido</a>
 
     <div class="site-top" id="inicio">
-      <div class="top-banner">
+      <div class="top-banner" data-i18n="banner.top">
         Universidad Católica de Cuyo · Instituto de Desarrollo Sostenible
       </div>
       <header class="site-header">
@@ -30,8 +30,8 @@
               decoding="async"
             />
             <span class="brand-text">
-              <span class="brand-kicker">Universidad Católica de Cuyo</span>
-              <span class="brand-title">Instituto de Desarrollo Sostenible</span>
+              <span class="brand-kicker" data-i18n="brand.kicker">Universidad Católica de Cuyo</span>
+              <span class="brand-title" data-i18n="brand.title">Instituto de Desarrollo Sostenible</span>
             </span>
             <img
               class="brand-uccuyo"
@@ -41,11 +41,11 @@
               alt="Universidad Católica de Cuyo"
               decoding="async"
             />
-            <span class="brand-faculty" aria-label="Facultad de Ciencias Económicas y Empresariales">
+            <span class="brand-faculty" aria-label="Facultad de Ciencias Económicas y Empresariales" data-i18n-attr="aria-label:brand.faculty.aria">
               <span class="brand-faculty__mark">FCEyE</span>
               <span class="brand-faculty__name">
-                <span>Facultad de Ciencias</span>
-                <span>Económicas y Empresariales</span>
+                <span data-i18n="brand.faculty.line1">Facultad de Ciencias</span>
+                <span data-i18n="brand.faculty.line2">Económicas y Empresariales</span>
               </span>
             </span>
           </a>
@@ -55,49 +55,52 @@
             aria-expanded="false"
             aria-controls="site-nav"
             aria-label="Abrir menú"
+            data-i18n-attr="aria-label:nav.toggleOpen"
           >
             <span class="nav-toggle-icon" aria-hidden="true"></span>
           </button>
-          <nav class="site-nav" id="site-nav" aria-label="Principal">
+          <nav class="site-nav" id="site-nav" aria-label="Principal" data-i18n-attr="aria-label:nav.ariaLabel">
             <ul class="nav-root">
-              <li class="nav-item"><a href="#inicio">Inicio</a></li>
+              <li class="nav-item"><a href="#inicio" data-i18n="nav.inicio">Inicio</a></li>
               <li class="nav-item has-submenu">
-                <a href="#instituto">El Instituto</a>
+                <a href="#instituto" data-i18n="nav.instituto">El Instituto</a>
                 <button
                   type="button"
                   class="nav-submenu-toggle"
                   aria-expanded="false"
                   aria-controls="nav-sub-instituto"
                   aria-label="Subsecciones de El Instituto"
+                  data-i18n-attr="aria-label:nav.instituto.sub"
                 ></button>
                 <ul class="nav-submenu" id="nav-sub-instituto">
-                  <li><a href="#instituto">Historia y fundador</a></li>
-                  <li><a href="#equipo">Dirección y equipo</a></li>
-                  <li><a href="#visitas">Visitas al Instituto</a></li>
+                  <li><a href="#instituto" data-i18n="nav.historia">Historia y fundador</a></li>
+                  <li><a href="#equipo" data-i18n="nav.equipo">Dirección y equipo</a></li>
+                  <li><a href="#visitas" data-i18n="nav.visitas">Visitas al Instituto</a></li>
                 </ul>
               </li>
               <li class="nav-item has-submenu">
-                <a href="#actividades">Actividades</a>
+                <a href="#actividades" data-i18n="nav.actividades">Actividades</a>
                 <button
                   type="button"
                   class="nav-submenu-toggle"
                   aria-expanded="false"
                   aria-controls="nav-sub-actividades"
                   aria-label="Subsecciones de Actividades"
+                  data-i18n-attr="aria-label:nav.actividades.sub"
                 ></button>
                 <ul class="nav-submenu" id="nav-sub-actividades">
-                  <li><a href="#gestion">Gestión</a></li>
-                  <li><a href="#docencia">Docencia</a></li>
-                  <li><a href="#investigacion">Investigación</a></li>
-                  <li><a href="#publicaciones">Biblioteca del IDS</a></li>
-                  <li><a href="#ods">Observatorio de ODS</a></li>
-                  <li><a href="#extension">Extensión</a></li>
-                  <li><a href="#consultoria">Consultoría</a></li>
-                  <li><a href="#vinculacion">Vinculación</a></li>
+                  <li><a href="#gestion" data-i18n="nav.gestion">Gestión</a></li>
+                  <li><a href="#docencia" data-i18n="nav.docencia">Docencia</a></li>
+                  <li><a href="#investigacion" data-i18n="nav.investigacion">Investigación</a></li>
+                  <li><a href="#publicaciones" data-i18n="nav.biblioteca">Biblioteca del IDS</a></li>
+                  <li><a href="#ods" data-i18n="nav.ods">Observatorio de ODS</a></li>
+                  <li><a href="#extension" data-i18n="nav.extension">Extensión</a></li>
+                  <li><a href="#consultoria" data-i18n="nav.consultoria">Consultoría</a></li>
+                  <li><a href="#vinculacion" data-i18n="nav.vinculacion">Vinculación</a></li>
                 </ul>
               </li>
-              <li class="nav-item"><a href="#hitos">Hitos</a></li>
-              <li class="nav-item"><a href="#contacto">Contacto</a></li>
+              <li class="nav-item"><a href="#hitos" data-i18n="nav.hitos">Hitos</a></li>
+              <li class="nav-item"><a href="#contacto" data-i18n="nav.contacto">Contacto</a></li>
             </ul>
           </nav>
         </div>
@@ -127,35 +130,35 @@
               alt="Instituto de Desarrollo Sostenible"
               decoding="async"
             />
-            <p class="hero-kicker">Facultad de Ciencias Económicas y Empresariales</p>
-            <h1 id="titulo-principal">Instituto de Desarrollo Sostenible</h1>
-            <p class="hero-tagline">Desarrollo sostenible, desde Cuyo</p>
-            <p class="hero-lead">
+            <p class="hero-kicker" data-i18n="hero.kicker">Facultad de Ciencias Económicas y Empresariales</p>
+            <h1 id="titulo-principal" data-i18n="hero.title">Instituto de Desarrollo Sostenible</h1>
+            <p class="hero-tagline" data-i18n="hero.tagline">Desarrollo sostenible, desde Cuyo</p>
+            <p class="hero-lead" data-i18n="hero.lead">
               Un centro de referencia que aporta al Desarrollo Sostenible en la
               región de Cuyo. Gestión, docencia, investigación, extensión y
               consultoría, con la misma jerarquía: transversalidad universitaria
               y compromiso con el bien común.
             </p>
             <div class="hero-actions">
-              <a class="btn-pill btn-pill--gold" href="#instituto">El Instituto</a>
-              <a class="btn-pill btn-pill--ghost" href="#hitos">Hitos</a>
-              <a class="btn-pill btn-pill--ghost" href="#investigacion">Investigación</a>
-              <a class="btn-pill btn-pill--ghost" href="#visitas">Visitas al Instituto</a>
+              <a class="btn-pill btn-pill--gold" href="#instituto" data-i18n="hero.cta.instituto">El Instituto</a>
+              <a class="btn-pill btn-pill--ghost" href="#hitos" data-i18n="hero.cta.hitos">Hitos</a>
+              <a class="btn-pill btn-pill--ghost" href="#investigacion" data-i18n="hero.cta.investigacion">Investigación</a>
+              <a class="btn-pill btn-pill--ghost" href="#visitas" data-i18n="hero.cta.visitas">Visitas al Instituto</a>
             </div>
             <p id="visitantes-widget" class="visitantes-widget visitantes-widget--hero" aria-live="polite" hidden></p>
             <div class="filter-card">
-              <h2>Cinco funciones, un mismo valor</h2>
+              <h2 data-i18n="hero.filter.title">Cinco funciones, un mismo valor</h2>
               <div class="filter-toggles">
-                <a href="#gestion">Gestión</a>
-                <a href="#docencia">Docencia</a>
-                <a href="#investigacion">Investigación</a>
-                <a href="#extension">Extensión</a>
-                <a href="#consultoria">Consultoría</a>
+                <a href="#gestion" data-i18n="hero.filter.gestion">Gestión</a>
+                <a href="#docencia" data-i18n="hero.filter.docencia">Docencia</a>
+                <a href="#investigacion" data-i18n="hero.filter.investigacion">Investigación</a>
+                <a href="#extension" data-i18n="hero.filter.extension">Extensión</a>
+                <a href="#consultoria" data-i18n="hero.filter.consultoria">Consultoría</a>
               </div>
               <div class="filter-fields">
-                <span>Convenios, indicadores y observatorio de ODS</span>
-                <span>Diplomaturas, cursos y formación de investigadores</span>
-                <span>Congresos, jornadas y acompañamiento a organizaciones</span>
+                <span data-i18n="hero.filter.note1">Convenios, indicadores y observatorio de ODS</span>
+                <span data-i18n="hero.filter.note2">Diplomaturas, cursos y formación de investigadores</span>
+                <span data-i18n="hero.filter.note3">Congresos, jornadas y acompañamiento a organizaciones</span>
               </div>
             </div>
           </div>
@@ -165,20 +168,20 @@
       <section class="section section--green" id="numeros" aria-labelledby="sec-numeros">
         <div class="section-inner">
           <header class="section-head">
-            <p class="section-kicker">2022 — 2025</p>
-            <h2 id="sec-numeros">El IDS en números</h2>
+            <p class="section-kicker" data-i18n="sec.numeros.kicker">2022 — 2025</p>
+            <h2 id="sec-numeros" data-i18n="sec.numeros.title">El IDS en números</h2>
           </header>
           <div class="stats">
-            <div class="stat"><b>30+</b><span>Publicaciones científicas</span></div>
-            <div class="stat"><b>2</b><span>Libros publicados</span></div>
-            <div class="stat"><b>11+</b><span>Congresos internacionales</span></div>
-            <div class="stat"><b>8+</b><span>Proyectos de investigación</span></div>
-            <div class="stat"><b>457+</b><span>Personas formadas en diplomaturas</span></div>
-            <div class="stat"><b>7</b><span>Investigadores activos</span></div>
-            <div class="stat"><b>20</b><span>Revisores de la Revista IDS</span></div>
-            <div class="stat"><b>10</b><span>Tesis con calificación máxima</span></div>
-            <div class="stat"><b>6+</b><span>Redes y alianzas</span></div>
-            <div class="stat"><b>3</b><span>Ediciones del Congreso Internacional</span></div>
+            <div class="stat"><b>30+</b><span data-i18n="stat.pubs">Publicaciones científicas</span></div>
+            <div class="stat"><b>2</b><span data-i18n="stat.books">Libros publicados</span></div>
+            <div class="stat"><b>11+</b><span data-i18n="stat.congress">Congresos internacionales</span></div>
+            <div class="stat"><b>8+</b><span data-i18n="stat.projects">Proyectos de investigación</span></div>
+            <div class="stat"><b>457+</b><span data-i18n="stat.trained">Personas formadas en diplomaturas</span></div>
+            <div class="stat"><b>7</b><span data-i18n="stat.researchers">Investigadores activos</span></div>
+            <div class="stat"><b>20</b><span data-i18n="stat.reviewers">Revisores de la Revista IDS</span></div>
+            <div class="stat"><b>10</b><span data-i18n="stat.theses">Tesis con calificación máxima</span></div>
+            <div class="stat"><b>6+</b><span data-i18n="stat.networks">Redes y alianzas</span></div>
+            <div class="stat"><b>3</b><span data-i18n="stat.editions">Ediciones del Congreso Internacional</span></div>
           </div>
         </div>
       </section>
@@ -188,22 +191,21 @@
         <section class="section" aria-labelledby="sec-actividades">
           <div class="section-inner">
             <header class="section-head">
-              <p class="section-kicker">Transversalidad</p>
-              <h2 id="sec-actividades">Actividades</h2>
+              <p class="section-kicker" data-i18n="sec.actividades.kicker">Transversalidad</p>
+              <h2 id="sec-actividades" data-i18n="sec.actividades.title">Actividades</h2>
             </header>
-            <p class="text-intro">
-              Gestión, docencia, investigación, extensión y consultoría tienen el
-              mismo valor en el IDS. Elegí una función para verla completa.
+            <p class="text-intro" data-i18n="sec.actividades.intro">
+              Gestión, docencia, investigación, extensión y consultoría tienen el mismo valor en el IDS. Elegí una función para verla completa.
             </p>
             <div class="pillar-grid">
-              <a href="#gestion"><strong>Gestión</strong><span>Convenios y adhesiones</span></a>
-              <a href="#docencia"><strong>Docencia</strong><span>Cursos y diplomaturas</span></a>
-              <a href="#investigacion"><strong>Investigación</strong><span>Líneas y proyectos</span></a>
-              <a href="#ods"><strong>Observatorio de ODS</strong><span>Universidades y PyMEs</span></a>
-              <a href="#extension"><strong>Extensión</strong><span>Congreso y jornadas</span></a>
-              <a href="#consultoria"><strong>Consultoría</strong><span>Acompañamiento a organizaciones</span></a>
-              <a href="#vinculacion"><strong>Vinculación</strong><span>Redes nacionales e internacionales</span></a>
-              <a href="#publicaciones"><strong>Biblioteca del IDS</strong><span>Revista, libros y artículos</span></a>
+              <a href="#gestion"><strong data-i18n="nav.gestion">Gestión</strong><span data-i18n="pillar.gestion.sub">Convenios y adhesiones</span></a>
+              <a href="#docencia"><strong data-i18n="nav.docencia">Docencia</strong><span data-i18n="pillar.docencia.sub">Cursos y diplomaturas</span></a>
+              <a href="#investigacion"><strong data-i18n="nav.investigacion">Investigación</strong><span data-i18n="pillar.investigacion.sub">Líneas y proyectos</span></a>
+              <a href="#ods"><strong data-i18n="nav.ods">Observatorio de ODS</strong><span data-i18n="pillar.ods.sub">Universidades y PyMEs</span></a>
+              <a href="#extension"><strong data-i18n="nav.extension">Extensión</strong><span data-i18n="pillar.extension.sub">Congreso y jornadas</span></a>
+              <a href="#consultoria"><strong data-i18n="nav.consultoria">Consultoría</strong><span data-i18n="pillar.consultoria.sub">Acompañamiento a organizaciones</span></a>
+              <a href="#vinculacion"><strong data-i18n="nav.vinculacion">Vinculación</strong><span data-i18n="pillar.vinculacion.sub">Redes nacionales e internacionales</span></a>
+              <a href="#publicaciones"><strong data-i18n="nav.biblioteca">Biblioteca del IDS</strong><span data-i18n="pillar.biblioteca.sub">Revista, libros y artículos</span></a>
             </div>
           </div>
         </section>
@@ -213,10 +215,10 @@
       <section class="section" id="instituto" aria-labelledby="sec-instituto">
         <div class="section-inner">
           <header class="section-head">
-            <p class="section-kicker">Identidad</p>
-            <h2 id="sec-instituto">El Instituto</h2>
+            <p class="section-kicker" data-i18n="sec.instituto.kicker">Identidad</p>
+            <h2 id="sec-instituto" data-i18n="sec.instituto.title">El Instituto</h2>
           </header>
-          <p class="text-intro">
+          <p class="text-intro" data-i18n="sec.instituto.intro1">
             El Instituto de Desarrollo Sostenible (IDS) depende de la Facultad de
             Ciencias Económicas y Empresariales de la Universidad Católica de Cuyo.
             Su objeto es el desarrollo de investigaciones transversales sobre
@@ -225,7 +227,7 @@
             extensión y la consultoría a organizaciones gubernamentales y no
             gubernamentales.
           </p>
-          <p class="text-intro">
+          <p class="text-intro" data-i18n="sec.instituto.intro2">
             Su principal aporte es el estudio del desarrollo desde una visión de
             sostenibilidad ambiental, económica y social, articulando el
             conocimiento académico con las necesidades reales de la región de Cuyo.
@@ -239,16 +241,16 @@
               alt="Mg. Carlos Pujadas, fundador del Instituto de Desarrollo Sostenible"
             />
             <div>
-              <p class="role">Fundador</p>
+              <p class="role" data-i18n="sec.instituto.founder.role">Fundador</p>
               <h3>Mg. Carlos Pujadas</h3>
-              <p>
+              <p data-i18n="sec.instituto.founder.p1">
                 En 2006, el Mg. Carlos Pujadas fundó el Instituto de Desarrollo
                 Sostenible (IDS), impulsado por la convicción de que la Universidad
                 tiene una responsabilidad ineludible: comprometerse activamente con
                 la sostenibilidad y formar profesionales capaces de transformar esa
                 visión en acción.
               </p>
-              <p>
+              <p data-i18n="sec.instituto.founder.p2">
                 Arquitecto por la Universidad de Buenos Aires y Magíster en
                 Docencia y Gestión Universitaria por la Universidad de Mendoza,
                 Carlos dedicó su carrera académica a tender puentes entre la
@@ -257,7 +259,7 @@
                 que fuera agenda global— que el desarrollo sostenible no podía
                 quedar fuera de la misión universitaria.
               </p>
-              <p>
+              <p data-i18n="sec.instituto.founder.p3">
                 Su legado más visible no está solo en las publicaciones o los
                 programas que impulsó, sino en las personas: los jóvenes
                 investigadores que formó bajo sus valores hoy ocupan roles de
@@ -269,8 +271,8 @@
 
           <div class="grid-2">
             <article class="card">
-              <h3>Misión</h3>
-              <p>
+              <h3 data-i18n="sec.instituto.mision.title">Misión</h3>
+              <p data-i18n="sec.instituto.mision.body">
                 Centro de investigación, docencia y extensión del desarrollo
                 sostenible que trabaja, desde el ámbito regional, en las
                 problemáticas globales, promoviendo el bien común y la dignidad
@@ -278,8 +280,8 @@
               </p>
             </article>
             <article class="card">
-              <h3>Visión</h3>
-              <p>
+              <h3 data-i18n="sec.instituto.vision.title">Visión</h3>
+              <p data-i18n="sec.instituto.vision.body">
                 Centro de referencia que aporta al Desarrollo Sostenible en la
                 región de Cuyo, con tres características: vanguardia del
                 conocimiento; asociación a centros nacionales e internacionales;
@@ -288,39 +290,39 @@
             </article>
           </div>
           <article class="card stack-gap">
-            <h3>Valores institucionales</h3>
+            <h3 data-i18n="sec.instituto.values.title">Valores institucionales</h3>
             <ul class="values">
-              <li>
+              <li data-i18n-html="sec.instituto.values.1">
                 <strong>Valoración de la persona humana.</strong> Valoramos la
                 dignidad de la persona humana generando un ámbito donde se
                 respeten y se promuevan sus derechos.
               </li>
-              <li>
+              <li data-i18n-html="sec.instituto.values.2">
                 <strong>Integridad.</strong> Obramos de modo transparente, honesto
                 y coherente con la misión y la visión del IDS.
               </li>
-              <li>
+              <li data-i18n-html="sec.instituto.values.3">
                 <strong>Responsabilidad.</strong> Actuamos comprometidos con la
                 sociedad, respondiendo a las necesidades del desarrollo
                 sostenible y sirviendo al bien común.
               </li>
-              <li>
+              <li data-i18n-html="sec.instituto.values.4">
                 <strong>Compromiso.</strong> Promovemos una actitud positiva y
                 responsable para el logro de los objetivos comunes, con sentido
                 de pertenencia al Instituto.
               </li>
-              <li>
+              <li data-i18n-html="sec.instituto.values.5">
                 <strong>Trabajo en equipo.</strong> Trabajamos de modo
                 colaborativo, respetando la opinión de los demás y fomentando la
                 interdisciplinariedad.
               </li>
-              <li>
+              <li data-i18n-html="sec.instituto.values.6">
                 <strong>Aprender y emprender.</strong> Creamos un ambiente de
                 aprendizaje para emprender soluciones creativas e innovadoras.
               </li>
             </ul>
           </article>
-          <blockquote class="quote">
+          <blockquote class="quote" data-i18n="sec.instituto.quote">
             «Comprometidos con el Desarrollo Sostenible, desde la región de Cuyo
             hacia el mundo.»
           </blockquote>
@@ -330,10 +332,10 @@
       <section class="section section--muted" id="normativa" aria-labelledby="sec-normativa">
         <div class="section-inner">
           <header class="section-head">
-            <p class="section-kicker">Marco institucional</p>
-            <h2 id="sec-normativa">Historia y normativa</h2>
+            <p class="section-kicker" data-i18n="sec.normativa.kicker">Marco institucional</p>
+            <h2 id="sec-normativa" data-i18n="sec.normativa.title">Historia y normativa</h2>
           </header>
-          <p class="text-intro">
+          <p class="text-intro" data-i18n="sec.normativa.intro">
             El IDS se insertó en la Facultad de Ciencias Económicas y Empresariales
             por decisión del Consejo Superior y cuenta con reglamento interno
             aprobado por el Consejo Directivo de la Facultad.
@@ -342,8 +344,8 @@
             <article>
               <time datetime="2007-10-27">2007</time>
               <div>
-                <h3>Resolución Nº 691-CS-2007</h3>
-                <p>
+                <h3 data-i18n="sec.normativa.691.title">Resolución Nº 691-CS-2007</h3>
+                <p data-i18n="sec.normativa.691.body">
                   El Consejo Superior de la UCCuyo insertó el Instituto de
                   Desarrollo Sostenible en la estructura de la Facultad de
                   Ciencias Económicas y Empresariales. La transferencia, con la
@@ -359,8 +361,8 @@
             <article>
               <time datetime="2015-04-28">2015</time>
               <div>
-                <h3>Resolución Nº 01/15 — FCEyE</h3>
-                <p>
+                <h3 data-i18n="sec.normativa.0115.title">Resolución Nº 01/15 — FCEyE</h3>
+                <p data-i18n="sec.normativa.0115.body">
                   El Consejo Directivo de la Facultad de Ciencias Económicas y
                   Empresariales aprobó el reglamento del Instituto de Desarrollo
                   Sostenible (Anexo I). Dada en San Juan el 28 de abril de 2015,
@@ -370,10 +372,10 @@
               </div>
             </article>
             <article>
-              <time datetime="2015">Reglamento</time>
+              <time datetime="2015" data-i18n="sec.normativa.time.reg">Reglamento</time>
               <div>
-                <h3>Reglamento interno del IDS</h3>
-                <p>
+                <h3 data-i18n="sec.normativa.reg.title">Reglamento interno del IDS</h3>
+                <p data-i18n="sec.normativa.reg.body">
                   Define objetivos, misión, visión y valores; la dependencia
                   directa del Decano de la FCEyE; la estructura dinámica
                   (dirección, docentes e investigadores, posibilidad de
@@ -384,8 +386,8 @@
                   Directivo de la Facultad.
                 </p>
                 <p class="doc-inline">
-                  <a href="documentos/Resolucion_691-CS-2007.pdf">Resolución 691-CS-2007 (PDF)</a>
-                  <a href="documentos/Reglamento_IDS_Res_01-15-FCEE.pdf">Reglamento interno (PDF)</a>
+                  <a href="documentos/Resolucion_691-CS-2007.pdf" data-i18n="sec.normativa.pdf.691">Resolución 691-CS-2007 (PDF)</a>
+                  <a href="documentos/Reglamento_IDS_Res_01-15-FCEE.pdf" data-i18n="sec.normativa.pdf.reg">Reglamento interno (PDF)</a>
                 </p>
               </div>
             </article>
@@ -397,13 +399,13 @@
       <section class="section page-panel" data-page="equipo" id="equipo" aria-labelledby="sec-equipo">
         <div class="section-inner">
           <header class="section-head">
-            <p class="section-kicker">Personas</p>
-            <h2 id="sec-equipo">Dirección y equipo</h2>
+            <p class="section-kicker" data-i18n="sec.equipo.kicker">Personas</p>
+            <h2 id="sec-equipo" data-i18n="sec.equipo.title">Dirección y equipo</h2>
           </header>
-          <article class="card team-lead">
-            <p class="role">Directora</p>
+            <article class="card team-lead">
+            <p class="role" data-i18n="sec.equipo.role.directora">Directora</p>
             <h3>PhD. María Belén Arias Valle</h3>
-            <p>
+            <p data-i18n="sec.equipo.belen">
               Doctora en Economía y Derecho (Universidad Internacional de Catalunya).
               Becaria posdoctoral CONICET. Categoría I — Investigador Superior.
               Editora de la Revista del IDS.
@@ -412,31 +414,31 @@
           <div class="grid-3 stack-gap">
             <article class="card">
               <h3>Mg. María Paula Pérez Armendariz</h3>
-              <p>RSE en empresas mineras y servicios mineros.</p>
+              <p data-i18n="sec.equipo.paula">RSE en empresas mineras y servicios mineros.</p>
             </article>
             <article class="card">
               <h3>Mg. Daniela Gámez Figueroa</h3>
-              <p>Gobernanza, políticas públicas y Agenda 2030.</p>
+              <p data-i18n="sec.equipo.daniela">Gobernanza, políticas públicas y Agenda 2030.</p>
             </article>
             <article class="card">
               <h3>Lic. Natalia Suárez</h3>
-              <p>Economía y sectores productivos sostenibles.</p>
+              <p data-i18n="sec.equipo.natalia">Economía y sectores productivos sostenibles.</p>
             </article>
             <article class="card">
               <h3>Cdra. María Belén Cañizares</h3>
-              <p>RSE y sustentabilidad organizacional.</p>
+              <p data-i18n="sec.equipo.canizares">RSE y sustentabilidad organizacional.</p>
             </article>
             <article class="card">
               <h3>Mg. Horacio Matías Amarfil Echegaray</h3>
-              <p>Educación para el desarrollo sostenible.</p>
+              <p data-i18n="sec.equipo.horacio">Educación para el desarrollo sostenible.</p>
             </article>
             <article class="card">
               <h3>Mg. Teresa Arias Márquez</h3>
-              <p>Innovación, tecnología e IA para el desarrollo sostenible.</p>
+              <p data-i18n="sec.equipo.teresa">Innovación, tecnología e IA para el desarrollo sostenible.</p>
             </article>
             <article class="card">
               <h3>Lic. Renzo Quiroga</h3>
-              <p>Economía circular y modelos de producción sostenible.</p>
+              <p data-i18n="sec.equipo.renzo">Economía circular y modelos de producción sostenible.</p>
             </article>
           </div>
         </div>
@@ -445,10 +447,10 @@
       <section class="section section--muted page-panel" data-page="gestion" id="gestion" aria-labelledby="sec-gestion">
         <div class="section-inner">
           <header class="section-head">
-            <p class="section-kicker">Convenios</p>
-            <h2 id="sec-gestion">Gestión</h2>
+            <p class="section-kicker" data-i18n="sec.gestion.kicker">Convenios</p>
+            <h2 id="sec-gestion" data-i18n="sec.gestion.title">Gestión</h2>
           </header>
-          <p class="text-intro">
+          <p class="text-intro" data-i18n="sec.gestion.intro">
             La gestión del IDS se expresa en convenios, adhesiones y
             instrumentos que articulan universidad, Estado y organizaciones.
           </p>
@@ -456,8 +458,8 @@
             <article>
               <time datetime="2023-10-09">2023</time>
               <div>
-                <h3>Red de Universidades Argentinas por los ODS</h3>
-                <p>
+                <h3 data-i18n="sec.gestion.ods.title">Red de Universidades Argentinas por los ODS</h3>
+                <p data-i18n="sec.gestion.ods.body">
                   9 de octubre de 2023: adhesión a la red de universidades
                   argentinas por la implementación de los ODS, en Córdoba.
                 </p>
@@ -466,8 +468,8 @@
             <article>
               <time datetime="2024-06">2024</time>
               <div>
-                <h3>Diplomatura en RSE</h3>
-                <p>
+                <h3 data-i18n="sec.gestion.rse.title">Diplomatura en RSE</h3>
+                <p data-i18n="sec.gestion.rse.body">
                   Junio 2024: convenio entre la UNSJ, el Gobierno de la Provincia
                   de San Juan y la UCCuyo para la Diplomatura en RSE, promovida
                   por la Mesa de Responsabilidad Social Empresarial.
@@ -477,8 +479,8 @@
             <article>
               <time datetime="2024-10">2024</time>
               <div>
-                <h3>Revista del IDS</h3>
-                <p>
+                <h3 data-i18n="sec.gestion.revista.title">Revista del IDS</h3>
+                <p data-i18n="sec.gestion.revista.body">
                   Octubre 2024: reedición de la Revista del Instituto de
                   Desarrollo Sostenible, con 5 artículos científicos, reseña de
                   un libro y trabajos de estudiantes de la Semana Latinoamericana
@@ -492,8 +494,8 @@
             <article>
               <time datetime="2024-11">2024</time>
               <div>
-                <h3>Convenio L&amp;G SRL</h3>
-                <p>
+                <h3 data-i18n="sec.gestion.lg.title">Convenio L&amp;G SRL</h3>
+                <p data-i18n="sec.gestion.lg.body">
                   Noviembre 2024: convenio con L&amp;G SRL para el acompañamiento
                   en la implementación de la sostenibilidad en la empresa.
                 </p>
@@ -502,8 +504,8 @@
             <article>
               <time datetime="2025-03">2025</time>
               <div>
-                <h3>Ministerio de Minería</h3>
-                <p>
+                <h3 data-i18n="sec.gestion.mineria.title">Ministerio de Minería</h3>
+                <p data-i18n="sec.gestion.mineria.body">
                   Marzo 2025: convenio con el Ministerio de Minería para
                   desarrollar una matriz de indicadores de sostenibilidad para el
                   sector.
@@ -517,95 +519,95 @@
       <section class="section section--muted page-panel" data-page="investigacion" id="investigacion" aria-labelledby="sec-investigacion">
         <div class="section-inner">
           <header class="section-head">
-            <p class="section-kicker">Producción científica</p>
-            <h2 id="sec-investigacion">Investigación</h2>
+            <p class="section-kicker" data-i18n="sec.investigacion.kicker">Producción científica</p>
+            <h2 id="sec-investigacion" data-i18n="sec.investigacion.title">Investigación</h2>
           </header>
-            <p class="text-intro">
+            <p class="text-intro" data-i18n="sec.investigacion.intro">
               El reglamento del IDS establece como objetivo diseñar estrategias de
               desarrollo local considerando la sostenibilidad ambiental, social y
               económica, mediante investigación aplicada, congresos, comisiones,
               publicaciones y una revista propia.
             </p>
 
-          <h3>Líneas de investigación</h3>
+          <h3 data-i18n="sec.investigacion.lineas">Líneas de investigación</h3>
           <div class="grid-2 lineas-grid">
             <article class="card">
-              <h3>Educación para el Desarrollo Sostenible</h3>
-              <p>
+              <h3 data-i18n="sec.investigacion.l1.title">Educación para el Desarrollo Sostenible</h3>
+              <p data-i18n="sec.investigacion.l1.body">
                 Integración de la sostenibilidad en currículas universitarias,
                 formación de competencias en ODS y pedagogías para la ciudadanía
                 ambiental.
               </p>
             </article>
             <article class="card">
-              <h3>Contabilidad Ambiental y Social</h3>
-              <p>
+              <h3 data-i18n="sec.investigacion.l2.title">Contabilidad Ambiental y Social</h3>
+              <p data-i18n="sec.investigacion.l2.body">
                 Medición y reporte del impacto ambiental y social de las
                 organizaciones, indicadores de triple impacto y estados contables
                 socioambientales.
               </p>
             </article>
             <article class="card">
-              <h3>Sostenibilidad Universitaria</h3>
-              <p>
+              <h3 data-i18n="sec.investigacion.l3.title">Sostenibilidad Universitaria</h3>
+              <p data-i18n="sec.investigacion.l3.body">
                 Gestión ambiental de campus, huella de carbono institucional y
                 políticas de sostenibilidad en la gestión universitaria.
               </p>
             </article>
             <article class="card">
-              <h3>Responsabilidad Social Empresarial y Sustentabilidad Organizacional</h3>
-              <p>
+              <h3 data-i18n="sec.investigacion.l4.title">Responsabilidad Social Empresarial y Sustentabilidad Organizacional</h3>
+              <p data-i18n="sec.investigacion.l4.body">
                 Estrategias de RSE, gobernanza corporativa sostenible y su impacto
                 en comunidades y stakeholders.
               </p>
             </article>
             <article class="card">
-              <h3>Innovación, Tecnología e Inteligencia Artificial para el Desarrollo Sostenible</h3>
-              <p>
+              <h3 data-i18n="sec.investigacion.l5.title">Innovación, Tecnología e Inteligencia Artificial para el Desarrollo Sostenible</h3>
+              <p data-i18n="sec.investigacion.l5.body">
                 Uso de IA y tecnologías emergentes para monitoreo ambiental,
                 eficiencia de recursos y toma de decisiones sostenibles.
               </p>
             </article>
             <article class="card">
-              <h3>Economía y Sectores Productivos Sostenibles</h3>
-              <p>
+              <h3 data-i18n="sec.investigacion.l6.title">Economía y Sectores Productivos Sostenibles</h3>
+              <p data-i18n="sec.investigacion.l6.body">
                 Modelos productivos de bajo impacto en agro, industria y energía,
                 y su viabilidad económica.
               </p>
             </article>
             <article class="card">
-              <h3>Gobernanza, Políticas Públicas y Agenda 2030</h3>
-              <p>
+              <h3 data-i18n="sec.investigacion.l7.title">Gobernanza, Políticas Públicas y Agenda 2030</h3>
+              <p data-i18n="sec.investigacion.l7.body">
                 Diseño e implementación de políticas públicas alineadas a los ODS,
                 articulación entre Estado, empresa y sociedad civil.
               </p>
             </article>
             <article class="card">
-              <h3>Economía Circular y Modelos de Producción Sostenible</h3>
-              <p>
+              <h3 data-i18n="sec.investigacion.l8.title">Economía Circular y Modelos de Producción Sostenible</h3>
+              <p data-i18n="sec.investigacion.l8.body">
                 Reducción, reutilización y reciclaje de recursos; diseño de
                 cadenas de valor circulares.
               </p>
             </article>
             <article class="card">
-              <h3>Finanzas Sostenibles</h3>
-              <p>
+              <h3 data-i18n="sec.investigacion.l9.title">Finanzas Sostenibles</h3>
+              <p data-i18n="sec.investigacion.l9.body">
                 Inversión de impacto, bonos verdes/sociales y criterios ESG en la
                 toma de decisiones financieras.
               </p>
             </article>
           </div>
 
-          <h3 class="stack-gap">Proyectos 2026</h3>
+          <h3 class="stack-gap" data-i18n="sec.investigacion.p2026">Proyectos 2026</h3>
           <div class="grid-2">
             <article class="card">
-              <h3>EcoHuella UCCuyo</h3>
-              <p>
+              <h3 data-i18n="sec.investigacion.eco.title">EcoHuella UCCuyo</h3>
+              <p data-i18n="sec.investigacion.eco.p1" data-i18n-html>
                 Medición, educación y transferencia tecnológica para la
                 sostenibilidad personal en clave <em>Laudato Si’</em>. Proyecto
                 aplicado de innovación, 12 meses.
               </p>
-              <p>
+              <p data-i18n="sec.investigacion.eco.team" data-i18n-html>
                 <strong>Directora:</strong> PhD. María Belén Arias Valle.
                 Equipo: Cdra. María Belén Cañizares, Mg. María Paula Pérez
                 Armendariz, Lic. Renzo Martín y estudiantes de la Tecnicatura en
@@ -617,39 +619,39 @@
                 <li>ODS 12</li>
                 <li>ODS 13</li>
               </ul>
-              <p>
+              <p data-i18n="sec.investigacion.eco.product">
                 Producto previsto: aplicación móvil gratuita con gamificación,
                 cálculo de huella ecológica y recomendaciones por nivel educativo.
               </p>
             </article>
             <article class="card">
-              <h3>Del Balance Social a la información sobre sostenibilidad</h3>
-              <p>
+              <h3 data-i18n="sec.investigacion.rt.title">Del Balance Social a la información sobre sostenibilidad</h3>
+              <p data-i18n="sec.investigacion.rt.p1">
                 Análisis comparado de la transición normativa RT 36/44 → RT 60
                 en Argentina. Área: contabilidad y sostenibilidad. 12 meses.
               </p>
-              <p>
+              <p data-i18n="sec.investigacion.rt.team" data-i18n-html>
                 <strong>Directora:</strong> PhD. María Belén Arias Valle.
                 <strong>Codirectora:</strong> Cdra. María Belén Cañizares.
                 Equipo: Contadora Stefania Young y estudiantes avanzados de
                 Contador Público.
               </p>
-              <p>
+              <p data-i18n="sec.investigacion.rt.p2">
                 La RT 60 (aprobada en 2025) deroga las RT 36 y 44, es
                 obligatoria desde el 1 de enero de 2027 y exige estándares GRI y
                 NIIF S1/S2 del ISSB.
               </p>
             </article>
             <article class="card">
-              <h3>
+              <h3 data-i18n="sec.investigacion.pls.title">
                 Evaluación del impacto de las cátedras de sostenibilidad en el
                 aprendizaje y la intención comportamental
               </h3>
-              <p>
+              <p data-i18n="sec.investigacion.pls.p1">
                 Modelo de ecuaciones estructurales (PLS-SEM) en el marco del
                 Programa Educar para el Desarrollo Sostenible.
               </p>
-              <p>
+              <p data-i18n="sec.investigacion.pls.team" data-i18n-html>
                 <strong>Directora:</strong> María Belén Arias Valle.
                 <strong>Codirector:</strong> Frederic Marimon.
                 Equipo: María Paula Pérez Armendariz, Daniela Fabiana Gámez
@@ -658,33 +660,33 @@
             </article>
           </div>
 
-          <h3 class="stack-gap">Programas de formación integral 2024–2028</h3>
+          <h3 class="stack-gap" data-i18n="sec.investigacion.prog">Programas de formación integral 2024–2028</h3>
           <div class="grid-2">
             <article class="card">
-              <h3>Educar para el desarrollo sostenible</h3>
-              <p>
+              <h3 data-i18n="sec.investigacion.educar.title">Educar para el desarrollo sostenible</h3>
+              <p data-i18n="sec.investigacion.educar.body">
                 Programa del IDS y la Escuela de Cultura Religiosa y Pastoral.
               </p>
-              <p>
+              <p data-i18n="sec.investigacion.educar.team" data-i18n-html>
                 <strong>Directora:</strong> Arias Valle, María Belén.
                 <strong>Codirector:</strong> Amarfil, Horacio.
               </p>
             </article>
           </div>
 
-          <h3 class="stack-gap">Línea 2022–2025</h3>
+          <h3 class="stack-gap" data-i18n="sec.investigacion.linea">Línea 2022–2025</h3>
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
-                  <th>Año</th>
-                  <th>Proyecto</th>
+                  <th data-i18n="th.year">Año</th>
+                  <th data-i18n="th.project">Proyecto</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>2025</td>
-                  <td>
+                  <td data-i18n="sec.investigacion.row.2025">
                     Mapa de situación de la implementación de prácticas
                     sostenibles en PyMEs de San Juan y San Luis (PRONIS —
                     Secretaría de Ciencia y Tecnología).
@@ -692,11 +694,11 @@
                 </tr>
                 <tr>
                   <td>2024</td>
-                  <td>Hacia una minería responsable.</td>
+                  <td data-i18n="sec.investigacion.row.2024a">Hacia una minería responsable.</td>
                 </tr>
                 <tr>
                   <td>2024</td>
-                  <td>
+                  <td data-i18n="sec.investigacion.row.2024b">
                     Hacia una educación sostenible: integración de la
                     sostenibilidad en instituciones educativas y de educación
                     superior.
@@ -704,17 +706,17 @@
                 </tr>
                 <tr>
                   <td>2024</td>
-                  <td>Programa de investigación: Educar para el desarrollo sostenible.</td>
+                  <td data-i18n="sec.investigacion.row.2024c">Programa de investigación: Educar para el desarrollo sostenible.</td>
                 </tr>
                 <tr>
                   <td>2023–2024</td>
-                  <td>
+                  <td data-i18n="sec.investigacion.row.2023">
                     Buenas prácticas de sostenibilidad en las PyMEs de San Juan.
                   </td>
                 </tr>
                 <tr>
                   <td>2022–2023</td>
-                  <td>
+                  <td data-i18n="sec.investigacion.row.2022">
                     La Universidad y su contribución al desarrollo sostenible
                     desde una perspectiva ética. Resultados: Plan de
                     Sostenibilidad Estratégico para la UCCuyo, proyecto de ley
@@ -731,21 +733,21 @@
       <section class="section page-panel ids-biblio" data-page="publicaciones" id="publicaciones" aria-labelledby="sec-publicaciones">
         <div class="section-inner">
           <header class="section-head">
-            <p class="section-kicker">Difusión</p>
-            <h2 id="sec-publicaciones">Biblioteca del IDS</h2>
+            <p class="section-kicker" data-i18n="sec.biblio.kicker">Difusión</p>
+            <h2 id="sec-publicaciones" data-i18n="sec.biblio.title">Biblioteca del IDS</h2>
           </header>
-          <p class="pub-intro">
+          <p class="pub-intro" data-i18n="sec.biblio.intro">
             Producción del Instituto (libros, artículos científicos y reuniones)
             e índice mundial de literatura sobre desarrollo sostenible, con las
             mismas fuentes abiertas que la Biblioteca de IA del Observatorio.
           </p>
 
-          <p class="pub-editorial">
+          <p class="pub-editorial" data-i18n="sec.biblio.editorial">
             Revista del IDS: relanzada en 2024, con artículos arbitrados, reseñas
             y trabajos de estudiantes. Editora: PhD. Belén Arias. 20 revisores
             externos internacionales; dos números en 2025, en proceso de indexación.
           </p>
-          <div class="pub-tabs" role="tablist" aria-label="Vistas de la Biblioteca del IDS">
+          <div class="pub-tabs" role="tablist" aria-label="Vistas de la Biblioteca del IDS" data-i18n-attr="aria-label:sec.biblio.tabs.aria">
             <button
               type="button"
               class="pub-tab pub-tab--active"
@@ -755,7 +757,7 @@
               aria-controls="pub-panel-instituto"
               data-pub-tab="instituto"
             >
-              Publicaciones del Instituto
+              <span data-i18n="sec.biblio.tab.instituto">Publicaciones del Instituto</span>
             </button>
             <button
               type="button"
@@ -767,7 +769,7 @@
               data-pub-tab="global"
               tabindex="-1"
             >
-              Publicaciones sobre Desarrollo Sostenible en el mundo
+              <span data-i18n="sec.biblio.tab.global">Publicaciones sobre Desarrollo Sostenible en el mundo</span>
             </button>
           </div>
 
@@ -778,13 +780,12 @@
             aria-labelledby="pub-tab-instituto"
           >
             <p class="pub-panel-intro">
-              Libros, artículos científicos y participación en reuniones
-              científicas del equipo del IDS.
+              <span data-i18n="sec.biblio.panel.intro">Libros, artículos científicos y participación en reuniones científicas del equipo del IDS.</span>
               <span id="pub-count-wrap" hidden>
-                Mostrando <strong id="pub-count">0</strong> en esta vista.
+                <span data-i18n="sec.biblio.showing">Mostrando</span> <strong id="pub-count">0</strong> <span data-i18n="sec.biblio.inView">en esta vista.</span>
               </span>
             </p>
-            <div class="pub-toolbar" id="pub-filters" role="toolbar" aria-label="Filtrar por tipo"></div>
+            <div class="pub-toolbar" id="pub-filters" role="toolbar" aria-label="Filtrar por tipo" data-i18n-attr="aria-label:sec.biblio.filters.aria"></div>
             <div id="pub-status" class="pub-status" aria-live="polite"></div>
             <div class="pub-grid" id="pub-grid"></div>
           </div>
@@ -797,7 +798,7 @@
             hidden
           >
             <p class="pub-panel-intro pub-panel-intro--index">
-              Resultados globales desde
+              <span data-i18n="sec.biblio.global.intro" data-i18n-html>Resultados globales desde
               <a href="https://openalex.org" target="_blank" rel="noopener noreferrer">OpenAlex</a>
               (trabajos con Objetivos de Desarrollo Sostenible),
               <a href="https://www.crossref.org" target="_blank" rel="noopener noreferrer">Crossref</a>,
@@ -809,23 +810,23 @@
               <a href="https://doaj.org" target="_blank" rel="noopener noreferrer">DOAJ</a>,
               con enlaces de acceso abierto vía
               <a href="https://unpaywall.org" target="_blank" rel="noopener noreferrer">Unpaywall</a>.
-              Puede haber faltantes, duplicados o registros a revisar.
-              <span class="pub-index-badge">Resultados aproximados</span>
+              Puede haber faltantes, duplicados o registros a revisar.</span>
+              <span class="pub-index-badge" data-i18n="sec.biblio.badge">Resultados aproximados</span>
               <span id="pub-index-count-wrap" hidden>
                 · <span id="pub-index-count-label"><strong id="pub-index-total">0</strong></span>
               </span>
             </p>
             <div class="pub-index-search">
-              <label class="pub-index-search-label" for="pub-index-q">Buscar por título, DOI o autor/a</label>
-              <div class="pub-index-search-modes" role="radiogroup" aria-label="Tipo de búsqueda">
-                <button type="button" class="pub-index-mode pub-index-mode--active" data-pub-index-mode="auto" aria-pressed="true">Auto</button>
-                <button type="button" class="pub-index-mode" data-pub-index-mode="title" aria-pressed="false">Título</button>
-                <button type="button" class="pub-index-mode" data-pub-index-mode="author" aria-pressed="false">Autor/a</button>
-                <button type="button" class="pub-index-mode" data-pub-index-mode="doi" aria-pressed="false">DOI</button>
+              <label class="pub-index-search-label" for="pub-index-q" data-i18n="sec.biblio.search.label">Buscar por título, DOI o autor/a</label>
+              <div class="pub-index-search-modes" role="radiogroup" aria-label="Tipo de búsqueda" data-i18n-attr="aria-label:sec.biblio.search.modes">
+                <button type="button" class="pub-index-mode pub-index-mode--active" data-pub-index-mode="auto" aria-pressed="true" data-i18n="sec.biblio.mode.auto">Auto</button>
+                <button type="button" class="pub-index-mode" data-pub-index-mode="title" aria-pressed="false" data-i18n="sec.biblio.mode.title">Título</button>
+                <button type="button" class="pub-index-mode" data-pub-index-mode="author" aria-pressed="false" data-i18n="sec.biblio.mode.author">Autor/a</button>
+                <button type="button" class="pub-index-mode" data-pub-index-mode="doi" aria-pressed="false" data-i18n="sec.biblio.mode.doi">DOI</button>
                 <div class="pub-index-year pub-index-year--inline">
-                  <label class="pub-index-year-label visually-hidden" for="pub-index-year">Filtrar por año</label>
-                  <select id="pub-index-year" class="pub-index-year-select" aria-label="Filtrar publicaciones por año" title="Filtrar por año">
-                    <option value="all">Todos los años</option>
+                  <label class="pub-index-year-label visually-hidden" for="pub-index-year" data-i18n="sec.biblio.year.label">Filtrar por año</label>
+                  <select id="pub-index-year" class="pub-index-year-select" aria-label="Filtrar publicaciones por año" title="Filtrar por año" data-i18n-attr="aria-label:sec.biblio.year.label,title:sec.biblio.year.label">
+                    <option value="all" data-i18n="sec.biblio.year.all">Todos los años</option>
                   </select>
                 </div>
               </div>
@@ -834,25 +835,25 @@
                   type="search"
                   id="pub-index-q"
                   class="pub-index-search-input"
-                  placeholder="Desarrollo sostenible, 10.1234/…, Apellido Nombre"
+                  placeholder="Desarrollo sostenible, 10.1234/…, Apellido Nombre" data-i18n-attr="placeholder:sec.biblio.search.placeholder"
                   autocomplete="off"
                   enterkeyhint="search"
                 />
-                <button type="button" id="pub-index-q-clear" class="pub-more-btn pub-index-search-clear" hidden>Limpiar</button>
-                <button type="button" id="pub-index-clear-all" class="pub-more-btn pub-index-search-clear-all">Limpiar todo</button>
+                <button type="button" id="pub-index-q-clear" class="pub-more-btn pub-index-search-clear" hidden data-i18n="sec.biblio.btnClear">Limpiar</button>
+                <button type="button" id="pub-index-clear-all" class="pub-more-btn pub-index-search-clear-all" data-i18n="sec.biblio.btnClearAll">Limpiar todo</button>
               </div>
               <div class="pub-index-controls">
-                <label class="pub-index-control-label" for="pub-index-size">Por página</label>
-                <select id="pub-index-size" class="pub-index-control-select" aria-label="Cantidad por página">
+                <label class="pub-index-control-label" for="pub-index-size" data-i18n="sec.biblio.size">Por página</label>
+                <select id="pub-index-size" class="pub-index-control-select" aria-label="Cantidad por página" data-i18n-attr="aria-label:sec.biblio.size.aria">
                   <option value="15">15</option>
                   <option value="30">30</option>
                   <option value="50">50</option>
                 </select>
-                <label class="pub-index-control-label" for="pub-index-sort">Orden</label>
-                <select id="pub-index-sort" class="pub-index-control-select" aria-label="Ordenar publicaciones">
-                  <option value="date_desc">Fecha: más reciente</option>
-                  <option value="date_asc">Fecha: más antigua</option>
-                  <option value="relevance">Relevancia (si hay búsqueda)</option>
+                <label class="pub-index-control-label" for="pub-index-sort" data-i18n="sec.biblio.sort">Orden</label>
+                <select id="pub-index-sort" class="pub-index-control-select" aria-label="Ordenar publicaciones" data-i18n-attr="aria-label:sec.biblio.sort.aria">
+                  <option value="date_desc" data-i18n="sec.biblio.sort.dateDesc">Fecha: más reciente</option>
+                  <option value="date_asc" data-i18n="sec.biblio.sort.dateAsc">Fecha: más antigua</option>
+                  <option value="relevance" data-i18n="sec.biblio.sort.relevance">Relevancia (si hay búsqueda)</option>
                 </select>
               </div>
               <div id="pub-index-active" class="pub-index-active" aria-live="polite"></div>
@@ -866,12 +867,12 @@
       <section class="section section--muted page-panel" data-page="docencia" id="docencia" aria-labelledby="sec-docencia">
         <div class="section-inner">
           <header class="section-head">
-            <p class="section-kicker">Formación</p>
-            <h2 id="sec-docencia">Docencia</h2>
+            <p class="section-kicker" data-i18n="sec.docencia.kicker">Formación</p>
+            <h2 id="sec-docencia" data-i18n="sec.docencia.title">Docencia</h2>
           </header>
           <article class="card">
-            <h3>Diplomatura en Responsabilidad Social Empresarial y Sustentabilidad</h3>
-            <p>
+            <h3 data-i18n="sec.docencia.dip.title">Diplomatura en Responsabilidad Social Empresarial y Sustentabilidad</h3>
+            <p data-i18n="sec.docencia.dip.body">
               Formación conjunta de la UCCuyo, la Universidad Nacional de San Juan,
               el Gobierno de la Provincia de San Juan y la Mesa de RSE. 220 horas
               académicas, 8 módulos, modalidad presencial y virtual.
@@ -880,30 +881,30 @@
               <table>
                 <thead>
                   <tr>
-                    <th>Edición</th>
-                    <th>Año</th>
-                    <th>Participantes</th>
-                    <th>Modalidad</th>
+                    <th data-i18n="th.edition">Edición</th>
+                    <th data-i18n="th.year">Año</th>
+                    <th data-i18n="th.participants">Participantes</th>
+                    <th data-i18n="th.mode">Modalidad</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>1.ª edición</td>
+                    <td data-i18n="sec.docencia.ed1">1.ª edición</td>
                     <td>2024</td>
-                    <td>457 personas</td>
-                    <td>Presencial y virtual</td>
+                    <td>457 <span data-i18n="sec.docencia.people">personas</span></td>
+                    <td data-i18n="sec.docencia.blend">Presencial y virtual</td>
                   </tr>
                   <tr>
-                    <td>2.ª edición</td>
+                    <td data-i18n="sec.docencia.ed2">2.ª edición</td>
                     <td>2025</td>
-                    <td>230 personas</td>
-                    <td>Presencial y virtual</td>
+                    <td>230 <span data-i18n="sec.docencia.people">personas</span></td>
+                    <td data-i18n="sec.docencia.blend">Presencial y virtual</td>
                   </tr>
                   <tr>
-                    <td>3.ª edición</td>
+                    <td data-i18n="sec.docencia.ed3">3.ª edición</td>
                     <td>2026</td>
-                    <td>En lanzamiento</td>
-                    <td>Presencial y virtual</td>
+                    <td data-i18n="sec.docencia.launch">En lanzamiento</td>
+                    <td data-i18n="sec.docencia.blend">Presencial y virtual</td>
                   </tr>
                 </tbody>
               </table>
@@ -911,8 +912,8 @@
           </article>
           <div class="grid-2 stack-gap">
             <article class="card">
-              <h3>Formación de investigadores</h3>
-              <p>
+              <h3 data-i18n="sec.docencia.researchers.title">Formación de investigadores</h3>
+              <p data-i18n="sec.docencia.researchers.body">
                 En 2024 se dictó el Curso de Actualización en Medición de los ODS,
                 con 20 investigadores. El IDS acompaña tesis de grado, maestría y
                 doctorado: entre 2023 y 2025, trabajos dirigidos obtuvieron
@@ -921,8 +922,8 @@
               </p>
             </article>
             <article class="card">
-              <h3>Proyección académica</h3>
-              <p>
+              <h3 data-i18n="sec.docencia.proj.title">Proyección académica</h3>
+              <p data-i18n="sec.docencia.proj.body">
                 Consolidación de la Especialización en Educar para el Desarrollo
                 Sostenible y de nuevos programas de maestría y especialización,
                 en articulación con la Escuela de Cultura Religiosa y Pastoral y
@@ -936,36 +937,36 @@
       <section class="section page-panel" data-page="extension" id="extension" aria-labelledby="sec-extension">
         <div class="section-inner">
           <header class="section-head">
-            <p class="section-kicker">Comunidad</p>
-            <h2 id="sec-extension">Extensión</h2>
+            <p class="section-kicker" data-i18n="sec.extension.kicker">Comunidad</p>
+            <h2 id="sec-extension" data-i18n="sec.extension.title">Extensión</h2>
           </header>
           <article class="card">
-            <h3>III Congreso Internacional «San Juan + Sostenible»</h3>
-            <p>
+            <h3 data-i18n="sec.extension.cong.title">III Congreso Internacional «San Juan + Sostenible»</h3>
+            <p data-i18n="sec.extension.cong.lead">
               «El futuro no se espera, se construye». 15 y 16 de mayo de 2025,
               Complejo Ambiental Anchipurac, San Juan.
             </p>
             <div class="congress-stats">
-              <div class="stat"><b>455</b><span>Inscriptos</span></div>
-              <div class="stat"><b>79</b><span>Expositores/as</span></div>
-              <div class="stat"><b>5+1</b><span>Paneles y conferencia magistral</span></div>
-              <div class="stat"><b>9</b><span>Países representados</span></div>
-              <div class="stat"><b>12</b><span>Instituciones auspiciantes</span></div>
-              <div class="stat"><b>91,6%</b><span>Pidió certificado</span></div>
+              <div class="stat"><b>455</b><span data-i18n="sec.extension.stat.reg">Inscriptos</span></div>
+              <div class="stat"><b>79</b><span data-i18n="sec.extension.stat.exp">Expositores/as</span></div>
+              <div class="stat"><b>5+1</b><span data-i18n="sec.extension.stat.panels">Paneles y conferencia magistral</span></div>
+              <div class="stat"><b>9</b><span data-i18n="sec.extension.stat.countries">Países representados</span></div>
+              <div class="stat"><b>12</b><span data-i18n="sec.extension.stat.inst">Instituciones auspiciantes</span></div>
+              <div class="stat"><b>91,6%</b><span data-i18n="sec.extension.stat.cert">Pidió certificado</span></div>
             </div>
-            <p>
+            <p data-i18n="sec.extension.cong.axes">
               Ejes: Educación para la Sostenibilidad · Minería y sectores
               productivos sustentables · Responsabilidad social y empresa ·
               Medición e indicadores de sostenibilidad · Políticas públicas y
               gobernanza territorial.
             </p>
-            <p>
+            <p data-i18n="sec.extension.cong.rec">
               Reconocimientos: Resolución N.º 363-CS-2024 del Consejo Superior de
               la UCCuyo; Decreto 680-P-2024 de la Cámara de Diputados de San Juan
               (interés educativo y científico); acompañamiento del Ministerio de
               Minería y de la Secretaría de Ambiente y Desarrollo Sustentable.
             </p>
-            <p>
+            <p data-i18n="sec.extension.cong.reach">
               Alcance académico: investigadores de CONICET y de universidades de
               Perú, España, Francia y Argentina, con pósters estudiantiles en
               modalidad presencial. El propio evento usó merchandising sustentable
@@ -975,16 +976,16 @@
           </article>
           <div class="grid-2 stack-gap">
             <article class="card">
-              <h3>Jornadas de Justicia y Paz</h3>
-              <p>
+              <h3 data-i18n="sec.extension.paz.title">Jornadas de Justicia y Paz</h3>
+              <p data-i18n="sec.extension.paz.body">
                 Octubre 2025: charla magistral «El aporte de la Universidad al
                 Desarrollo Sostenible» en las Jornadas de la Semana Social,
                 Comisión de Justicia y Paz.
               </p>
             </article>
             <article class="card">
-              <h3>Jornadas de la Mesa de RSE</h3>
-              <p>
+              <h3 data-i18n="sec.extension.mesa.title">Jornadas de la Mesa de RSE</h3>
+              <p data-i18n="sec.extension.mesa.body">
                 Abril 2024: disertación «Alianzas sostenibles» en las Jornadas de
                 Responsabilidad Social organizadas por la Mesa de RSE.
               </p>
@@ -996,10 +997,10 @@
       <section class="section section--muted page-panel" data-page="ods" id="ods" aria-labelledby="sec-ods">
         <div class="section-inner">
           <header class="section-head">
-            <p class="section-kicker">Agenda 2030</p>
-            <h2 id="sec-ods">Observatorio de ODS</h2>
+            <p class="section-kicker" data-i18n="sec.ods.kicker">Agenda 2030</p>
+            <h2 id="sec-ods" data-i18n="sec.ods.title">Observatorio de ODS</h2>
           </header>
-          <p class="text-intro">
+          <p class="text-intro" data-i18n="sec.ods.intro">
             El IDS sigue dos mapas de la sostenibilidad que cruzan universidad,
             territorio y empresas: el compromiso de las universidades argentinas
             con los ODS y el estado de las prácticas sostenibles en las PyMEs de
@@ -1007,8 +1008,8 @@
           </p>
           <div class="grid-2">
             <article class="card">
-              <h3>Universidades argentinas</h3>
-              <p>
+              <h3 data-i18n="sec.ods.uni.title">Universidades argentinas</h3>
+              <p data-i18n="sec.ods.uni.body">
                 Investigación sobre la integración de la Agenda 2030 en
                 instituciones de educación superior: misión, gobernanza,
                 financiamiento y prácticas de campus. Base del mapa de la
@@ -1016,8 +1017,8 @@
               </p>
             </article>
             <article class="card">
-              <h3>PyMEs de San Juan y San Luis</h3>
-              <p>
+              <h3 data-i18n="sec.ods.pymes.title">PyMEs de San Juan y San Luis</h3>
+              <p data-i18n="sec.ods.pymes.body">
                 Mapa de situación de la implementación de prácticas sostenibles
                 (PRONIS — Secretaría de Ciencia y Tecnología) y línea 2023–2024
                 de buenas prácticas en PyMEs de San Juan.
@@ -1030,26 +1031,26 @@
       <section class="section page-panel" data-page="consultoria" id="consultoria" aria-labelledby="sec-consultoria">
         <div class="section-inner">
           <header class="section-head">
-            <p class="section-kicker">Transferencia</p>
-            <h2 id="sec-consultoria">Consultoría</h2>
+            <p class="section-kicker" data-i18n="sec.consultoria.kicker">Transferencia</p>
+            <h2 id="sec-consultoria" data-i18n="sec.consultoria.title">Consultoría</h2>
           </header>
-          <p class="text-intro">
+          <p class="text-intro" data-i18n="sec.consultoria.intro">
             Acompañamiento a organizaciones en la implementación de la
             sostenibilidad: diagnóstico, indicadores y planes de mejora, con
             respaldo académico del IDS.
           </p>
           <div class="grid-2">
             <article class="card">
-              <h3>Empresas</h3>
-              <p>
+              <h3 data-i18n="sec.consultoria.emp.title">Empresas</h3>
+              <p data-i18n="sec.consultoria.emp.body">
                 Convenio con L&amp;G SRL (noviembre 2024) para implementar
                 sostenibilidad en la empresa. Asesoramiento ESG a organizaciones
                 de Cuyo.
               </p>
             </article>
             <article class="card">
-              <h3>Sector minero y Estado</h3>
-              <p>
+              <h3 data-i18n="sec.consultoria.min.title">Sector minero y Estado</h3>
+              <p data-i18n="sec.consultoria.min.body">
                 Matriz de indicadores de sostenibilidad con el Ministerio de
                 Minería de San Juan (marzo 2025) y trabajo con empresas
                 proveedoras del sector.
@@ -1062,30 +1063,30 @@
       <section class="section section--muted page-panel" data-page="vinculacion" id="vinculacion" aria-labelledby="sec-vinculacion">
         <div class="section-inner">
           <header class="section-head">
-            <p class="section-kicker">Alianzas</p>
-            <h2 id="sec-vinculacion">Vinculación</h2>
+            <p class="section-kicker" data-i18n="sec.vinculacion.kicker">Alianzas</p>
+            <h2 id="sec-vinculacion" data-i18n="sec.vinculacion.title">Vinculación</h2>
           </header>
           <div class="grid-2">
             <article class="card">
-              <h3>Nacionales</h3>
+              <h3 data-i18n="sec.vinculacion.nat">Nacionales</h3>
               <ul class="check-list">
-                <li>Red de Universidades por los ODS (Argentina)</li>
-                <li>PETAS — Universidad Nacional de San Juan</li>
-                <li>Red de Universidades Sostenibles Argentinas</li>
-                <li>Mesa Provincial de Responsabilidad Social Empresarial de San Juan</li>
-                <li>Comisión de Justicia y Paz</li>
+                <li data-i18n="sec.vinculacion.n1">Red de Universidades por los ODS (Argentina)</li>
+                <li data-i18n="sec.vinculacion.n2">PETAS — Universidad Nacional de San Juan</li>
+                <li data-i18n="sec.vinculacion.n3">Red de Universidades Sostenibles Argentinas</li>
+                <li data-i18n="sec.vinculacion.n4">Mesa Provincial de Responsabilidad Social Empresarial de San Juan</li>
+                <li data-i18n="sec.vinculacion.n5">Comisión de Justicia y Paz</li>
               </ul>
             </article>
             <article class="card">
-              <h3>Internacionales</h3>
+              <h3 data-i18n="sec.vinculacion.int">Internacionales</h3>
               <ul class="check-list">
-                <li>Instituto Universitario de Investigación en Ciencia y Tecnologías de la Sostenibilidad — UPC (España)</li>
-                <li>Universidad Internacional de Catalunya — UIC</li>
-                <li>Cátedra UNESCO de Dirección Universitaria — UPC</li>
-                <li>Universidad Nacional Jorge Basadre Grohmann — UNJBG (Perú)</li>
-                <li>Programa GUNi International</li>
-                <li>Red de Universidades Católicas de Latinoamérica</li>
-                <li>Rural Transition Labs — Interreg Sudoe (financiamiento UE)</li>
+                <li data-i18n="sec.vinculacion.i1">Instituto Universitario de Investigación en Ciencia y Tecnologías de la Sostenibilidad — UPC (España)</li>
+                <li data-i18n="sec.vinculacion.i2">Universidad Internacional de Catalunya — UIC</li>
+                <li data-i18n="sec.vinculacion.i3">Cátedra UNESCO de Dirección Universitaria — UPC</li>
+                <li data-i18n="sec.vinculacion.i4">Universidad Nacional Jorge Basadre Grohmann — UNJBG (Perú)</li>
+                <li data-i18n="sec.vinculacion.i5">Programa GUNi International</li>
+                <li data-i18n="sec.vinculacion.i6">Red de Universidades Católicas de Latinoamérica</li>
+                <li data-i18n="sec.vinculacion.i7">Rural Transition Labs — Interreg Sudoe (financiamiento UE)</li>
               </ul>
             </article>
           </div>
@@ -1095,53 +1096,53 @@
       <section class="section page-panel" data-page="hitos" id="hitos" aria-labelledby="sec-hitos">
         <div class="section-inner">
           <header class="section-head">
-            <p class="section-kicker">Memoria</p>
-            <h2 id="sec-hitos">Hitos y reconocimientos</h2>
+            <p class="section-kicker" data-i18n="sec.hitos.kicker">Memoria</p>
+            <h2 id="sec-hitos" data-i18n="sec.hitos.title">Hitos y reconocimientos</h2>
           </header>
-          <p class="text-intro">
+          <p class="text-intro" data-i18n="sec.hitos.intro">
             Lo que distingue al IDS: primer instituto de desarrollo sostenible
             del país, primera revista especializada y una trayectoria de premios,
             convenios y presencia internacional.
           </p>
           <ul class="check-list">
-            <li>Fue el primer Instituto de Desarrollo Sostenible del país.</li>
-            <li>Tiene la primera revista en Desarrollo Sostenible del país.</li>
-            <li>2008: Plan de Desarrollo de los Departamentos Mineros.</li>
-            <li>
+            <li data-i18n="sec.hitos.i1">Fue el primer Instituto de Desarrollo Sostenible del país.</li>
+            <li data-i18n="sec.hitos.i2">Tiene la primera revista en Desarrollo Sostenible del país.</li>
+            <li data-i18n="sec.hitos.i3">2008: Plan de Desarrollo de los Departamentos Mineros.</li>
+            <li data-i18n="sec.hitos.i4">
               2013: María Belén Arias Valle, Beca Iberoamérica Santander
               Universidades. Investigación en la Universitat Politècnica de
               Catalunya, Cátedra UNESCO de Dirección Universitaria.
             </li>
-            <li>
+            <li data-i18n="sec.hitos.i5">
               2013: Premio Pluma de Oro del Consejo Profesional de Ciencias
               Económicas de San Juan, «Contribución Científica a la Profesión».
             </li>
-            <li>
+            <li data-i18n="sec.hitos.i6">
               2014: Medalla de oro «Dr. Manuel Belgrano» (CPCE CABA) a María
               Belén Arias Valle, Ana María Lillo Murcia y María Emilce Valdivieso,
               por «Hacia una Universidad Sustentable, Responsable e Inclusiva».
             </li>
-            <li>
+            <li data-i18n="sec.hitos.i7">
               2014 y 2015: Premio Domingo Faustino Sarmiento Ciencia e Innovación
               (1.ª y 2.ª edición), Secretaría de Estado de Ciencia, Tecnología e
               Innovación de San Juan, por dirección de tesis en RSE y
               responsabilidad social educativa.
             </li>
-            <li>
+            <li data-i18n="sec.hitos.i8">
               Noviembre 2024: conferencia magistral en las Jornadas Nacionales de
               Educación para Profesionales en Ciencias Económicas.
             </li>
-            <li>
+            <li data-i18n="sec.hitos.i9">
               Agosto 2025: Jornadas de la RADU, Mendoza: «Una Universidad
               Sostenible desde la mirada de Laudato Si’».
             </li>
-            <li>
+            <li data-i18n="sec.hitos.i10">
               Foro Valos 2026: cumbre de sostenibilidad y negocios de Cuyo,
               Mendoza, 12 y 13 de agosto.
             </li>
           </ul>
-          <h3 class="stack-gap">Galería</h3>
-          <p class="text-intro">
+          <h3 class="stack-gap" data-i18n="sec.hitos.gallery">Galería</h3>
+          <p class="text-intro" data-i18n="sec.hitos.gallery.intro">
             Tocá una foto para ampliarla. Filtrá por función universitaria o por
             hitos.
           </p>
@@ -1152,10 +1153,10 @@
       <section class="section section--visitas page-panel" data-page="visitas" id="visitas" aria-labelledby="sec-visitas">
         <div class="section-inner">
           <header class="section-head">
-            <p class="section-kicker">Alcance</p>
-            <h2 id="sec-visitas">Visitas al Instituto</h2>
+            <p class="section-kicker" data-i18n="sec.visitas.kicker">Alcance</p>
+            <h2 id="sec-visitas" data-i18n="sec.visitas.title">Visitas al Instituto</h2>
           </header>
-          <p class="text-intro">
+          <p class="text-intro" data-i18n="sec.visitas.intro">
             Estimación del país y, cuando está disponible, de la provincia o
             región desde donde se consulta el sitio del Instituto de Desarrollo
             Sostenible. Tocá un origen en la lista para enfocarlo en el mapa. El
@@ -1169,11 +1170,11 @@
               id="visitas-mapa"
               class="visitas-mapa"
               role="img"
-              aria-label="Mapa de origen estimado de las visitas"
+              aria-label="Mapa de origen estimado de las visitas" data-i18n-attr="aria-label:sec.visitas.map.aria"
             ></div>
             <div id="visitas-lista" class="visitas-lista"></div>
           </div>
-          <p class="visitas-note">
+          <p class="visitas-note" data-i18n="sec.visitas.note">
             El origen es una estimación por IP. Redes móviles, VPN y campus
             universitarios pueden desplazar la ubicación estimada.
           </p>
@@ -1183,32 +1184,32 @@
       <section class="section section--muted page-panel" data-page="contacto" id="contacto" aria-labelledby="sec-contacto">
         <div class="section-inner">
           <header class="section-head">
-            <p class="section-kicker">Comunicación</p>
-            <h2 id="sec-contacto">Contacto</h2>
+            <p class="section-kicker" data-i18n="sec.contacto.kicker">Comunicación</p>
+            <h2 id="sec-contacto" data-i18n="sec.contacto.title">Contacto</h2>
           </header>
           <div class="contact-block">
             <article class="card">
-              <h3>Instituto de Desarrollo Sostenible</h3>
-              <p>
+              <h3 data-i18n="sec.contacto.name">Instituto de Desarrollo Sostenible</h3>
+              <p data-i18n="sec.contacto.place">
                 Facultad de Ciencias Económicas y Empresariales<br />
                 Universidad Católica de Cuyo · Sede San Juan
               </p>
-              <p>
+              <p data-i18n="sec.contacto.address">
                 Av. José Ignacio de la Roza 1516, Rivadavia, San Juan, Argentina
               </p>
               <p>
-                <strong>Directora:</strong> PhD. María Belén Arias Valle<br />
+                <strong data-i18n="sec.contacto.director">Directora:</strong> PhD. María Belén Arias Valle<br />
                 <a href="mailto:ids@uccuyo.edu.ar">ids@uccuyo.edu.ar</a>
               </p>
             </article>
             <article class="card">
-              <h3>Enlaces institucionales</h3>
+              <h3 data-i18n="sec.contacto.links">Enlaces institucionales</h3>
               <ul class="check-list">
                 <li>
                   <a href="https://uccuyo.edu.ar" target="_blank" rel="noopener noreferrer">uccuyo.edu.ar</a>
                 </li>
                 <li>
-                  <a href="https://observatorio-ia.uccuyo.edu.ar/" target="_blank" rel="noopener noreferrer">Observatorio de Inteligencia Artificial</a>
+                  <a href="https://observatorio-ia.uccuyo.edu.ar/" target="_blank" rel="noopener noreferrer"><span data-i18n="sec.contacto.oia">Observatorio de Inteligencia Artificial</span></a>
                 </li>
               </ul>
             </article>
@@ -1245,34 +1246,34 @@
         <div class="footer-brand">
           <img src="assets/logo-ids-blanco.png" width="280" height="126" alt="" decoding="async" />
           <div>
-            <strong>Instituto de Desarrollo Sostenible</strong>
-            <span>Facultad de Ciencias Económicas y Empresariales · UCCuyo</span>
+            <strong data-i18n="brand.title">Instituto de Desarrollo Sostenible</strong>
+            <span data-i18n="footer.faculty">Facultad de Ciencias Económicas y Empresariales · UCCuyo</span>
           </div>
         </div>
         <div class="footer-col">
-          <h3>Secciones</h3>
+          <h3 data-i18n="footer.sections">Secciones</h3>
           <ul class="footer-links">
-            <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#instituto">El Instituto</a></li>
-            <li><a href="#gestion">Gestión</a></li>
-            <li><a href="#investigacion">Investigación</a></li>
-            <li><a href="#publicaciones">Biblioteca del IDS</a></li>
-            <li><a href="#hitos">Hitos</a></li>
-            <li><a href="#visitas">Visitas al Instituto</a></li>
+            <li><a href="#inicio" data-i18n="nav.inicio">Inicio</a></li>
+            <li><a href="#instituto" data-i18n="nav.instituto">El Instituto</a></li>
+            <li><a href="#gestion" data-i18n="nav.gestion">Gestión</a></li>
+            <li><a href="#investigacion" data-i18n="nav.investigacion">Investigación</a></li>
+            <li><a href="#publicaciones" data-i18n="nav.biblioteca">Biblioteca del IDS</a></li>
+            <li><a href="#hitos" data-i18n="nav.hitos">Hitos</a></li>
+            <li><a href="#visitas" data-i18n="nav.visitas">Visitas al Instituto</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h3>Red UCCuyo</h3>
+          <h3 data-i18n="footer.network">Red UCCuyo</h3>
           <ul class="footer-links">
             <li>
               <a href="https://uccuyo.edu.ar" target="_blank" rel="noopener noreferrer">Universidad Católica de Cuyo</a>
             </li>
             <li>
-              <a href="https://observatorio-ia.uccuyo.edu.ar/">Observatorio de IA</a>
+              <a href="https://observatorio-ia.uccuyo.edu.ar/" data-i18n="footer.oia">Observatorio de IA</a>
             </li>
           </ul>
         </div>
-        <p class="footer-copy">
+        <p class="footer-copy" data-i18n="footer.copy">
           © Universidad Católica de Cuyo · Instituto de Desarrollo Sostenible.
           Colores institucionales según Manual de normas de identidad visual
           UCCuyo (verde dominante, rojo subordinado, oro de acento).
@@ -1280,15 +1281,17 @@
       </div>
     </footer>
 
-    <script src="js/main.js?v=7" defer></script>
+    <script src="js/i18n-dict.js?v=1" defer></script>
+    <script src="js/i18n.js?v=2" defer></script>
+    <script src="js/main.js?v=9" defer></script>
     <script src="js/publicaciones-config.js?v=2" defer></script>
     <script src="js/visitantes-config.js?v=1" defer></script>
-    <script src="js/visitantes.js?v=1" defer></script>
-    <script src="js/visitas-mapa.js?v=4" defer></script>
+    <script src="js/visitantes.js?v=3" defer></script>
+    <script src="js/visitas-mapa.js?v=6" defer></script>
     <script src="js/galeria-config.js?v=2" defer></script>
-    <script src="js/galeria.js?v=1" defer></script>
+    <script src="js/galeria.js?v=3" defer></script>
     <script src="js/publicaciones-fuentes-abiertas.js?v=3" defer></script>
     <script src="js/biblioteca-ids-datos.js?v=1" defer></script>
-    <script src="js/biblioteca-ids.js?v=1" defer></script>
+    <script src="js/biblioteca-ids.js?v=3" defer></script>
   </body>
 </html>

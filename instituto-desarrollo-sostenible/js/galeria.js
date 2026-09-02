@@ -25,6 +25,29 @@
     });
   }
 
+  function tt(key, fallback) {
+    if (window.I18N && typeof window.I18N.t === "function") {
+      var v = window.I18N.t(key);
+      if (v && v !== key) return v;
+    }
+    return fallback;
+  }
+
+  function filterLabel(f) {
+    return tt("dyn.gal.filter." + f.id, f.label || f.id);
+  }
+
+  function syncLightboxLabels() {
+    if (!lightbox) return;
+    lightbox.setAttribute("aria-label", tt("dyn.gal.lb", "Vista ampliada"));
+    var closeBtn = lightbox.querySelector(".gallery-lightbox-close");
+    var prevBtn = lightbox.querySelector(".gallery-lightbox-prev");
+    var nextBtn = lightbox.querySelector(".gallery-lightbox-next");
+    if (closeBtn) closeBtn.setAttribute("aria-label", tt("dyn.gal.close", "Cerrar"));
+    if (prevBtn) prevBtn.setAttribute("aria-label", tt("dyn.gal.prev", "Foto anterior"));
+    if (nextBtn) nextBtn.setAttribute("aria-label", tt("dyn.gal.next", "Foto siguiente"));
+  }
+
   function ensureLightbox() {
     if (lightbox) return;
     lightbox = document.createElement("div");
@@ -32,15 +55,21 @@
     lightbox.hidden = true;
     lightbox.setAttribute("role", "dialog");
     lightbox.setAttribute("aria-modal", "true");
-    lightbox.setAttribute("aria-label", "Vista ampliada");
+    lightbox.setAttribute("aria-label", tt("dyn.gal.lb", "Vista ampliada"));
     lightbox.innerHTML =
-      '<button type="button" class="gallery-lightbox-close" aria-label="Cerrar">×</button>' +
-      '<button type="button" class="gallery-lightbox-nav gallery-lightbox-prev" aria-label="Foto anterior">‹</button>' +
+      '<button type="button" class="gallery-lightbox-close" aria-label="' +
+      tt("dyn.gal.close", "Cerrar") +
+      '">×</button>' +
+      '<button type="button" class="gallery-lightbox-nav gallery-lightbox-prev" aria-label="' +
+      tt("dyn.gal.prev", "Foto anterior") +
+      '">‹</button>' +
       '<figure class="gallery-lightbox-figure">' +
       '<img class="gallery-lightbox-img" alt="" />' +
       "<figcaption></figcaption>" +
       "</figure>" +
-      '<button type="button" class="gallery-lightbox-nav gallery-lightbox-next" aria-label="Foto siguiente">›</button>';
+      '<button type="button" class="gallery-lightbox-nav gallery-lightbox-next" aria-label="' +
+      tt("dyn.gal.next", "Foto siguiente") +
+      '">›</button>';
     document.body.appendChild(lightbox);
     lightboxImg = lightbox.querySelector(".gallery-lightbox-img");
     lightboxCap = lightbox.querySelector("figcaption");
@@ -83,7 +112,10 @@
 
   function render() {
     visible = filtered();
-    var html = '<div class="gallery-filters" role="tablist" aria-label="Filtrar galería">';
+    var html =
+      '<div class="gallery-filters" role="tablist" aria-label="' +
+      tt("dyn.gal.filter.aria", "Filtrar galería") +
+      '">';
     filters.forEach(function (f) {
       html +=
         '<button type="button" class="gallery-filter' +
@@ -93,7 +125,7 @@
         '" aria-pressed="' +
         (f.id === current ? "true" : "false") +
         '">' +
-        esc(f.label) +
+        esc(filterLabel(f)) +
         "</button>";
     });
     html += '</div><div class="gallery-grid">';
@@ -113,7 +145,7 @@
     });
     html += "</div>";
     if (!visible.length) {
-      html += '<p class="visitas-empty">No hay fotos en esta categoría todavía.</p>';
+      html += '<p class="visitas-empty">' + tt("dyn.gal.empty", "No hay fotos en esta categoría todavía.") + "</p>";
     }
     root.innerHTML = html;
     root.querySelectorAll("[data-filter]").forEach(function (btn) {
@@ -130,4 +162,8 @@
   }
 
   render();
+  window.addEventListener("oia:langchange", function () {
+    syncLightboxLabels();
+    render();
+  });
 })();
