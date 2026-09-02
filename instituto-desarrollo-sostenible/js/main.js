@@ -7,7 +7,11 @@
     normativa: "instituto",
     fundador: "instituto",
     numeros: "inicio",
-    contenido: "inicio"
+    contenido: "inicio",
+    biblioteca: "publicaciones",
+    "publicaciones-global": "publicaciones",
+    "biblioteca-global": "publicaciones",
+    "publicaciones-ds-mundo": "publicaciones"
   };
   var pageTitles = {
     inicio: baseTitle,
@@ -16,7 +20,7 @@
     equipo: "Equipo · Instituto de Desarrollo Sostenible",
     gestion: "Gestión · Instituto de Desarrollo Sostenible",
     investigacion: "Investigación · Instituto de Desarrollo Sostenible",
-    publicaciones: "Publicaciones · Instituto de Desarrollo Sostenible",
+    publicaciones: "Biblioteca del IDS · Instituto de Desarrollo Sostenible",
     docencia: "Docencia · Instituto de Desarrollo Sostenible",
     extension: "Extensión · Instituto de Desarrollo Sostenible",
     ods: "Observatorio de ODS · Instituto de Desarrollo Sostenible",

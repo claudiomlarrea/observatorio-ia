@@ -4,5 +4,7 @@
  */
 window.OBS_PUBLICACIONES = {
   APPS_SCRIPT_URL:
-    "https://script.google.com/a/macros/uccuyo.edu.ar/s/AKfycbxXOx3XpKzmpffpUFJ9tLctA5FR-552RbggS4pLO2KrL3mpVVZuKyGBFdnXDC3qR5zH/exec"
+    "https://script.google.com/a/macros/uccuyo.edu.ar/s/AKfycbxXOx3XpKzmpffpUFJ9tLctA5FR-552RbggS4pLO2KrL3mpVVZuKyGBFdnXDC3qR5zH/exec",
+  OPENALEX_MAILTO: "ids@uccuyo.edu.ar",
+  OPENALEX_PAGE_SIZE: 15
 };

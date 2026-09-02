@@ -9,7 +9,7 @@
     />
     <title>Instituto de Desarrollo Sostenible | Universidad Católica de Cuyo</title>
     <link rel="icon" type="image/png" href="assets/favicon.png" />
-    <link rel="stylesheet" href="css/styles.css?v=10" />
+    <link rel="stylesheet" href="css/styles.css?v=11" />
   </head>
   <body>
     <a class="skip-link" href="#contenido">Ir al contenido</a>
@@ -89,7 +89,7 @@
                   <li><a href="#gestion">Gestión</a></li>
                   <li><a href="#docencia">Docencia</a></li>
                   <li><a href="#investigacion">Investigación</a></li>
-                  <li><a href="#publicaciones">Revista y publicaciones</a></li>
+                  <li><a href="#publicaciones">Biblioteca del IDS</a></li>
                   <li><a href="#ods">Observatorio de ODS</a></li>
                   <li><a href="#extension">Extensión</a></li>
                   <li><a href="#consultoria">Consultoría</a></li>
@@ -203,7 +203,7 @@
               <a href="#extension"><strong>Extensión</strong><span>Congreso y jornadas</span></a>
               <a href="#consultoria"><strong>Consultoría</strong><span>Acompañamiento a organizaciones</span></a>
               <a href="#vinculacion"><strong>Vinculación</strong><span>Redes nacionales e internacionales</span></a>
-              <a href="#publicaciones"><strong>Publicaciones</strong><span>Revista y artículos 2026</span></a>
+              <a href="#publicaciones"><strong>Biblioteca del IDS</strong><span>Revista, libros y artículos</span></a>
             </div>
           </div>
         </section>
@@ -728,138 +728,138 @@
         </div>
       </section>
 
-      <section class="section page-panel" data-page="publicaciones" id="publicaciones" aria-labelledby="sec-publicaciones">
+      <section class="section page-panel ids-biblio" data-page="publicaciones" id="publicaciones" aria-labelledby="sec-publicaciones">
         <div class="section-inner">
           <header class="section-head">
             <p class="section-kicker">Difusión</p>
-            <h2 id="sec-publicaciones">Publicaciones y revista</h2>
+            <h2 id="sec-publicaciones">Biblioteca del IDS</h2>
           </header>
+          <p class="pub-intro">
+            Producción del Instituto (libros, artículos científicos y reuniones)
+            e índice mundial de literatura sobre desarrollo sostenible, con las
+            mismas fuentes abiertas que la Biblioteca de IA del Observatorio.
+          </p>
 
-          <article class="card">
-            <h3>Revista del Instituto de Desarrollo Sostenible</h3>
-            <p>
-              Relanzada en 2024, con artículos científicos arbitrados, reseñas
-              de libros y trabajos de estudiantes. Cuenta con 20 revisores
-              externos internacionales. Editora: PhD. Belén Arias. Dos números
-              en 2025; en proceso de indexación en bases internacionales. El
-              reglamento interno prevé esta revista digital con evaluación
-              externa, en el marco de la Secretaría de Publicaciones de la
-              UCCuyo.
+          <p class="pub-editorial">
+            Revista del IDS: relanzada en 2024, con artículos arbitrados, reseñas
+            y trabajos de estudiantes. Editora: PhD. Belén Arias. 20 revisores
+            externos internacionales; dos números en 2025, en proceso de indexación.
+          </p>
+          <div class="pub-tabs" role="tablist" aria-label="Vistas de la Biblioteca del IDS">
+            <button
+              type="button"
+              class="pub-tab pub-tab--active"
+              role="tab"
+              id="pub-tab-instituto"
+              aria-selected="true"
+              aria-controls="pub-panel-instituto"
+              data-pub-tab="instituto"
+            >
+              Publicaciones del Instituto
+            </button>
+            <button
+              type="button"
+              class="pub-tab"
+              role="tab"
+              id="pub-tab-global-sd"
+              aria-selected="false"
+              aria-controls="pub-panel-global-sd"
+              data-pub-tab="global"
+              tabindex="-1"
+            >
+              Publicaciones sobre Desarrollo Sostenible en el mundo
+            </button>
+          </div>
+
+          <div
+            class="pub-app pub-panel"
+            id="pub-panel-instituto"
+            role="tabpanel"
+            aria-labelledby="pub-tab-instituto"
+          >
+            <p class="pub-panel-intro">
+              Libros, artículos científicos y participación en reuniones
+              científicas del equipo del IDS.
+              <span id="pub-count-wrap" hidden>
+                Mostrando <strong id="pub-count">0</strong> en esta vista.
+              </span>
             </p>
-          </article>
+            <div class="pub-toolbar" id="pub-filters" role="toolbar" aria-label="Filtrar por tipo"></div>
+            <div id="pub-status" class="pub-status" aria-live="polite"></div>
+            <div class="pub-grid" id="pub-grid"></div>
+          </div>
 
-          <h3 class="stack-gap">Libros</h3>
-          <ul class="pub-list">
-            <li>
-              Arias Valle, M. B. et al. (2025).
-              <cite>Una década de Responsabilidad Social Universitaria en la FCEyE de la UCCuyo.</cite>
-              Editorial Universitaria UCCuyo.
-            </li>
-            <li>
-              Arias Valle, M. B. et al. (2024).
-              <cite>La universidad como agente de sostenibilidad: un enfoque ético desde la UCCuyo.</cite>
-              Editorial Universitaria UCCuyo. ISBN 978-987-3971-94-5.
-            </li>
-          </ul>
-
-          <h3 class="stack-gap">Artículos recientes (2026)</h3>
-          <ul class="pub-list">
-            <li>
-              Arias-Valle, M. B. y Berbegal-Mirabent, J. (2026). The evolution of
-              sustainability in higher education: A conceptual analysis of trends
-              and practices.
-              <cite>Intangible Capital, 22</cite>(2), 551-569.
-              <a href="https://doi.org/10.3926/ic.3782">doi:10.3926/ic.3782</a>
-            </li>
-            <li>
-              Arias-Valle, M. B. y Marimon, F. (2026). Género y liderazgo en la
-              educación superior argentina.
-              <cite>Encuentros</cite>, 26, 40-54.
-              <a href="https://doi.org/10.5281/zenodo.18865330">doi:10.5281/zenodo.18865330</a>
-            </li>
-            <li>
-              Gámez Figueroa, D. F. y Arias-Valle, M. B. (2026). Strategic
-              Planning and Governance for the 2030 Agenda.
-              <cite>Discourse and Communication for Sustainable Education, 17</cite>(1), 171-185.
-              <a href="https://doi.org/10.2478/dcse-2026-0013">doi:10.2478/dcse-2026-0013</a>
-            </li>
-            <li>
-              Arias-Valle, M. B. y Marimon, F. (2026). Sustainability in the
-              Mission Statements of Argentine Higher Education Institutions.
-              <cite>Discourse and Communication for Sustainable Education, 17</cite>(1), 105-118.
-              <a href="https://doi.org/10.2478/dcse-2026-0009">doi:10.2478/dcse-2026-0009</a>
-            </li>
-            <li>
-              Arias-Valle, M. B. y Marimon, F. (2026). Integración de la Agenda
-              2030 en la educación superior argentina.
-              <cite>Educación, 35</cite>(68), 356-381.
-              <a href="https://doi.org/10.18800/educacion.202601.A015">doi:10.18800/educacion.202601.A015</a>
-            </li>
-            <li>
-              Arias-Valle, M. B. (2026). The state of sustainability research in
-              Argentine.
-              <cite>Intangible Capital, 22</cite>(1), 1-20.
-              <a href="https://doi.org/10.3926/ic.3221">doi:10.3926/ic.3221</a>
-            </li>
-            <li>
-              Meding, M., Arias-Valle, M. B. y Abadía, A. A. O. (2026). The
-              Legitimacy Trilemma.
-              <cite>Veredas do Direito, 23</cite>(1).
-              <a href="https://doi.org/10.18623/rvd.v23.n1.3939">doi:10.18623/rvd.v23.n1.3939</a>
-            </li>
-          </ul>
-
-          <h3 class="stack-gap">Participación en congresos internacionales</h3>
-          <ul class="pub-list">
-            <li>
-              Septiembre 2023. «El compromiso de la universidad con la inclusión,
-              una propuesta desde el Plan de RSU», 9.º Encuentro de Investigadores
-              de Ciencias Sociales de la Región Centro Oeste (InReCo).
-            </li>
-            <li>
-              4 de julio de 2023. «El compromiso de las universidades con la
-              sostenibilidad», CIDUI, Universitat de Lleida, España.
-            </li>
-            <li>
-              Marzo 2024. «Explorando el camino hacia una universidad sostenible:
-              estrategias transformadoras», I Congreso Internacional sobre
-              Innovación, Didáctica y Educación para la Sostenibilidad (CIIDES),
-              Alicante, España.
-            </li>
-            <li>
-              Marzo 2025. «La importancia de educar para el desarrollo
-              sostenible», II CIIDES, Universidad de Alicante, España.
-            </li>
-            <li>
-              Junio 2025. «Taoist-Inspired Leadership for Sustainability
-              Transitions: A Holistic Framework», World Symposium on
-              Sustainability Leadership (WSSL 2025), Universidad de Hamburgo,
-              Salamanca, España.
-            </li>
-            <li>
-              Julio 2025. «Instituciones de Educación Superior latinoamericanas y
-              la Agenda 2030», XIII International Conference of University Teaching
-              and Innovation (CIDUI), Barcelona, España.
-            </li>
-            <li>
-              Octubre 2025. 10.º Encuentro de Investigadores en Ciencias Sociales
-              de la Región Centro Oeste.
-            </li>
-            <li>
-              Noviembre 2025. II Congreso Internacional Economía y Organizaciones
-              Sostenibles, Talca, Chile: «Experiencias de integración de la
-              sostenibilidad en empresas del sector minero de San Juan» y «Mapa de
-              situación de la implementación de prácticas sostenibles en PyMEs de
-              San Juan y San Luis». Participación financiada por la Secretaría de
-              Ciencia y Tecnología de San Juan.
-            </li>
-            <li>
-              14–16 de junio de 2026. XXXV Congreso Internacional de ACEDE,
-              Santander, España: «Integración estratégica de la sostenibilidad en
-              la cadena de suministro minera». Participación financiada por la
-              Secretaría de Ciencia y Tecnología de San Juan.
-            </li>
-          </ul>
+          <div
+            class="pub-app pub-panel pub-panel--index"
+            id="pub-panel-global-sd"
+            role="tabpanel"
+            aria-labelledby="pub-tab-global-sd"
+            hidden
+          >
+            <p class="pub-panel-intro pub-panel-intro--index">
+              Resultados globales desde
+              <a href="https://openalex.org" target="_blank" rel="noopener noreferrer">OpenAlex</a>
+              (trabajos con Objetivos de Desarrollo Sostenible),
+              <a href="https://www.crossref.org" target="_blank" rel="noopener noreferrer">Crossref</a>,
+              <a href="https://www.semanticscholar.org" target="_blank" rel="noopener noreferrer">Semantic Scholar</a>,
+              <a href="https://europepmc.org" target="_blank" rel="noopener noreferrer">Europe PMC</a>
+              (incluye PubMed),
+              <a href="https://www.openaire.eu" target="_blank" rel="noopener noreferrer">OpenAIRE</a>
+              y
+              <a href="https://doaj.org" target="_blank" rel="noopener noreferrer">DOAJ</a>,
+              con enlaces de acceso abierto vía
+              <a href="https://unpaywall.org" target="_blank" rel="noopener noreferrer">Unpaywall</a>.
+              Puede haber faltantes, duplicados o registros a revisar.
+              <span class="pub-index-badge">Resultados aproximados</span>
+              <span id="pub-index-count-wrap" hidden>
+                · <span id="pub-index-count-label"><strong id="pub-index-total">0</strong></span>
+              </span>
+            </p>
+            <div class="pub-index-search">
+              <label class="pub-index-search-label" for="pub-index-q">Buscar por título, DOI o autor/a</label>
+              <div class="pub-index-search-modes" role="radiogroup" aria-label="Tipo de búsqueda">
+                <button type="button" class="pub-index-mode pub-index-mode--active" data-pub-index-mode="auto" aria-pressed="true">Auto</button>
+                <button type="button" class="pub-index-mode" data-pub-index-mode="title" aria-pressed="false">Título</button>
+                <button type="button" class="pub-index-mode" data-pub-index-mode="author" aria-pressed="false">Autor/a</button>
+                <button type="button" class="pub-index-mode" data-pub-index-mode="doi" aria-pressed="false">DOI</button>
+                <div class="pub-index-year pub-index-year--inline">
+                  <label class="pub-index-year-label visually-hidden" for="pub-index-year">Filtrar por año</label>
+                  <select id="pub-index-year" class="pub-index-year-select" aria-label="Filtrar publicaciones por año" title="Filtrar por año">
+                    <option value="all">Todos los años</option>
+                  </select>
+                </div>
+              </div>
+              <div class="pub-index-search-row">
+                <input
+                  type="search"
+                  id="pub-index-q"
+                  class="pub-index-search-input"
+                  placeholder="Desarrollo sostenible, 10.1234/…, Apellido Nombre"
+                  autocomplete="off"
+                  enterkeyhint="search"
+                />
+                <button type="button" id="pub-index-q-clear" class="pub-more-btn pub-index-search-clear" hidden>Limpiar</button>
+                <button type="button" id="pub-index-clear-all" class="pub-more-btn pub-index-search-clear-all">Limpiar todo</button>
+              </div>
+              <div class="pub-index-controls">
+                <label class="pub-index-control-label" for="pub-index-size">Por página</label>
+                <select id="pub-index-size" class="pub-index-control-select" aria-label="Cantidad por página">
+                  <option value="15">15</option>
+                  <option value="30">30</option>
+                  <option value="50">50</option>
+                </select>
+                <label class="pub-index-control-label" for="pub-index-sort">Orden</label>
+                <select id="pub-index-sort" class="pub-index-control-select" aria-label="Ordenar publicaciones">
+                  <option value="date_desc">Fecha: más reciente</option>
+                  <option value="date_asc">Fecha: más antigua</option>
+                  <option value="relevance">Relevancia (si hay búsqueda)</option>
+                </select>
+              </div>
+              <div id="pub-index-active" class="pub-index-active" aria-live="polite"></div>
+            </div>
+            <div id="pub-index-status" class="pub-status" aria-live="polite"></div>
+            <div class="pub-grid" id="pub-index-grid"></div>
+          </div>
         </div>
       </section>
 
@@ -1220,7 +1220,16 @@
     <script>
       (function () {
         var id = String(location.hash || "#inicio").replace(/^#/, "") || "inicio";
-        var aliases = { normativa: "instituto", fundador: "instituto", numeros: "inicio", contenido: "inicio" };
+        var aliases = {
+          normativa: "instituto",
+          fundador: "instituto",
+          numeros: "inicio",
+          contenido: "inicio",
+          biblioteca: "publicaciones",
+          "publicaciones-global": "publicaciones",
+          "biblioteca-global": "publicaciones",
+          "publicaciones-ds-mundo": "publicaciones"
+        };
         id = aliases[id] || id;
         var panel = document.querySelector('.page-panel[data-page="' + id + '"]');
         if (!panel) panel = document.querySelector('.page-panel[data-page="inicio"]');
@@ -1247,6 +1256,7 @@
             <li><a href="#instituto">El Instituto</a></li>
             <li><a href="#gestion">Gestión</a></li>
             <li><a href="#investigacion">Investigación</a></li>
+            <li><a href="#publicaciones">Biblioteca del IDS</a></li>
             <li><a href="#hitos">Hitos</a></li>
             <li><a href="#visitas">Visitas al Instituto</a></li>
           </ul>
@@ -1270,12 +1280,15 @@
       </div>
     </footer>
 
-    <script src="js/main.js?v=6" defer></script>
-    <script src="js/publicaciones-config.js?v=1" defer></script>
+    <script src="js/main.js?v=7" defer></script>
+    <script src="js/publicaciones-config.js?v=2" defer></script>
     <script src="js/visitantes-config.js?v=1" defer></script>
     <script src="js/visitantes.js?v=1" defer></script>
     <script src="js/visitas-mapa.js?v=4" defer></script>
     <script src="js/galeria-config.js?v=2" defer></script>
     <script src="js/galeria.js?v=1" defer></script>
+    <script src="js/publicaciones-fuentes-abiertas.js?v=3" defer></script>
+    <script src="js/biblioteca-ids-datos.js?v=1" defer></script>
+    <script src="js/biblioteca-ids.js?v=1" defer></script>
   </body>
 </html>
