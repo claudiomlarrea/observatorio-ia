@@ -2,6 +2,71 @@
   var header = document.querySelector(".site-header");
   var toggle = document.querySelector(".nav-toggle");
   var nav = document.querySelector("#site-nav");
+  var baseTitle = "Instituto de Desarrollo Sostenible | Universidad Católica de Cuyo";
+  var aliases = {
+    normativa: "instituto",
+    fundador: "instituto",
+    numeros: "inicio",
+    contenido: "inicio"
+  };
+  var pageTitles = {
+    inicio: baseTitle,
+    actividades: "Actividades · Instituto de Desarrollo Sostenible",
+    instituto: "El Instituto · Instituto de Desarrollo Sostenible",
+    equipo: "Equipo · Instituto de Desarrollo Sostenible",
+    gestion: "Gestión · Instituto de Desarrollo Sostenible",
+    investigacion: "Investigación · Instituto de Desarrollo Sostenible",
+    publicaciones: "Publicaciones · Instituto de Desarrollo Sostenible",
+    docencia: "Docencia · Instituto de Desarrollo Sostenible",
+    extension: "Extensión · Instituto de Desarrollo Sostenible",
+    ods: "Observatorio de ODS · Instituto de Desarrollo Sostenible",
+    consultoria: "Consultoría · Instituto de Desarrollo Sostenible",
+    vinculacion: "Vinculación · Instituto de Desarrollo Sostenible",
+    hitos: "Hitos · Instituto de Desarrollo Sostenible",
+    visitas: "Visitas al Instituto · Instituto de Desarrollo Sostenible",
+    contacto: "Contacto · Instituto de Desarrollo Sostenible"
+  };
+
+  function pageIdFromHash(hash) {
+    var id = String(hash || "").replace(/^#/, "");
+    if (!id) return "inicio";
+    id = aliases[id] || id;
+    if (document.querySelector('.page-panel[data-page="' + id + '"]')) return id;
+    return "inicio";
+  }
+
+  function showPage(hash, push) {
+    var id = pageIdFromHash(hash);
+    var panel = document.querySelector('.page-panel[data-page="' + id + '"]');
+    if (!panel) return;
+    document.querySelectorAll(".page-panel.is-active").forEach(function (el) {
+      el.classList.remove("is-active");
+    });
+    panel.classList.add("is-active");
+    window.scrollTo(0, 0);
+    document.title = pageTitles[id] || baseTitle;
+    if (header) header.classList.toggle("is-solid", id !== "inicio");
+    document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+      var href = link.getAttribute("href") || "";
+      var linkPage = pageIdFromHash(href);
+      if (href === "#contenido") {
+        link.removeAttribute("aria-current");
+        return;
+      }
+      if (linkPage === id && (href === "#" + id || (id === "inicio" && href === "#inicio"))) {
+        link.setAttribute("aria-current", "page");
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+    if (push) {
+      var next = "#" + id;
+      if (location.hash !== next) {
+        history.pushState({ page: id }, "", next);
+      }
+    }
+    document.dispatchEvent(new CustomEvent("ids:page", { detail: id }));
+  }
 
   function cerrarSubmenus(except) {
     if (!nav) return;
@@ -20,27 +85,34 @@
     cerrarSubmenus();
   }
 
-  function irInicio() {
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    if (window.location.hash !== "#inicio") {
-      history.pushState(null, "", "#inicio");
-    }
-  }
-
   function updateHeader() {
     if (!header) return;
-    header.classList.toggle("is-solid", window.scrollY > 24);
+    var onHome = pageIdFromHash(location.hash) === "inicio";
+    header.classList.toggle("is-solid", !onHome || window.scrollY > 24);
   }
 
-  document.querySelectorAll('a[href="#inicio"]').forEach(function (link) {
-    link.addEventListener("click", function (e) {
-      e.preventDefault();
-      irInicio();
-      cerrarMenu();
-    });
+  document.addEventListener("click", function (e) {
+    var link = e.target.closest && e.target.closest('a[href^="#"]');
+    if (!link) return;
+    var href = link.getAttribute("href") || "";
+    if (href === "#" || href === "#contenido") return;
+    if (link.getAttribute("target") === "_blank") return;
+    e.preventDefault();
+    showPage(href, true);
+    cerrarMenu();
+  });
+
+  window.addEventListener("popstate", function () {
+    showPage(location.hash || "#inicio", false);
+  });
+
+  window.addEventListener("hashchange", function () {
+    showPage(location.hash || "#inicio", false);
   });
 
   window.addEventListener("scroll", updateHeader, { passive: true });
+
+  showPage(location.hash || "#inicio", false);
   updateHeader();
 
   if (!toggle || !nav) return;
@@ -108,12 +180,6 @@
       });
     });
   })();
-
-  nav.querySelectorAll('a:not([href="#inicio"])').forEach(function (link) {
-    link.addEventListener("click", function () {
-      cerrarMenu();
-    });
-  });
 
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") cerrarMenu();

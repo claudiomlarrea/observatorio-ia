@@ -9,7 +9,7 @@
     />
     <title>Instituto de Desarrollo Sostenible | Universidad Católica de Cuyo</title>
     <link rel="icon" type="image/png" href="assets/favicon.png" />
-    <link rel="stylesheet" href="css/styles.css?v=8" />
+    <link rel="stylesheet" href="css/styles.css?v=10" />
   </head>
   <body>
     <a class="skip-link" href="#contenido">Ir al contenido</a>
@@ -62,9 +62,14 @@
             <ul class="nav-root">
               <li class="nav-item"><a href="#inicio">Inicio</a></li>
               <li class="nav-item has-submenu">
-                <button type="button" class="nav-submenu-toggle" aria-expanded="false" aria-controls="nav-sub-instituto">
-                  El Instituto
-                </button>
+                <a href="#instituto">El Instituto</a>
+                <button
+                  type="button"
+                  class="nav-submenu-toggle"
+                  aria-expanded="false"
+                  aria-controls="nav-sub-instituto"
+                  aria-label="Subsecciones de El Instituto"
+                ></button>
                 <ul class="nav-submenu" id="nav-sub-instituto">
                   <li><a href="#instituto">Historia y fundador</a></li>
                   <li><a href="#equipo">Dirección y equipo</a></li>
@@ -72,9 +77,14 @@
                 </ul>
               </li>
               <li class="nav-item has-submenu">
-                <button type="button" class="nav-submenu-toggle" aria-expanded="false" aria-controls="nav-sub-actividades">
-                  Actividades
-                </button>
+                <a href="#actividades">Actividades</a>
+                <button
+                  type="button"
+                  class="nav-submenu-toggle"
+                  aria-expanded="false"
+                  aria-controls="nav-sub-actividades"
+                  aria-label="Subsecciones de Actividades"
+                ></button>
                 <ul class="nav-submenu" id="nav-sub-actividades">
                   <li><a href="#gestion">Gestión</a></li>
                   <li><a href="#docencia">Docencia</a></li>
@@ -95,6 +105,7 @@
     </div>
 
     <main id="contenido">
+      <div class="page-panel is-active" data-page="inicio">
       <section class="hero" aria-labelledby="titulo-principal">
         <svg class="hero-andes" viewBox="0 0 1440 280" preserveAspectRatio="none" aria-hidden="true">
           <path
@@ -171,7 +182,34 @@
           </div>
         </div>
       </section>
+      </div>
 
+      <div class="page-panel" data-page="actividades">
+        <section class="section" aria-labelledby="sec-actividades">
+          <div class="section-inner">
+            <header class="section-head">
+              <p class="section-kicker">Transversalidad</p>
+              <h2 id="sec-actividades">Actividades</h2>
+            </header>
+            <p class="text-intro">
+              Gestión, docencia, investigación, extensión y consultoría tienen el
+              mismo valor en el IDS. Elegí una función para verla completa.
+            </p>
+            <div class="pillar-grid">
+              <a href="#gestion"><strong>Gestión</strong><span>Convenios y adhesiones</span></a>
+              <a href="#docencia"><strong>Docencia</strong><span>Cursos y diplomaturas</span></a>
+              <a href="#investigacion"><strong>Investigación</strong><span>Líneas y proyectos</span></a>
+              <a href="#ods"><strong>Observatorio de ODS</strong><span>Universidades y PyMEs</span></a>
+              <a href="#extension"><strong>Extensión</strong><span>Congreso y jornadas</span></a>
+              <a href="#consultoria"><strong>Consultoría</strong><span>Acompañamiento a organizaciones</span></a>
+              <a href="#vinculacion"><strong>Vinculación</strong><span>Redes nacionales e internacionales</span></a>
+              <a href="#publicaciones"><strong>Publicaciones</strong><span>Revista y artículos 2026</span></a>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="page-panel" data-page="instituto">
       <section class="section" id="instituto" aria-labelledby="sec-instituto">
         <div class="section-inner">
           <header class="section-head">
@@ -354,8 +392,9 @@
           </div>
         </div>
       </section>
+      </div>
 
-      <section class="section" id="equipo" aria-labelledby="sec-equipo">
+      <section class="section page-panel" data-page="equipo" id="equipo" aria-labelledby="sec-equipo">
         <div class="section-inner">
           <header class="section-head">
             <p class="section-kicker">Personas</p>
@@ -403,7 +442,7 @@
         </div>
       </section>
 
-      <section class="section section--muted" id="gestion" aria-labelledby="sec-gestion">
+      <section class="section section--muted page-panel" data-page="gestion" id="gestion" aria-labelledby="sec-gestion">
         <div class="section-inner">
           <header class="section-head">
             <p class="section-kicker">Convenios</p>
@@ -475,7 +514,7 @@
         </div>
       </section>
 
-      <section class="section section--muted" id="investigacion" aria-labelledby="sec-investigacion">
+      <section class="section section--muted page-panel" data-page="investigacion" id="investigacion" aria-labelledby="sec-investigacion">
         <div class="section-inner">
           <header class="section-head">
             <p class="section-kicker">Producción científica</p>
@@ -689,7 +728,7 @@
         </div>
       </section>
 
-      <section class="section" id="publicaciones" aria-labelledby="sec-publicaciones">
+      <section class="section page-panel" data-page="publicaciones" id="publicaciones" aria-labelledby="sec-publicaciones">
         <div class="section-inner">
           <header class="section-head">
             <p class="section-kicker">Difusión</p>
@@ -824,7 +863,7 @@
         </div>
       </section>
 
-      <section class="section section--muted" id="docencia" aria-labelledby="sec-docencia">
+      <section class="section section--muted page-panel" data-page="docencia" id="docencia" aria-labelledby="sec-docencia">
         <div class="section-inner">
           <header class="section-head">
             <p class="section-kicker">Formación</p>
@@ -894,7 +933,7 @@
         </div>
       </section>
 
-      <section class="section" id="extension" aria-labelledby="sec-extension">
+      <section class="section page-panel" data-page="extension" id="extension" aria-labelledby="sec-extension">
         <div class="section-inner">
           <header class="section-head">
             <p class="section-kicker">Comunidad</p>
@@ -954,7 +993,7 @@
         </div>
       </section>
 
-      <section class="section section--muted" id="ods" aria-labelledby="sec-ods">
+      <section class="section section--muted page-panel" data-page="ods" id="ods" aria-labelledby="sec-ods">
         <div class="section-inner">
           <header class="section-head">
             <p class="section-kicker">Agenda 2030</p>
@@ -988,7 +1027,7 @@
         </div>
       </section>
 
-      <section class="section" id="consultoria" aria-labelledby="sec-consultoria">
+      <section class="section page-panel" data-page="consultoria" id="consultoria" aria-labelledby="sec-consultoria">
         <div class="section-inner">
           <header class="section-head">
             <p class="section-kicker">Transferencia</p>
@@ -1020,7 +1059,7 @@
         </div>
       </section>
 
-      <section class="section section--muted" id="vinculacion" aria-labelledby="sec-vinculacion">
+      <section class="section section--muted page-panel" data-page="vinculacion" id="vinculacion" aria-labelledby="sec-vinculacion">
         <div class="section-inner">
           <header class="section-head">
             <p class="section-kicker">Alianzas</p>
@@ -1053,7 +1092,7 @@
         </div>
       </section>
 
-      <section class="section" id="hitos" aria-labelledby="sec-hitos">
+      <section class="section page-panel" data-page="hitos" id="hitos" aria-labelledby="sec-hitos">
         <div class="section-inner">
           <header class="section-head">
             <p class="section-kicker">Memoria</p>
@@ -1110,7 +1149,7 @@
         </div>
       </section>
 
-      <section class="section section--visitas" id="visitas" aria-labelledby="sec-visitas">
+      <section class="section section--visitas page-panel" data-page="visitas" id="visitas" aria-labelledby="sec-visitas">
         <div class="section-inner">
           <header class="section-head">
             <p class="section-kicker">Alcance</p>
@@ -1141,7 +1180,7 @@
         </div>
       </section>
 
-      <section class="section section--muted" id="contacto" aria-labelledby="sec-contacto">
+      <section class="section section--muted page-panel" data-page="contacto" id="contacto" aria-labelledby="sec-contacto">
         <div class="section-inner">
           <header class="section-head">
             <p class="section-kicker">Comunicación</p>
@@ -1177,6 +1216,20 @@
         </div>
       </section>
     </main>
+
+    <script>
+      (function () {
+        var id = String(location.hash || "#inicio").replace(/^#/, "") || "inicio";
+        var aliases = { normativa: "instituto", fundador: "instituto", numeros: "inicio", contenido: "inicio" };
+        id = aliases[id] || id;
+        var panel = document.querySelector('.page-panel[data-page="' + id + '"]');
+        if (!panel) panel = document.querySelector('.page-panel[data-page="inicio"]');
+        document.querySelectorAll(".page-panel.is-active").forEach(function (el) {
+          el.classList.remove("is-active");
+        });
+        if (panel) panel.classList.add("is-active");
+      })();
+    </script>
 
     <footer class="site-footer">
       <div class="footer-inner">
@@ -1217,11 +1270,11 @@
       </div>
     </footer>
 
-    <script src="js/main.js?v=4" defer></script>
+    <script src="js/main.js?v=6" defer></script>
     <script src="js/publicaciones-config.js?v=1" defer></script>
     <script src="js/visitantes-config.js?v=1" defer></script>
     <script src="js/visitantes.js?v=1" defer></script>
-    <script src="js/visitas-mapa.js?v=1" defer></script>
+    <script src="js/visitas-mapa.js?v=4" defer></script>
     <script src="js/galeria-config.js?v=2" defer></script>
     <script src="js/galeria.js?v=1" defer></script>
   </body>

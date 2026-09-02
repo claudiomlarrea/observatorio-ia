@@ -1019,4 +1019,11 @@
         setStatus(tt("dyn.visitas.error", "No se pudo cargar el origen de las visitas."));
       }
     );
+
+  document.addEventListener("ids:page", function (ev) {
+    if (ev.detail !== "visitas") return;
+    window.setTimeout(function () {
+      if (mapApi) mapApi.invalidateSize();
+    }, 150);
+  });
 })();
