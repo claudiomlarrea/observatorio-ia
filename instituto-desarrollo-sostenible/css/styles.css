@@ -1377,8 +1377,8 @@ tr:last-child td {
 
 @media (min-width: 900px) {
   .visitas-layout {
-    grid-template-columns: minmax(0, 1.45fr) minmax(16rem, 0.9fr);
-    align-items: start;
+    grid-template-columns: minmax(0, 1.85fr) minmax(15rem, 0.75fr);
+    align-items: stretch;
   }
 }
 
@@ -1451,8 +1451,9 @@ tr:last-child td {
 }
 
 .visitas-mapa {
-  min-height: 16rem;
-  height: clamp(16rem, 34vw, 22rem);
+  width: 100%;
+  min-height: 26rem;
+  height: clamp(26rem, 56vh, 40rem);
   border-radius: var(--radius-box);
   border: 1px solid var(--color-line);
   background: #e8f0ec;

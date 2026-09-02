@@ -755,6 +755,18 @@
     bindListClicks();
   }
 
+  function showWorld() {
+    if (!mapApi) return;
+    mapApi.invalidateSize();
+    mapApi.fitBounds(
+      [
+        [-58, -125],
+        [72, 55]
+      ],
+      { padding: [18, 18], maxZoom: 3, animate: false }
+    );
+  }
+
   function applyFocus(mode) {
     if (!mapApi) return;
     var buttons = document.querySelectorAll(".visitas-map-btn");
@@ -765,10 +777,10 @@
       );
     }
     if (mode === "ar") {
-      mapApi.setView([-38.5, -63.5], 3, { animate: false });
+      mapApi.setView([-38.5, -63.5], 4, { animate: false });
       return;
     }
-    mapApi.setView([20, 10], 0, { animate: false });
+    showWorld();
   }
 
   function bindFocusButtons() {
@@ -790,16 +802,17 @@
 
     var map = L.map(mapRoot, {
       scrollWheelZoom: false,
-      worldCopyJump: true,
+      worldCopyJump: false,
       zoomControl: true,
-      minZoom: 0,
+      minZoom: 1,
       maxZoom: 8
-    }).setView([20, 10], 0);
+    });
     mapApi = map;
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 8,
       detectRetina: false,
+      noWrap: true,
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
