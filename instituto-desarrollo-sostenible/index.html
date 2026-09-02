@@ -9,68 +9,90 @@
     />
     <title>Instituto de Desarrollo Sostenible | Universidad Católica de Cuyo</title>
     <link rel="icon" type="image/png" href="assets/favicon.png" />
-    <link rel="stylesheet" href="css/styles.css?v=5" />
+    <link rel="stylesheet" href="css/styles.css?v=6" />
   </head>
   <body>
     <a class="skip-link" href="#contenido">Ir al contenido</a>
 
-    <header class="site-header" id="inicio">
-      <div class="header-inner">
-        <a class="brand" href="#inicio">
-          <img
-            class="brand-logo"
-            src="assets/logo-ids-marca-blanco.png?v=4"
-            width="80"
-            height="80"
-            alt=""
-            decoding="async"
-          />
-          <span class="brand-text">
-            <span class="brand-kicker">Universidad Católica de Cuyo</span>
-            <span class="brand-title">Instituto de Desarrollo Sostenible</span>
-          </span>
-          <img
-            class="brand-uccuyo"
-            src="assets/logo-uccuyo-circulo.png"
-            width="256"
-            height="256"
-            alt="Universidad Católica de Cuyo"
-            decoding="async"
-          />
-        </a>
-        <div class="header-actions">
-          <a class="btn-pill btn-pill--inicio" href="#inicio">Inicio</a>
-          <a class="btn-pill" href="#investigacion">Investigación</a>
-          <a class="btn-pill btn-pill--gold" href="#docencia">Docencia</a>
+    <div class="site-top" id="inicio">
+      <div class="top-banner">
+        Universidad Católica de Cuyo · Instituto de Desarrollo Sostenible
+      </div>
+      <header class="site-header">
+        <div class="header-inner">
+          <a class="brand" href="#inicio">
+            <img
+              class="brand-logo"
+              src="assets/logo-ids-marca-blanco.png?v=4"
+              width="80"
+              height="80"
+              alt=""
+              decoding="async"
+            />
+            <span class="brand-text">
+              <span class="brand-kicker">Universidad Católica de Cuyo</span>
+              <span class="brand-title">Instituto de Desarrollo Sostenible</span>
+            </span>
+            <img
+              class="brand-uccuyo"
+              src="assets/logo-uccuyo-circulo.png"
+              width="256"
+              height="256"
+              alt="Universidad Católica de Cuyo"
+              decoding="async"
+            />
+            <img
+              class="brand-faculty"
+              src="assets/logo-fceye-blanco.svg"
+              width="280"
+              height="64"
+              alt="Facultad de Ciencias Económicas y Empresariales"
+            />
+          </a>
           <button
             class="nav-toggle"
             type="button"
             aria-expanded="false"
             aria-controls="site-nav"
-            aria-label="Abrir menú de accesos"
+            aria-label="Abrir menú"
           >
-            Accesos
             <span class="nav-toggle-icon" aria-hidden="true"></span>
           </button>
           <nav class="site-nav" id="site-nav" aria-label="Principal">
-            <ul>
-              <li><a href="#inicio">Inicio</a></li>
-              <li><a href="#instituto">El Instituto</a></li>
-              <li><a href="#normativa">Normativa</a></li>
-              <li><a href="#equipo">Autoridades</a></li>
-              <li><a href="#investigacion">Investigación</a></li>
-              <li><a href="#publicaciones">Publicaciones</a></li>
-              <li><a href="#docencia">Docencia</a></li>
-              <li><a href="#extension">Extensión</a></li>
-              <li><a href="#hub">Hub Sostenible</a></li>
-              <li><a href="#documentos">Documentos</a></li>
-              <li><a href="#visitas">Visitas al Instituto</a></li>
-              <li><a href="#contacto">Contacto</a></li>
+            <ul class="nav-root">
+              <li class="nav-item"><a href="#inicio">Inicio</a></li>
+              <li class="nav-item has-submenu">
+                <button type="button" class="nav-submenu-toggle" aria-expanded="false" aria-controls="nav-sub-instituto">
+                  El Instituto
+                </button>
+                <ul class="nav-submenu" id="nav-sub-instituto">
+                  <li><a href="#instituto">Historia y fundador</a></li>
+                  <li><a href="#equipo">Dirección y equipo</a></li>
+                  <li><a href="#visitas">Visitas al Instituto</a></li>
+                </ul>
+              </li>
+              <li class="nav-item has-submenu">
+                <button type="button" class="nav-submenu-toggle" aria-expanded="false" aria-controls="nav-sub-actividades">
+                  Actividades
+                </button>
+                <ul class="nav-submenu" id="nav-sub-actividades">
+                  <li><a href="#gestion">Gestión</a></li>
+                  <li><a href="#docencia">Docencia</a></li>
+                  <li><a href="#investigacion">Investigación</a></li>
+                  <li><a href="#publicaciones">Revista y publicaciones</a></li>
+                  <li><a href="#ods">Observatorio de ODS</a></li>
+                  <li><a href="#extension">Extensión</a></li>
+                  <li><a href="#consultoria">Consultoría</a></li>
+                  <li><a href="#vinculacion">Vinculación</a></li>
+                </ul>
+              </li>
+              <li class="nav-item"><a href="#hitos">Hitos</a></li>
+              <li class="nav-item"><a href="#contacto">Contacto</a></li>
             </ul>
           </nav>
         </div>
-      </div>
-    </header>
+      </header>
+    </div>
 
     <main id="contenido">
       <section class="hero" aria-labelledby="titulo-principal">
@@ -99,44 +121,33 @@
             <p class="hero-tagline">Desarrollo sostenible, desde Cuyo</p>
             <p class="hero-lead">
               Un centro de referencia que aporta al Desarrollo Sostenible en la
-              región de Cuyo. Investigación, docencia, extensión y consultoría,
-              con orientación interdisciplinaria y compromiso con el bien común.
+              región de Cuyo. Gestión, docencia, investigación, extensión y
+              consultoría, con la misma jerarquía: transversalidad universitaria
+              y compromiso con el bien común.
             </p>
             <div class="hero-actions">
               <a class="btn-pill btn-pill--gold" href="#instituto">El Instituto</a>
+              <a class="btn-pill btn-pill--ghost" href="#hitos">Hitos</a>
               <a class="btn-pill btn-pill--ghost" href="#investigacion">Investigación</a>
-              <a class="btn-pill btn-pill--ghost" href="#documentos">Documentos</a>
               <a class="btn-pill btn-pill--ghost" href="#visitas">Visitas al Instituto</a>
             </div>
             <p id="visitantes-widget" class="visitantes-widget visitantes-widget--hero" aria-live="polite" hidden></p>
             <div class="filter-card">
-              <h2>Áreas de acción</h2>
+              <h2>Cinco funciones, un mismo valor</h2>
               <div class="filter-toggles">
-                <a href="#investigacion">Investigación</a>
+                <a href="#gestion">Gestión</a>
                 <a href="#docencia">Docencia</a>
+                <a href="#investigacion">Investigación</a>
                 <a href="#extension">Extensión</a>
-                <a href="#hub">Consultoría</a>
+                <a href="#consultoria">Consultoría</a>
               </div>
               <div class="filter-fields">
-                <span>Proyectos locales e internacionales sobre sostenibilidad</span>
-                <span>Diplomaturas, maestrías, especializaciones y carreras</span>
-                <span>Congresos, vinculación y asesoramiento a organizaciones</span>
+                <span>Convenios, indicadores y observatorio de ODS</span>
+                <span>Diplomaturas, cursos y formación de investigadores</span>
+                <span>Congresos, jornadas y acompañamiento a organizaciones</span>
               </div>
             </div>
           </div>
-          <nav class="hero-side" aria-label="Accesos rápidos">
-            <a href="#inicio">Inicio</a>
-            <a href="#instituto">El Instituto</a>
-            <a href="#equipo">Autoridades</a>
-            <a href="#investigacion">Investigación</a>
-            <a href="#publicaciones">Revista y publicaciones</a>
-            <a href="#docencia">Diplomatura RSE</a>
-            <a href="#extension">Extensión</a>
-            <a href="#hub">Hub Sostenible</a>
-            <a href="#documentos">Normativa</a>
-            <a href="#visitas">Visitas al Instituto</a>
-            <a href="#contacto">Contacto</a>
-          </nav>
         </div>
       </section>
 
@@ -181,6 +192,43 @@
             sostenibilidad ambiental, económica y social, articulando el
             conocimiento académico con las necesidades reales de la región de Cuyo.
           </p>
+
+          <article class="card founder stack-gap" id="fundador">
+            <img
+              src="assets/galeria/fundador-carlos-pujadas.jpg"
+              width="400"
+              height="400"
+              alt="Mg. Carlos Pujadas, fundador del Instituto de Desarrollo Sostenible"
+            />
+            <div>
+              <p class="role">Fundador</p>
+              <h3>Mg. Carlos Pujadas</h3>
+              <p>
+                En 2006, el Mg. Carlos Pujadas fundó el Instituto de Desarrollo
+                Sostenible (IDS), impulsado por la convicción de que la Universidad
+                tiene una responsabilidad ineludible: comprometerse activamente con
+                la sostenibilidad y formar profesionales capaces de transformar esa
+                visión en acción.
+              </p>
+              <p>
+                Arquitecto por la Universidad de Buenos Aires y Magíster en
+                Docencia y Gestión Universitaria por la Universidad de Mendoza,
+                Carlos dedicó su carrera académica a tender puentes entre la
+                investigación, la docencia y el compromiso social. Como profesor y
+                referente en gestión ambiental sostenible, supo ver —mucho antes de
+                que fuera agenda global— que el desarrollo sostenible no podía
+                quedar fuera de la misión universitaria.
+              </p>
+              <p>
+                Su legado más visible no está solo en las publicaciones o los
+                programas que impulsó, sino en las personas: los jóvenes
+                investigadores que formó bajo sus valores hoy ocupan roles de
+                liderazgo en distintos ámbitos de la sociedad, llevando adelante su
+                visión de una universidad comprometida con el futuro del planeta.
+              </p>
+            </div>
+          </article>
+
           <div class="grid-2">
             <article class="card">
               <h3>Misión</h3>
@@ -297,6 +345,10 @@
                   investigan. Toda situación no prevista la resuelve el Consejo
                   Directivo de la Facultad.
                 </p>
+                <p class="doc-inline">
+                  <a href="documentos/Resolucion_691-CS-2007.pdf">Resolución 691-CS-2007 (PDF)</a>
+                  <a href="documentos/Reglamento_IDS_Res_01-15-FCEE.pdf">Reglamento interno (PDF)</a>
+                </p>
               </div>
             </article>
           </div>
@@ -351,20 +403,161 @@
         </div>
       </section>
 
+      <section class="section section--muted" id="gestion" aria-labelledby="sec-gestion">
+        <div class="section-inner">
+          <header class="section-head">
+            <p class="section-kicker">Convenios</p>
+            <h2 id="sec-gestion">Gestión</h2>
+          </header>
+          <p class="text-intro">
+            La gestión del IDS se expresa en convenios, adhesiones y
+            instrumentos que articulan universidad, Estado y organizaciones.
+          </p>
+          <div class="timeline">
+            <article>
+              <time datetime="2023-10-09">2023</time>
+              <div>
+                <h3>Red de Universidades Argentinas por los ODS</h3>
+                <p>
+                  9 de octubre de 2023: adhesión a la red de universidades
+                  argentinas por la implementación de los ODS, en Córdoba.
+                </p>
+              </div>
+            </article>
+            <article>
+              <time datetime="2024-06">2024</time>
+              <div>
+                <h3>Diplomatura en RSE</h3>
+                <p>
+                  Junio 2024: convenio entre la UNSJ, el Gobierno de la Provincia
+                  de San Juan y la UCCuyo para la Diplomatura en RSE, promovida
+                  por la Mesa de Responsabilidad Social Empresarial.
+                </p>
+              </div>
+            </article>
+            <article>
+              <time datetime="2024-10">2024</time>
+              <div>
+                <h3>Revista del IDS</h3>
+                <p>
+                  Octubre 2024: reedición de la Revista del Instituto de
+                  Desarrollo Sostenible, con 5 artículos científicos, reseña de
+                  un libro y trabajos de estudiantes de la Semana Latinoamericana
+                  de la Red de Universidades Católicas. Invitación a la editorial
+                  a PhD. Frederic Marimon. Editora: PhD. Belén Arias. El IDS
+                  cuenta con 20 revisores externos, referentes mundiales de
+                  sostenibilidad.
+                </p>
+              </div>
+            </article>
+            <article>
+              <time datetime="2024-11">2024</time>
+              <div>
+                <h3>Convenio L&amp;G SRL</h3>
+                <p>
+                  Noviembre 2024: convenio con L&amp;G SRL para el acompañamiento
+                  en la implementación de la sostenibilidad en la empresa.
+                </p>
+              </div>
+            </article>
+            <article>
+              <time datetime="2025-03">2025</time>
+              <div>
+                <h3>Ministerio de Minería</h3>
+                <p>
+                  Marzo 2025: convenio con el Ministerio de Minería para
+                  desarrollar una matriz de indicadores de sostenibilidad para el
+                  sector.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <section class="section section--muted" id="investigacion" aria-labelledby="sec-investigacion">
         <div class="section-inner">
           <header class="section-head">
             <p class="section-kicker">Producción científica</p>
             <h2 id="sec-investigacion">Investigación</h2>
           </header>
-          <p class="text-intro">
-            El reglamento del IDS establece como objetivo diseñar estrategias de
-            desarrollo local considerando la sostenibilidad ambiental, social y
-            económica, mediante investigación aplicada, congresos, comisiones,
-            publicaciones y una revista propia.
-          </p>
+            <p class="text-intro">
+              El reglamento del IDS establece como objetivo diseñar estrategias de
+              desarrollo local considerando la sostenibilidad ambiental, social y
+              económica, mediante investigación aplicada, congresos, comisiones,
+              publicaciones y una revista propia.
+            </p>
 
-          <h3>Proyectos 2026</h3>
+          <h3>Líneas de investigación</h3>
+          <div class="grid-2 lineas-grid">
+            <article class="card">
+              <h3>Educación para el Desarrollo Sostenible</h3>
+              <p>
+                Integración de la sostenibilidad en currículas universitarias,
+                formación de competencias en ODS y pedagogías para la ciudadanía
+                ambiental.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Contabilidad Ambiental y Social</h3>
+              <p>
+                Medición y reporte del impacto ambiental y social de las
+                organizaciones, indicadores de triple impacto y estados contables
+                socioambientales.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Sostenibilidad Universitaria</h3>
+              <p>
+                Gestión ambiental de campus, huella de carbono institucional y
+                políticas de sostenibilidad en la gestión universitaria.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Responsabilidad Social Empresarial y Sustentabilidad Organizacional</h3>
+              <p>
+                Estrategias de RSE, gobernanza corporativa sostenible y su impacto
+                en comunidades y stakeholders.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Innovación, Tecnología e Inteligencia Artificial para el Desarrollo Sostenible</h3>
+              <p>
+                Uso de IA y tecnologías emergentes para monitoreo ambiental,
+                eficiencia de recursos y toma de decisiones sostenibles.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Economía y Sectores Productivos Sostenibles</h3>
+              <p>
+                Modelos productivos de bajo impacto en agro, industria y energía,
+                y su viabilidad económica.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Gobernanza, Políticas Públicas y Agenda 2030</h3>
+              <p>
+                Diseño e implementación de políticas públicas alineadas a los ODS,
+                articulación entre Estado, empresa y sociedad civil.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Economía Circular y Modelos de Producción Sostenible</h3>
+              <p>
+                Reducción, reutilización y reciclaje de recursos; diseño de
+                cadenas de valor circulares.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Finanzas Sostenibles</h3>
+              <p>
+                Inversión de impacto, bonos verdes/sociales y criterios ESG en la
+                toma de decisiones financieras.
+              </p>
+            </article>
+          </div>
+
+          <h3 class="stack-gap">Proyectos 2026</h3>
           <div class="grid-2">
             <article class="card">
               <h3>EcoHuella UCCuyo</h3>
@@ -408,22 +601,26 @@
                 NIIF S1/S2 del ISSB.
               </p>
             </article>
+            <article class="card">
+              <h3>
+                Evaluación del impacto de las cátedras de sostenibilidad en el
+                aprendizaje y la intención comportamental
+              </h3>
+              <p>
+                Modelo de ecuaciones estructurales (PLS-SEM) en el marco del
+                Programa Educar para el Desarrollo Sostenible.
+              </p>
+              <p>
+                <strong>Directora:</strong> María Belén Arias Valle.
+                <strong>Codirector:</strong> Frederic Marimon.
+                Equipo: María Paula Pérez Armendariz, Daniela Fabiana Gámez
+                Figueroa, Natalia Suárez, María Belén Cañizares y Stefanía Young.
+              </p>
+            </article>
           </div>
 
           <h3 class="stack-gap">Programas de formación integral 2024–2028</h3>
           <div class="grid-2">
-            <article class="card">
-              <h3>Gestión ética de las empresas</h3>
-              <p>
-                Compliance, responsabilidad social empresarial, empresas
-                familiarmente responsables y finanzas sostenibles. En conjunto
-                con el Instituto de Derecho Societario.
-              </p>
-              <p>
-                <strong>Director:</strong> López, Renato.
-                <strong>Codirector:</strong> Sánchez Simonatto, Juan Manuel.
-              </p>
-            </article>
             <article class="card">
               <h3>Educar para el desarrollo sostenible</h3>
               <p>
@@ -474,9 +671,6 @@
                   <td>2023–2024</td>
                   <td>
                     Buenas prácticas de sostenibilidad en las PyMEs de San Juan.
-                    Directora: Arias Valle, María Belén. Codirector: Coria
-                    Augusto, César Javier. Resultado: guía para implementar la
-                    sostenibilidad en PyMEs y dossier en <em>RevIISE</em>.
                   </td>
                 </tr>
                 <tr>
@@ -576,99 +770,57 @@
             </li>
           </ul>
 
-          <details class="year-block stack-gap">
-            <summary>Publicaciones 2025</summary>
-            <ul class="pub-list">
-              <li>
-                Arias-Valle, M. B., Gámez Figueroa, D. F., Pérez Armendariz, M. P.
-                y Suárez, N. (2025). Training for sustainability in the Triple Helix.
-                <cite>Przegląd Krytyczny, 7</cite>(2), 47-68.
-                <a href="https://doi.org/10.14746/pk.2025.7.2.3">doi:10.14746/pk.2025.7.2.3</a>
-              </li>
-              <li>
-                Arias-Valle, M. B. y Marimon, F. (2025). Higher education and
-                sustainability. The challenge of financing in Argentina.
-                <cite>Kawsaypacha</cite>, (16), A-005.
-                <a href="https://doi.org/10.18800/kawsaypacha.202502.A005">doi:10.18800/kawsaypacha.202502.A005</a>
-              </li>
-              <li>
-                Arias-Valle, M. B. y Marimon, F. (2025). Evaluating Sustainability
-                Research in Argentine Higher Education.
-                <cite>Higher Learning Research Communications, 15</cite>(2).
-                <a href="https://doi.org/10.18870/hlrc.v15i2.1614">doi:10.18870/hlrc.v15i2.1614</a>
-              </li>
-              <li>
-                Marimon, F., Arias-Valle, M. B., Coria-Augusto, C. J., Larrea Arnau, C. M.
-                y Amarfil Echegaray, H. M. (2025). The role of ChatGPT in the
-                development of academic skills according to study areas.
-                <cite>Research in Learning Technology, 33</cite>.
-                <a href="https://doi.org/10.25304/rlt.v33.3428">doi:10.25304/rlt.v33.3428</a>
-              </li>
-              <li>
-                Arias-Valle, M. y Marimon, F. (2025). Evolution of Latin American
-                Higher Education Institutions’ Commitment to the 2030 Agenda.
-                <cite>Journal of Teacher Education for Sustainability, 27</cite>(1), 115-134.
-                <a href="https://doi.org/10.2478/jtes-2025-0007">doi:10.2478/jtes-2025-0007</a>
-              </li>
-              <li>
-                Arias-Valle, M. y Marimon, F. (2025). El compromiso con la
-                sostenibilidad: el caso del sistema universitario argentino.
-                <cite>Educación y humanismo, 27</cite>(49), 1-22.
-                <a href="https://doi.org/10.17081/eduhum.27.49.7385">doi:10.17081/eduhum.27.49.7385</a>
-              </li>
-              <li>
-                Augusto, C. J. C., Arias-Valle, M. B., Marimon, F., Chicahuala, C. O.
-                y Cañizares, M. B. (2025). Commitment to sustainability in supplier
-                companies in the mining sector.
-                <cite>Baltica, 38</cite>(1), 81-94.
-                <a href="https://doi.org/10.5200/baltica.2025.1.7">doi:10.5200/baltica.2025.1.7</a>
-              </li>
-              <li>
-                Marimón, F., Arias-Valle, M. B., Coria Augusto, C. J. y Larrea Arnau, C. M. (2025).
-                From optimism to trust: how ChatGPT is reshaping student confidence
-                in AI-driven learning.
-                <cite>RIED, 28</cite>(2).
-                <a href="https://doi.org/10.5944/ried.28.2.43238">doi:10.5944/ried.28.2.43238</a>
-              </li>
-            </ul>
-          </details>
-
-          <details class="year-block">
-            <summary>Publicaciones 2020–2024 (selección)</summary>
-            <ul class="pub-list">
-              <li>
-                Arias-Valle, M. B. y Marimon, F. (2024). Integrating Social
-                Responsibility Into Sustainability Strategies: The Case of the
-                Catholic University of Cuyo.
-                <cite>Journal of Teacher Education for Sustainability, 26</cite>(2), 194-210.
-                <a href="https://doi.org/10.2478/jtes-2024-0022">doi:10.2478/jtes-2024-0022</a>
-              </li>
-              <li>
-                Arias-Valle, M. B. y Marimon, F. (2024). Do Argentine Higher
-                Education Institutions Promote Sustainability?
-                <cite>Revista Andina de Educación, 8</cite>(1).
-                <a href="https://doi.org/10.32719/26312816.2024.8.1.2">doi:10.32719/26312816.2024.8.1.2</a>
-              </li>
-              <li>
-                Arias-Valle, M. B. y Coria Augusto, C. J. (2024). Sostenibilidad
-                en acción.
-                <cite>RevIISE, 24</cite>(24), 53-54.
-                <a href="https://ojs.unsj.edu.ar/index.php/reviise/article/view/1122">RevIISE 24</a>
-              </li>
-              <li>
-                Arias Valle, M. B. (2023). The promotion of Education for
-                sustainable development.
-                <cite>Revista Estudios Ambientales, 11</cite>(2), 111-123.
-              </li>
-              <li>
-                Arias Valle, M. B., Lillo Murcia, A. M., Pérez Armendáriz, M. P.
-                y Navarro, M. (2022). The inclusion of sustainability in mining
-                companies.
-                <cite>Journal of Management &amp; Business Studies, 4</cite>(2), 1-12.
-                <a href="https://doi.org/10.32457/jmabs.v4i2.1932">doi:10.32457/jmabs.v4i2.1932</a>
-              </li>
-            </ul>
-          </details>
+          <h3 class="stack-gap">Participación en congresos internacionales</h3>
+          <ul class="pub-list">
+            <li>
+              Septiembre 2023. «El compromiso de la universidad con la inclusión,
+              una propuesta desde el Plan de RSU», 9.º Encuentro de Investigadores
+              de Ciencias Sociales de la Región Centro Oeste (InReCo).
+            </li>
+            <li>
+              4 de julio de 2023. «El compromiso de las universidades con la
+              sostenibilidad», CIDUI, Universitat de Lleida, España.
+            </li>
+            <li>
+              Marzo 2024. «Explorando el camino hacia una universidad sostenible:
+              estrategias transformadoras», I Congreso Internacional sobre
+              Innovación, Didáctica y Educación para la Sostenibilidad (CIIDES),
+              Alicante, España.
+            </li>
+            <li>
+              Marzo 2025. «La importancia de educar para el desarrollo
+              sostenible», II CIIDES, Universidad de Alicante, España.
+            </li>
+            <li>
+              Junio 2025. «Taoist-Inspired Leadership for Sustainability
+              Transitions: A Holistic Framework», World Symposium on
+              Sustainability Leadership (WSSL 2025), Universidad de Hamburgo,
+              Salamanca, España.
+            </li>
+            <li>
+              Julio 2025. «Instituciones de Educación Superior latinoamericanas y
+              la Agenda 2030», XIII International Conference of University Teaching
+              and Innovation (CIDUI), Barcelona, España.
+            </li>
+            <li>
+              Octubre 2025. 10.º Encuentro de Investigadores en Ciencias Sociales
+              de la Región Centro Oeste.
+            </li>
+            <li>
+              Noviembre 2025. II Congreso Internacional Economía y Organizaciones
+              Sostenibles, Talca, Chile: «Experiencias de integración de la
+              sostenibilidad en empresas del sector minero de San Juan» y «Mapa de
+              situación de la implementación de prácticas sostenibles en PyMEs de
+              San Juan y San Luis». Participación financiada por la Secretaría de
+              Ciencia y Tecnología de San Juan.
+            </li>
+            <li>
+              14–16 de junio de 2026. XXXV Congreso Internacional de ACEDE,
+              Santander, España: «Integración estratégica de la sostenibilidad en
+              la cadena de suministro minera». Participación financiada por la
+              Secretaría de Ciencia y Tecnología de San Juan.
+            </li>
+          </ul>
         </div>
       </section>
 
@@ -745,45 +897,135 @@
       <section class="section" id="extension" aria-labelledby="sec-extension">
         <div class="section-inner">
           <header class="section-head">
-            <p class="section-kicker">Vinculación</p>
-            <h2 id="sec-extension">Extensión y redes</h2>
+            <p class="section-kicker">Comunidad</p>
+            <h2 id="sec-extension">Extensión</h2>
           </header>
-          <div class="grid-2">
+          <article class="card">
+            <h3>III Congreso Internacional «San Juan + Sostenible»</h3>
+            <p>
+              «El futuro no se espera, se construye». 15 y 16 de mayo de 2025,
+              Complejo Ambiental Anchipurac, San Juan.
+            </p>
+            <div class="congress-stats">
+              <div class="stat"><b>455</b><span>Inscriptos</span></div>
+              <div class="stat"><b>79</b><span>Expositores/as</span></div>
+              <div class="stat"><b>5+1</b><span>Paneles y conferencia magistral</span></div>
+              <div class="stat"><b>9</b><span>Países representados</span></div>
+              <div class="stat"><b>12</b><span>Instituciones auspiciantes</span></div>
+              <div class="stat"><b>91,6%</b><span>Pidió certificado</span></div>
+            </div>
+            <p>
+              Ejes: Educación para la Sostenibilidad · Minería y sectores
+              productivos sustentables · Responsabilidad social y empresa ·
+              Medición e indicadores de sostenibilidad · Políticas públicas y
+              gobernanza territorial.
+            </p>
+            <p>
+              Reconocimientos: Resolución N.º 363-CS-2024 del Consejo Superior de
+              la UCCuyo; Decreto 680-P-2024 de la Cámara de Diputados de San Juan
+              (interés educativo y científico); acompañamiento del Ministerio de
+              Minería y de la Secretaría de Ambiente y Desarrollo Sustentable.
+            </p>
+            <p>
+              Alcance académico: investigadores de CONICET y de universidades de
+              Perú, España, Francia y Argentina, con pósters estudiantiles en
+              modalidad presencial. El propio evento usó merchandising sustentable
+              (cuadernos ecológicos, credenciales reciclables, bolsas reutilizables
+              y 500 lápices ecológicos).
+            </p>
+          </article>
+          <div class="grid-2 stack-gap">
             <article class="card">
-              <h3>Congreso Internacional de Desarrollo Sostenible</h3>
+              <h3>Jornadas de Justicia y Paz</h3>
               <p>
-                El IDS organizó tres ediciones en la UCCuyo (2008, 2009 y 2025:
-                «El aporte de la Universidad al Desarrollo Sostenible»), con aval
-                de la Cámara de Diputados de San Juan.
+                Octubre 2025: charla magistral «El aporte de la Universidad al
+                Desarrollo Sostenible» en las Jornadas de la Semana Social,
+                Comisión de Justicia y Paz.
               </p>
             </article>
             <article class="card">
-              <h3>Semana Social</h3>
+              <h3>Jornadas de la Mesa de RSE</h3>
               <p>
-                Organización anual junto con la Comisión de Justicia y Paz, el
-                Consejo Profesional de Ciencias Económicas y el Foro de Abogados
-                de San Juan.
-              </p>
-            </article>
-            <article class="card">
-              <h3>Convenios y consultorías</h3>
-              <p>
-                Convenio con el Ministerio de Minería de San Juan (matriz de
-                indicadores sostenibles, 2025) y asesoramiento a empresas para la
-                implementación de sostenibilidad, entre ellas L&amp;G SRL.
-              </p>
-            </article>
-            <article class="card">
-              <h3>Observatorio ODS</h3>
-              <p>
-                Articulación con PETAS-UNSJ para un observatorio de ODS que mida
-                y haga seguimiento de los avances en desarrollo sostenible en la
-                región de Cuyo.
+                Abril 2024: disertación «Alianzas sostenibles» en las Jornadas de
+                Responsabilidad Social organizadas por la Mesa de RSE.
               </p>
             </article>
           </div>
+        </div>
+      </section>
 
-          <h3 class="stack-gap">Redes de conocimiento</h3>
+      <section class="section section--muted" id="ods" aria-labelledby="sec-ods">
+        <div class="section-inner">
+          <header class="section-head">
+            <p class="section-kicker">Agenda 2030</p>
+            <h2 id="sec-ods">Observatorio de ODS</h2>
+          </header>
+          <p class="text-intro">
+            El IDS sigue dos mapas de la sostenibilidad que cruzan universidad,
+            territorio y empresas: el compromiso de las universidades argentinas
+            con los ODS y el estado de las prácticas sostenibles en las PyMEs de
+            San Juan y San Luis.
+          </p>
+          <div class="grid-2">
+            <article class="card">
+              <h3>Universidades argentinas</h3>
+              <p>
+                Investigación sobre la integración de la Agenda 2030 en
+                instituciones de educación superior: misión, gobernanza,
+                financiamiento y prácticas de campus. Base del mapa de la
+                sostenibilidad universitaria en Argentina.
+              </p>
+            </article>
+            <article class="card">
+              <h3>PyMEs de San Juan y San Luis</h3>
+              <p>
+                Mapa de situación de la implementación de prácticas sostenibles
+                (PRONIS — Secretaría de Ciencia y Tecnología) y línea 2023–2024
+                de buenas prácticas en PyMEs de San Juan.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="consultoria" aria-labelledby="sec-consultoria">
+        <div class="section-inner">
+          <header class="section-head">
+            <p class="section-kicker">Transferencia</p>
+            <h2 id="sec-consultoria">Consultoría</h2>
+          </header>
+          <p class="text-intro">
+            Acompañamiento a organizaciones en la implementación de la
+            sostenibilidad: diagnóstico, indicadores y planes de mejora, con
+            respaldo académico del IDS.
+          </p>
+          <div class="grid-2">
+            <article class="card">
+              <h3>Empresas</h3>
+              <p>
+                Convenio con L&amp;G SRL (noviembre 2024) para implementar
+                sostenibilidad en la empresa. Asesoramiento ESG a organizaciones
+                de Cuyo.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Sector minero y Estado</h3>
+              <p>
+                Matriz de indicadores de sostenibilidad con el Ministerio de
+                Minería de San Juan (marzo 2025) y trabajo con empresas
+                proveedoras del sector.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--muted" id="vinculacion" aria-labelledby="sec-vinculacion">
+        <div class="section-inner">
+          <header class="section-head">
+            <p class="section-kicker">Alianzas</p>
+            <h2 id="sec-vinculacion">Vinculación</h2>
+          </header>
           <div class="grid-2">
             <article class="card">
               <h3>Nacionales</h3>
@@ -811,76 +1053,60 @@
         </div>
       </section>
 
-      <section class="section section--green" id="hub" aria-labelledby="sec-hub">
+      <section class="section" id="hitos" aria-labelledby="sec-hitos">
         <div class="section-inner">
           <header class="section-head">
-            <p class="section-kicker">Plataforma</p>
-            <h2 id="sec-hub">Hub Sostenible IDS</h2>
+            <p class="section-kicker">Memoria</p>
+            <h2 id="sec-hitos">Hitos y reconocimientos</h2>
           </header>
           <p class="text-intro">
-            Primera plataforma universitaria de sostenibilidad aplicada de la
-            región de Cuyo. Combina rigor científico, formación práctica y
-            vinculación estratégica, con respaldo académico internacional de la
-            Universitat Politècnica de Catalunya (UPC Barcelona) a través del
-            proyecto Interreg Rural Transition Labs (financiamiento UE EUR
-            1.027.256). Socios: PhD. Jordi Segalàs, PhD. Jasmina Berbegal y
-            PhD. Na Liang.
+            Lo que distingue al IDS: primer instituto de desarrollo sostenible
+            del país, primera revista especializada y una trayectoria de premios,
+            convenios y presencia internacional.
           </p>
-          <div class="hub-steps">
-            <article class="card">
-              <h3>Producir conocimiento</h3>
-              <p>
-                Investigación aplicada, Revista IDS, indicadores y diagnósticos
-                ESG para empresas mineras, Observatorio ODS para Cuyo y Congreso
-                Internacional.
-              </p>
-            </article>
-            <article class="card">
-              <h3>Formar capacidades</h3>
-              <p>
-                Diplomatura RSE y Sustentabilidad (3.ª cohorte), especialización
-                en educar para el DS, talleres para minería, agro e industria, y
-                programa para emprendedores sostenibles.
-              </p>
-            </article>
-            <article class="card">
-              <h3>Vincular e impactar</h3>
-              <p>
-                Consultorías ESG, Marca Sostenible IDS, alianzas con municipios
-                para planes locales ODS y articulación con CONICET, ministerios
-                e instituciones internacionales.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="documentos" aria-labelledby="sec-documentos">
-        <div class="section-inner">
-          <header class="section-head">
-            <p class="section-kicker">Archivo</p>
-            <h2 id="sec-documentos">Documentos</h2>
-          </header>
-          <div class="doc-list">
-            <a class="doc-card" href="documentos/Resolucion_691-CS-2007.pdf">
-              <span class="tag">Consejo Superior</span>
-              <h3>Resolución Nº 691-CS-2007</h3>
-              <p>
-                Transferencia del Instituto de Desarrollo Sostenible a la
-                Facultad de Ciencias Económicas y Empresariales. San Juan, 27 de
-                octubre de 2007.
-              </p>
-            </a>
-            <a class="doc-card" href="documentos/Reglamento_IDS_Res_01-15-FCEE.pdf">
-              <span class="tag">Facultad · FCEyE</span>
-              <h3>Reglamento interno del IDS</h3>
-              <p>
-                Resolución Nº 01/15-FCEyE (28 de abril de 2015) y Anexo I:
-                objetivos, misión, visión, valores, estructura, financiamiento y
-                obligaciones de investigadores.
-              </p>
-            </a>
-          </div>
+          <ul class="check-list">
+            <li>Fue el primer Instituto de Desarrollo Sostenible del país.</li>
+            <li>Tiene la primera revista en Desarrollo Sostenible del país.</li>
+            <li>2008: Plan de Desarrollo de los Departamentos Mineros.</li>
+            <li>
+              2013: María Belén Arias Valle, Beca Iberoamérica Santander
+              Universidades. Investigación en la Universitat Politècnica de
+              Catalunya, Cátedra UNESCO de Dirección Universitaria.
+            </li>
+            <li>
+              2013: Premio Pluma de Oro del Consejo Profesional de Ciencias
+              Económicas de San Juan, «Contribución Científica a la Profesión».
+            </li>
+            <li>
+              2014: Medalla de oro «Dr. Manuel Belgrano» (CPCE CABA) a María
+              Belén Arias Valle, Ana María Lillo Murcia y María Emilce Valdivieso,
+              por «Hacia una Universidad Sustentable, Responsable e Inclusiva».
+            </li>
+            <li>
+              2014 y 2015: Premio Domingo Faustino Sarmiento Ciencia e Innovación
+              (1.ª y 2.ª edición), Secretaría de Estado de Ciencia, Tecnología e
+              Innovación de San Juan, por dirección de tesis en RSE y
+              responsabilidad social educativa.
+            </li>
+            <li>
+              Noviembre 2024: conferencia magistral en las Jornadas Nacionales de
+              Educación para Profesionales en Ciencias Económicas.
+            </li>
+            <li>
+              Agosto 2025: Jornadas de la RADU, Mendoza: «Una Universidad
+              Sostenible desde la mirada de Laudato Si’».
+            </li>
+            <li>
+              Foro Valos 2026: cumbre de sostenibilidad y negocios de Cuyo,
+              Mendoza, 12 y 13 de agosto.
+            </li>
+          </ul>
+          <h3 class="stack-gap">Galería</h3>
+          <p class="text-intro">
+            Tocá una foto para ampliarla. Filtrá por función universitaria o por
+            hitos.
+          </p>
+          <div id="galeria-ids"></div>
         </div>
       </section>
 
@@ -932,7 +1158,8 @@
                 Av. José Ignacio de la Roza 1516, Rivadavia, San Juan, Argentina
               </p>
               <p>
-                <strong>Directora:</strong> PhD. María Belén Arias Valle
+                <strong>Directora:</strong> PhD. María Belén Arias Valle<br />
+                <a href="mailto:ids@uccuyo.edu.ar">ids@uccuyo.edu.ar</a>
               </p>
             </article>
             <article class="card">
@@ -965,10 +1192,9 @@
           <ul class="footer-links">
             <li><a href="#inicio">Inicio</a></li>
             <li><a href="#instituto">El Instituto</a></li>
+            <li><a href="#gestion">Gestión</a></li>
             <li><a href="#investigacion">Investigación</a></li>
-            <li><a href="#publicaciones">Publicaciones</a></li>
-            <li><a href="#hub">Hub Sostenible</a></li>
-            <li><a href="#documentos">Documentos</a></li>
+            <li><a href="#hitos">Hitos</a></li>
             <li><a href="#visitas">Visitas al Instituto</a></li>
           </ul>
         </div>
@@ -991,10 +1217,12 @@
       </div>
     </footer>
 
-    <script src="js/main.js?v=3" defer></script>
+    <script src="js/main.js?v=4" defer></script>
     <script src="js/publicaciones-config.js?v=1" defer></script>
     <script src="js/visitantes-config.js?v=1" defer></script>
     <script src="js/visitantes.js?v=1" defer></script>
     <script src="js/visitas-mapa.js?v=1" defer></script>
+    <script src="js/galeria-config.js?v=1" defer></script>
+    <script src="js/galeria.js?v=1" defer></script>
   </body>
 </html>

@@ -42,5 +42,7 @@
   --radius-box: 1.1rem;
   --shadow-card: 0 18px 44px rgba(6, 74, 49, 0.12);
   --max: 74rem;
-  --header-h: 4.35rem;
+  --top-banner-h: 2.05rem;
+  --header-bar-h: 4.45rem;
+  --header-h: calc(var(--top-banner-h) + var(--header-bar-h));
 }

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 64" role="img" aria-label="Facultad de Ciencias Económicas y Empresariales">
+  <rect width="64" height="64" rx="10" fill="#1B3B82"/>
+  <text x="32" y="28" text-anchor="middle" fill="#fff" font-family="Montserrat, Arial, sans-serif" font-size="13" font-weight="800">FCEyE</text>
+  <text x="32" y="46" text-anchor="middle" fill="#f0d27a" font-family="Montserrat, Arial, sans-serif" font-size="7.5" font-weight="700">UCCuyo</text>
+  <text x="76" y="26" fill="#1B3B82" font-family="Montserrat, Arial, sans-serif" font-size="11.5" font-weight="800">Facultad de Ciencias</text>
+  <text x="76" y="44" fill="#1B3B82" font-family="Montserrat, Arial, sans-serif" font-size="11.5" font-weight="800">Económicas y Empresariales</text>
+</svg>
