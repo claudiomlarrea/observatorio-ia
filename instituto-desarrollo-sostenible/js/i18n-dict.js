@@ -366,6 +366,12 @@ window.I18N_DICT = {
     en: "IDS Journal: relaunched in 2024, with peer-reviewed articles, reviews and student papers. Editor: PhD Belén Arias. 20 international external reviewers; two issues in 2025, currently being indexed."
   },
   "sec.biblio.tabs.aria": { es: "Vistas de la Biblioteca del IDS", en: "IDS Library views" },
+  "sec.biblio.tabs.hint": {
+    es: "Dos catálogos. Tocá el que quieras abrir:",
+    en: "Two catalogues. Tap the one you want to open:"
+  },
+  "sec.biblio.tab.cue": { es: "Clic para ver", en: "Click to view" },
+  "sec.biblio.tab.cueOn": { es: "Estás viendo", en: "You’re viewing" },
   "sec.biblio.tab.instituto": { es: "Publicaciones del Instituto", en: "Institute publications" },
   "sec.biblio.tab.global": { es: "Publicaciones sobre Desarrollo Sostenible en el mundo", en: "Sustainable Development publications worldwide" },
   "sec.biblio.panel.intro": {
