@@ -65,9 +65,9 @@ window.IDS_GALERIA = {
     },
     {
       src: "assets/galeria/gestion-ministerio-mineria.jpg",
-      alt: "Reunión con el Ministerio de Minería de San Juan",
-      caption: "Marzo 2025. Convenio con el Ministerio de Minería para una matriz de indicadores de sostenibilidad.",
-      tags: ["gestion", "consultoria"]
+      alt: "Investigadora del IDS recibe un reconocimiento en 2013",
+      caption: "2 de junio de 2013. Premio Pluma de Oro y reconocimientos a la investigación del IDS.",
+      tags: ["hitos"]
     },
     {
       src: "assets/galeria/gestion-gobierno-san-juan.jpg",
