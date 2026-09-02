@@ -1208,6 +1208,17 @@ tr:last-child td {
   margin: 0 0 0.4rem;
 }
 
+.check-list a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+  text-decoration-thickness: 1px;
+}
+
+.check-list a:hover {
+  color: var(--color-green);
+}
+
 .quote {
   margin: 1.4rem 0 0;
   padding: 1.1rem 1.25rem;

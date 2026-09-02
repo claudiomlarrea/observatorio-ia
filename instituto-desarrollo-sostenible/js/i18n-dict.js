@@ -574,21 +574,54 @@ window.I18N_DICT = {
   "sec.vinculacion.title": { es: "Vinculación", en: "Partnerships" },
   "sec.vinculacion.nat": { es: "Nacionales", en: "National" },
   "sec.vinculacion.int": { es: "Internacionales", en: "International" },
-  "sec.vinculacion.n1": { es: "Red de Universidades por los ODS (Argentina)", en: "Universities Network for the SDGs (Argentina)" },
-  "sec.vinculacion.n2": { es: "PETAS — Universidad Nacional de San Juan", en: "PETAS — National University of San Juan" },
-  "sec.vinculacion.n3": { es: "Red de Universidades Sostenibles Argentinas", en: "Argentine Sustainable Universities Network" },
-  "sec.vinculacion.n4": { es: "Mesa Provincial de Responsabilidad Social Empresarial de San Juan", en: "San Juan Provincial CSR Roundtable" },
-  "sec.vinculacion.n5": { es: "Comisión de Justicia y Paz", en: "Justice and Peace Commission" },
-  "sec.vinculacion.i1": {
-    es: "Instituto Universitario de Investigación en Ciencia y Tecnologías de la Sostenibilidad — UPC (España)",
-    en: "University Research Institute in Sustainability Science and Technologies — UPC (Spain)"
+  "sec.vinculacion.n1": {
+    es: '<a href="https://labdes.unlz.edu.ar/2025/la-unlz-participo-del-encuentro-anual-de-la-red-argentina-de-universidades-por-los-ods-2025/" target="_blank" rel="noopener noreferrer">Red de Universidades por los ODS (Argentina)</a>',
+    en: '<a href="https://labdes.unlz.edu.ar/2025/la-unlz-participo-del-encuentro-anual-de-la-red-argentina-de-universidades-por-los-ods-2025/" target="_blank" rel="noopener noreferrer">Universities Network for the SDGs (Argentina)</a>'
   },
-  "sec.vinculacion.i2": { es: "Universidad Internacional de Catalunya — UIC", en: "Universitat Internacional de Catalunya — UIC" },
-  "sec.vinculacion.i3": { es: "Cátedra UNESCO de Dirección Universitaria — UPC", en: "UNESCO Chair in Higher Education Management — UPC" },
-  "sec.vinculacion.i4": { es: "Universidad Nacional Jorge Basadre Grohmann — UNJBG (Perú)", en: "National University Jorge Basadre Grohmann — UNJBG (Peru)" },
-  "sec.vinculacion.i5": { es: "Programa GUNi International", en: "GUNi International Programme" },
-  "sec.vinculacion.i6": { es: "Red de Universidades Católicas de Latinoamérica", en: "Network of Catholic Universities of Latin America" },
-  "sec.vinculacion.i7": { es: "Rural Transition Labs — Interreg Sudoe (financiamiento UE)", en: "Rural Transition Labs — Interreg Sudoe (EU funding)" },
+  "sec.vinculacion.n2": {
+    es: '<a href="https://petas-unsj.org/" target="_blank" rel="noopener noreferrer">PETAS — Universidad Nacional de San Juan</a>',
+    en: '<a href="https://petas-unsj.org/" target="_blank" rel="noopener noreferrer">PETAS — National University of San Juan</a>'
+  },
+  "sec.vinculacion.n3": {
+    es: '<a href="https://reduagais.unlp.edu.ar/" target="_blank" rel="noopener noreferrer">Red de Universidades Sostenibles Argentinas</a>',
+    en: '<a href="https://reduagais.unlp.edu.ar/" target="_blank" rel="noopener noreferrer">Argentine Sustainable Universities Network</a>'
+  },
+  "sec.vinculacion.n4": {
+    es: '<a href="https://desarrollo.sanjuan.gob.ar/" target="_blank" rel="noopener noreferrer">Mesa Provincial de Responsabilidad Social Empresarial de San Juan</a>',
+    en: '<a href="https://desarrollo.sanjuan.gob.ar/" target="_blank" rel="noopener noreferrer">San Juan Provincial CSR Roundtable</a>'
+  },
+  "sec.vinculacion.n5": {
+    es: '<a href="https://www.justiciaypaz.org/" target="_blank" rel="noopener noreferrer">Comisión de Justicia y Paz</a>',
+    en: '<a href="https://www.justiciaypaz.org/" target="_blank" rel="noopener noreferrer">Justice and Peace Commission</a>'
+  },
+  "sec.vinculacion.i1": {
+    es: '<a href="https://is.upc.edu/es" target="_blank" rel="noopener noreferrer">Instituto Universitario de Investigación en Ciencia y Tecnologías de la Sostenibilidad — UPC (España)</a>',
+    en: '<a href="https://is.upc.edu/en" target="_blank" rel="noopener noreferrer">University Research Institute in Sustainability Science and Technologies — UPC (Spain)</a>'
+  },
+  "sec.vinculacion.i2": {
+    es: '<a href="https://www.uic.es/" target="_blank" rel="noopener noreferrer">Universidad Internacional de Catalunya — UIC</a>',
+    en: '<a href="https://www.uic.es/en" target="_blank" rel="noopener noreferrer">Universitat Internacional de Catalunya — UIC</a>'
+  },
+  "sec.vinculacion.i3": {
+    es: '<a href="https://cudu.upc.edu/es" target="_blank" rel="noopener noreferrer">Cátedra UNESCO de Dirección Universitaria — UPC</a>',
+    en: '<a href="https://cudu.upc.edu/en" target="_blank" rel="noopener noreferrer">UNESCO Chair in Higher Education Management — UPC</a>'
+  },
+  "sec.vinculacion.i4": {
+    es: '<a href="https://www.unjbg.edu.pe/" target="_blank" rel="noopener noreferrer">Universidad Nacional Jorge Basadre Grohmann — UNJBG (Perú)</a>',
+    en: '<a href="https://www.unjbg.edu.pe/" target="_blank" rel="noopener noreferrer">National University Jorge Basadre Grohmann — UNJBG (Peru)</a>'
+  },
+  "sec.vinculacion.i5": {
+    es: '<a href="https://www.guninetwork.org/" target="_blank" rel="noopener noreferrer">Programa GUNi International</a>',
+    en: '<a href="https://www.guninetwork.org/" target="_blank" rel="noopener noreferrer">GUNi International Programme</a>'
+  },
+  "sec.vinculacion.i6": {
+    es: '<a href="https://oducal.com/" target="_blank" rel="noopener noreferrer">Red de Universidades Católicas de Latinoamérica</a>',
+    en: '<a href="https://oducal.com/" target="_blank" rel="noopener noreferrer">Network of Catholic Universities of Latin America</a>'
+  },
+  "sec.vinculacion.i7": {
+    es: '<a href="https://interreg-sudoe.eu/en/proyecto-interreg/rural-transition-labs/" target="_blank" rel="noopener noreferrer">Rural Transition Labs — Interreg Sudoe (financiamiento UE)</a>',
+    en: '<a href="https://interreg-sudoe.eu/en/proyecto-interreg/rural-transition-labs/" target="_blank" rel="noopener noreferrer">Rural Transition Labs — Interreg Sudoe (EU funding)</a>'
+  },
 
   "sec.hitos.kicker": { es: "Memoria", en: "Record" },
   "sec.hitos.title": { es: "Hitos y reconocimientos", en: "Milestones and awards" },
