@@ -273,8 +273,8 @@ window.I18N_DICT = {
     "en": "In-house tools in use"
   },
   "sec.impacto.card4.body": {
-    "es": "Encuesta Clara, EPH, SAVT, EvaluAR, MDeIA, Agenda Universitaria, SACAU y Rumbo Deporte: sistemas abiertos a la comunidad universitaria.",
-    "en": "Encuesta Clara, EPH, SAVT, EvaluAR, MDeIA, Agenda Universitaria, SACAU, and Rumbo Deporte: systems open to the university community."
+    "es": "Encuesta Clara, EPH, SAVT, EvaluAR, MDeIA, Agenda Universitaria, Calendario FCV, SACAU y Rumbo Deporte: sistemas abiertos a la comunidad universitaria.",
+    "en": "Encuesta Clara, EPH, SAVT, EvaluAR, MDeIA, Agenda Universitaria, FCV exam calendar, SACAU, and Rumbo Deporte: systems open to the university community."
   },
   "sec.impacto.card4.cta": { "es": "Abrir aplicaciones IA", "en": "Open AI Apps" },
   "sec.datos.kicker": { "es": "Evidencia", "en": "Evidence" },
@@ -1155,8 +1155,8 @@ window.I18N_DICT = {
     "en": "AI Apps"
   },
   "sec.herramientas.intro": {
-    "es": "Sistemas y plataformas desarrollados por el Observatorio de Inteligencia Artificial de la UCCuyo para la comunidad universitaria e instituciones vinculadas: encuestas, datos, evaluación, madurez digital e IA (MDeIA), agenda universitaria, auditoría académica, conversión curricular SACAU/CRE, programas de cátedra (SACAU Aula), orden del día institucional (LUMEN), planificación estratégica, prevención digital y más. Se amplían a medida que se incorporan nuevos desarrollos.",
-    "en": "Systems and platforms developed by the UCCuyo Artificial Intelligence Observatory for the university community and partner institutions: surveys, data, assessment, digital and AI maturity (MDeIA), university agenda, academic audit, SACAU/CRE curriculum conversion, course syllabi (SACAU Aula), institutional agenda (LUMEN), strategic planning, digital prevention, and more. The catalog grows as new developments are added."
+    "es": "Sistemas y plataformas desarrollados por el Observatorio de Inteligencia Artificial de la UCCuyo para la comunidad universitaria e instituciones vinculadas: encuestas, datos, evaluación, madurez digital e IA (MDeIA), agenda universitaria, calendario de mesas FCV, auditoría académica, conversión curricular SACAU/CRE, programas de cátedra (SACAU Aula), orden del día institucional (LUMEN), planificación estratégica, prevención digital y más. Se amplían a medida que se incorporan nuevos desarrollos.",
+    "en": "Systems and platforms developed by the UCCuyo Artificial Intelligence Observatory for the university community and partner institutions: surveys, data, assessment, digital and AI maturity (MDeIA), university agenda, FCV exam calendar, academic audit, SACAU/CRE curriculum conversion, course syllabi (SACAU Aula), institutional agenda (LUMEN), strategic planning, digital prevention, and more. The catalog grows as new developments are added."
   },
   "sec.herramientas.senalsegura.title": {
     "es": "Señal Segura",
@@ -1181,6 +1181,30 @@ window.I18N_DICT = {
   "sec.herramientas.senalsegura.btnAbrir": {
     "es": "Abrir Señal Segura",
     "en": "Open Señal Segura"
+  },
+  "sec.herramientas.fcv.title": {
+    "es": "Calendario exámenes FCV",
+    "en": "FCV exam calendar"
+  },
+  "sec.herramientas.fcv.lead": {
+    "es": "Consultá día, aula y horario de las mesas de finales de la Facultad de Ciencias Veterinarias (UCCuyo Sede San Luis). Dirección carga las fechas; el estudiantado consulta desde la casa o el celular.",
+    "en": "Look up day, classroom, and time for final-exam sittings at the Faculty of Veterinary Sciences (UCCuyo San Luis). Academic leadership loads the dates; students check from home or their phone."
+  },
+  "sec.herramientas.fcv.item1": {
+    "es": "Turnos 2026: febrero-marzo, julio, septiembre y noviembre-diciembre",
+    "en": "2026 sessions: February–March, July, September, and November–December"
+  },
+  "sec.herramientas.fcv.item2": {
+    "es": "Calendario personal por materia, sin superposición de horario",
+    "en": "Personal calendar by course, without overlapping times"
+  },
+  "sec.herramientas.fcv.item3": {
+    "es": "Carga a cargo de Dirección (aula y horario de cada mesa)",
+    "en": "Loaded by academic leadership (classroom and time for each sitting)"
+  },
+  "sec.herramientas.fcv.btnAbrir": {
+    "es": "Abrir calendario FCV",
+    "en": "Open FCV calendar"
   },
   "sec.herramientas.consultaCongreso.badge": {
     "es": "Servicio del Observatorio",
