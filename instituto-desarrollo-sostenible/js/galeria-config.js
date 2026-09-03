@@ -263,13 +263,13 @@ window.IDS_GALERIA = {
       tags: ["congresos"]
     },
     {
-      src: "assets/galeria/drive/congresos/15-2025-ii-congreso-internacional-de-economia-y-organizaciones-sostenibles-talca-ch.jpg",
+      src: "assets/galeria/drive/congresos/15-2025-ii-congreso-internacional-de-economia-y-organizaciones-sostenibles-talca-ch.jpg?v=2",
       alt: "2025 II Congreso Internacional de Economía y Organizaciones Sostenibles Talca Chile 1",
       caption: "2025 II Congreso Internacional de Economía y Organizaciones Sostenibles Talca Chile 1",
       tags: ["congresos"]
     },
     {
-      src: "assets/galeria/drive/congresos/16-2025-ii-congreso-internacional-de-economia-y-organizaciones-sostenibles-talca-ch.jpg",
+      src: "assets/galeria/drive/congresos/16-2025-ii-congreso-internacional-de-economia-y-organizaciones-sostenibles-talca-ch.jpg?v=2",
       alt: "2025 II Congreso Internacional de Economía y Organizaciones Sostenibles Talca Chile 2",
       caption: "2025 II Congreso Internacional de Economía y Organizaciones Sostenibles Talca Chile 2",
       tags: ["congresos"]
