@@ -365,6 +365,12 @@ window.I18N_DICT = {
     es: "Revista del IDS: relanzada en 2024, con artículos arbitrados, reseñas y trabajos de estudiantes. Editora: PhD. Belén Arias. 20 revisores externos internacionales; dos números en 2025, en proceso de indexación.",
     en: "IDS Journal: relaunched in 2024, with peer-reviewed articles, reviews and student papers. Editor: PhD Belén Arias. 20 international external reviewers; two issues in 2025, currently being indexed."
   },
+  "sec.biblio.revista.btn": { es: "Revista del IDS", en: "IDS Journal" },
+  "sec.biblio.revista.cue": { es: "Abre en otra pestaña", en: "Opens in a new tab" },
+  "sec.biblio.revista.aria": {
+    es: "Revista del IDS (se abre en otra pestaña)",
+    en: "IDS Journal (opens in a new tab)"
+  },
   "sec.biblio.tabs.aria": { es: "Vistas de la Biblioteca del IDS", en: "IDS Library views" },
   "sec.biblio.tabs.hint": {
     es: "Dos catálogos. Tocá el que quieras abrir:",
