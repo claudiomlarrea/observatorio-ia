@@ -106,10 +106,10 @@
     wrap.setAttribute("aria-label", "Language / Idioma");
     wrap.innerHTML =
       '<button type="button" class="lang-switcher__btn" data-lang="es" aria-pressed="false" title="Español">' +
-      '<span class="lang-switcher__flag" aria-hidden="true">🇦🇷</span>' +
+      '<span class="lang-switcher__flag" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 11" focusable="false"><rect width="16" height="11" fill="#74ACDF"/><rect y="3.67" width="16" height="3.66" fill="#fff"/><circle cx="8" cy="5.5" r="1.4" fill="#F6B40E"/></svg></span>' +
       '<span class="lang-switcher__code">ES</span></button>' +
       '<button type="button" class="lang-switcher__btn" data-lang="en" aria-pressed="false" title="English">' +
-      '<span class="lang-switcher__flag" aria-hidden="true">🇬🇧</span>' +
+      '<span class="lang-switcher__flag" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" focusable="false"><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4"/><path d="M30,0 V30 M0,15 H60" stroke="#fff" stroke-width="10"/><path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/></svg></span>' +
       '<span class="lang-switcher__code">EN</span></button>';
     var toggle = header.querySelector(".nav-toggle");
     if (toggle) header.insertBefore(wrap, toggle);
