@@ -26,7 +26,7 @@
     ods: "Observatorio de ODS · Instituto de Desarrollo Sostenible",
     consultoria: "Consultoría · Instituto de Desarrollo Sostenible",
     vinculacion: "Vinculación · Instituto de Desarrollo Sostenible",
-    hitos: "Hitos · Instituto de Desarrollo Sostenible",
+    hitos: "Hitos y galería · Instituto de Desarrollo Sostenible",
     visitas: "Visitas al Instituto · Instituto de Desarrollo Sostenible",
     contacto: "Contacto · Instituto de Desarrollo Sostenible"
   };

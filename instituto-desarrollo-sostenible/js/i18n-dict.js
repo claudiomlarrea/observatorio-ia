@@ -42,7 +42,7 @@ window.I18N_DICT = {
   "nav.extension": { es: "Extensión", en: "Outreach" },
   "nav.consultoria": { es: "Consultoría", en: "Consulting" },
   "nav.vinculacion": { es: "Vinculación", en: "Partnerships" },
-  "nav.hitos": { es: "Hitos", en: "Milestones" },
+  "nav.hitos": { es: "Hitos y galería", en: "Milestones and gallery" },
   "nav.contacto": { es: "Contacto", en: "Contact" },
 
   "hero.kicker": { es: "Facultad de Ciencias Económicas y Empresariales", en: "Faculty of Economics and Business" },
@@ -53,7 +53,7 @@ window.I18N_DICT = {
     en: "A reference centre that contributes to Sustainable Development in the Cuyo region. Management, teaching, research, outreach and consulting, on equal footing: university-wide work and a commitment to the common good."
   },
   "hero.cta.instituto": { es: "El Instituto", en: "The Institute" },
-  "hero.cta.hitos": { es: "Hitos", en: "Milestones" },
+  "hero.cta.hitos": { es: "Hitos y galería", en: "Milestones and gallery" },
   "hero.cta.investigacion": { es: "Investigación", en: "Research" },
   "hero.cta.visitas": { es: "Visitas al Instituto", en: "Institute visits" },
   "hero.filter.title": { es: "Cinco funciones, un mismo valor", en: "Five functions, one shared value" },
@@ -633,7 +633,7 @@ window.I18N_DICT = {
   },
 
   "sec.hitos.kicker": { es: "Memoria", en: "Record" },
-  "sec.hitos.title": { es: "Hitos y reconocimientos", en: "Milestones and awards" },
+  "sec.hitos.title": { es: "Hitos y galería", en: "Milestones and gallery" },
   "sec.hitos.intro": {
     es: "Lo que distingue al IDS: primer instituto de desarrollo sostenible del país, primera revista especializada y una trayectoria de premios, convenios y presencia internacional.",
     en: "What sets the IDS apart: the country’s first sustainable-development institute, the first specialised journal, and a record of awards, agreements and international presence."
@@ -722,7 +722,7 @@ window.I18N_DICT = {
   "page.ods": { es: "Observatorio de ODS · Instituto de Desarrollo Sostenible", en: "SDG Observatory · Institute for Sustainable Development" },
   "page.consultoria": { es: "Consultoría · Instituto de Desarrollo Sostenible", en: "Consulting · Institute for Sustainable Development" },
   "page.vinculacion": { es: "Vinculación · Instituto de Desarrollo Sostenible", en: "Partnerships · Institute for Sustainable Development" },
-  "page.hitos": { es: "Hitos · Instituto de Desarrollo Sostenible", en: "Milestones · Institute for Sustainable Development" },
+  "page.hitos": { es: "Hitos y galería · Instituto de Desarrollo Sostenible", en: "Milestones and gallery · Institute for Sustainable Development" },
   "page.visitas": { es: "Visitas al Instituto · Instituto de Desarrollo Sostenible", en: "Institute visits · Institute for Sustainable Development" },
   "page.contacto": { es: "Contacto · Instituto de Desarrollo Sostenible", en: "Contact · Institute for Sustainable Development" },
 
