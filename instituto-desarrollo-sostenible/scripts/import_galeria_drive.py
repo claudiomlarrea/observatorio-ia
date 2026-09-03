@@ -12,7 +12,7 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageOps
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "assets" / "galeria" / "drive"
@@ -84,6 +84,7 @@ def caption_from(name: str) -> str:
 
 def save_web_jpeg(raw: bytes, dest: Path) -> None:
     im = Image.open(io.BytesIO(raw))
+    im = ImageOps.exif_transpose(im) or im
     if im.mode in ("RGBA", "P", "LA"):
         bg = Image.new("RGB", im.size, (255, 255, 255))
         rgba = im.convert("RGBA")
