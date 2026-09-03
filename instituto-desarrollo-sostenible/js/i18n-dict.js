@@ -668,8 +668,8 @@ window.I18N_DICT = {
   },
   "sec.hitos.gallery": { es: "Galería", en: "Gallery" },
   "sec.hitos.gallery.intro": {
-    es: "Tocá una foto para ampliarla. Filtrá por función universitaria o por hitos.",
-    en: "Tap a photo to enlarge it. Filter by university function or by milestones."
+    es: "Tocá una foto para ampliarla. Filtrá por el nombre de cada carpeta de la galería institucional.",
+    en: "Tap a photo to enlarge it. Filter by each folder name of the institutional gallery."
   },
 
   "sec.visitas.kicker": { es: "Alcance", en: "Reach" },
@@ -754,12 +754,13 @@ window.I18N_DICT = {
 
   "dyn.gal.filter.aria": { es: "Filtrar galería", en: "Filter gallery" },
   "dyn.gal.filter.todos": { es: "Todos", en: "All" },
-  "dyn.gal.filter.hitos": { es: "Hitos", en: "Milestones" },
-  "dyn.gal.filter.gestion": { es: "Gestión", en: "Management" },
+  "dyn.gal.filter.alianzas": { es: "Alianzas y membresías", en: "Alliances and memberships" },
+  "dyn.gal.filter.congreso-ids": { es: "Congreso de Desarrollo Sostenible IDS", en: "IDS Sustainable Development Congress" },
+  "dyn.gal.filter.consultorias": { es: "Consultorías", en: "Consulting" },
   "dyn.gal.filter.docencia": { es: "Docencia", en: "Teaching" },
-  "dyn.gal.filter.investigacion": { es: "Investigación", en: "Research" },
-  "dyn.gal.filter.extension": { es: "Extensión", en: "Outreach" },
-  "dyn.gal.filter.consultoria": { es: "Consultoría", en: "Consulting" },
+  "dyn.gal.filter.gestion": { es: "Gestión", en: "Management" },
+  "dyn.gal.filter.congresos": { es: "Participación en congresos", en: "Conference participation" },
+  "dyn.gal.filter.premios": { es: "Premios y reconocimientos", en: "Awards and recognitions" },
   "dyn.gal.empty": { es: "No hay fotos en esta categoría todavía.", en: "There are no photos in this category yet." },
   "dyn.gal.lb": { es: "Vista ampliada", en: "Enlarged view" },
   "dyn.gal.close": { es: "Cerrar", en: "Close" },
