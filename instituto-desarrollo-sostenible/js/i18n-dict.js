@@ -381,8 +381,8 @@ window.I18N_DICT = {
   "sec.biblio.tab.instituto": { es: "Publicaciones del Instituto", en: "Institute publications" },
   "sec.biblio.tab.global": { es: "Publicaciones sobre Desarrollo Sostenible en el mundo", en: "Sustainable Development publications worldwide" },
   "sec.biblio.panel.intro": {
-    es: "Libros, artículos científicos, diarios y participación en reuniones científicas del equipo del IDS.",
-    en: "Books, scientific articles, newspaper pieces and scientific-meeting participation by the IDS team."
+    es: "Libros, capítulos, artículos científicos, diarios y participación en reuniones científicas del equipo del IDS.",
+    en: "Books, book chapters, scientific articles, newspaper pieces and scientific-meeting participation by the IDS team."
   },
   "sec.biblio.showing": { es: "Mostrando", en: "Showing" },
   "sec.biblio.inView": { es: "en esta vista.", en: "in this view." },
@@ -416,6 +416,7 @@ window.I18N_DICT = {
 
   "dyn.biblio.filter.todas": { es: "Ver todas", en: "See all" },
   "dyn.biblio.filter.libros": { es: "Libros", en: "Books" },
+  "dyn.biblio.filter.capitulos": { es: "Capítulos de libro", en: "Book chapters" },
   "dyn.biblio.filter.articulos": { es: "Artículos científicos", en: "Scientific articles" },
   "dyn.biblio.filter.reuniones": { es: "Participación en reuniones científicas", en: "Scientific meeting participation" },
   "dyn.biblio.filter.diarios": { es: "Diarios", en: "Newspapers" },
@@ -471,6 +472,7 @@ window.I18N_DICT = {
   "dyn.biblio.search": { es: "Búsqueda", en: "Search" },
   "dyn.biblio.allYears": { es: "Todos los años", en: "All years" },
   "dyn.biblio.chip.libro": { es: "Libro", en: "Book" },
+  "dyn.biblio.chip.capitulo": { es: "Capítulo de libro", en: "Book chapter" },
   "dyn.biblio.chip.articulo": { es: "Artículo científico", en: "Scientific article" },
   "dyn.biblio.chip.reunion": { es: "Reunión científica", en: "Scientific meeting" },
   "dyn.biblio.chip.diario": { es: "Diario", en: "Newspaper" },

@@ -14,6 +14,7 @@
   var filtrosDef = [
     { id: "todas", labelKey: "dyn.biblio.filter.todas", icono: "✨" },
     { id: "libros", labelKey: "dyn.biblio.filter.libros", icono: "📚" },
+    { id: "capitulos", labelKey: "dyn.biblio.filter.capitulos", icono: "📖" },
     { id: "articulos", labelKey: "dyn.biblio.filter.articulos", icono: "📄" },
     { id: "reuniones", labelKey: "dyn.biblio.filter.reuniones", icono: "🎓" },
     { id: "diarios", labelKey: "dyn.biblio.filter.diarios", icono: "📰" },
@@ -119,6 +120,7 @@
 
   function chipClass(cat) {
     if (cat === "libros") return "libros";
+    if (cat === "capitulos") return "capitulos";
     if (cat === "articulos") return "papers";
     if (cat === "reuniones") return "eventos";
     if (cat === "diarios") return "diarios";
@@ -139,6 +141,7 @@
 
   function tipoLocal(it) {
     if (it.categoria === "libros") return tt("dyn.biblio.chip.libro", "Libro");
+    if (it.categoria === "capitulos") return tt("dyn.biblio.chip.capitulo", "Capítulo de libro");
     if (it.categoria === "articulos") return tt("dyn.biblio.chip.articulo", "Artículo científico");
     if (it.categoria === "reuniones") return tt("dyn.biblio.chip.reunion", "Reunión científica");
     if (it.categoria === "diarios") return tt("dyn.biblio.chip.diario", "Diario");
