@@ -991,6 +991,10 @@ a:hover {
   margin-top: 0.3rem;
   font-size: 0.78rem;
   font-weight: 600;
+  color: var(--color-green);
+}
+
+.section--green .stat span {
   color: var(--color-on-dark-muted);
 }
 
