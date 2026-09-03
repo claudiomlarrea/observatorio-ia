@@ -31,6 +31,7 @@ window.I18N_DICT = {
   "nav.instituto.sub": { es: "Subsecciones de El Instituto", en: "The Institute subsections" },
   "nav.historia": { es: "Historia y fundador", en: "History and founder" },
   "nav.equipo": { es: "Dirección y equipo", en: "Leadership and team" },
+  "nav.numeros": { es: "El IDS en números", en: "IDS in numbers" },
   "nav.visitas": { es: "Visitas al Instituto", en: "Institute visits" },
   "nav.actividades": { es: "Actividades", en: "Activities" },
   "nav.actividades.sub": { es: "Subsecciones de Actividades", en: "Activities subsections" },
@@ -66,7 +67,6 @@ window.I18N_DICT = {
   "hero.filter.note2": { es: "Diplomaturas, cursos y formación de investigadores", en: "Diplomas, courses and researcher training" },
   "hero.filter.note3": { es: "Congresos, jornadas y acompañamiento a organizaciones", en: "Congresses, seminars and support for organisations" },
 
-  "sec.numeros.kicker": { es: "2022 — 2025", en: "2022 — 2025" },
   "sec.numeros.title": { es: "El IDS en números", en: "IDS in numbers" },
   "stat.pubs": { es: "Publicaciones científicas", en: "Scientific publications" },
   "stat.books": { es: "Libros publicados", en: "Books published" },
@@ -215,8 +215,8 @@ window.I18N_DICT = {
   },
   "sec.gestion.revista.title": { es: "Revista del IDS", en: "IDS Journal" },
   "sec.gestion.revista.body": {
-    es: "Octubre 2024: reedición de la Revista del Instituto de Desarrollo Sostenible, con 5 artículos científicos, reseña de un libro y trabajos de estudiantes de la Semana Latinoamericana de la Red de Universidades Católicas. Invitación a la editorial a PhD. Frederic Marimon. Editora: PhD. Belén Arias. El IDS cuenta con 20 revisores externos, referentes mundiales de sostenibilidad.",
-    en: "October 2024: relaunch of the Institute for Sustainable Development Journal, with 5 scientific articles, a book review and student papers from the Latin American Week of the Catholic Universities Network. Editorial invitation to PhD Frederic Marimon. Editor: PhD Belén Arias. The IDS has 20 external reviewers, global sustainability referees."
+    es: "Octubre 2024: reedición de la Revista del Instituto de Desarrollo Sostenible, con 5 artículos científicos, reseña de un libro y trabajos de estudiantes de la Semana Latinoamericana de la Red de Universidades Católicas. Invitación a la editorial a PhD. Frederic Marimon. Editora: PhD. Belén Arias. El IDS cuenta con <span data-ids-fact=\"reviewers\">20</span> revisores externos, referentes mundiales de sostenibilidad.",
+    en: "October 2024: relaunch of the Institute for Sustainable Development Journal, with 5 scientific articles, a book review and student papers from the Latin American Week of the Catholic Universities Network. Editorial invitation to PhD Frederic Marimon. Editor: PhD Belén Arias. The IDS has <span data-ids-fact=\"reviewers\">20</span> external reviewers, global sustainability referees."
   },
   "sec.gestion.lg.title": { es: "Convenio L&G SRL", en: "L&G SRL agreement" },
   "sec.gestion.lg.body": {
@@ -362,8 +362,8 @@ window.I18N_DICT = {
     en: "Institute output (books, scientific articles and meetings) and a worldwide index of literature on sustainable development, using the same open sources as the Observatory’s AI Library."
   },
   "sec.biblio.editorial": {
-    es: "Revista del IDS: relanzada en 2024, con artículos arbitrados, reseñas y trabajos de estudiantes. Editora: PhD. Belén Arias. 20 revisores externos internacionales; dos números en 2025, en proceso de indexación.",
-    en: "IDS Journal: relaunched in 2024, with peer-reviewed articles, reviews and student papers. Editor: PhD Belén Arias. 20 international external reviewers; two issues in 2025, currently being indexed."
+    es: "Revista del IDS: relanzada en 2024, con artículos arbitrados, reseñas y trabajos de estudiantes. Editora: PhD. Belén Arias. <span data-ids-fact=\"reviewers\">20</span> revisores externos internacionales; dos números en 2025, en proceso de indexación.",
+    en: "IDS Journal: relaunched in 2024, with peer-reviewed articles, reviews and student papers. Editor: PhD Belén Arias. <span data-ids-fact=\"reviewers\">20</span> international external reviewers; two issues in 2025, currently being indexed."
   },
   "sec.biblio.revista.btn": { es: "Revista del IDS", en: "IDS Journal" },
   "sec.biblio.revista.cue": { es: "Abre en otra pestaña", en: "Opens in a new tab" },
@@ -499,8 +499,8 @@ window.I18N_DICT = {
   "sec.docencia.blend": { es: "Presencial y virtual", en: "In-person and online" },
   "sec.docencia.researchers.title": { es: "Formación de investigadores", en: "Researcher training" },
   "sec.docencia.researchers.body": {
-    es: "En 2024 se dictó el Curso de Actualización en Medición de los ODS, con 20 investigadores. El IDS acompaña tesis de grado, maestría y doctorado: entre 2023 y 2025, trabajos dirigidos obtuvieron calificación 10 y el Premio Domingo Faustino Sarmiento de la Secretaría de Estado de Ciencia y Tecnología de San Juan.",
-    en: "In 2024 the Continuing Education Course on SDG Measurement was taught, with 20 researchers. The IDS supports undergraduate, master’s and doctoral theses: between 2023 and 2025, supervised work received a mark of 10 and the Domingo Faustino Sarmiento Prize from the San Juan Secretariat of Science and Technology."
+    es: "En 2024 se dictó el Curso de Actualización en Medición de los ODS, con 20 investigadores. El IDS acompaña tesis de grado, maestría y doctorado: entre 2023 y 2025, <span data-ids-fact=\"theses\">10</span> tesis dirigidas obtuvieron calificación máxima y el Premio Domingo Faustino Sarmiento de la Secretaría de Estado de Ciencia y Tecnología de San Juan.",
+    en: "In 2024 the Continuing Education Course on SDG Measurement was taught, with 20 researchers. The IDS supports undergraduate, master’s and doctoral theses: between 2023 and 2025, <span data-ids-fact=\"theses\">10</span> supervised theses received top marks and the Domingo Faustino Sarmiento Prize from the San Juan Secretariat of Science and Technology."
   },
   "sec.docencia.proj.title": { es: "Proyección académica", en: "Academic outlook" },
   "sec.docencia.proj.body": {

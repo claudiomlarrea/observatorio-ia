@@ -75,6 +75,7 @@
                 <ul class="nav-submenu" id="nav-sub-instituto">
                   <li><a href="#instituto" data-i18n="nav.historia">Historia y fundador</a></li>
                   <li><a href="#equipo" data-i18n="nav.equipo">Dirección y equipo</a></li>
+                  <li><a href="#numeros" data-i18n="nav.numeros">El IDS en números</a></li>
                   <li><a href="#visitas" data-i18n="nav.visitas">Visitas al Instituto</a></li>
                 </ul>
               </li>
@@ -89,6 +90,7 @@
                   data-i18n-attr="aria-label:nav.actividades.sub"
                 ></button>
                 <ul class="nav-submenu" id="nav-sub-actividades">
+                  <li><a href="#numeros" data-i18n="nav.numeros">El IDS en números</a></li>
                   <li><a href="#gestion" data-i18n="nav.gestion">Gestión</a></li>
                   <li><a href="#docencia" data-i18n="nav.docencia">Docencia</a></li>
                   <li><a href="#investigacion" data-i18n="nav.investigacion">Investigación</a></li>
@@ -168,20 +170,19 @@
       <section class="section section--green" id="numeros" aria-labelledby="sec-numeros">
         <div class="section-inner">
           <header class="section-head">
-            <p class="section-kicker" data-i18n="sec.numeros.kicker">2022 — 2025</p>
             <h2 id="sec-numeros" data-i18n="sec.numeros.title">El IDS en números</h2>
           </header>
-          <div class="stats">
-            <div class="stat"><b>30+</b><span data-i18n="stat.pubs">Publicaciones científicas</span></div>
-            <div class="stat"><b>2</b><span data-i18n="stat.books">Libros publicados</span></div>
-            <div class="stat"><b>11+</b><span data-i18n="stat.congress">Congresos internacionales</span></div>
-            <div class="stat"><b>8+</b><span data-i18n="stat.projects">Proyectos de investigación</span></div>
-            <div class="stat"><b>457+</b><span data-i18n="stat.trained">Personas formadas en diplomaturas</span></div>
-            <div class="stat"><b>7</b><span data-i18n="stat.researchers">Investigadores activos</span></div>
-            <div class="stat"><b>20</b><span data-i18n="stat.reviewers">Revisores de la Revista IDS</span></div>
-            <div class="stat"><b>10</b><span data-i18n="stat.theses">Tesis con calificación máxima</span></div>
-            <div class="stat"><b>6+</b><span data-i18n="stat.networks">Redes y alianzas</span></div>
-            <div class="stat"><b>3</b><span data-i18n="stat.editions">Ediciones del Congreso Internacional</span></div>
+          <div class="stats" id="ids-numeros">
+            <div class="stat" data-stat="pubs"><b>—</b><span data-i18n="stat.pubs">Publicaciones científicas</span></div>
+            <div class="stat" data-stat="books"><b>—</b><span data-i18n="stat.books">Libros publicados</span></div>
+            <div class="stat" data-stat="congress"><b>—</b><span data-i18n="stat.congress">Congresos internacionales</span></div>
+            <div class="stat" data-stat="projects"><b>—</b><span data-i18n="stat.projects">Proyectos de investigación</span></div>
+            <div class="stat" data-stat="trained"><b>—</b><span data-i18n="stat.trained">Personas formadas en diplomaturas</span></div>
+            <div class="stat" data-stat="researchers"><b>—</b><span data-i18n="stat.researchers">Investigadores activos</span></div>
+            <div class="stat" data-stat="reviewers"><b>—</b><span data-i18n="stat.reviewers">Revisores de la Revista IDS</span></div>
+            <div class="stat" data-stat="theses"><b>—</b><span data-i18n="stat.theses">Tesis con calificación máxima</span></div>
+            <div class="stat" data-stat="networks"><b>—</b><span data-i18n="stat.networks">Redes y alianzas</span></div>
+            <div class="stat" data-stat="editions"><b>—</b><span data-i18n="stat.editions">Ediciones del Congreso Internacional</span></div>
           </div>
         </div>
       </section>
@@ -480,13 +481,13 @@
               <time datetime="2024-10">2024</time>
               <div>
                 <h3 data-i18n="sec.gestion.revista.title">Revista del IDS</h3>
-                <p data-i18n="sec.gestion.revista.body">
+                <p data-i18n="sec.gestion.revista.body" data-i18n-html>
                   Octubre 2024: reedición de la Revista del Instituto de
                   Desarrollo Sostenible, con 5 artículos científicos, reseña de
                   un libro y trabajos de estudiantes de la Semana Latinoamericana
                   de la Red de Universidades Católicas. Invitación a la editorial
                   a PhD. Frederic Marimon. Editora: PhD. Belén Arias. El IDS
-                  cuenta con 20 revisores externos, referentes mundiales de
+                  cuenta con <span data-ids-fact="reviewers">20</span> revisores externos, referentes mundiales de
                   sostenibilidad.
                 </p>
               </div>
@@ -600,7 +601,7 @@
 
           <h3 class="stack-gap" data-i18n="sec.investigacion.p2026">Proyectos 2026</h3>
           <div class="grid-2">
-            <article class="card">
+            <article class="card" data-ids-item="project">
               <h3 data-i18n="sec.investigacion.eco.title">EcoHuella UCCuyo</h3>
               <p data-i18n="sec.investigacion.eco.p1" data-i18n-html>
                 Medición, educación y transferencia tecnológica para la
@@ -624,7 +625,7 @@
                 cálculo de huella ecológica y recomendaciones por nivel educativo.
               </p>
             </article>
-            <article class="card">
+            <article class="card" data-ids-item="project">
               <h3 data-i18n="sec.investigacion.rt.title">Del Balance Social a la información sobre sostenibilidad</h3>
               <p data-i18n="sec.investigacion.rt.p1">
                 Análisis comparado de la transición normativa RT 36/44 → RT 60
@@ -642,7 +643,7 @@
                 NIIF S1/S2 del ISSB.
               </p>
             </article>
-            <article class="card">
+            <article class="card" data-ids-item="project">
               <h3 data-i18n="sec.investigacion.pls.title">
                 Evaluación del impacto de las cátedras de sostenibilidad en el
                 aprendizaje y la intención comportamental
@@ -662,7 +663,7 @@
 
           <h3 class="stack-gap" data-i18n="sec.investigacion.prog">Programas de formación integral 2024–2028</h3>
           <div class="grid-2">
-            <article class="card">
+            <article class="card" data-ids-item="project">
               <h3 data-i18n="sec.investigacion.educar.title">Educar para el desarrollo sostenible</h3>
               <p data-i18n="sec.investigacion.educar.body">
                 Programa del IDS y la Escuela de Cultura Religiosa y Pastoral.
@@ -742,9 +743,9 @@
             mismas fuentes abiertas que la Biblioteca de IA del Observatorio.
           </p>
 
-          <p class="pub-editorial" data-i18n="sec.biblio.editorial">
+          <p class="pub-editorial" data-i18n="sec.biblio.editorial" data-i18n-html>
             Revista del IDS: relanzada en 2024, con artículos arbitrados, reseñas
-            y trabajos de estudiantes. Editora: PhD. Belén Arias. 20 revisores
+            y trabajos de estudiantes. Editora: PhD. Belén Arias. <span data-ids-fact="reviewers">20</span> revisores
             externos internacionales; dos números en 2025, en proceso de indexación.
           </p>
           <p class="pub-tabs-hint" data-i18n="sec.biblio.tabs.hint">Dos catálogos. Tocá el que quieras abrir:</p>
@@ -896,13 +897,13 @@
                   <tr>
                     <td data-i18n="sec.docencia.ed1">1.ª edición</td>
                     <td>2024</td>
-                    <td>457 <span data-i18n="sec.docencia.people">personas</span></td>
+                    <td><span data-ids-add="trained">457</span> <span data-i18n="sec.docencia.people">personas</span></td>
                     <td data-i18n="sec.docencia.blend">Presencial y virtual</td>
                   </tr>
                   <tr>
                     <td data-i18n="sec.docencia.ed2">2.ª edición</td>
                     <td>2025</td>
-                    <td>230 <span data-i18n="sec.docencia.people">personas</span></td>
+                    <td><span data-ids-add="trained">230</span> <span data-i18n="sec.docencia.people">personas</span></td>
                     <td data-i18n="sec.docencia.blend">Presencial y virtual</td>
                   </tr>
                   <tr>
@@ -918,11 +919,11 @@
           <div class="grid-2 stack-gap">
             <article class="card">
               <h3 data-i18n="sec.docencia.researchers.title">Formación de investigadores</h3>
-              <p data-i18n="sec.docencia.researchers.body">
+              <p data-i18n="sec.docencia.researchers.body" data-i18n-html>
                 En 2024 se dictó el Curso de Actualización en Medición de los ODS,
                 con 20 investigadores. El IDS acompaña tesis de grado, maestría y
-                doctorado: entre 2023 y 2025, trabajos dirigidos obtuvieron
-                calificación 10 y el Premio Domingo Faustino Sarmiento de la
+                doctorado: entre 2023 y 2025, <span data-ids-fact="theses">10</span> tesis dirigidas obtuvieron
+                calificación máxima y el Premio Domingo Faustino Sarmiento de la
                 Secretaría de Estado de Ciencia y Tecnología de San Juan.
               </p>
             </article>
@@ -945,7 +946,7 @@
             <p class="section-kicker" data-i18n="sec.extension.kicker">Comunidad</p>
             <h2 id="sec-extension" data-i18n="sec.extension.title">Extensión</h2>
           </header>
-          <article class="card">
+          <article class="card" data-ids-fact="editions" data-ids-value="3">
             <h3 data-i18n="sec.extension.cong.title">III Congreso Internacional «San Juan + Sostenible»</h3>
             <p data-i18n="sec.extension.cong.lead">
               «El futuro no se espera, se construye». 15 y 16 de mayo de 2025,
@@ -1260,6 +1261,7 @@
           <ul class="footer-links">
             <li><a href="#inicio" data-i18n="nav.inicio">Inicio</a></li>
             <li><a href="#instituto" data-i18n="nav.instituto">El Instituto</a></li>
+            <li><a href="#numeros" data-i18n="nav.numeros">El IDS en números</a></li>
             <li><a href="#gestion" data-i18n="nav.gestion">Gestión</a></li>
             <li><a href="#investigacion" data-i18n="nav.investigacion">Investigación</a></li>
             <li><a href="#publicaciones" data-i18n="nav.biblioteca">Biblioteca del IDS</a></li>
@@ -1286,9 +1288,9 @@
       </div>
     </footer>
 
-    <script src="js/i18n-dict.js?v=8" defer></script>
+    <script src="js/i18n-dict.js?v=9" defer></script>
     <script src="js/i18n.js?v=2" defer></script>
-    <script src="js/main.js?v=11" defer></script>
+    <script src="js/main.js?v=12" defer></script>
     <script src="js/publicaciones-config.js?v=2" defer></script>
     <script src="js/visitantes-config.js?v=1" defer></script>
     <script src="js/visitantes.js?v=3" defer></script>
@@ -1298,5 +1300,6 @@
     <script src="js/publicaciones-fuentes-abiertas.js?v=3" defer></script>
     <script src="js/biblioteca-ids-datos.js?v=3" defer></script>
     <script src="js/biblioteca-ids.js?v=5" defer></script>
+    <script src="js/numeros-ids.js?v=1" defer></script>
   </body>
 </html>

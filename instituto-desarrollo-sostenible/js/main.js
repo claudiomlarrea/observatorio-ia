@@ -51,6 +51,7 @@
   }
 
   function showPage(hash, push) {
+    var raw = String(hash || "").replace(/^#/, "") || "inicio";
     var id = pageIdFromHash(hash);
     var panel = document.querySelector('.page-panel[data-page="' + id + '"]');
     if (!panel) return;
@@ -58,26 +59,33 @@
       el.classList.remove("is-active");
     });
     panel.classList.add("is-active");
-    window.scrollTo(0, 0);
+    var shownHash = "#" + raw;
+    var target = document.getElementById(raw);
+    if (target && panel.contains(target) && raw !== "inicio") {
+      window.scrollTo(0, 0);
+      requestAnimationFrame(function () {
+        target.scrollIntoView({ block: "start" });
+      });
+    } else {
+      window.scrollTo(0, 0);
+    }
     document.title = pageTitle(id);
     if (header) header.classList.toggle("is-solid", id !== "inicio");
     document.querySelectorAll('a[href^="#"]').forEach(function (link) {
       var href = link.getAttribute("href") || "";
-      var linkPage = pageIdFromHash(href);
       if (href === "#contenido") {
         link.removeAttribute("aria-current");
         return;
       }
-      if (linkPage === id && (href === "#" + id || (id === "inicio" && href === "#inicio"))) {
+      if (href === shownHash || (shownHash === "#inicio" && href === "#inicio")) {
         link.setAttribute("aria-current", "page");
       } else {
         link.removeAttribute("aria-current");
       }
     });
     if (push) {
-      var next = "#" + id;
-      if (location.hash !== next) {
-        history.pushState({ page: id }, "", next);
+      if (location.hash !== shownHash) {
+        history.pushState({ page: id }, "", shownHash);
       }
     }
     document.dispatchEvent(new CustomEvent("ids:page", { detail: id }));
