@@ -381,8 +381,8 @@ window.I18N_DICT = {
   "sec.biblio.tab.instituto": { es: "Publicaciones del Instituto", en: "Institute publications" },
   "sec.biblio.tab.global": { es: "Publicaciones sobre Desarrollo Sostenible en el mundo", en: "Sustainable Development publications worldwide" },
   "sec.biblio.panel.intro": {
-    es: "Libros, artículos científicos y participación en reuniones científicas del equipo del IDS.",
-    en: "Books, scientific articles and scientific-meeting participation by the IDS team."
+    es: "Libros, artículos científicos, diarios y participación en reuniones científicas del equipo del IDS.",
+    en: "Books, scientific articles, newspaper pieces and scientific-meeting participation by the IDS team."
   },
   "sec.biblio.showing": { es: "Mostrando", en: "Showing" },
   "sec.biblio.inView": { es: "en esta vista.", en: "in this view." },
@@ -418,6 +418,8 @@ window.I18N_DICT = {
   "dyn.biblio.filter.libros": { es: "Libros", en: "Books" },
   "dyn.biblio.filter.articulos": { es: "Artículos científicos", en: "Scientific articles" },
   "dyn.biblio.filter.reuniones": { es: "Participación en reuniones científicas", en: "Scientific meeting participation" },
+  "dyn.biblio.filter.diarios": { es: "Diarios", en: "Newspapers" },
+  "dyn.biblio.filter.revista": { es: "Revista del IDS", en: "IDS Journal" },
   "dyn.biblio.emptyFilter": {
     es: "<p>No hay registros en este filtro.</p><p>Elegí <strong>Ver todas</strong> para ver la producción del Instituto.</p>",
     en: "<p>There are no records in this filter.</p><p>Choose <strong>See all</strong> to view the Institute’s output.</p>"
@@ -471,6 +473,7 @@ window.I18N_DICT = {
   "dyn.biblio.chip.libro": { es: "Libro", en: "Book" },
   "dyn.biblio.chip.articulo": { es: "Artículo científico", en: "Scientific article" },
   "dyn.biblio.chip.reunion": { es: "Reunión científica", en: "Scientific meeting" },
+  "dyn.biblio.chip.diario": { es: "Diario", en: "Newspaper" },
   "dyn.biblio.chip.trabajo": { es: "Trabajo", en: "Work" },
 
   "sec.docencia.kicker": { es: "Formación", en: "Training" },

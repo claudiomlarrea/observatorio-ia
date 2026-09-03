@@ -15,7 +15,14 @@
     { id: "todas", labelKey: "dyn.biblio.filter.todas", icono: "✨" },
     { id: "libros", labelKey: "dyn.biblio.filter.libros", icono: "📚" },
     { id: "articulos", labelKey: "dyn.biblio.filter.articulos", icono: "📄" },
-    { id: "reuniones", labelKey: "dyn.biblio.filter.reuniones", icono: "🎓" }
+    { id: "reuniones", labelKey: "dyn.biblio.filter.reuniones", icono: "🎓" },
+    { id: "diarios", labelKey: "dyn.biblio.filter.diarios", icono: "📰" },
+    {
+      id: "revista",
+      labelKey: "dyn.biblio.filter.revista",
+      icono: "📕",
+      href: "https://revistas.uccuyo.edu.ar/index.php/rids/index"
+    }
   ];
 
   var itemsLocal = ((window.IDS_BIBLIOTECA || {}).items || []).slice();
@@ -114,6 +121,7 @@
     if (cat === "libros") return "libros";
     if (cat === "articulos") return "papers";
     if (cat === "reuniones") return "eventos";
+    if (cat === "diarios") return "diarios";
     return "otros";
   }
 
@@ -133,6 +141,7 @@
     if (it.categoria === "libros") return tt("dyn.biblio.chip.libro", "Libro");
     if (it.categoria === "articulos") return tt("dyn.biblio.chip.articulo", "Artículo científico");
     if (it.categoria === "reuniones") return tt("dyn.biblio.chip.reunion", "Reunión científica");
+    if (it.categoria === "diarios") return tt("dyn.biblio.chip.diario", "Diario");
     return it.tipo || tt("dyn.biblio.chip.articulo", "Publicación");
   }
 
@@ -171,6 +180,23 @@
     if (!root) return;
     root.innerHTML = filtrosDef
       .map(function (f) {
+        var label = esc(tt(f.labelKey, f.id));
+        var icon =
+          '<span class="pub-filter-icon" aria-hidden="true">' +
+          esc(f.icono) +
+          "</span> ";
+        if (f.href) {
+          return (
+            '<a class="pub-filter" href="' +
+            esc(f.href) +
+            '" target="_blank" rel="noopener noreferrer" aria-label="' +
+            esc(tt("sec.biblio.revista.aria", "Revista del IDS (se abre en otra pestaña)")) +
+            '">' +
+            icon +
+            label +
+            "</a>"
+          );
+        }
         var sel = filtroActivo === f.id ? " pub-filter--active" : "";
         return (
           '<button type="button" class="pub-filter' +
@@ -179,15 +205,14 @@
           esc(f.id) +
           '" aria-pressed="' +
           (filtroActivo === f.id) +
-          '"><span class="pub-filter-icon" aria-hidden="true">' +
-          esc(f.icono) +
-          "</span> " +
-          esc(tt(f.labelKey, f.id)) +
+          '">' +
+          icon +
+          label +
           "</button>"
         );
       })
       .join("");
-    root.querySelectorAll(".pub-filter").forEach(function (btn) {
+    root.querySelectorAll(".pub-filter[data-filtro]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         filtroActivo = btn.getAttribute("data-filtro");
         dibujarFiltros();

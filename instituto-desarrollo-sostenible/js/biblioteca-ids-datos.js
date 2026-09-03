@@ -154,6 +154,16 @@ window.IDS_BIBLIOTECA = {
       evento: "XXXV Congreso Internacional de ACEDE, Santander, España. Participación financiada por la Secretaría de Ciencia y Tecnología de San Juan",
       anio: "2026",
       fecha: "14–16 de junio de 2026"
+    },
+    {
+      categoria: "diarios",
+      tipo: "Diario",
+      titulo: "San Juan se proyecta como modelo de desarrollo sostenible: una oportunidad histórica",
+      autores: "Diario La Provincia SJ",
+      anio: "2025",
+      fecha: "5 de mayo de 2025",
+      revista: "Diario La Provincia San Juan",
+      link: "https://diariolaprovinciasj.com/economia/san-juan-se-proyecta-como-modelo-de-desarrollo-sostenible-una-oportunidad-historica-163183/"
     }
   ]
 };
