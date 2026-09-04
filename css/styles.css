@@ -8,10 +8,18 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   /* Compensa el header sticky al ir a #anclas (p. ej. desde el flayer) */
   scroll-padding-top: calc(var(--header-h) + 1rem);
   overflow-x: clip;
+}
+
+.page-panel {
+  display: none;
+}
+
+.page-panel.is-active {
+  display: block;
 }
 
 body {

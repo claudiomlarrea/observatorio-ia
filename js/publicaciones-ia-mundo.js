@@ -849,6 +849,9 @@
     });
 
     window.addEventListener("hashchange", syncHashTab);
+    document.addEventListener("oia:page", function (ev) {
+      if (ev.detail === "publicaciones") syncHashTab();
+    });
     syncHashTab();
   }
 
