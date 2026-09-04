@@ -233,6 +233,18 @@ window.IDS_GALERIA = {
       tags: ["congresos"]
     },
     {
+      src: "assets/galeria/drive/congresos/10-2017-xxxii-conferencia-interamericana-de-contabilidad-lima-peru-1.jpg",
+      alt: "2017 XXXII Conferencia Interamericana de Contabilidad Lima Perú 1",
+      caption: "2017 XXXII Conferencia Interamericana de Contabilidad. Lima, Perú",
+      tags: ["congresos"]
+    },
+    {
+      src: "assets/galeria/drive/congresos/10-2017-xxxii-conferencia-interamericana-de-contabilidad-lima-peru.jpg",
+      alt: "2017 XXXII Conferencia Interamericana de Contabilidad Lima Perú",
+      caption: "2017 XXXII Conferencia Interamericana de Contabilidad. Lima, Perú",
+      tags: ["congresos"]
+    },
+    {
       src: "assets/galeria/drive/congresos/10-2017-jornadas-de-rse-en-el-consejo-profesional-de-ciencias-economicas.jpg",
       alt: "2017 Jornadas de RSE en el Consejo Profesional de Ciencias Económicas",
       caption: "2017 Jornadas de RSE en el Consejo Profesional de Ciencias Económicas",
