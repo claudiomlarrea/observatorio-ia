@@ -1,11 +1,11 @@
 window.I18N_DICT = {
   "meta.title": {
-    es: "Plan AURA | Universidad Católica de Cuyo",
-    en: "Plan AURA | Universidad Católica de Cuyo"
+    es: "Plan Integral de Ahorro y Uso Responsable del Agua | UCCuyo",
+    en: "Integral Plan for Water Conservation and Responsible Use | UCCuyo"
   },
   "meta.description": {
-    es: "Plan Integral AURA de la Universidad Católica de Cuyo: ahorro y uso responsable del agua, investigación, extensión y convocatoria a proyectos.",
-    en: "Universidad Católica de Cuyo AURA Integral Plan: water conservation and responsible use, research, outreach, and project calls."
+    es: "Plan Integral de Ahorro y Uso Responsable del Agua (Plan AURA) de la Universidad Católica de Cuyo: investigación, extensión y convocatoria a proyectos.",
+    en: "Integral Plan for Water Conservation and Responsible Use (Plan AURA) of Universidad Católica de Cuyo: research, outreach, and call for projects."
   },
 
   "a11y.skipLink": {
@@ -21,12 +21,12 @@ window.I18N_DICT = {
     en: "Close menu"
   },
   "a11y.brandLogoAlt": {
-    es: "Ahorrar agua hoy para compartir mañana",
-    en: "Save water today to share tomorrow"
+    es: "Plan AURA — logo del agua",
+    en: "Plan AURA — water logo"
   },
   "a11y.heroSloganAlt": {
-    es: "Ahorrar agua hoy para compartir mañana",
-    en: "Save water today to share tomorrow"
+    es: "Plan AURA — logo del agua",
+    en: "Plan AURA — water logo"
   },
   "a11y.auraBannerAlt": {
     es: "Plan Integral de Ahorro y Uso Responsable del Agua — Ahorrar agua hoy para compartir mañana",
@@ -54,17 +54,37 @@ window.I18N_DICT = {
     es: "Principal",
     en: "Main"
   },
+  "nav.group.plan": {
+    es: "El Plan",
+    en: "The Plan"
+  },
+  "nav.group.comunidad": {
+    es: "Comunidad",
+    en: "Community"
+  },
+  "nav.group.recursos": {
+    es: "Recursos",
+    en: "Resources"
+  },
+  "nav.group.difusion": {
+    es: "Difusión",
+    en: "Outreach"
+  },
   "nav.inicio": {
     es: "Inicio",
     en: "Home"
   },
   "nav.elPlan": {
-    es: "El Plan",
-    en: "The Plan"
+    es: "El Plan AURA",
+    en: "The AURA Plan"
   },
   "nav.planAura": {
-    es: "Plan AURA",
-    en: "Plan AURA"
+    es: "Plan Técnico AURA",
+    en: "AURA Technical Plan"
+  },
+  "nav.marco": {
+    es: "Marco normativo",
+    en: "Regulatory framework"
   },
   "nav.comision": {
     es: "Sala de trabajo",
@@ -83,16 +103,24 @@ window.I18N_DICT = {
     en: "Calls for proposals"
   },
   "nav.documentos": {
-    es: "Documentos",
-    en: "Documents"
+    es: "Marco normativo",
+    en: "Regulatory framework"
   },
   "nav.galeria": {
     es: "Galería de imágenes",
     en: "Image gallery"
   },
+  "nav.noticias": {
+    es: "Noticias",
+    en: "News"
+  },
+  "nav.publicaciones": {
+    es: "Publicaciones",
+    en: "Publications"
+  },
   "nav.visitas": {
-    es: "Visitas al Plan AURA",
-    en: "Plan AURA visits"
+    es: "Visualizaciones del Plan",
+    en: "Plan visualizations"
   },
   "nav.contacto": {
     es: "Contacto",
@@ -104,12 +132,12 @@ window.I18N_DICT = {
     en: "Universidad Católica de Cuyo"
   },
   "hero.title": {
-    es: "Plan Integral AURA",
-    en: "AURA Integral Plan"
+    es: "Plan Integral de Ahorro y Uso Responsable del Agua",
+    en: "Integral Plan for Water Conservation and Responsible Use"
   },
   "hero.lead": {
-    es: "Programa institucional de la Universidad Católica de Cuyo para el ahorro y el uso responsable del agua: investigación, formación y vinculación con el territorio, con enfoque académico, ético y regional en San Juan, San Luis y Mendoza.",
-    en: "Universidad Católica de Cuyo institutional program for water conservation and responsible use: research, training, and engagement with the region, with an academic, ethical, and regional focus in San Juan, San Luis, and Mendoza."
+    es: "<strong>Coordinadora general del Plan Integral:</strong> María Laura Simonassi<br /><strong>Coordinador Técnico:</strong> Ing. Luis Jiménez",
+    en: "<strong>General Coordinator of the Integral Plan:</strong> María Laura Simonassi<br /><strong>Technical Coordinator:</strong> Eng. Luis Jiménez"
   },
   "hero.cta.convocatorias": {
     es: "Convocatorias",
@@ -148,8 +176,8 @@ window.I18N_DICT = {
     en: "Contact"
   },
   "hero.director": {
-    es: 'Coordinador del Programa: Ing. Luis Jiménez · <a href="mailto:luisjimenez@uccuyo.edu.ar">luisjimenez@uccuyo.edu.ar</a>',
-    en: 'Program Coordinator: Eng. Luis Jiménez · <a href="mailto:luisjimenez@uccuyo.edu.ar">luisjimenez@uccuyo.edu.ar</a>'
+    es: 'Coordinador Técnico: <a href="mailto:luisjimenez@uccuyo.edu.ar">luisjimenez@uccuyo.edu.ar</a>',
+    en: 'Technical Coordinator: <a href="mailto:luisjimenez@uccuyo.edu.ar">luisjimenez@uccuyo.edu.ar</a>'
   },
 
   "sec.elPlan.kicker": {
@@ -160,33 +188,45 @@ window.I18N_DICT = {
     es: "El Plan AURA",
     en: "The AURA Plan"
   },
+  "sec.elPlan.fullname": {
+    es: "Plan Integral de Ahorro y Uso Responsable del Agua",
+    en: "Integral Plan for Water Conservation and Responsible Use"
+  },
+  "sec.elPlan.subtitle": {
+    es: "Plan Integral Plan AURA",
+    en: "AURA Integral Plan"
+  },
   "sec.elPlan.intro": {
-    es: 'El <strong>Plan Integral de Ahorro y Uso Responsable del Agua (Plan AURA)</strong> depende de la Universidad Católica de Cuyo, conforme a su resolución de conformación. Articula docencia, investigación y extensión en torno a la gestión sostenible del recurso hídrico en contextos áridos, con especial referencia a la provincia de San Juan, e integra a institutos, unidades académicas y niveles educativos de la sede (véase <a href="#red">Red institucional</a>).',
-    en: 'The <strong>Integral Plan for Water Conservation and Responsible Use (Plan AURA)</strong> is part of Universidad Católica de Cuyo, as established in its founding resolution. It connects teaching, research, and outreach around sustainable water management in arid contexts, with special reference to San Juan province, and integrates institutes, academic units, and educational levels at the campus (see <a href="#red">Institutional network</a>).'
+    es: "El Plan AURA depende de la Universidad Católica de Cuyo, conforme a su resolución de conformación N.º&nbsp;418-CS-2024 del Consejo Superior. Articula docencia, investigación y extensión en torno a la gestión sostenible del recurso hídrico en contextos áridos, en la provincia de San Juan, e integra a institutos, unidades académicas y niveles educativos de la sede (véase <a href=\"#red\">Red institucional</a>). Como también en las sedes de San Luis y Mendoza.",
+    en: "Plan AURA is under Universidad Católica de Cuyo, pursuant to its founding Superior Council Resolution No.&nbsp;418-CS-2024. It connects teaching, research, and outreach around sustainable water management in arid contexts in San Juan province, and integrates institutes, academic units, and educational levels at the campus (see <a href=\"#red\">Institutional network</a>). It also includes the San Luis and Mendoza campuses."
+  },
+  "sec.elPlan.ctaResolucion": {
+    es: "Resolución N.º 418-CS-2024",
+    en: "Resolution No. 418-CS-2024"
   },
   "sec.elPlan.mision.title": {
     es: "Misión",
     en: "Mission"
   },
   "sec.elPlan.mision.body": {
-    es: "Promover el conocimiento científico y aplicado, la formación de capacidades y la transferencia a la comunidad sobre el ahorro y el uso responsable del agua, contribuyendo a una cultura hídrica responsable en la UCCuyo y su área de influencia.",
-    en: "Promote scientific and applied knowledge, capacity building, and community transfer on water conservation and responsible use, contributing to a responsible water culture at UCCuyo and in its area of influence."
+    es: "Promover el conocimiento científico y aplicado, la formación de capacidades y la transferencia a la comunidad sobre el ahorro y el uso responsable del agua, impulsando su aplicación concreta en diagnósticos, planes y herramientas de gestión hídrica, y contribuyendo a una cultura hídrica responsable en la UCCuyo y su área de influencia, en respuesta al llamado del papa Francisco en Laudato Si' al cuidado de la casa común.",
+    en: "Promote scientific and applied knowledge, capacity building, and community transfer on water conservation and responsible use, driving its concrete application in diagnostics, plans, and water-management tools, and contributing to a responsible water culture at UCCuyo and in its area of influence, in response to Pope Francis's call in Laudato Si' to care for our common home."
   },
   "sec.elPlan.vision.title": {
     es: "Visión",
     en: "Vision"
   },
   "sec.elPlan.vision.body": {
-    es: "Consolidarse como programa referente de la UCCuyo en la gestión sostenible del recurso hídrico, en articulación con el Plan Estratégico Institucional 2023-2027.",
-    en: "Become a leading UCCuyo program in sustainable water resource management, aligned with the Institutional Strategic Plan 2023–2027."
+    es: "Consolidarse como programa referente de la UCCuyo en la gestión sostenible del recurso hídrico, en articulación con el Plan Estratégico Institucional 2023-2027, que inspire nuevas prácticas y contribuya a que instituciones, organizaciones y ciudadanos se comprometan activamente con la preservación del recurso hídrico para las generaciones presentes y futuras.",
+    en: "Become a leading UCCuyo program in sustainable water resource management, aligned with the Institutional Strategic Plan 2023–2027, inspiring new practices and helping institutions, organizations, and citizens commit actively to preserving water resources for present and future generations."
   },
   "sec.elPlan.direccion.title": {
-    es: "Coordinación",
-    en: "Coordination"
+    es: "Coordinación Técnica",
+    en: "Technical Coordination"
   },
   "sec.elPlan.direccion.body": {
-    es: '<strong>Ing. Luis Jiménez</strong><br />Coordinador del Programa Plan AURA — Universidad Católica de Cuyo<br /><a href="mailto:luisjimenez@uccuyo.edu.ar">luisjimenez@uccuyo.edu.ar</a>',
-    en: '<strong>Eng. Luis Jiménez</strong><br />AURA Program Coordinator — Universidad Católica de Cuyo<br /><a href="mailto:luisjimenez@uccuyo.edu.ar">luisjimenez@uccuyo.edu.ar</a>'
+    es: "<strong>Ing. Luis Jiménez</strong><br />Coordinador Técnico — Universidad Católica de Cuyo<br /><a href=\"mailto:luisjimenez@uccuyo.edu.ar\">luisjimenez@uccuyo.edu.ar</a>",
+    en: "<strong>Eng. Luis Jiménez</strong><br />Technical Coordinator — Universidad Católica de Cuyo<br /><a href=\"mailto:luisjimenez@uccuyo.edu.ar\">luisjimenez@uccuyo.edu.ar</a>"
   },
   "sec.elPlan.lineas.title": {
     es: "Líneas de trabajo",
@@ -314,10 +354,6 @@ window.I18N_DICT = {
     es: "Representantes institucionales designados para la coordinación operativa e interdisciplinaria del Plan AURA.",
     en: "Institutional representatives designated for the operational and interdisciplinary coordination of Plan AURA."
   },
-  "sec.equipo.coord.lead": {
-    es: "<strong>Ing. Luis Jiménez</strong> — Coordinador del Programa",
-    en: "<strong>Eng. Luis Jiménez</strong> — Program Coordinator"
-  },
   "sec.equipo.com.title": {
     es: "Equipo de comunicación",
     en: "Communication team"
@@ -331,8 +367,8 @@ window.I18N_DICT = {
     en: "View Resolution No. 620-R-2025 (PDF)"
   },
   "sec.equipo.ctaDocs": {
-    es: "Ir a Documentos",
-    en: "Go to Documents"
+    es: "Ir a Marco normativo",
+    en: "Go to Regulatory framework"
   },
   "sec.docs.res620.tag": {
     es: "PDF · Resolución",
@@ -404,12 +440,12 @@ window.I18N_DICT = {
     en: "Participation of the various academic units in teaching, research, and outreach linked to the Plan."
   },
   "sec.red.ies.title": {
-    es: "Institutos de Enseñanza Superior",
-    en: "Higher Education Institutes"
+    es: "Instituto superior de Formación docente",
+    en: "Higher Institute of Teacher Training"
   },
   "sec.red.ies.body": {
-    es: "Institutos de Enseñanza Superior de la Universidad Católica de Cuyo: «Santa María» y «San Buenaventura», parte del plan educativo y pedagógico del AURA.",
-    en: "Universidad Católica de Cuyo Higher Education Institutes: «Santa María» and «San Buenaventura», part of the AURA educational and pedagogical plan."
+    es: "Instituto superior de Formación docente de la Universidad Católica de Cuyo: «Santa María» y «San Buenaventura», parte del plan educativo y pedagógico del AURA.",
+    en: "Universidad Católica de Cuyo Higher Institute of Teacher Training: «Santa María» and «San Buenaventura», part of the AURA educational and pedagogical plan."
   },
   "sec.red.colegios.title": {
     es: "Colegios UCCuyo",
@@ -441,16 +477,20 @@ window.I18N_DICT = {
     en: "Institutional program"
   },
   "sec.aura.title": {
-    es: "Plan AURA",
-    en: "Plan AURA"
+    es: "Plan Técnico AURA",
+    en: "AURA Technical Plan"
+  },
+  "sec.aura.heading": {
+    es: "Convertir la infraestructura en una herramienta de aprendizaje.",
+    en: "Turn infrastructure into a learning tool."
   },
   "sec.aura.slogan": {
     es: "«Ahorrar agua hoy para compartir mañana»",
     en: "“Save water today to share tomorrow”"
   },
   "sec.aura.lead": {
-    es: 'El <strong>Plan Integral de Ahorro y Uso Responsable del Agua (Plan AURA)</strong> fue aprobado por la Resolución N.º&nbsp;418-CS-2024 del Consejo Superior. Reconoce el contexto crítico de escasez hídrica de San Juan y asume el compromiso institucional de la UCCuyo de promover una gestión eficiente, responsable y sostenible del recurso en docencia, investigación y extensión.',
-    en: 'The <strong>Integral Plan for Water Conservation and Responsible Use (Plan AURA)</strong> was approved by Superior Council Resolution No.&nbsp;418-CS-2024. It recognizes San Juan\'s critical water scarcity context and UCCuyo\'s institutional commitment to promote efficient, responsible, and sustainable water management in teaching, research, and outreach.'
+    es: "El plan AURA transforma una necesidad operativa en un proyecto educativo con el objetivo de incorporar la cultura de medición y gestión en la institución.",
+    en: "Plan AURA turns an operational need into an educational project, with the aim of embedding a culture of measurement and management in the institution."
   },
   "sec.aura.metrics.1.value": {
     es: "100.000 L/día",
@@ -534,13 +574,51 @@ window.I18N_DICT = {
     en: "Research and outreach projects · Plan AURA"
   },
   "sec.conv.intro": {
-    es: 'Convocatoria del <strong>Plan Integral AURA</strong> de la Universidad Católica de Cuyo (Resoluciones 418-CS-2024, 767-CS-2025 y 849-CS-2026) a presentar <strong>proyectos de investigación</strong> y <strong>proyectos de extensión</strong>. Son dos modalidades con plantilla/formulario y carpeta Drive distintas. Destinada a docentes, investigadores, equipos de cátedra, estudiantes avanzados y equipos interdisciplinarios de la UCCuyo · Sede San Juan.',
-    en: 'Call from Universidad Católica de Cuyo\'s <strong>AURA Integral Plan</strong> (Resolutions 418-CS-2024, 767-CS-2025, and 849-CS-2026) to submit <strong>research projects</strong> and <strong>outreach projects</strong>. These are two modalities with different templates/forms and Drive folders. Open to faculty, researchers, course teams, advanced students, and interdisciplinary teams at UCCuyo · San Juan campus.'
+    es: 'Convocatoria del <strong>Plan Integral AURA</strong> de la Universidad Católica de Cuyo (Resoluciones 418-CS-2024, 767-CS-2025 y 849-CS-2026) a presentar <strong>proyectos de investigación y extensión</strong> vinculados al ahorro y uso responsable del agua. Hay <strong>una sola plantilla</strong> de presentación para ambas líneas. Destinada a docentes, investigadores, equipos de cátedra, estudiantes avanzados y equipos interdisciplinarios de la UCCuyo · Sede San Juan.',
+    en: 'Call of the <strong>AURA Integral Plan</strong> of Universidad Católica de Cuyo (Resolutions 418-CS-2024, 767-CS-2025 and 849-CS-2026) for <strong>research and outreach projects</strong> linked to water conservation and responsible use. There is <strong>one shared application template</strong> for both lines. Open to faculty, researchers, course teams, advanced students, and interdisciplinary teams at UCCuyo · San Juan campus.'
   },
   "sec.conv.cta.disabled": {
     es: "En construcción",
     en: "Under construction"
   },
+  
+  "sec.conv.proyectos.title": {
+    es: "Presentación de proyectos de investigación y extensión",
+    en: "Research and outreach project submission"
+  },
+  "sec.conv.proyectos.body": {
+    es: "Completá la <strong>plantilla única</strong> de la convocatoria AURA (DOCX).",
+    en: "Complete the <strong>single AURA call template</strong> (DOCX)."
+  },
+  "sec.conv.proyectos.step.1": {
+    es: "Descargar y completar la plantilla de presentación (DOCX).",
+    en: "Download and complete the submission template (DOCX)."
+  },
+  "sec.conv.proyectos.step.2": {
+    es: "Aprobación del Consejo Directivo de la Unidad Académica.",
+    en: "Approval by the Academic Unit Board."
+  },
+  "sec.conv.proyectos.step.3": {
+    es: "Cargar el archivo en la carpeta Drive de la convocatoria.",
+    en: "Upload the file to the call Drive folder."
+  },
+  "btn.instructivoConvocatoria": {
+    es: "Instructivo / bases (PDF)",
+    en: "Guidelines (PDF)"
+  },
+  "btn.descargarPlantilla": {
+    es: "Descargar plantilla (DOCX)",
+    en: "Download template (DOCX)"
+  },
+  "btn.cargarDrive": {
+    es: "Cargar en Drive",
+    en: "Upload to Drive"
+  },
+  "btn.verPresentacion": {
+    es: "Ver presentación",
+    en: "View submission info"
+  },
+
   "sec.conv.facts.ariaLabel": {
     es: "Datos de la convocatoria",
     en: "Call for proposals details"
@@ -558,8 +636,8 @@ window.I18N_DICT = {
     en: "Submission deadline"
   },
   "sec.conv.facts.cierre.value": {
-    es: "2 de octubre de 2026",
-    en: "October 2, 2026"
+    es: "30 de octubre de 2026",
+    en: "October 30, 2026"
   },
   "sec.conv.facts.duracion.label": {
     es: "Duración de proyectos",
@@ -574,16 +652,16 @@ window.I18N_DICT = {
     en: "Total budget"
   },
   "sec.conv.facts.presupuesto.value": {
-    es: "$20.000.000",
-    en: "ARS 20,000,000"
+    es: "$10.000.000",
+    en: "ARS 10,000,000"
   },
   "sec.conv.facts.tope.label": {
     es: "Tope por proyecto",
     en: "Cap per project"
   },
   "sec.conv.facts.tope.value": {
-    es: "Hasta $1.000.000",
-    en: "Up to ARS 1,000,000"
+    es: "Hasta $1.000.000 · 10 proyectos",
+    en: "Up to ARS 1,000,000 · 10 projects"
   },
 
   "sec.conv.investigacion.title": {
@@ -637,48 +715,28 @@ window.I18N_DICT = {
     en: "Review the full call text, thematic areas, and regulatory framework. Download the guidelines and Superior Council resolutions that underpin Plan AURA."
   },
   "sec.conv.paso2.title": {
-    es: "Elegí la modalidad y prepará",
-    en: "Choose the modality and prepare"
+    es: "Prepará la propuesta",
+    en: "Prepare your proposal"
   },
   "sec.conv.paso2.body": {
-    es: "Armá la propuesta con título, eje temático (a–j), fundamentación, objetivos, equipo, metodología, cronograma, resultados esperados, recursos y vinculación explícita con el Plan AURA.",
-    en: "Prepare your proposal with title, thematic area (a–j), rationale, objectives, team, methodology, timeline, expected outcomes, resources, and explicit linkage to Plan AURA."
-  },
-  "sec.conv.paso2.equipo": {
-    es: "Requisitos de equipo:",
-    en: "Team requirements:"
-  },
-  "sec.conv.paso2.equipo.code": {
-    es: "Director/a docente UCCuyo + mín. 2 estudiantes",
-    en: "UCCuyo faculty director + min. 2 students"
-  },
-  "sec.conv.paso2.list.1": {
-    es: "<strong>Investigación:</strong> Anexo I DOCX + instructivo PDF.",
-    en: "<strong>Research:</strong> Annex I DOCX + PDF guidelines."
-  },
-  "sec.conv.paso2.list.2": {
-    es: "<strong>Extensión:</strong> Google Forms + instructivo PDF.",
-    en: "<strong>Outreach:</strong> Google Form + PDF guidelines."
-  },
-  "sec.conv.paso2.list.3": {
-    es: "Aprobación del Consejo Directivo de la Unidad Académica.",
-    en: "Approval by the Academic Unit Board."
+    es: "Armá la propuesta con título, eje temático, fundamentación, objetivos, equipo, metodología, cronograma, resultados esperados, recursos y vinculación explícita con el Plan AURA, usando la plantilla única de la convocatoria.",
+    en: "Build your proposal with title, thematic axis, rationale, objectives, team, methods, schedule, expected results, resources, and an explicit link to Plan AURA, using the single call template."
   },
   "sec.conv.paso3.title": {
     es: "Presentar y cargar",
     en: "Submit and upload"
   },
   "sec.conv.paso3.body": {
-    es: "Con la aprobación del Consejo Directivo, cargá en la carpeta Drive que corresponde a tu modalidad. Luego el Comité Evaluador emite dictamen y se eleva al Consejo Superior.",
-    en: "Once approved by the Board, upload to the Drive folder for your modality. The Evaluation Committee then issues its report and the proposal goes to the Superior Council."
+    es: "Con la aprobación del Consejo Directivo, cargá la plantilla completada en la carpeta Drive de la convocatoria. Luego el Comité Evaluador emite dictamen y se eleva al Consejo Superior.",
+    en: "With Board approval, upload the completed template to the call Drive folder. The Evaluation Committee then issues its opinion and the file is elevated to the Superior Council."
   },
   "sec.conv.paso3.circuito": {
     es: "Circuito:",
     en: "Process:"
   },
   "sec.conv.paso3.circuito.code": {
-    es: "UA → Drive (según modalidad) → Comité → Consejos → Consejo Superior",
-    en: "AU → Drive (by modality) → Committee → Councils → Superior Council"
+    es: "UA → Drive → Comité → Consejos → Consejo Superior",
+    en: "Academic unit → Drive → Committee → Councils → Superior Council"
   },
 
   "sec.conv.ejes.title": {
@@ -686,44 +744,48 @@ window.I18N_DICT = {
     en: "Thematic areas"
   },
   "sec.conv.ejes.1": {
-    es: "Estudios sobre consumo y comportamiento hídrico.",
-    en: "Studies on water consumption and behavior."
+    es: "Estudios sobre consumo y comportamiento hídrico (hábitos, percepciones y prácticas institucionales, familiares o comunitarias).",
+    en: "Studies on water consumption and behavior (habits, perceptions, and institutional, household, or community practices)."
   },
   "sec.conv.ejes.2": {
-    es: "Innovación tecnológica (medición, ahorro o reutilización).",
-    en: "Technological innovation (measurement, conservation, or reuse)."
+    es: "Innovación tecnológica aplicada a la medición, ahorro o reutilización del agua.",
+    en: "Technological innovation applied to water measurement, conservation, or reuse."
   },
   "sec.conv.ejes.3": {
-    es: "Impacto económico, social y productivo del recurso en San Juan.",
-    en: "Economic, social, and productive impact of water in San Juan."
+    es: "Impacto económico, social y productivo del recurso hídrico en la provincia de San Juan.",
+    en: "Economic, social, and productive impact of water resources in the province of San Juan."
   },
   "sec.conv.ejes.4": {
-    es: "Investigación aplicada en salud y uso racional del agua.",
-    en: "Applied research on health and rational water use."
+    es: "Investigación aplicada en salud vinculada al uso racional del agua y la sostenibilidad hídrica.",
+    en: "Applied health research linked to rational water use and water sustainability."
   },
   "sec.conv.ejes.5": {
-    es: "Investigación ambiental y territorial hídrica.",
-    en: "Environmental and territorial water research."
+    es: "Investigación ambiental y territorial sobre la situación hídrica regional.",
+    en: "Environmental and territorial research on the regional water situation."
   },
   "sec.conv.ejes.6": {
-    es: "Formación, sensibilización y transferencia comunitaria.",
-    en: "Training, awareness, and community transfer."
+    es: "Programas de formación, sensibilización y transferencia comunitaria sobre uso responsable del agua.",
+    en: "Training, awareness, and community transfer programs on responsible water use."
   },
   "sec.conv.ejes.7": {
-    es: "Prácticas socio-comunitarias e intervenciones territoriales.",
-    en: "Community practices and territorial interventions."
+    es: "Prácticas socio-comunitarias e intervenciones territoriales vinculadas a la gestión sostenible del agua.",
+    en: "Community practices and territorial interventions linked to sustainable water management."
   },
   "sec.conv.ejes.8": {
-    es: "Educación hídrica en todos los niveles.",
-    en: "Water education at all levels."
+    es: "Investigación y medición de la calidad microbiológica, contaminación, efectos sobre la salud y la biodiversidad.",
+    en: "Research and measurement of microbiological quality, pollution, and effects on health and biodiversity."
   },
   "sec.conv.ejes.9": {
-    es: "Legislación, marco normativo y políticas públicas.",
-    en: "Legislation, regulatory framework, and public policy."
+    es: "Educación y uso responsable del recurso hídrico, en sus distintos niveles y modalidades (inicial, primario, secundario, superior y universitario), orientada a la formación de una conciencia y cultura hídrica responsable.",
+    en: "Education and responsible water use across levels and modalities (early childhood, primary, secondary, tertiary, and university), aimed at building a responsible water culture."
   },
   "sec.conv.ejes.10": {
-    es: "Otras temáticas transversales pertinentes al Plan AURA.",
-    en: "Other cross-cutting topics relevant to Plan AURA."
+    es: "Legislación, marco normativo y políticas públicas vinculadas a la gestión, protección y uso responsable del recurso hídrico, en los ámbitos nacional, provincial y municipal.",
+    en: "Legislation, regulatory frameworks, and public policies on the management, protection, and responsible use of water resources at national, provincial, and municipal levels."
+  },
+  "sec.conv.ejes.11": {
+    es: "Otras temáticas transversales vinculadas al uso responsable y sostenible del agua no comprendidas específicamente en los ejes anteriores, que resulten pertinentes a los objetivos del Plan AURA, a criterio del Comité Evaluador.",
+    en: "Other cross-cutting topics on responsible and sustainable water use not specifically covered above, relevant to Plan AURA objectives as determined by the Evaluation Committee."
   },
 
   "sec.conv.cronograma.ariaLabel": {
@@ -735,24 +797,24 @@ window.I18N_DICT = {
     en: "Evaluation"
   },
   "sec.conv.cronograma.evaluacion.value": {
-    es: "5 – 16 de octubre de 2026",
-    en: "October 5–16, 2026"
+    es: "2 – 13 de noviembre de 2026",
+    en: "November 2–13, 2026"
   },
   "sec.conv.cronograma.elevacion.label": {
     es: "Elevación a Consejo Superior",
     en: "Submission to Superior Council"
   },
   "sec.conv.cronograma.elevacion.value": {
-    es: "30 de octubre de 2026",
-    en: "October 30, 2026"
+    es: "Viernes 27 de noviembre de 2026",
+    en: "Friday, November 27, 2026"
   },
   "sec.conv.cronograma.oficializacion.label": {
     es: "Oficialización del listado",
     en: "Official list publication"
   },
   "sec.conv.cronograma.oficializacion.value": {
-    es: "6 de noviembre de 2026",
-    en: "November 6, 2026"
+    es: "2 de diciembre de 2026",
+    en: "December 2, 2026"
   },
   "sec.conv.cronograma.avance.label": {
     es: "Informe de avance",
@@ -771,21 +833,53 @@ window.I18N_DICT = {
     en: "October 2027"
   },
   "sec.conv.contact": {
-    es: 'Consultas: <a href="mailto:luisjimenez@uccuyo.edu.ar">luisjimenez@uccuyo.edu.ar</a> (Coordinador del Programa) · <a href="documentos/Instructivo_presentacion_proyectos_investigacion_AURA.pdf" target="_blank" rel="noopener noreferrer">Instructivo investigación</a> · <a href="documentos/Instructivo_presentacion_proyectos_extension_AURA.pdf" target="_blank" rel="noopener noreferrer">Instructivo extensión</a>',
-    en: 'Questions: <a href="mailto:luisjimenez@uccuyo.edu.ar">luisjimenez@uccuyo.edu.ar</a> (Program Coordinator) · <a href="documentos/Instructivo_presentacion_proyectos_investigacion_AURA.pdf" target="_blank" rel="noopener noreferrer">Research guidelines</a> · <a href="documentos/Instructivo_presentacion_proyectos_extension_AURA.pdf" target="_blank" rel="noopener noreferrer">Outreach guidelines</a>'
+    es: 'Consultas: <a href="mailto:luisjimenez@uccuyo.edu.ar">luisjimenez@uccuyo.edu.ar</a> (Coordinador Técnico) · <a href="documentos/Convocatoria_Proyectos_AURA.pdf" target="_blank" rel="noopener noreferrer">Bases / instructivo</a> · <a href="documentos/plantillas/Presentacion_proyectos_Convocatoria_AURA.docx" download>Plantilla (DOCX)</a>',
+    en: 'Inquiries: <a href="mailto:luisjimenez@uccuyo.edu.ar">luisjimenez@uccuyo.edu.ar</a> (Technical Coordinator) · <a href="documentos/Convocatoria_Proyectos_AURA.pdf" target="_blank" rel="noopener noreferrer">Guidelines</a> · <a href="documentos/plantillas/Presentacion_proyectos_Convocatoria_AURA.docx" download>Template (DOCX)</a>'
   },
 
   "sec.docs.kicker": {
+    es: "Normativa",
+    en: "Regulations"
+  },
+  "sec.docs.title": {
     es: "Marco normativo",
     en: "Regulatory framework"
   },
-  "sec.docs.title": {
-    es: "Documentos",
-    en: "Documents"
-  },
   "sec.docs.intro": {
-    es: "Resoluciones del Consejo Superior, instructivos de presentación y plantillas de la convocatoria Plan AURA. Los materiales de presentación de proyectos figuran como en construcción hasta la apertura oficial.",
-    en: "Superior Council resolutions, submission guidelines, and Plan AURA call templates. Project submission materials are marked under construction until the official opening."
+    es: "Resoluciones del Consejo Superior y del Rectorado que sustentan el Plan Integral AURA.",
+    en: "Superior Council and Rectorate resolutions that underpin the AURA Integral Plan."
+  },
+  "sec.noticias.kicker": {
+    es: "Difusión",
+    en: "Outreach"
+  },
+  "sec.noticias.title": {
+    es: "Noticias",
+    en: "News"
+  },
+  "sec.noticias.intro": {
+    es: "Novedades y comunicados del Plan Integral AURA. El listado se irá completando con las noticias oficiales del Plan.",
+    en: "Updates and announcements from the AURA Integral Plan. The list will be filled with the Plan's official news."
+  },
+  "sec.noticias.placeholder": {
+    es: "Próximamente se publicarán aquí las noticias del Plan AURA.",
+    en: "Plan AURA news will be published here soon."
+  },
+  "sec.publicaciones.kicker": {
+    es: "Difusión",
+    en: "Outreach"
+  },
+  "sec.publicaciones.title": {
+    es: "Publicaciones",
+    en: "Publications"
+  },
+  "sec.publicaciones.intro": {
+    es: "Publicaciones relacionadas con el Plan AURA (artículos, informes y materiales de divulgación).",
+    en: "Publications related to Plan AURA (articles, reports, and outreach materials)."
+  },
+  "sec.publicaciones.placeholder": {
+    es: "Próximamente se incorporarán las publicaciones vinculadas al Plan AURA.",
+    en: "Publications linked to Plan AURA will be added here soon."
   },
   "sec.docs.instructivoInvestigacion.tag": {
     es: "PDF · Instructivo",
@@ -905,8 +999,8 @@ window.I18N_DICT = {
     en: "Image gallery"
   },
   "sec.galeria.intro": {
-    es: "Obras e imágenes del Plan Integral AURA en la Universidad Católica de Cuyo. Tocá una foto para ampliarla.",
-    en: "Works and images from the AURA Integral Plan at Universidad Católica de Cuyo. Tap a photo to enlarge it."
+    es: "Obras e imágenes del Plan Integral AURA en la Universidad Católica de Cuyo, organizadas por categorías (Infraestructura, Investigación y Extensión, Comunidad Educación y Difusión, Institucional). Tocá una foto para ampliarla.",
+    en: "Works and images from the AURA Integral Plan at Universidad Católica de Cuyo, organized by category (Infrastructure, Research and Outreach, Community Education and Dissemination, Institutional). Tap a photo to enlarge it."
   },
   "sec.galeria.album.planAura.title": {
     es: "Plan AURA · Obras e infraestructura",
@@ -1048,18 +1142,14 @@ window.I18N_DICT = {
     es: " videos",
     en: " videos"
   },
-  "sec.galeria.of": {
-    es: " de ",
-    en: " of "
-  },
 
   "sec.visitas.kicker": {
     es: "Alcance",
     en: "Reach"
   },
   "sec.visitas.title": {
-    es: "Visitas al Plan AURA",
-    en: "Plan AURA visits"
+    es: "Visualizaciones del Plan",
+    en: "Plan visualizations"
   },
   "sec.visitas.intro": {
     es: "Estimación del país y, cuando está disponible, de la provincia o región desde donde se consulta el sitio del Plan AURA. Tocá un origen en la lista para enfocarlo en el mapa. El dato es aproximado (geolocalización por IP): no identifica personas ni guarda la dirección IP.",
@@ -1091,8 +1181,8 @@ window.I18N_DICT = {
     en: "Universidad Católica de Cuyo · San Juan campus"
   },
   "sec.contacto.plan.director": {
-    es: '<strong>Coordinador del Programa:</strong> Ingeniero Luis Jiménez<br /><a href="mailto:luisjimenez@uccuyo.edu.ar">luisjimenez@uccuyo.edu.ar</a>',
-    en: '<strong>Program Coordinator:</strong> Engineer Luis Jiménez<br /><a href="mailto:luisjimenez@uccuyo.edu.ar">luisjimenez@uccuyo.edu.ar</a>'
+    es: '<strong>Coordinador Técnico:</strong> Ingeniero Luis Jiménez<br /><a href="mailto:luisjimenez@uccuyo.edu.ar">luisjimenez@uccuyo.edu.ar</a>',
+    en: '<strong>Technical Coordinator:</strong> Engineer Luis Jiménez<br /><a href="mailto:luisjimenez@uccuyo.edu.ar">luisjimenez@uccuyo.edu.ar</a>'
   },
   "sec.contacto.enlaces.title": {
     es: "Enlaces institucionales",
@@ -1110,6 +1200,14 @@ window.I18N_DICT = {
   "footer.brand.subtitle": {
     es: "Universidad Católica de Cuyo",
     en: "Universidad Católica de Cuyo"
+  },
+  "footer.mapLabel": {
+    es: "Mapa del sitio",
+    en: "Site map"
+  },
+  "footer.redes.title": {
+    es: "Enlaces",
+    en: "Links"
   },
   "footer.secciones.title": {
     es: "Secciones",
@@ -1153,8 +1251,8 @@ window.I18N_DICT = {
     en: "Open Google Form · Outreach"
   },
   "btn.verBasesOnline": {
-    es: "Ver bases en línea",
-    en: "View guidelines online"
+    es: "Ver bases (PDF)",
+    en: "View call guidelines (PDF)"
   },
   "btn.descargarBases": {
     es: "Descargar bases (DOCX)",
@@ -1194,8 +1292,8 @@ window.I18N_DICT = {
   },
 
   "dyn.visitas.widget": {
-    es: "Visitas al Plan AURA: {n}",
-    en: "Plan AURA visits: {n}"
+    es: "Visualizaciones del Plan: {n}",
+    en: "Plan visualizations: {n}"
   },
   "dyn.visitas.loading": {
     es: "Cargando origen de visitas…",

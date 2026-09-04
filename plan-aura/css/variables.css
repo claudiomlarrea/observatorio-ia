@@ -19,19 +19,53 @@
   --color-green-dark: #084c37;
   --rgb-green: 13, 110, 79;
 
-  /* Acento Plan AURA (gota / agua) */
-  --color-water: #1a7fb5;
-  --color-water-mid: #2b9bc9;
-  --color-water-dark: #0e4f72;
+  /* Acento Plan AURA — celeste del manual de marcas / gota del logo */
+  --color-celeste: #3f8eca;
+  --color-celeste-light: #4eb6e8;
+  --color-celeste-mid: #2b8fc9;
+  --color-celeste-dark: #1a6fa8;
+  --rgb-celeste: 63, 142, 202;
+
+  --color-water: var(--color-celeste-mid);
+  --color-water-mid: var(--color-celeste-light);
+  --color-water-dark: var(--color-celeste-dark);
   --color-aura-teal: #0a5c5e;
-  --rgb-water: 26, 127, 181;
+  --rgb-water: 43, 143, 201;
 
   --color-surface: #ffffff;
-  --color-muted: #f4f0f1;
+  --color-muted: #e7f3fa;
+  --color-page: var(--color-celeste);
   --color-text: #1f1418;
   --color-text-soft: #5c4f54;
   --color-on-dark: #ffffff;
   --color-on-dark-muted: rgba(255, 255, 255, 0.88);
+
+  /* Botones 3D unificados (celeste marca) */
+  --btn-celeste-bg: linear-gradient(
+    180deg,
+    #5eb0e0 0%,
+    #2f7db8 42%,
+    #155f94 100%
+  );
+  --btn-celeste-bg-hover: linear-gradient(
+    180deg,
+    #6bbce8 0%,
+    #3a8ec8 42%,
+    #1a6fa8 100%
+  );
+  --btn-celeste-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -2px 0 rgba(10, 48, 78, 0.22),
+    0 4px 0 rgba(10, 48, 78, 0.5),
+    0 10px 22px rgba(0, 0, 0, 0.28);
+  --btn-celeste-shadow-hover:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -2px 0 rgba(10, 48, 78, 0.24),
+    0 5px 0 rgba(10, 48, 78, 0.5),
+    0 14px 26px rgba(0, 0, 0, 0.32);
+  --btn-celeste-shadow-active:
+    inset 0 2px 5px rgba(10, 48, 78, 0.35),
+    0 1px 0 rgba(10, 48, 78, 0.4);
 
   --color-primary: var(--color-institutional);
   --color-primary-dark: var(--color-institutional-dark);
