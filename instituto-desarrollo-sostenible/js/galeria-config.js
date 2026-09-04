@@ -371,7 +371,7 @@ window.IDS_GALERIA = {
       tags: ["premios"]
     },
     {
-      src: "assets/galeria/drive/premios/04-2014-premio-pluma-por-aporte-cientifico-a-la-profesion.jpg",
+      src: "assets/galeria/drive/premios/04-2014-premio-pluma-por-aporte-cientifico-a-la-profesion.jpg?v=4",
       alt: "2014 Premio Pluma por Aporte Científico a la Profesión",
       caption: "2014 Premio Pluma por Aporte Científico a la Profesión",
       tags: ["premios"]
