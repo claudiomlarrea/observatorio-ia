@@ -1665,7 +1665,7 @@ header.section-head--bar h2 {
 .tools-grid {
   display: grid;
   gap: 0.85rem;
-  align-items: start;
+  align-items: stretch;
 }
 
 @media (min-width: 720px) {
@@ -1742,6 +1742,8 @@ header.section-head--bar h2 {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  height: 100%;
+  min-height: 100%;
 }
 
 .tool-card-badge {
@@ -1790,6 +1792,14 @@ header.section-head--bar h2 {
   font-size: 0.84rem;
   line-height: 1.35;
   flex: 1 1 auto;
+  min-height: calc(1.35em * 6 + 0.4rem);
+}
+
+.tool-card-list li {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .tool-card-list li + li {
@@ -1797,13 +1807,15 @@ header.section-head--bar h2 {
 }
 
 .tool-card .tile-actions {
-  margin-top: 0.85rem;
-  padding-top: 0;
+  margin-top: auto;
+  padding-top: 0.85rem;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   gap: 0.45rem;
-  align-items: flex-start;
+  align-items: stretch;
+  width: 100%;
+  min-height: calc(2 * 2.15rem + 0.45rem);
 }
 
 .tool-card .btn {
