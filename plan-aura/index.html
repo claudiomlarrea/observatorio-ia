@@ -10,7 +10,7 @@
     <title>Plan AURA | Universidad Católica de Cuyo</title>
     <link rel="canonical" href="https://plan-aura.com.ar/" />
     <link rel="icon" type="image/png" href="assets/logo-aura-slogan-header.png" />
-    <link rel="stylesheet" href="css/styles.css?v=21" />
+    <link rel="stylesheet" href="css/styles.css?v=22" />
   </head>
   <body>
     <a class="skip-link" href="#contenido" data-i18n="a11y.skipLink">Ir al contenido</a>
@@ -68,6 +68,7 @@
     </div>
 
     <main id="contenido">
+      <div class="page-panel is-active" data-page="inicio">
       <section class="hero" aria-labelledby="titulo-principal">
         <div class="hero-inner">
           <img
@@ -107,8 +108,9 @@
           </div>
         </div>
       </section>
+      </div>
 
-      <section class="section" id="el-plan" aria-labelledby="sec-el-plan">
+      <section class="page-panel section" id="el-plan" aria-labelledby="sec-el-plan" data-page="el-plan">
         <div class="section-inner">
           <header class="section-head section-head--bar section-head--green">
             <p class="section-kicker" data-i18n="sec.elPlan.kicker">Identidad</p>
@@ -168,7 +170,7 @@
         </div>
       </section>
 
-      <section class="section section--comision" id="comision" aria-labelledby="sec-comision">
+      <section class="page-panel section section--comision" id="comision" aria-labelledby="sec-comision" data-page="comision">
         <div class="section-inner">
           <header class="section-head section-head--bar section-head--green">
             <p class="section-kicker" data-i18n="sec.comision.kicker">Trabajo interno</p>
@@ -267,7 +269,7 @@
         </div>
       </section>
 
-      <section class="section section--equipo" id="equipo" aria-labelledby="sec-equipo">
+      <section class="page-panel section section--equipo" id="equipo" aria-labelledby="sec-equipo" data-page="equipo">
         <div class="section-inner">
           <header class="section-head section-head--bar section-head--water">
             <p class="section-kicker" data-i18n="sec.equipo.kicker">Resolución N.º 620-R-2025</p>
@@ -331,7 +333,7 @@
         </div>
       </section>
 
-      <section class="section section--red" id="red" aria-labelledby="sec-red">
+      <section class="page-panel section section--red" id="red" aria-labelledby="sec-red" data-page="red">
         <div class="section-inner">
           <header class="section-head section-head--bar section-head--green">
             <p class="section-kicker" data-i18n="sec.red.kicker">Resolución 418-CS-2024</p>
@@ -433,7 +435,7 @@
         </div>
       </section>
 
-      <section class="section section--aura" id="plan-aura" aria-labelledby="sec-aura">
+      <section class="page-panel section section--aura" id="plan-aura" aria-labelledby="sec-aura" data-page="plan-aura">
         <div class="section-inner">
           <header class="section-head section-head--bar section-head--water">
             <p class="section-kicker" data-i18n="sec.aura.kicker">Programa institucional</p>
@@ -514,7 +516,7 @@
         </div>
       </section>
 
-      <section class="section section--convocatoria is-wip" id="convocatoria" aria-labelledby="sec-convocatoria">
+      <section class="page-panel section section--convocatoria is-wip" id="convocatoria" aria-labelledby="sec-convocatoria" data-page="convocatoria">
         <div class="section-inner">
           <header class="section-head section-head--bar section-head--water">
             <p class="section-kicker" data-i18n="sec.conv.kicker">Convocatorias 2026</p>
@@ -789,7 +791,7 @@
         </div>
       </section>
 
-      <section class="section" id="documentos" aria-labelledby="sec-docs">
+      <section class="page-panel section" id="documentos" aria-labelledby="sec-docs" data-page="documentos">
         <div class="section-inner">
           <header class="section-head section-head--bar section-head--red">
             <p class="section-kicker" data-i18n="sec.docs.kicker">Marco normativo</p>
@@ -862,7 +864,7 @@
         </div>
       </section>
 
-      <section class="section section--galeria" id="galeria" aria-labelledby="sec-galeria">
+      <section class="page-panel section section--galeria" id="galeria" aria-labelledby="sec-galeria" data-page="galeria">
         <div class="section-inner">
           <header class="section-head section-head--bar section-head--green">
             <p class="section-kicker" data-i18n="sec.galeria.kicker">Archivo visual</p>
@@ -876,7 +878,7 @@
         </div>
       </section>
 
-      <section class="section section--visitas" id="visitas" aria-labelledby="sec-visitas">
+      <section class="page-panel section section--visitas" id="visitas" aria-labelledby="sec-visitas" data-page="visitas">
         <div class="section-inner">
           <header class="section-head section-head--bar section-head--green">
             <p class="section-kicker" data-i18n="sec.visitas.kicker">Alcance</p>
@@ -908,7 +910,7 @@
         </div>
       </section>
 
-      <section class="section" id="contacto" aria-labelledby="sec-contacto">
+      <section class="page-panel section" id="contacto" aria-labelledby="sec-contacto" data-page="contacto">
         <div class="section-inner">
           <header class="section-head section-head--bar section-head--green">
             <p class="section-kicker" data-i18n="sec.contacto.kicker">Comunicación</p>
@@ -979,12 +981,12 @@
 
     <script src="js/i18n-dict.js?v=10" defer></script>
     <script src="js/i18n.js?v=9" defer></script>
-    <script src="js/main.js" defer></script>
+    <script src="js/main.js?v=2" defer></script>
     <script src="js/galeria-config.js?v=4" defer></script>
     <script src="js/galeria.js?v=3" defer></script>
     <script src="js/publicaciones-config.js?v=1" defer></script>
     <script src="js/visitantes-config.js?v=1" defer></script>
     <script src="js/visitantes.js?v=4" defer></script>
-    <script src="js/visitas-mapa.js?v=2" defer></script>
+    <script src="js/visitas-mapa.js?v=3" defer></script>
   </body>
 </html>
