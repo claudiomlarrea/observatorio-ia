@@ -28,7 +28,7 @@
   const AGENDA_REMINDERS_KEY = "caem_2026_agenda_reminders";
   const REMINDER_LEAD_MIN = 10;
   const PROGRAM_STORE_KEY = "caem_2026_programa";
-  const PROGRAM_VERSION = "16";
+  const PROGRAM_VERSION = "17";
 
   const EJE_NAME_KEYS = {
     "eje-1": "eje.1.name",
@@ -36,11 +36,31 @@
     "eje-3": "eje.3.name",
   };
 
+  const TALLER_TEMA_KEYS = {
+    "Inteligencia Artificial": "talleres.tema.ia",
+    Evaluación: "talleres.tema.evaluacion",
+    Simulación: "talleres.tema.simulacion",
+    Comunicación: "talleres.tema.comunicacion",
+    Humanismo: "talleres.tema.humanismo",
+    Investigación: "talleres.tema.investigacion",
+    Aprendizaje: "talleres.tema.aprendizaje",
+    "Competencias docentes": "talleres.tema.competencias",
+    Enfermería: "talleres.tema.enfermeria",
+    Inclusión: "talleres.tema.inclusion",
+    "Innovación educativa": "talleres.tema.innovacion",
+    "Metodologías activas": "talleres.tema.metodologias",
+    "Salud comunitaria": "talleres.tema.saludComunitaria",
+    "One Health": "talleres.tema.oneHealth",
+  };
+
+  const TALLER_TEMAS_DEFAULT = Object.keys(TALLER_TEMA_KEYS);
+
   const state = {
     data: null,
     mode: "horario",
     day: null,
     ejeId: null,
+    tallerTema: "Todas",
     letter: "Todas",
     personQuery: "",
     selection: null,
@@ -484,6 +504,21 @@
     return (state.data?.sesiones || []).filter((s) => s.tipo === "taller");
   }
 
+  function tallerTemas() {
+    return state.data?.temasTalleres?.length ? state.data.temasTalleres : TALLER_TEMAS_DEFAULT;
+  }
+
+  function tallerTemaLabel(tema) {
+    if (!tema || tema === "Todas") return t("talleres.tema.all");
+    return t(TALLER_TEMA_KEYS[tema] || tema);
+  }
+
+  function talleresForTema(tema) {
+    const all = talleresOnly();
+    if (!tema || tema === "Todas") return all;
+    return all.filter((s) => s.tema === tema);
+  }
+
   function groupBySlot(sessions) {
     const map = new Map();
     for (const s of sessions) {
@@ -556,16 +591,8 @@
         );
       case "aula":
         return all.filter((s) => s.sala === selection && s.tipo !== "receso");
-      case "talleres": {
-        const ejeId = selection.ejeId;
-        if (!ejeId) return [];
-        if (selection.wholeEje) {
-          return all.filter((s) => s.ejeId === ejeId && s.tipo === "taller");
-        }
-        return all.filter(
-          (s) => s.ejeId === ejeId && s.inicio === selection.inicio && s.tipo === "taller"
-        );
-      }
+      case "talleres":
+        return talleresForTema(selection?.tema || state.tallerTema || "Todas");
       case "agenda":
         return agendaSessions();
       case "ahora":
@@ -602,6 +629,10 @@
             t("taller.number", { n: session.tallerNumero })
           )}</span>`
         : "";
+    const temaBadge =
+      session.tipo === "taller" && session.tema
+        ? `<span class="badge badge-tema">${escapeHtml(tallerTemaLabel(session.tema))}</span>`
+        : "";
     const saved = isInAgenda(session.id);
     const agendaBtn =
       !isReceso && session.id
@@ -635,6 +666,7 @@
           <span class="badge badge-time">${escapeHtml(session.inicio)} – ${escapeHtml(session.fin)}</span>
           ${salaBadge}
           ${tallerBadge}
+          ${temaBadge}
           <span class="badge">${escapeHtml(tipo)}</span>
         </div>
         <h3 class="session-title">${highlight(session.titulo, query)}</h3>
@@ -703,6 +735,7 @@
     state.showResults = false;
     state.day = null;
     state.ejeId = null;
+    state.tallerTema = "Todas";
     state.letter = "Todas";
     state.personQuery = "";
     if (els.personFilter) els.personFilter.value = "";
@@ -719,6 +752,11 @@
 
     if (mode === "agenda") {
       showAgenda();
+      return;
+    }
+
+    if (mode === "talleres") {
+      showTalleresBrowser();
       return;
     }
 
@@ -838,7 +876,7 @@
     els.stepTools.hidden = state.mode !== "disertante";
     els.optionGrid.classList.toggle(
       "is-compact",
-      ["tipo", "aula", "horario", "talleres"].includes(state.mode)
+      ["tipo", "aula", "horario"].includes(state.mode)
     );
 
     if (state.mode === "horario") renderHorarioStep();
@@ -846,68 +884,51 @@
     else if (state.mode === "tipo") renderTipoStep();
     else if (state.mode === "disertante") renderDisertanteStep();
     else if (state.mode === "aula") renderAulaStep();
-    else if (state.mode === "talleres") renderTalleresStep();
   }
 
-  function talleresResultTitle(selection) {
-    const eje = state.data.ejes.find((e) => e.id === selection.ejeId);
-    const axis = eje
-      ? t("results.axis", { name: ejeName(eje.id, eje.nombre) })
-      : t("results.topic");
-    if (selection.wholeEje) return `${axis} · ${t("talleres.allTheme")}`;
-    return `${axis} · ${selection.inicio}`;
+  function temaChipButton(tema, count, selected) {
+    const label =
+      tema === "Todas"
+        ? escapeHtml(tallerTemaLabel("Todas"))
+        : `${escapeHtml(tallerTemaLabel(tema))} (${count})`;
+    return `<button
+      type="button"
+      class="tema-chip${selected ? " is-active" : ""}"
+      role="option"
+      data-taller-tema="${escapeHtml(tema)}"
+      aria-selected="${selected ? "true" : "false"}"
+    >${label}</button>`;
   }
 
-  function renderTalleresStep() {
-    const talleres = talleresOnly();
-    if (!state.ejeId) {
-      els.stepTitle.textContent = t("step.talleres.themeTitle");
-      els.stepHelp.textContent = t("step.talleres.themeHelp");
-      els.optionGrid.innerHTML = state.data.ejes
-        .map((eje, i) => {
-          const count = talleres.filter((s) => s.ejeId === eje.id).length;
+  function showTalleresBrowser() {
+    const tema = state.tallerTema || "Todas";
+    const all = talleresOnly();
+    const sessions = talleresForTema(tema);
+    state.selection = { talleresBrowser: true, tema };
+    state.showResults = true;
+    els.stepPanel.hidden = true;
+    els.results.hidden = false;
+    els.resultsTitle.textContent = t("mode.talleres");
+
+    const chips =
+      temaChipButton("Todas", all.length, tema === "Todas") +
+      tallerTemas()
+        .map((tm) => {
+          const count = all.filter((s) => s.tema === tm).length;
           if (!count) return "";
-          return optionButton({
-            value: eje.id,
-            title: t(`eje.${i + 1}.label`),
-            subtitle: `${dayShort(eje.dia)} · ${ejeName(eje.id, eje.nombre)}`,
-            count,
-          });
+          return temaChipButton(tm, count, tema === tm);
         })
         .join("");
-      return;
-    }
 
-    const eje = state.data.ejes.find((e) => e.id === state.ejeId);
-    els.stepTitle.textContent = t("step.talleres.slotTitle");
-    els.stepHelp.textContent = eje
-      ? `${dayShort(eje.dia)} · ${ejeName(eje.id, eje.nombre)}`
-      : t("step.talleres.slotTitle");
-    const themeTalleres = talleres.filter((s) => s.ejeId === state.ejeId);
-    const slots = groupBySlot(themeTalleres);
-    els.optionGrid.innerHTML =
-      optionButton({
-        value: "__back_themes__",
-        title: t("back.themes"),
-        subtitle: t("back.themes.sub"),
-      }) +
-      optionButton({
-        value: "__all_theme__",
-        title: t("talleres.allTheme"),
-        subtitle: t("talleres.allThemeHelp"),
-        count: themeTalleres.length,
-      }) +
-      slots
-        .map((slot) => {
-          const salas = [...new Set(slot.items.map((s) => s.sala).filter(Boolean))].join(" · ");
-          return optionButton({
-            value: slot.inicio,
-            title: `${slot.inicio} – ${slot.fin}`,
-            subtitle: salas,
-            count: slot.items.length,
-          });
-        })
-        .join("");
+    const foundKey = sessions.length === 1 ? "talleres.foundOne" : "talleres.found";
+    els.resultsBody.innerHTML = `
+      <div class="tema-chips" role="listbox" aria-label="${escapeHtml(t("a11y.tallerTemas"))}">
+        ${chips}
+      </div>
+      <p class="talleres-found">${escapeHtml(t(foundKey, { n: sessions.length }))}</p>
+      ${renderSessionsList(sessions)}
+    `;
+    els.results.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function renderHorarioStep() {
@@ -1099,27 +1120,6 @@
       return;
     }
 
-    if (mode === "talleres") {
-      if (value === "__back_themes__") {
-        state.ejeId = null;
-        renderStep();
-        return;
-      }
-      if (!state.ejeId) {
-        state.ejeId = value;
-        renderStep();
-        return;
-      }
-      if (value === "__all_theme__") {
-        state.selection = { ejeId: state.ejeId, wholeEje: true };
-        showResults(talleresResultTitle(state.selection));
-        return;
-      }
-      state.selection = { ejeId: state.ejeId, inicio: value };
-      showResults(talleresResultTitle(state.selection));
-      return;
-    }
-
     if (mode === "disertante") {
       state.selection = value;
       showResults(value);
@@ -1145,8 +1145,8 @@
           showResults(tipoLabel(state.selection));
         } else if (state.mode === "aula" || state.mode === "disertante") {
           showResults(state.selection);
-        } else if (state.mode === "talleres" && state.selection.ejeId) {
-          showResults(talleresResultTitle(state.selection));
+        } else if (state.mode === "talleres") {
+          showTalleresBrowser();
         }
       }
       return;
@@ -1179,6 +1179,12 @@
     });
 
     els.resultsBody?.addEventListener("click", (e) => {
+      const temaChip = e.target.closest("[data-taller-tema]");
+      if (temaChip && state.mode === "talleres") {
+        state.tallerTema = temaChip.dataset.tallerTema || "Todas";
+        showTalleresBrowser();
+        return;
+      }
       const clearBtn = e.target.closest("#agenda-clear");
       if (clearBtn) {
         clearAgenda();
@@ -1219,6 +1225,10 @@
         showAhora();
         return;
       }
+      if (state.mode === "talleres") {
+        showTalleresBrowser();
+        return;
+      }
       if (state.showResults && state.selection != null) {
         refreshForLang();
       }
@@ -1227,7 +1237,7 @@
     els.backBtn?.addEventListener("click", () => {
       state.showResults = false;
       state.selection = null;
-      if (state.mode === "ahora" || state.mode === "agenda") {
+      if (state.mode === "ahora" || state.mode === "agenda" || state.mode === "talleres") {
         setMode("horario");
         return;
       }

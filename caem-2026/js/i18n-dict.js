@@ -306,24 +306,24 @@ window.I18N_DICT = {
     en: "Choose the workshop theme"
   },
   "step.talleres.help": {
-    es: "Primero el eje temático, después el horario. También podés usar Horario, Tipo, Aula o Disertante.",
-    en: "First the thematic track, then the time. You can also use Schedule, Type, Room, or Speaker."
+    es: "Filtrá por tema (como en la grilla oficial) y mirá los talleres que coinciden.",
+    en: "Filter by theme (like the official grid) and see matching workshops."
   },
   "step.talleres.themeTitle": {
     es: "Elegí el tema del taller",
     en: "Choose the workshop theme"
   },
   "step.talleres.themeHelp": {
-    es: "Después vas a ver los horarios de talleres de ese eje.",
-    en: "Next you will see workshop time slots for that track."
+    es: "Tocá un tema para filtrar la lista de talleres.",
+    en: "Tap a theme to filter the workshop list."
   },
   "step.talleres.dayTitle": {
     es: "Elegí el tema del taller",
     en: "Choose the workshop theme"
   },
   "step.talleres.dayHelp": {
-    es: "Después vas a ver los horarios de talleres de ese eje.",
-    en: "Next you will see workshop time slots for that track."
+    es: "Tocá un tema para filtrar la lista de talleres.",
+    en: "Tap a theme to filter the workshop list."
   },
   "step.talleres.slotTitle": {
     es: "Elegí el horario del taller",
@@ -348,6 +348,78 @@ window.I18N_DICT = {
   "talleres.allDayHelp": {
     es: "Sin fijar una franja horaria",
     en: "Without locking a time slot"
+  },
+  "talleres.tema.all": {
+    es: "Todas",
+    en: "All"
+  },
+  "talleres.tema.ia": {
+    es: "Inteligencia Artificial",
+    en: "Artificial Intelligence"
+  },
+  "talleres.tema.evaluacion": {
+    es: "Evaluación",
+    en: "Assessment"
+  },
+  "talleres.tema.simulacion": {
+    es: "Simulación",
+    en: "Simulation"
+  },
+  "talleres.tema.comunicacion": {
+    es: "Comunicación",
+    en: "Communication"
+  },
+  "talleres.tema.humanismo": {
+    es: "Humanismo",
+    en: "Humanism"
+  },
+  "talleres.tema.investigacion": {
+    es: "Investigación",
+    en: "Research"
+  },
+  "talleres.tema.aprendizaje": {
+    es: "Aprendizaje",
+    en: "Learning"
+  },
+  "talleres.tema.competencias": {
+    es: "Competencias docentes",
+    en: "Teaching competencies"
+  },
+  "talleres.tema.enfermeria": {
+    es: "Enfermería",
+    en: "Nursing"
+  },
+  "talleres.tema.inclusion": {
+    es: "Inclusión",
+    en: "Inclusion"
+  },
+  "talleres.tema.innovacion": {
+    es: "Innovación educativa",
+    en: "Educational innovation"
+  },
+  "talleres.tema.metodologias": {
+    es: "Metodologías activas",
+    en: "Active methodologies"
+  },
+  "talleres.tema.saludComunitaria": {
+    es: "Salud comunitaria",
+    en: "Community health"
+  },
+  "talleres.tema.oneHealth": {
+    es: "One Health",
+    en: "One Health"
+  },
+  "talleres.found": {
+    es: "{n} talleres encontrados",
+    en: "{n} workshops found"
+  },
+  "talleres.foundOne": {
+    es: "1 taller encontrado",
+    en: "1 workshop found"
+  },
+  "a11y.tallerTemas": {
+    es: "Filtrar talleres por tema",
+    en: "Filter workshops by theme"
   },
   "taller.number": {
     es: "Taller {n}",

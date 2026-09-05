@@ -52,7 +52,8 @@
         "Sergio Bontti (Universidad Católica de Cuyo)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "One Health"
     },
     {
       "id": "taller-2",
@@ -67,7 +68,8 @@
         "María Lis Piter (Universidad de Concepción del Uruguay)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Humanismo"
     },
     {
       "id": "taller-3",
@@ -82,7 +84,8 @@
         "Nadia Mussarella (Universidad Hospital Italiano de Buenos Aires)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Competencias docentes"
     },
     {
       "id": "taller-4",
@@ -97,7 +100,8 @@
         "Adriana V. Ingratta (Universidad del Salvador)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Simulación"
     },
     {
       "id": "taller-5",
@@ -112,7 +116,8 @@
         "Juan Ignacio Pérez Barboza (Universidad Abierta Interamericana)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Evaluación"
     },
     {
       "id": "taller-6",
@@ -127,7 +132,8 @@
         "Diego Vinciguerra (Instituto Universitario Barceló)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Simulación"
     },
     {
       "id": "taller-7",
@@ -142,7 +148,8 @@
         "Lisandra Viglione (Universidad FASTA)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Metodologías activas"
     },
     {
       "id": "taller-8",
@@ -157,7 +164,8 @@
         "Eduardo Durante (Universidad Hospital Italiano de Buenos Aires)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Competencias docentes"
     },
     {
       "id": "taller-9",
@@ -172,7 +180,8 @@
         "Bettina C. Schettini (Universidad del Salvador)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Metodologías activas"
     },
     {
       "id": "taller-10",
@@ -187,7 +196,8 @@
         "Norberto Blanco (Universidad Abierta Interamericana)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Comunicación"
     },
     {
       "id": "taller-11",
@@ -202,7 +212,8 @@
         "Graciela del Valle Ahumada (Universidad de Concepción del Uruguay)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Humanismo"
     },
     {
       "id": "taller-12",
@@ -217,7 +228,8 @@
         "Delia Contreras (Instituto Universitario CEMIC)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Investigación"
     },
     {
       "id": "taller-13",
@@ -232,7 +244,8 @@
         "Melina Martín (Instituto Universitario CEMIC)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Competencias docentes"
     },
     {
       "id": "taller-14",
@@ -247,7 +260,8 @@
         "Graciela Moya (Pontificia Universidad Católica Argentina)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Investigación"
     },
     {
       "id": "taller-15",
@@ -262,7 +276,8 @@
         "Sabrina Marcela Julio (Pontificia Universidad Católica Argentina)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Salud comunitaria"
     },
     {
       "id": "taller-16",
@@ -277,7 +292,8 @@
         "Daniela Florencio (Universidad FASTA)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Comunicación"
     },
     {
       "id": "taller-17",
@@ -293,7 +309,8 @@
         "Silvana Pujol (Universidad Nacional de La Plata)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Salud comunitaria"
     },
     {
       "id": "taller-18",
@@ -309,7 +326,8 @@
         "Victoria Abraham (Universidad del Aconcagua)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Aprendizaje"
     },
     {
       "id": "taller-19",
@@ -324,7 +342,8 @@
         "Yusef Bubica (Universidad Católica de Cuyo)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Inteligencia Artificial"
     },
     {
       "id": "taller-20",
@@ -339,7 +358,8 @@
         "María Paula Malzone (Universidad de Buenos Aires)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Inteligencia Artificial"
     },
     {
       "id": "taller-21",
@@ -354,7 +374,8 @@
         "Edgardo Camani (Universidad del Aconcagua)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Metodologías activas"
     },
     {
       "id": "2026-09-16-1230-aula-magna",
@@ -434,7 +455,8 @@
         "Francisco Ricardo Klein (Universidad Favaloro)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Innovación educativa"
     },
     {
       "id": "taller-23",
@@ -451,7 +473,8 @@
         "Marcelo Garcia Dieguez (Universidad Nacional del Sur)"
       ],
       "moderadores": [],
-      "ejeId": "eje-1"
+      "ejeId": "eje-1",
+      "tema": "Evaluación"
     },
     {
       "id": "2026-09-16-1445-aula-magna",
@@ -597,7 +620,8 @@
         "Aldana Santonocito Cevoli (Universidad Austral)"
       ],
       "moderadores": [],
-      "ejeId": "eje-2"
+      "ejeId": "eje-2",
+      "tema": "Inclusión"
     },
     {
       "id": "taller-25",
@@ -613,7 +637,8 @@
         "Andrea Laura Carapella (Universidad Nacional de Entre Ríos)"
       ],
       "moderadores": [],
-      "ejeId": "eje-2"
+      "ejeId": "eje-2",
+      "tema": "Innovación educativa"
     },
     {
       "id": "2026-09-17-0830-salon-consejo",
@@ -748,7 +773,8 @@
         "María Daniela Tisocco (Universidad Nacional de Entre Ríos)"
       ],
       "moderadores": [],
-      "ejeId": "eje-2"
+      "ejeId": "eje-2",
+      "tema": "Metodologías activas"
     },
     {
       "id": "taller-27",
@@ -763,7 +789,8 @@
         "María Ruiz Juri (Instituto Universitario de Cs. Biomédicas de Córdoba)"
       ],
       "moderadores": [],
-      "ejeId": "eje-2"
+      "ejeId": "eje-2",
+      "tema": "Competencias docentes"
     },
     {
       "id": "2026-09-17-1130-aula-magna",
@@ -824,7 +851,8 @@
         "Lila Paula Dupuy (Universidad Maimónides)"
       ],
       "moderadores": [],
-      "ejeId": "eje-2"
+      "ejeId": "eje-2",
+      "tema": "Inclusión"
     },
     {
       "id": "2026-09-17-1430-salon-consejo",
@@ -921,7 +949,8 @@
         "Natalia Mimessi (Instituto Universitario de Ciencias Biomédicas de Córdoba)"
       ],
       "moderadores": [],
-      "ejeId": "eje-2"
+      "ejeId": "eje-2",
+      "tema": "Innovación educativa"
     },
     {
       "id": "taller-30",
@@ -936,7 +965,8 @@
         "Liliana Batalla (Universidad Nacional del Nordeste)"
       ],
       "moderadores": [],
-      "ejeId": "eje-2"
+      "ejeId": "eje-2",
+      "tema": "Enfermería"
     },
     {
       "id": "2026-09-17-1645-aula-magna",
@@ -1055,7 +1085,8 @@
         "Lucas Federico Vallejos (Universidad Maimónides)"
       ],
       "moderadores": [],
-      "ejeId": "eje-3"
+      "ejeId": "eje-3",
+      "tema": "Inteligencia Artificial"
     },
     {
       "id": "taller-32",
@@ -1070,7 +1101,8 @@
         "Marcelo Garcia Dieguez (Universidad Nacional del Sur)"
       ],
       "moderadores": [],
-      "ejeId": "eje-3"
+      "ejeId": "eje-3",
+      "tema": "Evaluación"
     },
     {
       "id": "2026-09-18-0830-salon-consejo",
@@ -1200,7 +1232,8 @@
         "Catalina Bolaños (Universidad Austral)"
       ],
       "moderadores": [],
-      "ejeId": "eje-3"
+      "ejeId": "eje-3",
+      "tema": "Inteligencia Artificial"
     },
     {
       "id": "2026-09-18-1130-salon-consejo",
@@ -1323,5 +1356,21 @@
       "moderadores": [],
       "ejeId": "eje-3"
     }
+  ],
+  "temasTalleres": [
+    "Inteligencia Artificial",
+    "Evaluación",
+    "Simulación",
+    "Comunicación",
+    "Humanismo",
+    "Investigación",
+    "Aprendizaje",
+    "Competencias docentes",
+    "Enfermería",
+    "Inclusión",
+    "Innovación educativa",
+    "Metodologías activas",
+    "Salud comunitaria",
+    "One Health"
   ]
 }

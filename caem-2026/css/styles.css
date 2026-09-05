@@ -558,6 +558,41 @@ body.is-offline .botonera {
   color: #fff;
 }
 
+.tema-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0 0 0.75rem;
+}
+
+.tema-chip {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--navy);
+  border-radius: 999px;
+  padding: 0.45rem 0.8rem;
+  min-height: 2.35rem;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.tema-chip.is-active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+
+.talleres-found {
+  margin: 0 0 0.85rem;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
 .results-head {
   display: flex;
   align-items: center;
@@ -838,6 +873,12 @@ body.is-offline .botonera {
   background: color-mix(in srgb, #7a1f32 14%, white);
   color: #7a1f32;
 }
+
+.badge-tema {
+  background: color-mix(in srgb, var(--navy) 10%, white);
+  color: var(--navy);
+}
+
 
 .badge-time {
   background: var(--navy);
