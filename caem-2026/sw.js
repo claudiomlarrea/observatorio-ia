@@ -1,5 +1,5 @@
 /* Service worker — App de Consulta CAEM 2026 (offline-first) */
-const CACHE = "caem-2026-v20";
+const CACHE = "caem-2026-v21";
 const DATA_VERSION = "17";
 
 const CORE_ASSETS = [
@@ -10,7 +10,7 @@ const CORE_ASSETS = [
   "./css/fonts.css?v=17",
   "./css/styles.css?v=20",
   "./css/instalar.css?v=17",
-  "./js/i18n-dict.js?v=20",
+  "./js/i18n-dict.js?v=21",
   "./js/i18n.js?v=17",
   "./js/app.js?v=20",
   "./js/install.js?v=17",

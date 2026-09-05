@@ -207,7 +207,7 @@ window.I18N_DICT = {
 
   "mode.horario": { es: "Horario", en: "Schedule" },
   "mode.tema": { es: "Tema", en: "Topic" },
-  "mode.tipo": { es: "Tipo", en: "Type" },
+  "mode.tipo": { es: "Actividad", en: "Activity" },
   "mode.disertante": { es: "Disertante", en: "Speaker" },
   "mode.aula": { es: "Aula", en: "Room" },
   "mode.talleres": { es: "Talleres", en: "Workshops" },
