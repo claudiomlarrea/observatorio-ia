@@ -2,61 +2,199 @@
 <html lang="es-AR">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>CAEM 2026 — Redirigiendo…</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta
       name="description"
-      content="La App de Consulta CAEM 2026 se abrió en su dirección actualizada."
+      content="App de Consulta CAEM 2026: encontrá horario, tema, tipo de exposición, disertante y aula."
     />
-    <meta http-equiv="refresh" content="0; url=https://caem-2026-app.web.app/" />
-    <link rel="canonical" href="https://caem-2026-app.web.app/" />
-    <style>
-      body {
-        margin: 0;
-        min-height: 100vh;
-        display: grid;
-        place-items: center;
-        font-family: system-ui, sans-serif;
-        background: #0b1f4a;
-        color: #fff;
-        text-align: center;
-        padding: 1.5rem;
-      }
-      a {
-        color: #9ec5ff;
-      }
-    </style>
-    <script>
-      (function () {
-        var dest = "https://caem-2026-app.web.app/";
-        try {
-          dest = dest + location.search + location.hash;
-        } catch (_e) {}
-
-        // Clear old PWA cache so returning visitors are not stuck on the previous app.
-        if ("serviceWorker" in navigator) {
-          navigator.serviceWorker.getRegistrations().then(function (regs) {
-            regs.forEach(function (reg) {
-              reg.unregister();
-            });
-          });
-        }
-        if (window.caches && caches.keys) {
-          caches.keys().then(function (keys) {
-            keys.forEach(function (key) {
-              caches.delete(key);
-            });
-          });
-        }
-
-        location.replace(dest);
-      })();
-    </script>
+    <meta name="theme-color" content="#0b1f4a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="CAEM 2026" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <title>App de Consulta · CAEM 2026</title>
+    <link rel="icon" type="image/png" href="assets/icon-192.png" />
+    <link rel="apple-touch-icon" href="assets/icon-180.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="css/fonts.css?v=17" />
+    <link rel="stylesheet" href="css/styles.css?v=21" />
+    <link rel="stylesheet" href="css/instalar.css?v=17" />
   </head>
   <body>
-    <p>
-      Redirigiendo a la App de Consulta CAEM 2026…<br />
-      <a href="https://caem-2026-app.web.app/">Tocá acá si no abre sola</a>
-    </p>
+    <a class="skip-link" href="#contenido" data-i18n="a11y.skipLink">Ir al contenido</a>
+    <div id="offline-banner" class="offline-banner" hidden role="status">
+      <span data-i18n="offline.banner">Sin conexión — usando la versión guardada en este celular</span>
+    </div>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <img
+          class="brand-logo"
+          src="assets/logo-caem.png"
+          width="96"
+          height="115"
+          alt="CAEM 2026 — 26° Congreso Argentino de Educación Médica"
+          decoding="async"
+          data-i18n-attr="alt:a11y.logoAlt"
+        />
+        <div class="brand-copy">
+          <p class="brand-kicker" data-i18n="brand.kicker">
+            CAEM 2026 · AFACIMERA · Facultad de Medicina UBA
+          </p>
+          <h1 class="brand-title" data-i18n="brand.title">App de Consulta</h1>
+          <p class="brand-sub" data-i18n="brand.sub">¿Qué querés encontrar?</p>
+          <p class="brand-dates" data-i18n="brand.dates">16 al 18 de septiembre de 2026</p>
+          <a
+            class="pdf-download"
+            href="assets/Programa_Academico_CAEM_2026.pdf?v=2"
+            download="Programa_Academico_CAEM_2026.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span data-i18n="pdf.download">Descargar programa completo (PDF)</span>
+          </a>
+          <a
+            class="pdf-download pdf-download-talleres"
+            href="assets/Grilla_Talleres_CAEM_2026.pdf"
+            download="Grilla_Talleres_CAEM_2026.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span data-i18n="pdf.talleres">Descargar grilla de talleres (PDF)</span>
+          </a>
+          <a class="install-guide-link" href="instalar.html" data-i18n="install.howToShort"
+            >Agregar a la pantalla del celular</a
+          >
+          <a class="install-guide-link install-guide-link-qr" href="instalar.html#qr" data-i18n="install.qrShort"
+            >QR para compartir</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <nav class="botonera" aria-label="Cómo buscar" id="botonera" data-i18n-attr="aria-label:a11y.botonera">
+      <button type="button" class="mode-btn is-active" data-mode="horario">
+        <span class="mode-icon" aria-hidden="true">Hr</span>
+        <span data-i18n="mode.horario">Horario</span>
+      </button>
+      <button type="button" class="mode-btn" data-mode="tema">
+        <span class="mode-icon" aria-hidden="true">Ej</span>
+        <span data-i18n="mode.tema">Tema</span>
+      </button>
+      <button type="button" class="mode-btn" data-mode="tipo">
+        <span class="mode-icon" aria-hidden="true">Ac</span>
+        <span data-i18n="mode.tipo">Actividad</span>
+      </button>
+      <button type="button" class="mode-btn" data-mode="disertante">
+        <span class="mode-icon" aria-hidden="true">Di</span>
+        <span data-i18n="mode.disertante">Disertante</span>
+      </button>
+      <button type="button" class="mode-btn" data-mode="aula">
+        <span class="mode-icon" aria-hidden="true">Au</span>
+        <span data-i18n="mode.aula">Aula</span>
+      </button>
+      <button type="button" class="mode-btn mode-btn-talleres" data-mode="talleres">
+        <span class="mode-icon" aria-hidden="true">Ta</span>
+        <span data-i18n="mode.talleres">Talleres</span>
+      </button>
+      <button type="button" class="mode-btn mode-btn-agenda" data-mode="agenda">
+        <span class="mode-icon" aria-hidden="true">Ag</span>
+        <span data-i18n="mode.agenda">Agenda</span>
+        <span class="mode-count" id="agenda-count" hidden>0</span>
+      </button>
+      <button type="button" class="mode-btn mode-btn-now" data-mode="ahora">
+        <span class="mode-icon" aria-hidden="true">Now</span>
+        <span data-i18n="mode.ahora">Ahora</span>
+      </button>
+    </nav>
+
+    <main id="contenido" class="main">
+      <section class="step-panel" id="step-panel" aria-live="polite">
+        <div class="step-head">
+          <h2 class="step-title" id="step-title">Elegí el día</h2>
+          <p class="step-help" id="step-help">Después vas a ver los horarios de ese día.</p>
+        </div>
+        <div class="step-tools" id="step-tools" hidden>
+          <label class="sr-only" for="person-filter" data-i18n="a11y.personFilter"
+            >Filtrar nombres</label
+          >
+          <input
+            id="person-filter"
+            class="person-filter"
+            type="search"
+            placeholder="Escribí un apellido o nombre…"
+            autocomplete="off"
+            data-i18n-attr="placeholder:person.filterPlaceholder"
+          />
+        </div>
+        <div
+          class="option-grid"
+          id="option-grid"
+          role="listbox"
+          aria-label="Opciones"
+          data-i18n-attr="aria-label:a11y.options"
+        ></div>
+      </section>
+
+      <section
+        class="results"
+        id="results"
+        aria-label="Resultados"
+        data-i18n-attr="aria-label:a11y.results"
+        hidden
+      >
+        <div class="results-head">
+          <h2 class="results-title" id="results-title" data-i18n="results.title">Resultados</h2>
+          <button type="button" class="back-btn" id="back-btn" data-i18n="back.filter">
+            ← Volver
+          </button>
+        </div>
+        <div id="results-body"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        <a
+          class="pdf-download-footer"
+          href="assets/Programa_Academico_CAEM_2026.pdf?v=2"
+          download="Programa_Academico_CAEM_2026.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-i18n="pdf.download"
+          >Descargar programa completo (PDF)</a
+        >
+        ·
+        <a
+          class="pdf-download-footer"
+          href="assets/Grilla_Talleres_CAEM_2026.pdf"
+          download="Grilla_Talleres_CAEM_2026.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-i18n="pdf.talleres"
+          >Descargar grilla de talleres (PDF)</a
+        >
+      </p>
+      <p>
+        <span data-i18n="footer.source"
+          >Fuente: Programa Académico y Grilla de Talleres CAEM 2026.</span
+        >
+        <a
+          href="https://caem.afacimera.org.ar/"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-i18n="footer.official"
+          >Sitio oficial</a
+        >
+      </p>
+      <p class="footer-note" data-i18n="footer.note">
+        App de Consulta · Observatorio de IA · UCCuyo
+      </p>
+    </footer>
+
+    <script src="js/i18n-dict.js?v=21"></script>
+    <script src="js/i18n.js?v=18"></script>
+    <script src="js/install.js?v=17"></script>
+    <script src="js/app.js?v=21" defer></script>
   </body>
 </html>
