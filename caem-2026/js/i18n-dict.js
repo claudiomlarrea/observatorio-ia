@@ -302,20 +302,28 @@ window.I18N_DICT = {
 
 
   "step.talleres.title": {
-    es: "Elegí el día del taller",
-    en: "Choose the workshop day"
+    es: "Elegí el tema del taller",
+    en: "Choose the workshop theme"
   },
   "step.talleres.help": {
-    es: "Buscá por día y horario. También podés usar Horario, Tipo, Aula o Disertante.",
-    en: "Search by day and time. You can also use Schedule, Type, Room, or Speaker."
+    es: "Primero el eje temático, después el horario. También podés usar Horario, Tipo, Aula o Disertante.",
+    en: "First the thematic track, then the time. You can also use Schedule, Type, Room, or Speaker."
+  },
+  "step.talleres.themeTitle": {
+    es: "Elegí el tema del taller",
+    en: "Choose the workshop theme"
+  },
+  "step.talleres.themeHelp": {
+    es: "Después vas a ver los horarios de talleres de ese eje.",
+    en: "Next you will see workshop time slots for that track."
   },
   "step.talleres.dayTitle": {
-    es: "Elegí el día del taller",
-    en: "Choose the workshop day"
+    es: "Elegí el tema del taller",
+    en: "Choose the workshop theme"
   },
   "step.talleres.dayHelp": {
-    es: "Después vas a ver los horarios de talleres de ese día.",
-    en: "Next you will see that day's workshop time slots."
+    es: "Después vas a ver los horarios de talleres de ese eje.",
+    en: "Next you will see workshop time slots for that track."
   },
   "step.talleres.slotTitle": {
     es: "Elegí el horario del taller",
@@ -325,9 +333,17 @@ window.I18N_DICT = {
     es: "Solo talleres",
     en: "Workshops only"
   },
+  "talleres.allTheme": {
+    es: "Todos los talleres del tema",
+    en: "All workshops in this theme"
+  },
+  "talleres.allThemeHelp": {
+    es: "Sin fijar una franja horaria",
+    en: "Without locking a time slot"
+  },
   "talleres.allDay": {
-    es: "Todos los talleres del día",
-    en: "All workshops that day"
+    es: "Todos los talleres del tema",
+    en: "All workshops in this theme"
   },
   "talleres.allDayHelp": {
     es: "Sin fijar una franja horaria",
@@ -438,6 +454,14 @@ window.I18N_DICT = {
   "back.days.sub": {
     es: "Cambiar de jornada",
     en: "Change congress day"
+  },
+  "back.themes": {
+    es: "← Volver a los temas",
+    en: "← Back to themes"
+  },
+  "back.themes.sub": {
+    es: "Cambiar de eje temático",
+    en: "Change thematic track"
   },
 
   "results.title": {

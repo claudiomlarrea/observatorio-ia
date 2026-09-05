@@ -40,6 +40,7 @@
     data: null,
     mode: "horario",
     day: null,
+    ejeId: null,
     letter: "Todas",
     personQuery: "",
     selection: null,
@@ -555,13 +556,16 @@
         );
       case "aula":
         return all.filter((s) => s.sala === selection && s.tipo !== "receso");
-      case "talleres":
-        if (selection.wholeDay) {
-          return all.filter((s) => s.dia === selection.day && s.tipo === "taller");
+      case "talleres": {
+        const ejeId = selection.ejeId;
+        if (!ejeId) return [];
+        if (selection.wholeEje) {
+          return all.filter((s) => s.ejeId === ejeId && s.tipo === "taller");
         }
         return all.filter(
-          (s) => s.dia === selection.day && s.inicio === selection.inicio && s.tipo === "taller"
+          (s) => s.ejeId === ejeId && s.inicio === selection.inicio && s.tipo === "taller"
         );
+      }
       case "agenda":
         return agendaSessions();
       case "ahora":
@@ -698,6 +702,7 @@
     state.selection = null;
     state.showResults = false;
     state.day = null;
+    state.ejeId = null;
     state.letter = "Todas";
     state.personQuery = "";
     if (els.personFilter) els.personFilter.value = "";
@@ -844,19 +849,28 @@
     else if (state.mode === "talleres") renderTalleresStep();
   }
 
+  function talleresResultTitle(selection) {
+    const eje = state.data.ejes.find((e) => e.id === selection.ejeId);
+    const axis = eje
+      ? t("results.axis", { name: ejeName(eje.id, eje.nombre) })
+      : t("results.topic");
+    if (selection.wholeEje) return `${axis} · ${t("talleres.allTheme")}`;
+    return `${axis} · ${selection.inicio}`;
+  }
+
   function renderTalleresStep() {
     const talleres = talleresOnly();
-    if (!state.day) {
-      els.stepTitle.textContent = t("step.talleres.dayTitle");
-      els.stepHelp.textContent = t("step.talleres.dayHelp");
-      els.optionGrid.innerHTML = state.data.meta.fechas
-        .map((dia) => {
-          const count = talleres.filter((s) => s.dia === dia).length;
+    if (!state.ejeId) {
+      els.stepTitle.textContent = t("step.talleres.themeTitle");
+      els.stepHelp.textContent = t("step.talleres.themeHelp");
+      els.optionGrid.innerHTML = state.data.ejes
+        .map((eje, i) => {
+          const count = talleres.filter((s) => s.ejeId === eje.id).length;
           if (!count) return "";
           return optionButton({
-            value: dia,
-            title: dayShort(dia),
-            subtitle: t("talleres.daySub"),
+            value: eje.id,
+            title: t(`eje.${i + 1}.label`),
+            subtitle: `${dayShort(eje.dia)} · ${ejeName(eje.id, eje.nombre)}`,
             count,
           });
         })
@@ -864,21 +878,24 @@
       return;
     }
 
+    const eje = state.data.ejes.find((e) => e.id === state.ejeId);
     els.stepTitle.textContent = t("step.talleres.slotTitle");
-    els.stepHelp.textContent = dayLong(state.day);
-    const dayTalleres = talleres.filter((s) => s.dia === state.day);
-    const slots = groupBySlot(dayTalleres);
+    els.stepHelp.textContent = eje
+      ? `${dayShort(eje.dia)} · ${ejeName(eje.id, eje.nombre)}`
+      : t("step.talleres.slotTitle");
+    const themeTalleres = talleres.filter((s) => s.ejeId === state.ejeId);
+    const slots = groupBySlot(themeTalleres);
     els.optionGrid.innerHTML =
       optionButton({
-        value: "__back_days__",
-        title: t("back.days"),
-        subtitle: t("back.days.sub"),
+        value: "__back_themes__",
+        title: t("back.themes"),
+        subtitle: t("back.themes.sub"),
       }) +
       optionButton({
-        value: "__all_day__",
-        title: t("talleres.allDay"),
-        subtitle: t("talleres.allDayHelp"),
-        count: dayTalleres.length,
+        value: "__all_theme__",
+        title: t("talleres.allTheme"),
+        subtitle: t("talleres.allThemeHelp"),
+        count: themeTalleres.length,
       }) +
       slots
         .map((slot) => {
@@ -1083,23 +1100,23 @@
     }
 
     if (mode === "talleres") {
-      if (value === "__back_days__") {
-        state.day = null;
+      if (value === "__back_themes__") {
+        state.ejeId = null;
         renderStep();
         return;
       }
-      if (!state.day) {
-        state.day = value;
+      if (!state.ejeId) {
+        state.ejeId = value;
         renderStep();
         return;
       }
-      if (value === "__all_day__") {
-        state.selection = { day: state.day, wholeDay: true };
-        showResults(`${dayShort(state.day)} · ${t("talleres.allDay")}`);
+      if (value === "__all_theme__") {
+        state.selection = { ejeId: state.ejeId, wholeEje: true };
+        showResults(talleresResultTitle(state.selection));
         return;
       }
-      state.selection = { day: state.day, inicio: value };
-      showResults(`${dayShort(state.day)} · ${value}`);
+      state.selection = { ejeId: state.ejeId, inicio: value };
+      showResults(talleresResultTitle(state.selection));
       return;
     }
 
@@ -1128,12 +1145,8 @@
           showResults(tipoLabel(state.selection));
         } else if (state.mode === "aula" || state.mode === "disertante") {
           showResults(state.selection);
-        } else if (state.mode === "talleres" && state.selection.day) {
-          showResults(
-            state.selection.wholeDay
-              ? `${dayShort(state.selection.day)} · ${t("talleres.allDay")}`
-              : `${dayShort(state.selection.day)} · ${state.selection.inicio}`
-          );
+        } else if (state.mode === "talleres" && state.selection.ejeId) {
+          showResults(talleresResultTitle(state.selection));
         }
       }
       return;
