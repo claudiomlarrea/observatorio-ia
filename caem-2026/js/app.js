@@ -152,9 +152,19 @@
   function updateAgendaBadge() {
     const badge = document.getElementById("agenda-count");
     if (!badge) return;
-    const n = loadAgendaIds().length;
-    badge.textContent = String(n);
-    badge.hidden = n === 0;
+    let ids = loadAgendaIds();
+    if (state.data?.sesiones?.length) {
+      const valid = new Set(state.data.sesiones.map((s) => s.id));
+      const pruned = ids.filter((id) => valid.has(id));
+      if (pruned.length !== ids.length) {
+        try {
+          localStorage.setItem(AGENDA_KEY, JSON.stringify(pruned));
+        } catch (_e) {}
+        ids = pruned;
+      }
+    }
+    badge.textContent = String(ids.length);
+    badge.hidden = ids.length === 0;
   }
 
   function agendaSessions() {
@@ -315,6 +325,12 @@
     });
   }
 
+  function stopReminderWatcher() {
+    if (!state.reminderTimer) return;
+    window.clearInterval(state.reminderTimer);
+    state.reminderTimer = null;
+  }
+
   function icsEscape(text) {
     return String(text || "")
       .replace(/\\/g, "\\\\")
@@ -355,8 +371,9 @@
       lines.push("BEGIN:VEVENT");
       lines.push(`UID:${uid}`);
       lines.push(`DTSTAMP:${stamp}`);
-      lines.push(`DTSTART;TZID=America/Argentina/Buenos_Aires:${icsLocal(session, "inicio")}`);
-      lines.push(`DTEND;TZID=America/Argentina/Buenos_Aires:${icsLocal(session, "fin")}`);
+      // UTC with Z is more reliable across calendar apps than TZID without VTIMEZONE.
+      lines.push(`DTSTART:${icsStamp(sessionDate(session, "inicio"))}`);
+      lines.push(`DTEND:${icsStamp(sessionDate(session, "fin"))}`);
       lines.push(`SUMMARY:${icsEscape(session.titulo || eventTitle)}`);
       if (session.sala) lines.push(`LOCATION:${icsEscape(session.sala)}`);
       const descParts = [eventTitle];
@@ -767,6 +784,7 @@
     state.letter = "Todas";
     state.personQuery = "";
     if (els.personFilter) els.personFilter.value = "";
+    syncBotoneraOffset();
 
     els.botonera.querySelectorAll(".mode-btn").forEach((btn) => {
       btn.classList.toggle("is-active", btn.dataset.mode === mode);
@@ -801,6 +819,7 @@
     els.results.hidden = false;
     els.resultsTitle.textContent = title;
     els.resultsBody.innerHTML = renderSessionsList(sessions, query || "");
+    syncBotoneraOffset();
     els.results.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
@@ -846,6 +865,7 @@
     }
 
     els.resultsBody.innerHTML = html;
+    syncBotoneraOffset();
     els.results.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
@@ -895,6 +915,8 @@
     els.resultsBody.innerHTML = sessions.length
       ? renderSessionsList(sessions)
       : `<p class="empty">${escapeHtml(t("now.empty"))}</p>`;
+    syncBotoneraOffset();
+    els.results.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function renderStep() {
@@ -915,11 +937,22 @@
   }
 
   function syncBotoneraOffset() {
-    const h = els.botonera ? els.botonera.offsetHeight : 0;
+    const botoneraH = els.botonera ? els.botonera.offsetHeight : 0;
+    const banner = document.getElementById("offline-banner");
+    const bannerH = banner && !banner.hidden ? banner.offsetHeight : 0;
+    // Sticky chips/results must sit below the visible bottom of the mode bar.
+    const offset = (document.body.classList.contains("is-offline") ? bannerH : 0) + botoneraH + 10;
     document.documentElement.style.setProperty(
       "--botonera-sticky-offset",
-      `${Math.max(h, 72) + 10}px`
+      `${Math.max(offset, 82)}px`
     );
+  }
+
+  function setOfflineUi(on) {
+    document.body.classList.toggle("is-offline", Boolean(on));
+    const banner = document.getElementById("offline-banner");
+    if (banner) banner.hidden = !on;
+    syncBotoneraOffset();
   }
 
   function temaChipButton(tema, count, selected) {
@@ -979,13 +1012,8 @@
       ${renderSessionsList(sessions)}
     `;
 
-    // Keep sticky mode buttons + theme chips visible (avoid covering first chips).
-    const toolbar = els.resultsBody.querySelector(".talleres-toolbar");
-    if (toolbar && toolbar.scrollIntoView) {
-      toolbar.scrollIntoView({ behavior: "smooth", block: "start" });
-    } else {
-      els.results.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    // Scroll the results panel (has scroll-margin under sticky botonera) so "Volver" stays visible.
+    els.results.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function renderHorarioStep() {
@@ -1250,6 +1278,16 @@
       }
       const remindBtn = e.target.closest("#agenda-reminders");
       if (remindBtn) {
+        const alreadyOn =
+          remindersEnabled() &&
+          typeof Notification !== "undefined" &&
+          Notification.permission === "granted";
+        if (alreadyOn) {
+          setRemindersEnabled(false);
+          stopReminderWatcher();
+          showAgenda();
+          return;
+        }
         enableAgendaReminders().then((status) => {
           if (status === "granted") showAgenda();
           else if (status === "denied") window.alert(t("reminders.denied"));
@@ -1340,9 +1378,12 @@
       try {
         const raw = localStorage.getItem(PROGRAM_STORE_KEY);
         if (!raw) return null;
-        const data = JSON.parse(raw);
-        if (!data?.sesiones?.length) return null;
-        return data;
+        const parsed = JSON.parse(raw);
+        if (parsed?.version && parsed.version !== PROGRAM_VERSION) return null;
+        if (parsed?.data?.sesiones?.length) return parsed.data;
+        // Legacy unversioned payload — only accept if still current shape.
+        if (parsed?.sesiones?.length) return parsed;
+        return null;
       } catch (_e) {
         return null;
       }
@@ -1350,7 +1391,10 @@
 
     const persistProgram = (data) => {
       try {
-        localStorage.setItem(PROGRAM_STORE_KEY, JSON.stringify(data));
+        localStorage.setItem(
+          PROGRAM_STORE_KEY,
+          JSON.stringify({ version: PROGRAM_VERSION, data })
+        );
       } catch (_e) {}
     };
 
@@ -1396,13 +1440,13 @@
       updateAgendaBadge();
       if (remindersEnabled()) startReminderWatcher();
       setMode("horario");
-      if (fromStore || !navigator.onLine) {
-        const banner = document.getElementById("offline-banner");
-        if (banner) {
-          banner.hidden = false;
-          if (window.I18N && window.I18N.apply) window.I18N.apply();
-        }
+      syncBotoneraOffset();
+      setOfflineUi(fromStore || !navigator.onLine);
+      if ((fromStore || !navigator.onLine) && window.I18N && window.I18N.apply) {
+        window.I18N.apply();
       }
+      window.addEventListener("online", () => setOfflineUi(false));
+      window.addEventListener("offline", () => setOfflineUi(true));
     } catch (err) {
       console.error(err);
       showLoadError(err && err.message ? err.message : String(err));
