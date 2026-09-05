@@ -508,9 +508,37 @@
     return state.data?.temasTalleres?.length ? state.data.temasTalleres : TALLER_TEMAS_DEFAULT;
   }
 
+  function i18nOrFallback(key, fallback, vars) {
+    const value = t(key, vars);
+    return !value || value === key ? fallback : value;
+  }
+
+  function currentLang() {
+    return window.I18N && window.I18N.getLang ? window.I18N.getLang() : "es";
+  }
+
   function tallerTemaLabel(tema) {
-    if (!tema || tema === "Todas") return t("talleres.tema.all");
-    return t(TALLER_TEMA_KEYS[tema] || tema);
+    if (!tema || tema === "Todas") {
+      return i18nOrFallback("talleres.tema.all", currentLang() === "en" ? "All" : "Todas");
+    }
+    const key = TALLER_TEMA_KEYS[tema];
+    if (!key) return tema;
+    // If dict is stale/missing, show the Spanish theme name from the program data.
+    return i18nOrFallback(key, tema);
+  }
+
+  function talleresFoundLabel(n) {
+    if (n === 1) {
+      return i18nOrFallback(
+        "talleres.foundOne",
+        currentLang() === "en" ? "1 workshop found" : "1 taller encontrado"
+      );
+    }
+    return i18nOrFallback(
+      "talleres.found",
+      currentLang() === "en" ? `${n} workshops found` : `${n} talleres encontrados`,
+      { n }
+    );
   }
 
   function talleresForTema(tema) {
@@ -886,18 +914,27 @@
     else if (state.mode === "aula") renderAulaStep();
   }
 
+  function syncBotoneraOffset() {
+    const h = els.botonera ? els.botonera.offsetHeight : 0;
+    document.documentElement.style.setProperty(
+      "--botonera-sticky-offset",
+      `${Math.max(h, 72) + 10}px`
+    );
+  }
+
   function temaChipButton(tema, count, selected) {
-    const label =
+    const label = escapeHtml(tallerTemaLabel(tema === "Todas" ? "Todas" : tema));
+    const countHtml =
       tema === "Todas"
-        ? escapeHtml(tallerTemaLabel("Todas"))
-        : `${escapeHtml(tallerTemaLabel(tema))} (${count})`;
+        ? `<span class="tema-chip-count">${count}</span>`
+        : `<span class="tema-chip-count">${count}</span>`;
     return `<button
       type="button"
       class="tema-chip${selected ? " is-active" : ""}"
       role="option"
       data-taller-tema="${escapeHtml(tema)}"
       aria-selected="${selected ? "true" : "false"}"
-    >${label}</button>`;
+    ><span class="tema-chip-label">${label}</span>${countHtml}</button>`;
   }
 
   function showTalleresBrowser() {
@@ -909,6 +946,7 @@
     els.stepPanel.hidden = true;
     els.results.hidden = false;
     els.resultsTitle.textContent = t("mode.talleres");
+    syncBotoneraOffset();
 
     const chips =
       temaChipButton("Todas", all.length, tema === "Todas") +
@@ -920,15 +958,34 @@
         })
         .join("");
 
-    const foundKey = sessions.length === 1 ? "talleres.foundOne" : "talleres.found";
+    const a11y = i18nOrFallback(
+      "a11y.tallerTemas",
+      currentLang() === "en" ? "Filter workshops by theme" : "Filtrar talleres por tema"
+    );
+
     els.resultsBody.innerHTML = `
-      <div class="tema-chips" role="listbox" aria-label="${escapeHtml(t("a11y.tallerTemas"))}">
-        ${chips}
+      <div class="talleres-toolbar">
+        <p class="talleres-toolbar-label">${escapeHtml(
+          i18nOrFallback(
+            "talleres.filterLabel",
+            currentLang() === "en" ? "Filter by theme" : "Filtrar por tema"
+          )
+        )}</p>
+        <div class="tema-chips" role="listbox" aria-label="${escapeHtml(a11y)}">
+          ${chips}
+        </div>
+        <p class="talleres-found">${escapeHtml(talleresFoundLabel(sessions.length))}</p>
       </div>
-      <p class="talleres-found">${escapeHtml(t(foundKey, { n: sessions.length }))}</p>
       ${renderSessionsList(sessions)}
     `;
-    els.results.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    // Keep sticky mode buttons + theme chips visible (avoid covering first chips).
+    const toolbar = els.resultsBody.querySelector(".talleres-toolbar");
+    if (toolbar && toolbar.scrollIntoView) {
+      toolbar.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      els.results.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   }
 
   function renderHorarioStep() {
@@ -1263,6 +1320,7 @@
     });
 
     window.addEventListener("oia:langchange", refreshForLang);
+    window.addEventListener("resize", syncBotoneraOffset);
   }
 
   async function init() {

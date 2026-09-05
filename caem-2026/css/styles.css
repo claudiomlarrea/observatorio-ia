@@ -558,39 +558,123 @@ body.is-offline .botonera {
   color: #fff;
 }
 
+.talleres-toolbar {
+  position: sticky;
+  top: var(--botonera-sticky-offset, 8.5rem);
+  z-index: 30;
+  margin: 0 0 0.85rem;
+  padding: 0.7rem 0.7rem 0.65rem;
+  border: 1px solid color-mix(in srgb, var(--aula-taller) 18%, var(--border));
+  border-radius: 1rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(252, 246, 247, 0.96));
+  box-shadow: 0 10px 24px rgba(11, 31, 74, 0.08);
+  backdrop-filter: blur(10px);
+  scroll-margin-top: var(--botonera-sticky-offset, 8.5rem);
+}
+
+.talleres-toolbar-label {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--aula-taller);
+}
+
 .tema-chips {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.45rem;
-  margin: 0 0 0.75rem;
+  margin: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.15rem 0.1rem 0.35rem;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.tema-chips::-webkit-scrollbar {
+  display: none;
 }
 
 .tema-chip {
   appearance: none;
-  border: 1px solid var(--border);
-  background: var(--surface);
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1.5px solid color-mix(in srgb, var(--aula-taller) 22%, var(--border));
+  background: linear-gradient(180deg, #ffffff, #fbf7f8);
   color: var(--navy);
   border-radius: 999px;
-  padding: 0.45rem 0.8rem;
-  min-height: 2.35rem;
+  padding: 0.48rem 0.55rem 0.48rem 0.8rem;
+  min-height: 2.55rem;
   font-family: var(--font-display);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.15;
   cursor: pointer;
   touch-action: manipulation;
+  scroll-snap-align: start;
+  box-shadow: 0 1px 2px rgba(11, 31, 74, 0.05);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease,
+    border-color 0.12s ease, color 0.12s ease;
+}
+
+.tema-chip:active {
+  transform: scale(0.98);
+}
+
+.tema-chip-label {
+  white-space: nowrap;
+}
+
+.tema-chip-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.4rem;
+  height: 1.4rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--aula-taller) 12%, white);
+  color: var(--aula-taller);
+  font-size: 0.72rem;
+  font-weight: 800;
 }
 
 .tema-chip.is-active {
-  background: var(--navy);
-  border-color: var(--navy);
+  background: linear-gradient(180deg, #9a2b42, var(--aula-taller));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(122, 31, 50, 0.28);
+}
+
+.tema-chip.is-active .tema-chip-count {
+  background: rgba(255, 255, 255, 0.22);
   color: #fff;
 }
 
 .talleres-found {
-  margin: 0 0 0.85rem;
+  margin: 0.55rem 0 0;
   color: var(--text-muted);
-  font-size: 0.92rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+#results {
+  scroll-margin-top: var(--botonera-sticky-offset, 8.5rem);
+}
+
+@media (min-width: 640px) {
+  .tema-chips {
+    flex-wrap: wrap;
+    overflow: visible;
+    padding-bottom: 0.1rem;
+  }
 }
 
 .results-head {

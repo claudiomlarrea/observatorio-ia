@@ -1,5 +1,5 @@
 /* Service worker — App de Consulta CAEM 2026 (offline-first) */
-const CACHE = "caem-2026-v19";
+const CACHE = "caem-2026-v20";
 const DATA_VERSION = "17";
 
 const CORE_ASSETS = [
@@ -8,11 +8,11 @@ const CORE_ASSETS = [
   "./instalar.html",
   "./manifest.webmanifest",
   "./css/fonts.css?v=17",
-  "./css/styles.css?v=19",
+  "./css/styles.css?v=20",
   "./css/instalar.css?v=17",
-  "./js/i18n-dict.js?v=19",
+  "./js/i18n-dict.js?v=20",
   "./js/i18n.js?v=17",
-  "./js/app.js?v=19",
+  "./js/app.js?v=20",
   "./js/install.js?v=17",
   `./data/programa.json?v=${DATA_VERSION}`,
   "./data/programa.json",
@@ -97,11 +97,17 @@ async function fromCache(req) {
   const direct = await caches.match(req);
   if (direct) return direct;
   const url = new URL(req.url);
+  // Versioned JS/CSS must not fall back to a stale bare file without ?v=.
+  const versionedStatic = /\.(js|css)$/.test(url.pathname) && url.search.includes("v=");
+  if (versionedStatic) {
+    const exact = await caches.match(url.pathname + url.search);
+    return exact || null;
+  }
   const bare = await caches.match(url.pathname);
   if (bare) return bare;
   if (url.search) {
-    const noQuery = await caches.match(url.pathname + url.search);
-    if (noQuery) return noQuery;
+    const withQuery = await caches.match(url.pathname + url.search);
+    if (withQuery) return withQuery;
   }
   return null;
 }

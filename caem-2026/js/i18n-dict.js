@@ -349,6 +349,10 @@ window.I18N_DICT = {
     es: "Sin fijar una franja horaria",
     en: "Without locking a time slot"
   },
+  "talleres.filterLabel": {
+    es: "Filtrar por tema",
+    en: "Filter by theme"
+  },
   "talleres.tema.all": {
     es: "Todas",
     en: "All"
