@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Ingresá a la Biblioteca de IA del Observatorio de Inteligencia Artificial de la Universidad Católica de Cuyo: más de 19 millones de artículos científicos sobre IA."
+    />
+    <meta property="og:title" content="Biblioteca de IA · Observatorio de IA · UCCuyo" />
+    <meta
+      property="og:description"
+      content="Más de 19 millones de artículos científicos sobre inteligencia artificial. Ingresá a la Biblioteca de IA."
+    />
+    <meta
+      property="og:image"
+      content="https://observatorio-ia.uccuyo.edu.ar/assets/banner-biblioteca-ia-linkedin.png"
+    />
+    <meta property="og:url" content="https://observatorio-ia.uccuyo.edu.ar/banner-biblioteca-ia.html" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Biblioteca de IA | Observatorio de IA · UCCuyo</title>
+    <link rel="icon" type="image/png" href="assets/logo-observatorio-ia.png" />
+    <style>
+      :root {
+        --verde: #064a38;
+        --verde-medio: #0d6e4f;
+        --rojo: #7a1532;
+        --rojo-oscuro: #4a0c1f;
+        --dorado: #e8b923;
+        --blanco: #ffffff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: #042f23;
+        font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      }
+
+      .page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+
+      .stack {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.9rem;
+        width: min(72rem, 100%);
+      }
+
+      .hint {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 0.95rem;
+        text-align: center;
+        line-height: 1.45;
+      }
+
+      .hint a {
+        color: var(--dorado);
+        font-weight: 700;
+      }
+
+      .banner {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+        background: var(--verde);
+      }
+
+      .banner img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: fill;
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .hotspot {
+        position: absolute;
+        z-index: 2;
+        border-radius: 0.85rem;
+        text-decoration: none;
+        color: transparent;
+        font-size: 0;
+      }
+
+      .hotspot:focus-visible {
+        outline: 3px solid var(--dorado);
+        outline-offset: 3px;
+      }
+
+      .hotspot:hover {
+        box-shadow: 0 0 0 3px rgba(232, 185, 35, 0.55);
+      }
+
+      .hotspot-biblioteca {
+        left: 31.771%;
+        top: 51.852%;
+        width: 29.167%;
+        height: 8.519%;
+      }
+
+      .hotspot-observatorio {
+        left: 62.812%;
+        top: 51.852%;
+        width: 29.167%;
+        height: 8.519%;
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        justify-content: center;
+        width: 100%;
+      }
+
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: min(22rem, 100%);
+        padding: 0.9rem 1.35rem;
+        border-radius: 999px;
+        color: var(--blanco);
+        font-weight: 700;
+        font-size: 1.05rem;
+        text-decoration: none;
+        text-align: center;
+      }
+
+      .cta.biblioteca {
+        background: linear-gradient(135deg, var(--verde-medio), var(--verde));
+        box-shadow: 0 8px 24px rgba(6, 74, 56, 0.45);
+      }
+
+      .cta.observatorio {
+        background: linear-gradient(135deg, var(--rojo) 0%, var(--rojo-oscuro) 100%);
+        box-shadow: 0 8px 24px rgba(74, 12, 31, 0.45);
+      }
+
+      .cta:hover {
+        filter: brightness(1.08);
+      }
+
+      @media (max-width: 720px) {
+        .banner {
+          border-radius: 0.75rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="stack">
+        <p class="hint">
+          Tocá un botón del banner para entrar a la Biblioteca o al Observatorio.
+        </p>
+        <div
+          class="banner"
+          role="img"
+          aria-label="Banner de la Biblioteca de IA del Observatorio de Inteligencia Artificial de la Universidad Católica de Cuyo"
+        >
+          <img
+            src="assets/banner-biblioteca-ia-linkedin.png"
+            width="1920"
+            height="1080"
+            alt="Más de 19 millones de artículos científicos sobre inteligencia artificial en la Biblioteca de IA del Observatorio de IA, Universidad Católica de Cuyo"
+          />
+          <a
+            class="hotspot hotspot-biblioteca"
+            href="https://observatorio-ia.uccuyo.edu.ar/#publicaciones"
+            aria-label="Ingresá a la Biblioteca de IA"
+          >
+            Ingresá a la Biblioteca
+          </a>
+          <a
+            class="hotspot hotspot-observatorio"
+            href="https://observatorio-ia.uccuyo.edu.ar/"
+            aria-label="Ingresá al Observatorio"
+          >
+            Ingresá al Observatorio
+          </a>
+        </div>
+        <div class="cta-row">
+          <a
+            class="cta biblioteca"
+            href="https://observatorio-ia.uccuyo.edu.ar/#publicaciones"
+          >
+            Ingresá a la Biblioteca
+          </a>
+          <a class="cta observatorio" href="https://observatorio-ia.uccuyo.edu.ar/">
+            Ingresá al Observatorio
+          </a>
+        </div>
+        <p class="hint">
+          <a href="assets/banner-biblioteca-ia-linkedin.pdf">Descargar PDF con enlaces</a>
+          ·
+          <a href="assets/banner-biblioteca-ia-linkedin.png" download>Descargar imagen PNG</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
