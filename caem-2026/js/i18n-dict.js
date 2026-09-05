@@ -479,12 +479,12 @@ window.I18N_DICT = {
     en: "Each congress day has a thematic track."
   },
   "step.tipo.title": {
-    es: "Elegí el tipo de exposición",
-    en: "Choose the session type"
+    es: "Elegí el tipo de actividad",
+    en: "Choose the activity type"
   },
   "step.tipo.help": {
-    es: "Mesas, plenarias, conversatorios y más.",
-    en: "Round tables, plenaries, conversations, and more."
+    es: "Mesas, plenarias, conversatorios, talleres y más.",
+    en: "Round tables, plenaries, conversations, workshops, and more."
   },
   "step.disertante.title": {
     es: "Elegí el disertante o moderador",
