@@ -6,15 +6,19 @@ from __future__ import annotations
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from pypdf import PdfReader, PdfWriter
+from pypdf.generic import BooleanObject, NameObject
 from reportlab.lib.utils import ImageReader
+from reportlab.pdfbase.pdfdoc import PDFArray, PDFDictionary, PDFName, PDFString
 from reportlab.pdfgen import canvas
+from reportlab.pdfgen.canvas import _annFormat
 
 ROOT = Path(__file__).resolve().parents[1]
 LOGO = ROOT / "assets" / "logo-observatorio-ia-circle.png"
 PNG_OUT = ROOT / "assets" / "banner-biblioteca-ia-linkedin.png"
 PDF_OUT = ROOT / "assets" / "banner-biblioteca-ia-linkedin.pdf"
 
-BIBLIOTECA_URL = "https://observatorio-ia.uccuyo.edu.ar/#publicaciones"
+BIBLIOTECA_URL = "https://observatorio-ia.uccuyo.edu.ar/#publicaciones-global-ia"
 OBSERVATORIO_URL = "https://observatorio-ia.uccuyo.edu.ar/"
 
 # LinkedIn landscape 16:9 (alta resolución para el feed)
@@ -167,7 +171,6 @@ def build_png() -> Image.Image:
     f_title2 = font(FONT_BOLD, 42)
     f_body = font(FONT_REG, 28)
     f_btn = font(FONT_BOLD, 30)
-    f_url = font(FONT_REG, 18)
     f_inst = font(FONT_REG, 22)
 
     rx = 610
@@ -214,11 +217,13 @@ def build_png() -> Image.Image:
     set_zone("biblioteca", b1)
     set_zone("observatorio", b2)
 
-    # URLs visibles (LinkedIn no hace clicables las imágenes)
-    draw.text((b1[0] + 8, btn_y + btn_h + 22), BIBLIOTECA_URL, font=f_url, fill=GREEN_MID)
-    u2 = OBSERVATORIO_URL.rstrip("/")
-    tw2 = text_width(draw, u2, f_url)
-    draw.text((b2[2] - tw2 - 8, btn_y + btn_h + 22), u2, font=f_url, fill=RED)
+    # URLs visibles (el PNG de LinkedIn no es cliqueable)
+    f_url_sm = font(FONT_REG, 16)
+    draw.text((b1[0] + 8, btn_y + btn_h + 18), "observatorio-ia.uccuyo.edu.ar", font=f_url_sm, fill=GREEN_MID)
+    draw.text((b1[0] + 8, btn_y + btn_h + 38), "#publicaciones-global-ia", font=f_url_sm, fill=GREEN_MID)
+    u2 = "observatorio-ia.uccuyo.edu.ar"
+    tw2 = text_width(draw, u2, f_url_sm)
+    draw.text((b2[2] - tw2 - 8, btn_y + btn_h + 18), u2, font=f_url_sm, fill=RED)
 
     # Franja inferior
     band_y = 920
@@ -229,6 +234,28 @@ def build_png() -> Image.Image:
     draw.text((LEFT_W + (W - LEFT_W - tw) // 2, 978), inst, font=f_inst, fill=TEXT_SOFT)
 
     return img.convert("RGB")
+
+
+def force_pdf_new_window(path: Path) -> None:
+    """Asegura /NewWindow true en cada enlace URI (algunos visores lo ignoran si falta)."""
+    reader = PdfReader(str(path))
+    writer = PdfWriter()
+    writer.append(reader)
+    for page in writer.pages:
+        annots = page.get("/Annots")
+        if not annots:
+            continue
+        for annot in annots:
+            obj = annot.get_object()
+            if obj.get("/Subtype") != "/Link":
+                continue
+            action = obj.get("/A")
+            if action is None:
+                continue
+            action = action.get_object()
+            action[NameObject("/NewWindow")] = BooleanObject(True)
+    with path.open("wb") as fh:
+        writer.write(fh)
 
 
 def build_pdf(png: Image.Image) -> None:
@@ -247,18 +274,27 @@ def build_pdf(png: Image.Image) -> None:
 
     def add_link(url: str, zone: tuple[float, float, float, float]) -> None:
         left, bottom, right, top = zone
-        c.linkURL(
-            url,
-            (left * page_w, bottom * page_h, right * page_w, top * page_h),
-            relative=0,
-            thickness=0,
-        )
+        rect = (left * page_w, bottom * page_h, right * page_w, top * page_h)
+        ann = PDFDictionary()
+        ann["Type"] = PDFName("Annot")
+        ann["Subtype"] = PDFName("Link")
+        ann["Rect"] = PDFArray(c._absRect(rect, 0))
+        action = PDFDictionary()
+        action["Type"] = PDFName("Action")
+        action["S"] = PDFName("URI")
+        action["URI"] = PDFString(url)
+        # Boolean PDF: abre el destino en otra ventana/pestaña (Acrobat, Preview, Edge).
+        action["NewWindow"] = "true"
+        ann["A"] = action
+        _annFormat(ann, None, 0, None)
+        c._addAnnotation(ann)
 
     add_link(BIBLIOTECA_URL, LINK_ZONES["biblioteca"])
     add_link(OBSERVATORIO_URL, LINK_ZONES["observatorio"])
     c.setTitle("Biblioteca de IA — Observatorio de IA · UCCuyo")
     c.setAuthor("Observatorio de Inteligencia Artificial · UCCuyo")
     c.save()
+    force_pdf_new_window(PDF_OUT)
 
 
 def main() -> None:
