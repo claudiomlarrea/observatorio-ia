@@ -1,5 +1,5 @@
 {
-  "version": "2026-08-26",
+  "version": "2026-09-08",
   "estado": "provisorio",
   "evento": {
     "titulo": "1° Jornadas internas de Inteligencia Artificial",
@@ -96,6 +96,21 @@
       "persona": "La Malfa et al.",
       "rol": "Expositor/a",
       "area": "Investigación",
+      "sala": "Ponencia",
+      "articuloOk": true,
+      "pptOk": true,
+      "confirmado": false,
+      "notas": "Incluido desde catálogos Drive (provisorio)"
+    },
+    {
+      "orden": 7,
+      "hora": "15:55",
+      "horaFin": "16:05",
+      "tipo": "ponencia",
+      "titulo": "IA y contabilidad digital en PyMEs",
+      "persona": "Meretta",
+      "rol": "Expositor/a",
+      "area": "Contabilidad",
       "sala": "Ponencia",
       "articuloOk": true,
       "pptOk": true,

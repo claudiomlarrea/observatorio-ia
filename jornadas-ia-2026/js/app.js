@@ -23,7 +23,7 @@
   const REMINDER_LEAD_MIN = 10;
   const PROGRAM_STORE_KEY = "jornadas_ia_2026_programa";
   const PROGRAM_VERSION_KEY = "jornadas_ia_2026_programa_version";
-  const PROGRAM_VERSION = "5";
+  const PROGRAM_VERSION = "6";
 
   const state = {
     data: null,
