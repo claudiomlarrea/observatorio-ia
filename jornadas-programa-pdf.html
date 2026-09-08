@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Programa · Jornadas IA 2026</title>
+    <meta name="robots" content="noindex" />
+    <style>
+      :root {
+        --wine: #7a1f2b;
+        --green: #064a38;
+        --ink: #1a1a1a;
+        --muted: #555;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #f6f4f1;
+        color: var(--ink);
+        font-family: Georgia, "Times New Roman", serif;
+      }
+      .bar {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem 1rem;
+        background: var(--green);
+        color: #fff;
+        font: 600 0.9rem system-ui, sans-serif;
+      }
+      .bar button,
+      .bar a {
+        appearance: none;
+        border: 0;
+        border-radius: 0.4rem;
+        padding: 0.55rem 0.9rem;
+        font: 700 0.9rem system-ui, sans-serif;
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
+      }
+      .bar button {
+        background: #fff;
+        color: var(--green);
+      }
+      .bar a {
+        border: 1px solid rgba(255, 255, 255, 0.45);
+      }
+      .sheet {
+        max-width: 42rem;
+        margin: 1.25rem auto;
+        padding: 1.5rem 1.4rem 2rem;
+        background: #fff;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+      }
+      h1 {
+        margin: 0 0 0.35rem;
+        font-size: 1.45rem;
+        line-height: 1.25;
+        color: var(--wine);
+        text-align: center;
+      }
+      .sub,
+      .nota,
+      .err {
+        text-align: center;
+        margin: 0;
+      }
+      .sub {
+        font-size: 0.95rem;
+      }
+      .nota {
+        margin: 0.35rem 0 1.1rem;
+        font-size: 0.85rem;
+        color: var(--muted);
+        font-style: italic;
+      }
+      .err {
+        color: var(--wine);
+        padding: 2rem 1rem;
+      }
+      .item {
+        margin: 0 0 0.85rem;
+      }
+      .hora {
+        margin: 0;
+        font: 700 0.95rem system-ui, sans-serif;
+        color: var(--green);
+      }
+      .tipo {
+        margin: 0.1rem 0;
+        font: 700 0.72rem system-ui, sans-serif;
+        letter-spacing: 0.04em;
+        color: #666;
+      }
+      .titulo {
+        margin: 0.1rem 0;
+        font-size: 1.02rem;
+        font-weight: 700;
+      }
+      .meta {
+        margin: 0.15rem 0 0;
+        font-size: 0.88rem;
+        color: var(--muted);
+      }
+      .foot {
+        margin-top: 1.4rem;
+        text-align: center;
+        font-size: 0.78rem;
+        color: #666;
+      }
+      @media print {
+        body {
+          background: #fff;
+        }
+        .bar {
+          display: none;
+        }
+        .sheet {
+          box-shadow: none;
+          margin: 0;
+          max-width: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bar">
+      <span>Programa en vivo · Jornadas IA</span>
+      <span>
+        <button type="button" id="btn-print">Imprimir / Guardar PDF</button>
+        <a href="https://observatorio-ia.uccuyo.edu.ar/#jornadas-ia">Volver al sitio</a>
+      </span>
+    </div>
+    <main class="sheet" id="sheet">
+      <p class="err">Cargando programa…</p>
+    </main>
+    <script src="js/jornadas-config.js"></script>
+    <script>
+      (function () {
+        var TIPO = {
+          apertura: "APERTURA",
+          indicaciones: "INDICACIONES",
+          ponencia: "PONENCIA",
+          cierre: "CIERRE",
+          receso: "RECESO",
+        };
+
+        function esc(s) {
+          return String(s || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+        }
+
+        function paint(data) {
+          var evento = (data && data.evento) || {};
+          var items = (data && data.items) || [];
+          var estado = String((data && data.estado) || "provisorio").toLowerCase();
+          var nota =
+            estado === "confirmado"
+              ? "Programa confirmado."
+              : "Programa provisorio — se actualiza a medida que se confirman las ponencias.";
+
+          var html =
+            "<h1>" +
+            esc(evento.titulo || "1° Jornadas internas de Inteligencia Artificial") +
+            "</h1>" +
+            '<p class="sub">' +
+            esc(evento.fechaTexto || "6 de octubre de 2026") +
+            " · " +
+            esc(evento.horaInicio || "15:00") +
+            " · " +
+            esc(evento.modalidad || "Virtual") +
+            "</p>" +
+            '<p class="nota">' +
+            esc(nota) +
+            "</p>";
+
+          for (var i = 0; i < items.length; i++) {
+            var it = items[i] || {};
+            var parts = [];
+            if (it.persona) parts.push(String(it.persona).trim());
+            if (it.rol) parts.push(String(it.rol).trim());
+            if (it.area) parts.push(String(it.area).trim());
+            if (String(it.tipo || "").toLowerCase() === "ponencia" && !it.confirmado) {
+              parts.push("Provisional");
+            }
+            html +=
+              '<article class="item">' +
+              '<p class="hora">' +
+              esc(it.hora) +
+              "–" +
+              esc(it.horaFin) +
+              "</p>" +
+              '<p class="tipo">' +
+              esc(TIPO[String(it.tipo || "").toLowerCase()] || "ÍTEM") +
+              "</p>" +
+              '<p class="titulo">' +
+              esc(it.titulo) +
+              "</p>" +
+              (parts.length ? '<p class="meta">' + esc(parts.join(" · ")) + "</p>" : "") +
+              "</article>";
+          }
+
+          html +=
+            '<p class="foot">Observatorio de Inteligencia Artificial · UCCuyo · observatorioia@uccuyo.edu.ar</p>';
+          document.getElementById("sheet").innerHTML = html;
+          document.title = String(evento.titulo || "Programa Jornadas IA");
+        }
+
+        function fail(msg) {
+          document.getElementById("sheet").innerHTML =
+            '<p class="err">' + esc(msg || "No se pudo cargar el programa.") + "</p>";
+        }
+
+        var cfg = window.JORNADAS_IA_2026 || {};
+        var api = String(cfg.CATALOGOS_API_URL || "").trim().replace(/\?.*$/, "");
+        var remote = api ? api + "?action=programa" : "";
+        var local = "data/jornadas-programa-2026.json?v=9";
+
+        var chain = remote
+          ? fetch(remote, { credentials: "omit", cache: "no-store" }).then(function (r) {
+              if (!r.ok) throw new Error("HTTP " + r.status);
+              return r.json();
+            })
+          : Promise.reject(new Error("sin api"));
+
+        chain
+          .catch(function () {
+            return fetch(local, { credentials: "omit", cache: "no-store" }).then(function (r) {
+              if (!r.ok) throw new Error("HTTP " + r.status);
+              return r.json();
+            });
+          })
+          .then(function (data) {
+            if (!data || !data.items || !data.items.length) throw new Error("vacío");
+            paint(data);
+          })
+          .catch(function () {
+            fail("No se pudo cargar el programa. Volvé al sitio e intentá de nuevo.");
+          });
+
+        document.getElementById("btn-print").addEventListener("click", function () {
+          window.print();
+        });
+      })();
+    </script>
+  </body>
+</html>

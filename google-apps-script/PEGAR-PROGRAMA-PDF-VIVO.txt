@@ -1,30 +1,14 @@
-PARCHE — PDF del programa SIN «Necesitas acceso»
-===============================================
+PDF del programa — siempre al día
+=================================
 
-Causa del error
----------------
-El botón abría un PDF en Drive. Con la cuenta observatorioia@ (u otras del
-dominio) Google muestra «Necesitas acceso» aunque el archivo esté «con enlace».
+El botón «Abrir programa (PDF)» abre:
 
+  https://observatorio-ia.uccuyo.edu.ar/jornadas-programa-pdf.html
 
-Qué hace ahora el sitio
------------------------
-«Abrir programa (PDF)» vuelve a abrir el PDF del propio sitio
-(assets/jornadas/programa-jornadas-ia-2026.pdf) — sin pedir permiso.
+Esa página lee la misma API que el listado (?action=programa).
+Para bajar un PDF: botón «Imprimir / Guardar PDF» del navegador
+(Destino: Guardar como PDF).
 
-
-Opcional: vista en vivo (siempre al día tras Guardar)
-----------------------------------------------------
-Pegá de nuevo JornadasPrograma.gs (repo) en el proyecto Apps Script
-y en la implementación PÚBLICA (A): Nueva versión → Implementar.
-
-Luego podés abrir:
-
-  …/exec?action=programa_pdf
-
-Eso muestra el programa en vivo con botón «Imprimir / Guardar PDF».
-No usa Drive; no pide acceso.
-
-Si querés que el botón del sitio use esa vista en vivo, cambiá
-PROGRAMA_PDF_URL en js/jornadas-config.js a PROGRAMA_PDF_VIVO_URL
-(después de implementar).
+El archivo assets/jornadas/programa-jornadas-ia-2026.pdf es solo
+respaldo y puede quedar viejo; no hace falta republicarlo cada vez
+que se reordena el programa.

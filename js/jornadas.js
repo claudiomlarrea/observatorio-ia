@@ -44,7 +44,7 @@ function wirePrograma_() {
       pdfLink.href = api + "?action=programa_pdf";
     }
   }
-  var localUrl = "data/jornadas-programa-2026.json?v=8";
+  var localUrl = "data/jornadas-programa-2026.json?v=9";
   var remoteUrl = api ? api + "?action=programa" : "";
 
   function paint(data) {
