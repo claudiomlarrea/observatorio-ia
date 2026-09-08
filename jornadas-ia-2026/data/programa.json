@@ -2,7 +2,7 @@
   "ok": true,
   "source": "manual",
   "editedBy": "observatorioia@uccuyo.edu.ar",
-  "updatedAt": "2026-09-08T22:24:40.453Z",
+  "updatedAt": "2026-09-08T22:28:36.497Z",
   "meta": {
     "titulo": "1° Jornadas internas de Inteligencia Artificial — UCCuyo",
     "subtitulo": "Observatorio de Inteligencia Artificial",
@@ -80,29 +80,10 @@
       "notas": "10 minutos por ponencia"
     },
     {
-      "id": "j-ponencia-jose-la-malfa",
+      "id": "j-ponencia-frederic-marimon",
       "dia": "2026-10-06",
       "inicio": "15:25",
       "fin": "15:35",
-      "sala": "Ponencia",
-      "tipo": "ponencia",
-      "titulo": "Encuesta alumnos de la UCCuyo",
-      "disertantes": [
-        "José La Malfa"
-      ],
-      "moderadores": [],
-      "area": "",
-      "rol": "Expositor/a",
-      "articuloOk": null,
-      "pptOk": null,
-      "confirmado": false,
-      "notas": ""
-    },
-    {
-      "id": "j-ponencia-frederic-marimon",
-      "dia": "2026-10-06",
-      "inicio": "15:35",
-      "fin": "15:45",
       "sala": "Ponencia",
       "tipo": "ponencia",
       "titulo": "Encuesta alumnos Universidad Internacional de Cataluña",
@@ -118,15 +99,34 @@
       "notas": ""
     },
     {
-      "id": "j-ponencia-la-malfa",
+      "id": "j-ponencia-jose-la-malfa",
+      "dia": "2026-10-06",
+      "inicio": "15:35",
+      "fin": "15:45",
+      "sala": "Ponencia",
+      "tipo": "ponencia",
+      "titulo": "Encuesta alumnos de la UCCuyo",
+      "disertantes": [
+        "José La Malfa"
+      ],
+      "moderadores": [],
+      "area": "",
+      "rol": "Expositor/a",
+      "articuloOk": null,
+      "pptOk": null,
+      "confirmado": false,
+      "notas": ""
+    },
+    {
+      "id": "j-ponencia-larrea",
       "dia": "2026-10-06",
       "inicio": "15:45",
       "fin": "15:55",
       "sala": "Ponencia",
       "tipo": "ponencia",
-      "titulo": "Uso de IA en estudiantes",
+      "titulo": "GEMEPH Gemelo Digital EPH",
       "disertantes": [
-        "La Malfa"
+        "Larrea et al."
       ],
       "moderadores": [],
       "area": "Observatorio de IA",
@@ -137,15 +137,15 @@
       "notas": "Incluido automáticamente desde Drive (provisorio)"
     },
     {
-      "id": "j-ponencia-larrea",
+      "id": "j-ponencia-la-malfa",
       "dia": "2026-10-06",
       "inicio": "15:55",
       "fin": "16:05",
       "sala": "Ponencia",
       "tipo": "ponencia",
-      "titulo": "GEMEPH Gemelo Digital EPH",
+      "titulo": "Uso de IA en estudiantes",
       "disertantes": [
-        "Larrea et al."
+        "La Malfa"
       ],
       "moderadores": [],
       "area": "Observatorio de IA",

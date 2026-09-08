@@ -25,8 +25,8 @@ window.JORNADAS_IA_2026 = {
    * Vista en vivo del programa (misma API que el listado). Imprimir → Guardar PDF.
    * El .pdf en assets/ es solo respaldo y puede quedar desfasado.
    */
-  PROGRAMA_PDF_URL: "jornadas-programa-pdf.html",
-  PROGRAMA_PDF_FALLBACK: "assets/jornadas/programa-jornadas-ia-2026.pdf?v=9",
+  PROGRAMA_PDF_URL: "jornadas-programa-pdf.html?v=2",
+  PROGRAMA_PDF_FALLBACK: "assets/jornadas/programa-jornadas-ia-2026.pdf?v=10",
   /**
    * Editor del programa (equipo). Implementación aparte:
    * «Ejecutar como: Usuario que accede» + cuenta Google.

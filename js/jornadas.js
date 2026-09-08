@@ -36,13 +36,14 @@ function wirePrograma_() {
   }
   var pdfLink = document.getElementById("jornadas-programa-pdf");
   if (pdfLink) {
-    if (cfg.PROGRAMA_PDF_URL) {
-      pdfLink.href = String(cfg.PROGRAMA_PDF_URL).trim();
-    } else if (cfg.PROGRAMA_PDF_FALLBACK) {
-      pdfLink.href = String(cfg.PROGRAMA_PDF_FALLBACK).trim();
-    } else if (api) {
-      pdfLink.href = api + "?action=programa_pdf";
+    // Siempre la vista en vivo (misma API que el listado). El .pdf fijo desactualiza.
+    var livePdf = "jornadas-programa-pdf.html?v=2";
+    if (cfg.PROGRAMA_PDF_URL && String(cfg.PROGRAMA_PDF_URL).indexOf(".pdf") < 0) {
+      livePdf = String(cfg.PROGRAMA_PDF_URL).trim();
+      if (livePdf.indexOf("?") < 0) livePdf += "?v=2";
     }
+    pdfLink.href = livePdf;
+    pdfLink.removeAttribute("download");
   }
   var localUrl = "data/jornadas-programa-2026.json?v=9";
   var remoteUrl = api ? api + "?action=programa" : "";
