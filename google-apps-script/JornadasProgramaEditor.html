@@ -170,7 +170,6 @@
     </main>
 
     <script>
-      // <?!= evita que Apps Script escape comillas y rompa el JS
       var AUTORIZADO = <?!= autorizado ? "true" : "false" ?>;
       var EMAIL = <?!= JSON.stringify(email || "") ?>;
       var items = [];
