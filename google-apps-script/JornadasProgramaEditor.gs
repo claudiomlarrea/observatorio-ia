@@ -352,6 +352,10 @@ function publicarProgramaManualDesdeItems_(itemsIn) {
   }
   props.setProperty(JORNADAS_PROP_CONFIRMADOS, JSON.stringify(confMap));
 
+  try {
+    publicarProgramaPdfDrive_(site);
+  } catch (ignorePdf) {}
+
   return { updatedAt: updatedAt, items: items };
 }
 

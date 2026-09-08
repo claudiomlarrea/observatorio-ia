@@ -100,14 +100,14 @@ Sitio / agenda / PDF
 - Listado web (#jornadas-ia) y app (jornadas-ia-2026/): leen la API
   (?action=programa / programa_agenda). Tras Guardar en el editor,
   Cmd+Shift+R en el sitio y en la app (la app también tiene SW).
-- PDF «Abrir programa»: archivo estático en
-  assets/jornadas/programa-jornadas-ia-2026.pdf
-  No se regenera solo. Tras editar el programa:
+- PDF «Abrir programa»: apunta a
+  (A) …/exec?action=programa_pdf
+  Esa URL regenera el PDF en Drive si el programa cambió (updatedAt)
+  y redirige a Drive. Respaldo estático en assets/jornadas/…
 
-    python3 scripts/generate_programa_jornadas_pdf.py
-    # (usa data/jornadas-programa-2026.json; sincronizá ese JSON
-    #  desde ?action=programa si hace falta)
-    # bump ?v= en index.html y commit/push
+  Tras pegar JornadasPrograma.gs + Código.gs: Implementar → Nueva versión
+  en la implementación PÚBLICA (A). Luego Guardá en el editor o abrí
+  una vez ?action=programa_pdf para generar el primer PDF.
 
   https://observatorio-ia.uccuyo.edu.ar/#jornadas-ia
   https://observatorio-ia.uccuyo.edu.ar/jornadas-ia-2026/

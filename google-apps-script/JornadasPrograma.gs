@@ -162,6 +162,10 @@ function sincronizarProgramaDesdeCatalogos_(arts, ppts) {
   props.setProperty(JORNADAS_PROP_PROGRAMA, JSON.stringify(site));
   props.setProperty(JORNADAS_PROP_AGENDA, JSON.stringify(agenda));
 
+  try {
+    publicarProgramaPdfDrive_(site);
+  } catch (ignorePdf) {}
+
   return {
     ok: true,
     updatedAt: updatedAt,
@@ -644,4 +648,207 @@ function cargarConfirmados_() {
   } catch (e) {
     return {};
   }
+}
+
+/** Nombre del PDF de programa en la carpeta de catálogos Drive. */
+var PROGRAMA_PDF_NAME = "programa-jornadas-ia-2026.pdf";
+var JORNADAS_PROP_PROGRAMA_PDF_ID = "jornadas_programa_pdf_id";
+
+/**
+ * Regenera el PDF del programa en Drive (misma carpeta que los catálogos).
+ * Se llama al guardar en el editor o al sincronizar desde Drive.
+ */
+function publicarProgramaPdfDrive_(site) {
+  site = site || obtenerProgramaSitio_();
+  if (!site || !site.items) throw new Error("Sin programa para PDF");
+
+  var folder = getCatalogosFolder_();
+  var existing = folder.getFilesByName(PROGRAMA_PDF_NAME);
+  while (existing.hasNext()) {
+    existing.next().setTrashed(true);
+  }
+
+  var evento = site.evento || {};
+  var items = site.items || [];
+  var estado = String(site.estado || "provisorio").toLowerCase();
+  var nota =
+    estado === "confirmado"
+      ? "Programa confirmado."
+      : "Programa provisorio — se actualiza a medida que se confirman las ponencias.";
+
+  var doc = DocumentApp.create("TMP · " + PROGRAMA_PDF_NAME.replace(/\.pdf$/i, ""));
+  var body = doc.getBody();
+  body.clear();
+
+  var center = DocumentApp.HorizontalAlignment.CENTER;
+  estiloCatalogo_(
+    body.appendParagraph(
+      String(evento.titulo || "1° Jornadas internas de Inteligencia Artificial")
+    ),
+    16,
+    { bold: true, align: center, color: "#7A1F2B", spacingAfter: 4 }
+  );
+  estiloCatalogo_(
+    body.appendParagraph(
+      String(evento.fechaTexto || "6 de octubre de 2026") +
+        " · " +
+        String(evento.horaInicio || "15:00") +
+        " · " +
+        String(evento.modalidad || "Virtual")
+    ),
+    10,
+    { align: center, spacingAfter: 2 }
+  );
+  estiloCatalogo_(body.appendParagraph(nota), 9, {
+    align: center,
+    color: "#555555",
+    spacingAfter: 12
+  });
+
+  var tipoLabel = {
+    apertura: "APERTURA",
+    indicaciones: "INDICACIONES",
+    ponencia: "PONENCIA",
+    cierre: "CIERRE",
+    receso: "RECESO"
+  };
+
+  for (var i = 0; i < items.length; i++) {
+    var it = items[i] || {};
+    var h0 = String(it.hora || "");
+    var h1 = String(it.horaFin || "");
+    estiloCatalogo_(body.appendParagraph(h0 + "–" + h1), 10, {
+      bold: true,
+      color: "#064a38",
+      spacingBefore: 8,
+      spacingAfter: 1
+    });
+    var tip = tipoLabel[String(it.tipo || "").toLowerCase()] || "ÍTEM";
+    estiloCatalogo_(body.appendParagraph(tip), 8, {
+      bold: true,
+      color: "#555555",
+      spacingAfter: 1
+    });
+    estiloCatalogo_(
+      body.appendParagraph(String(it.titulo || "").replace(/\s+/g, " ").trim()),
+      11,
+      { bold: true, spacingAfter: 1 }
+    );
+    var parts = [];
+    if (it.persona) parts.push(String(it.persona).trim());
+    if (it.rol) parts.push(String(it.rol).trim());
+    if (it.area) parts.push(String(it.area).trim());
+    if (String(it.tipo || "").toLowerCase() === "ponencia" && !it.confirmado) {
+      parts.push("Provisional");
+    }
+    if (parts.length) {
+      estiloCatalogo_(body.appendParagraph(parts.join(" · ")), 9, {
+        color: "#555555",
+        spacingAfter: 2
+      });
+    }
+  }
+
+  estiloCatalogo_(
+    body.appendParagraph(
+      "Observatorio de Inteligencia Artificial · UCCuyo · observatorioia@uccuyo.edu.ar"
+    ),
+    8,
+    { color: "#666666", align: center, spacingBefore: 14 }
+  );
+
+  if (typeof forzarTipografiaCatalogo_ === "function") {
+    forzarTipografiaCatalogo_(body);
+  }
+  doc.saveAndClose();
+
+  var pdfBlob = exportDocAsPdf_(doc.getId(), PROGRAMA_PDF_NAME);
+  var pdfFile = folder.createFile(pdfBlob);
+  pdfFile.setName(PROGRAMA_PDF_NAME);
+  pdfFile.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+
+  try {
+    DriveApp.getFileById(doc.getId()).setTrashed(true);
+  } catch (ignoreTrash) {}
+
+  PropertiesService.getScriptProperties().setProperty(
+    JORNADAS_PROP_PROGRAMA_PDF_ID,
+    pdfFile.getId()
+  );
+  if (site.updatedAt) {
+    PropertiesService.getScriptProperties().setProperty(
+      "jornadas_programa_pdf_updated_at",
+      String(site.updatedAt)
+    );
+  }
+  return {
+    ok: true,
+    pdfId: pdfFile.getId(),
+    pdfUrl: "https://drive.google.com/file/d/" + pdfFile.getId() + "/view"
+  };
+}
+
+/**
+ * ?action=programa_pdf — PDF vivo desde Drive.
+ * Si el programa cambió (updatedAt), regenera el PDF (ejecuta como dueño
+ * del script en la implementación pública).
+ */
+function servirProgramaPdf_() {
+  var site = obtenerProgramaSitio_();
+  var props = PropertiesService.getScriptProperties();
+  var id = String(props.getProperty(JORNADAS_PROP_PROGRAMA_PDF_ID) || "").trim();
+  var pdfAt = String(props.getProperty("jornadas_programa_pdf_updated_at") || "");
+  var siteAt = String((site && site.updatedAt) || "");
+
+  if (!id || !siteAt || pdfAt !== siteAt) {
+    try {
+      var pub = publicarProgramaPdfDrive_(site);
+      id = pub.pdfId;
+      props.setProperty("jornadas_programa_pdf_updated_at", siteAt || new Date().toISOString());
+    } catch (errGen) {
+      if (!id) {
+        return HtmlService.createHtmlOutput(
+          "<p>No se pudo generar el PDF del programa: " +
+            String(errGen) +
+            "</p><p>Ejecutá <code>publicarProgramaPdfDrive_()</code> desde el editor de Apps Script.</p>"
+        );
+      }
+    }
+  }
+
+  try {
+    DriveApp.getFileById(id).setSharing(
+      DriveApp.Access.ANYONE_WITH_LINK,
+      DriveApp.Permission.VIEW
+    );
+  } catch (ignoreShare) {}
+
+  var viewUrl = "https://drive.google.com/file/d/" + id + "/view";
+  var fallback =
+    "https://observatorio-ia.uccuyo.edu.ar/assets/jornadas/" + PROGRAMA_PDF_NAME;
+
+  var html =
+    "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"utf-8\">" +
+    '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+    '<meta http-equiv="refresh" content="0;url=' +
+    viewUrl +
+    '">' +
+    "<title>Programa Jornadas IA</title>" +
+    "<style>body{font-family:system-ui,sans-serif;max-width:32rem;margin:2rem auto;padding:0 1rem;line-height:1.45}" +
+    "a.btn{display:inline-block;margin:.4rem .4rem .4rem 0;padding:.65rem 1rem;background:#064a38;color:#fff;" +
+    "text-decoration:none;border-radius:.5rem;font-weight:700}</style></head><body>" +
+    "<h1 style=\"font-size:1.15rem\">Programa de las Jornadas</h1>" +
+    "<p>Abriendo el PDF actualizado…</p>" +
+    '<a class="btn" href="' +
+    viewUrl +
+    '" target="_blank" rel="noopener">Abrir PDF</a> ' +
+    '<a class="btn" href="' +
+    fallback +
+    '" target="_blank" rel="noopener">Copia del sitio</a>' +
+    "<script>window.location.replace(" +
+    JSON.stringify(viewUrl) +
+    ");</script>" +
+    "</body></html>";
+
+  return HtmlService.createHtmlOutput(html).setTitle("Programa Jornadas IA");
 }

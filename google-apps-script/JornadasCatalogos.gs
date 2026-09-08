@@ -156,6 +156,20 @@ function doGet(e) {
   }
 
   if (
+    action === "programa_pdf" ||
+    action === "programa-pdf" ||
+    action === "pdf_programa"
+  ) {
+    try {
+      return servirProgramaPdf_();
+    } catch (errProgPdf) {
+      return HtmlService.createHtmlOutput(
+        "<p>No se pudo abrir el PDF del programa: " + String(errProgPdf) + "</p>"
+      );
+    }
+  }
+
+  if (
     action === "programa_agenda" ||
     action === "agenda" ||
     action === "programa-app"

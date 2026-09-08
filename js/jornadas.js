@@ -34,7 +34,17 @@ function wirePrograma_() {
   if (editLink && cfg.PROGRAMA_EDITOR_URL) {
     editLink.href = String(cfg.PROGRAMA_EDITOR_URL).trim();
   }
-  var localUrl = "data/jornadas-programa-2026.json?v=7";
+  var pdfLink = document.getElementById("jornadas-programa-pdf");
+  if (pdfLink) {
+    if (cfg.PROGRAMA_PDF_URL) {
+      pdfLink.href = String(cfg.PROGRAMA_PDF_URL).trim();
+    } else if (cfg.PROGRAMA_PDF_FALLBACK) {
+      pdfLink.href = String(cfg.PROGRAMA_PDF_FALLBACK).trim();
+    } else if (api) {
+      pdfLink.href = api + "?action=programa_pdf";
+    }
+  }
+  var localUrl = "data/jornadas-programa-2026.json?v=8";
   var remoteUrl = api ? api + "?action=programa" : "";
 
   function paint(data) {
