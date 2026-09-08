@@ -2,7 +2,7 @@
   "ok": true,
   "source": "manual",
   "editedBy": "observatorioia@uccuyo.edu.ar",
-  "updatedAt": "2026-09-08T21:48:11.252Z",
+  "updatedAt": "2026-09-08T21:53:44.887Z",
   "version": "2026-09-08",
   "estado": "provisorio",
   "evento": {
@@ -75,6 +75,24 @@
       "hora": "15:25",
       "horaFin": "15:35",
       "tipo": "ponencia",
+      "titulo": "Encuesta alumnos Universidad Internacional de Cataluña",
+      "persona": "Frederic Marimon",
+      "rol": "Expositor/a",
+      "area": "",
+      "sala": "Ponencia",
+      "articuloOk": null,
+      "pptOk": null,
+      "confirmado": false,
+      "notas": "",
+      "clave": "frederic marimon",
+      "articuloFileId": "",
+      "pptFileId": ""
+    },
+    {
+      "orden": 5,
+      "hora": "15:35",
+      "horaFin": "15:45",
+      "tipo": "ponencia",
       "titulo": "Encuesta alumnos de la UCCuyo",
       "persona": "José La Malfa",
       "rol": "Expositor/a",
@@ -89,9 +107,9 @@
       "pptFileId": ""
     },
     {
-      "orden": 5,
-      "hora": "15:35",
-      "horaFin": "15:45",
+      "orden": 6,
+      "hora": "15:45",
+      "horaFin": "15:55",
       "tipo": "ponencia",
       "titulo": "Uso de IA en estudiantes",
       "persona": "La Malfa",
@@ -107,9 +125,9 @@
       "pptFileId": "1s3iMBrVDxMA9OXIsPzmi-7LoljY0elkh"
     },
     {
-      "orden": 6,
-      "hora": "15:45",
-      "horaFin": "15:55",
+      "orden": 7,
+      "hora": "15:55",
+      "horaFin": "16:05",
       "tipo": "ponencia",
       "titulo": "GEMEPH Gemelo Digital EPH",
       "persona": "Larrea et al.",
@@ -125,9 +143,9 @@
       "pptFileId": "1g74AlDdmnlvAB9BudxR_bDZ5OOUMwRxAIhzarfP9JOs"
     },
     {
-      "orden": 7,
-      "hora": "15:55",
-      "horaFin": "16:05",
+      "orden": 8,
+      "hora": "16:05",
+      "horaFin": "16:15",
       "tipo": "ponencia",
       "titulo": "Sistema de Alerta Temprana en Epidemiologia Veterinaria",
       "persona": "Giboin",
@@ -143,9 +161,9 @@
       "pptFileId": "1QODo85GsXn7BDJx0UZI9fl_8ybGx-o85"
     },
     {
-      "orden": 8,
-      "hora": "16:05",
-      "horaFin": "16:15",
+      "orden": 9,
+      "hora": "16:15",
+      "horaFin": "16:25",
       "tipo": "ponencia",
       "titulo": "IA Contabilidad DigitalPyMEs",
       "persona": "Meretta",
