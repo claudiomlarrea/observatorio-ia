@@ -34,7 +34,7 @@ function wirePrograma_() {
   if (editLink && cfg.PROGRAMA_EDITOR_URL) {
     editLink.href = String(cfg.PROGRAMA_EDITOR_URL).trim();
   }
-  var localUrl = "data/jornadas-programa-2026.json?v=5";
+  var localUrl = "data/jornadas-programa-2026.json?v=6";
   var remoteUrl = api ? api + "?action=programa" : "";
 
   function paint(data) {

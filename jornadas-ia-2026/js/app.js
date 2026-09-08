@@ -23,7 +23,7 @@
   const REMINDER_LEAD_MIN = 10;
   const PROGRAM_STORE_KEY = "jornadas_ia_2026_programa";
   const PROGRAM_VERSION_KEY = "jornadas_ia_2026_programa_version";
-  const PROGRAM_VERSION = "7";
+  const PROGRAM_VERSION = "8";
   const PROGRAMA_API_URL =
     "https://script.google.com/macros/s/AKfycbwqC9p3EUiTK2DnPHKLT30y0-I3yMcVLzO0S0yNWgvjQVhpDj6z3ScWqo3eJ7LkgDhwQA/exec?action=programa_agenda";
 
@@ -1209,6 +1209,7 @@
       const basePath = window.location.pathname.endsWith("/")
         ? window.location.pathname
         : `${window.location.pathname.replace(/\/?$/, "")}/`;
+      // API primero (siempre); JSON local solo como respaldo offline.
       const candidates = [
         PROGRAMA_API_URL,
         new URL(`data/programa.json?v=${PROGRAM_VERSION}`, `${window.location.origin}${basePath}`)

@@ -95,9 +95,19 @@ Cómo se arman las ponencias (modo automático)
 - Estado “Provisional” hasta confirmar en el panel
 
 
-Sitio / agenda
---------------
-El repo lee primero la API y, si falla, el JSON estático de respaldo.
+Sitio / agenda / PDF
+--------------------
+- Listado web (#jornadas-ia) y app (jornadas-ia-2026/): leen la API
+  (?action=programa / programa_agenda). Tras Guardar en el editor,
+  Cmd+Shift+R en el sitio y en la app (la app también tiene SW).
+- PDF «Abrir programa»: archivo estático en
+  assets/jornadas/programa-jornadas-ia-2026.pdf
+  No se regenera solo. Tras editar el programa:
+
+    python3 scripts/generate_programa_jornadas_pdf.py
+    # (usa data/jornadas-programa-2026.json; sincronizá ese JSON
+    #  desde ?action=programa si hace falta)
+    # bump ?v= en index.html y commit/push
 
   https://observatorio-ia.uccuyo.edu.ar/#jornadas-ia
   https://observatorio-ia.uccuyo.edu.ar/jornadas-ia-2026/
