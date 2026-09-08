@@ -780,6 +780,10 @@ function esTituloBasuraCuerpo_(t) {
   var s = String(t || "").replace(/\s+/g, " ").trim();
   if (!s) return true;
   if (s.length > 140) return true;
+  if (/https?:\/\//i.test(s)) return true;
+  if (/diapositiva\s*\d/i.test(s)) return true;
+  if (/github\.io/i.test(s)) return true;
+  if (/observatorio de ia\s*[-–—]/i.test(s) && /jornadas/i.test(s)) return true;
   if (/^(el|la|los|las|este|esta|estos|estas|en)\s+/i.test(s) && s.length > 80) {
     return true;
   }
@@ -800,10 +804,23 @@ function humanizarTituloCatalogo_(s) {
     .replace(/\s+/g, " ")
     .trim();
   if (!s) return s;
-  // CamelCase / PascalCase → espacios (IAContabilidadDigitalPyMEs)
+  // Preservar siglas frecuentes antes del split CamelCase
+  var protect = [
+    [/PyMEs/gi, "§PYMES§"],
+    [/GEMEPH/gi, "§GEMEPH§"],
+    [/\bIA\b/g, "§IA§"]
+  ];
+  var i;
+  for (i = 0; i < protect.length; i++) {
+    s = s.replace(protect[i][0], protect[i][1]);
+  }
   s = s.replace(/([a-zà-ÿ0-9])([A-ZÁÉÍÓÚÑ])/g, "$1 $2");
   s = s.replace(/([A-ZÁÉÍÓÚÑ]+)([A-ZÁÉÍÓÚÑ][a-zà-ÿ])/g, "$1 $2");
-  return s;
+  s = s
+    .replace(/§PYMES§/g, "PyMEs")
+    .replace(/§GEMEPH§/g, "GEMEPH")
+    .replace(/§IA§/g, "IA");
+  return s.replace(/\s+/g, " ").trim();
 }
 
 function limpiarAutorCatalogo_(author) {
