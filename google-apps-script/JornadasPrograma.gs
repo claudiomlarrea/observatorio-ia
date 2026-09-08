@@ -37,6 +37,7 @@ function sincronizarProgramaDesdeCatalogos_(arts, ppts) {
   for (i = 0; i < ppts.length; i++) {
     acumularCargaPrograma_(porClave, ppts[i], "presentacion");
   }
+  fusionarCargasDuplicadasPrograma_(porClave);
 
   var claves = Object.keys(porClave).sort(function (a, b) {
     return a.localeCompare(b, "es", { sensitivity: "base" });
@@ -322,35 +323,50 @@ function bloquesFijosAgenda_() {
 function acumularCargaPrograma_(porClave, entry, kind) {
   if (!entry) return;
   var meta = parseNombreSugerido_(entry.fileName || "");
-  var clave = normalizarClavePrograma_(meta.author || entry.author || "");
-  if (!clave) {
-    clave = normalizarClavePrograma_(entry.fileName || entry.title || "");
+  var autorRaw = autorUsablePrograma_(entry.author || "") || autorUsablePrograma_(meta.author || "");
+
+  var clave = normalizarClavePrograma_(autorRaw);
+  if (!clave || esClaveAutorBasuraPrograma_(clave)) {
+    clave = buscarClavePorTituloPrograma_(porClave, entry.title || meta.title || "");
   }
-  if (!clave) return;
+  if (!clave || esClaveAutorBasuraPrograma_(clave)) {
+    var fallback = normalizarClavePrograma_(entry.fileName || entry.title || "");
+    if (!esClaveAutorBasuraPrograma_(fallback)) clave = fallback;
+  }
+  if (!clave || esClaveAutorBasuraPrograma_(clave)) return;
 
   if (!porClave[clave]) {
     porClave[clave] = {
       clave: clave,
-      claveDisplay: tituloAmigablePrograma_(meta.author || entry.author || clave),
+      claveDisplay: tituloAmigablePrograma_(autorRaw || clave),
       personaDisplay: "",
       titulo: "",
       area: "",
       articuloOk: false,
       pptOk: false,
       articuloFileId: "",
-      pptFileId: ""
+      pptFileId: "",
+      tituloDeArticulo: false
     };
   }
   var row = porClave[clave];
-  var autorShow = String(entry.author || meta.author || "").trim();
-  if (autorShow) {
-    row.personaDisplay = elegirMejorTextoPrograma_(row.personaDisplay, autorShow);
+  if (autorRaw) {
+    row.personaDisplay = elegirMejorTextoPrograma_(row.personaDisplay, autorRaw);
   }
   if (!row.personaDisplay) row.personaDisplay = row.claveDisplay;
 
   var titulo = String(entry.title || meta.title || "").trim();
   titulo = limpiarTituloPrograma_(titulo, entry.fileName || "");
-  row.titulo = elegirMejorTextoPrograma_(row.titulo, titulo);
+  if (!esTituloBasuraPrograma_(titulo)) {
+    if (kind === "articulo") {
+      row.titulo = titulo;
+      row.tituloDeArticulo = true;
+    } else if (!row.tituloDeArticulo) {
+      row.titulo = elegirMejorTituloPrograma_(row.titulo, titulo);
+    } else if (esTituloBasuraPrograma_(row.titulo) || esTituloDebilPrograma_(row.titulo)) {
+      row.titulo = titulo;
+    }
+  }
 
   var area = String(entry.area || meta.area || "").trim();
   if (area && (!row.area || area.length > row.area.length)) row.area = area;
@@ -365,6 +381,133 @@ function acumularCargaPrograma_(porClave, entry, kind) {
   }
 }
 
+function autorUsablePrograma_(s) {
+  s = String(s || "").replace(/\s+/g, " ").trim();
+  if (!s) return "";
+  if (typeof limpiarAutorCatalogo_ === "function") {
+    s = limpiarAutorCatalogo_(s);
+  }
+  if (!s || esClaveAutorBasuraPrograma_(normalizarClavePrograma_(s))) return "";
+  return s;
+}
+
+function esClaveAutorBasuraPrograma_(clave) {
+  clave = String(clave || "").trim();
+  if (!clave) return true;
+  return /^(uso|sistema|gemelo|digital|ia|ppt|pptx|doc|docx|pdf|v\d+|jornadas\d*|presentacion|articulo|plantilla|observatorio|observatoria|diapositiva)$/i.test(
+    clave.replace(/\s+/g, "")
+  );
+}
+
+function buscarClavePorTituloPrograma_(porClave, titulo) {
+  titulo = normalizarClavePrograma_(titulo);
+  if (!titulo || titulo.length < 10) return "";
+  var keys = Object.keys(porClave || {});
+  var best = "";
+  var bestHit = 0;
+  var tokens = titulo.split(/\s+/).filter(function (t) {
+    return t.length >= 4;
+  });
+  if (!tokens.length) return "";
+  for (var i = 0; i < keys.length; i++) {
+    var row = porClave[keys[i]];
+    var other = normalizarClavePrograma_(row.titulo || "");
+    if (!other) continue;
+    var hit = 0;
+    for (var j = 0; j < tokens.length; j++) {
+      if (other.indexOf(tokens[j]) >= 0) hit++;
+    }
+    if (hit >= 2 && hit > bestHit) {
+      bestHit = hit;
+      best = keys[i];
+    }
+  }
+  return best;
+}
+
+/**
+ * Une “Uso” + “La Malfa” u otras claves basura que apuntan al mismo expositor.
+ */
+function fusionarCargasDuplicadasPrograma_(porClave) {
+  var changed = true;
+  while (changed) {
+    changed = false;
+    var keys = Object.keys(porClave || {});
+    var i;
+    var j;
+    for (i = 0; i < keys.length && !changed; i++) {
+      for (j = i + 1; j < keys.length; j++) {
+        var a = porClave[keys[i]];
+        var b = porClave[keys[j]];
+        if (!a || !b) continue;
+        var mismaPersona =
+          normalizarClavePrograma_(a.personaDisplay) &&
+          normalizarClavePrograma_(a.personaDisplay) ===
+            normalizarClavePrograma_(b.personaDisplay);
+        var tituloCercano =
+          puntajeSimilitudTituloPrograma_(a.titulo, b.titulo) >= 2 ||
+          (a.articuloFileId && a.articuloFileId === b.articuloFileId) ||
+          (a.pptFileId && a.pptFileId === b.pptFileId);
+        if (!mismaPersona && !tituloCercano) continue;
+
+        var keepKey = keys[i];
+        var dropKey = keys[j];
+        if (esClaveAutorBasuraPrograma_(keepKey) && !esClaveAutorBasuraPrograma_(dropKey)) {
+          keepKey = keys[j];
+          dropKey = keys[i];
+        } else if (
+          !porClave[keepKey].articuloOk &&
+          porClave[dropKey].articuloOk &&
+          !esClaveAutorBasuraPrograma_(dropKey)
+        ) {
+          keepKey = keys[j];
+          dropKey = keys[i];
+        }
+        if (keepKey === dropKey) continue;
+        mergeRowPrograma_(porClave[keepKey], porClave[dropKey]);
+        delete porClave[dropKey];
+        changed = true;
+        break;
+      }
+    }
+  }
+}
+
+function mergeRowPrograma_(keep, drop) {
+  if (!keep || !drop) return;
+  keep.personaDisplay = elegirMejorTextoPrograma_(keep.personaDisplay, drop.personaDisplay);
+  if (drop.tituloDeArticulo && drop.titulo && !esTituloBasuraPrograma_(drop.titulo)) {
+    keep.titulo = drop.titulo;
+    keep.tituloDeArticulo = true;
+  } else {
+    keep.titulo = elegirMejorTituloPrograma_(keep.titulo, drop.titulo);
+    if (drop.tituloDeArticulo) keep.tituloDeArticulo = true;
+  }
+  if (drop.area && (!keep.area || drop.area.length > keep.area.length)) keep.area = drop.area;
+  keep.articuloOk = keep.articuloOk || drop.articuloOk;
+  keep.pptOk = keep.pptOk || drop.pptOk;
+  keep.articuloFileId = keep.articuloFileId || drop.articuloFileId;
+  keep.pptFileId = keep.pptFileId || drop.pptFileId;
+}
+
+function puntajeSimilitudTituloPrograma_(a, b) {
+  if (typeof puntajeSimilitudTitulo_ === "function") {
+    return puntajeSimilitudTitulo_(a, b);
+  }
+  var ta = normalizarClavePrograma_(a).split(/\s+/).filter(Boolean);
+  var tb = normalizarClavePrograma_(b).split(/\s+/).filter(Boolean);
+  if (!ta.length || !tb.length) return 0;
+  var set = {};
+  var i;
+  for (i = 0; i < tb.length; i++) set[tb[i]] = true;
+  var hit = 0;
+  for (i = 0; i < ta.length; i++) {
+    if (ta[i].length < 3) continue;
+    if (set[ta[i]]) hit++;
+  }
+  return hit;
+}
+
 function esCargaInstitucionalPrograma_(row) {
   var t = normalizarClavePrograma_(row.titulo || "");
   var p = normalizarClavePrograma_(row.personaDisplay || "");
@@ -377,15 +520,45 @@ function esCargaInstitucionalPrograma_(row) {
 
 function limpiarTituloPrograma_(titulo, fileName) {
   titulo = String(titulo || "").replace(/\s+/g, " ").trim();
-  if (!titulo) {
+  if (!titulo || esTituloBasuraPrograma_(titulo)) {
     var meta = parseNombreSugerido_(fileName);
     titulo = meta.title || String(fileName || "").replace(/\.[^.]+$/, "");
+    titulo = String(titulo || "").replace(/\s+/g, " ").trim();
   }
-  // CamelCase pegado → espacios
-  if (/^[A-Za-zÁÉÍÓÚÑ0-9]+$/i.test(titulo) && /[a-z][A-Z]/.test(titulo)) {
+  if (typeof humanizarTituloCatalogo_ === "function") {
+    titulo = humanizarTituloCatalogo_(titulo);
+  } else if (/[a-z][A-Z]/.test(titulo)) {
     titulo = titulo.replace(/([a-z])([A-Z])/g, "$1 $2");
   }
+  titulo = titulo.replace(/\bPy\s+M\s+Es\b/gi, "PyMEs");
+  if (esTituloBasuraPrograma_(titulo) || esTituloDebilPrograma_(titulo)) {
+    var meta2 = parseNombreSugerido_(fileName);
+    var alt = String(meta2.title || "").replace(/\s+/g, " ").trim();
+    if (alt && !esTituloBasuraPrograma_(alt) && !esTituloDebilPrograma_(alt)) {
+      titulo = typeof humanizarTituloCatalogo_ === "function" ? humanizarTituloCatalogo_(alt) : alt;
+    }
+  }
   return tituloAmigablePrograma_(titulo);
+}
+
+function esTituloBasuraPrograma_(t) {
+  if (typeof esTituloBasuraCuerpo_ === "function") return esTituloBasuraCuerpo_(t);
+  var s = String(t || "").replace(/\s+/g, " ").trim();
+  if (!s) return true;
+  if (/https?:\/\//i.test(s) || /github\.io/i.test(s) || /diapositiva\s*\d/i.test(s)) {
+    return true;
+  }
+  if (/#jornadas/i.test(s)) return true;
+  if (/observatorio de ia\b/i.test(s) && /uc\s*cuyo/i.test(s)) return true;
+  return false;
+}
+
+function esTituloDebilPrograma_(t) {
+  if (typeof esTituloDebilCatalogo_ === "function") return esTituloDebilCatalogo_(t);
+  var s = String(t || "").replace(/\s+/g, " ").trim();
+  if (!s || s.length < 8) return true;
+  if (/\bv\s*\d+\b/i.test(s) || /\bjornadas\s*2026\b/i.test(s)) return true;
+  return false;
 }
 
 function tituloAmigablePrograma_(s) {
@@ -397,14 +570,28 @@ function tituloAmigablePrograma_(s) {
   return s;
 }
 
+function elegirMejorTituloPrograma_(actual, candidato) {
+  actual = String(actual || "").trim();
+  candidato = String(candidato || "").trim();
+  if (!candidato || esTituloBasuraPrograma_(candidato)) return actual;
+  if (!actual || esTituloBasuraPrograma_(actual) || esTituloDebilPrograma_(actual)) {
+    return candidato;
+  }
+  if (esTituloDebilPrograma_(candidato) && !esTituloDebilPrograma_(actual)) return actual;
+  // Preferir el más informativo, sin premiar pies de diapositiva largos
+  if (candidato.length >= actual.length + 8 && !esTituloDebilPrograma_(candidato)) {
+    return candidato;
+  }
+  return actual;
+}
+
 function elegirMejorTextoPrograma_(actual, candidato) {
   actual = String(actual || "").trim();
   candidato = String(candidato || "").trim();
   if (!candidato) return actual;
   if (!actual) return candidato;
-  // Preferir el más largo si no es basura de nombre de archivo
-  if (candidato.length >= actual.length + 8) return candidato;
   if (/et\s+al\.?/i.test(candidato) && !/et\s+al\.?/i.test(actual)) return candidato;
+  if (candidato.length > actual.length + 3) return candidato;
   return actual;
 }
 

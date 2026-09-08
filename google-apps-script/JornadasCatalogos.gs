@@ -745,18 +745,49 @@ function leerTituloGoogleSlides_(fileId) {
     var slides = pres.getSlides();
     if (slides && slides.length) {
       var shapes = slides[0].getShapes();
+      var candidatos = [];
       for (var i = 0; i < shapes.length; i++) {
         if (!shapes[i].getText) continue;
-        var t = String(shapes[i].getText().asString() || "").trim();
-        t = t.split("\n")[0].trim();
-        if (!t || t.length < 6) continue;
-        if (esTituloInstitucionalBoilerplate_(t) || esTituloBasuraCuerpo_(t)) continue;
-        return t;
+        var raw = String(shapes[i].getText().asString() || "").trim();
+        var lineas = raw.split(/\n+/);
+        for (var L = 0; L < lineas.length; L++) {
+          var t = String(lineas[L] || "").replace(/\s+/g, " ").trim();
+          if (!t || t.length < 8 || t.length > 120) continue;
+          if (esTituloInstitucionalBoilerplate_(t) || esTituloBasuraCuerpo_(t)) continue;
+          if (esTituloPieDiapositiva_(t)) continue;
+          var score = 40;
+          if (L === 0) score += 30;
+          if (i <= 2) score += 20;
+          if (t.length >= 15 && t.length <= 90) score += 40;
+          if (/\bIA\b|inteligencia|alerta|estudiantes|contabilidad|veterinar/i.test(t)) {
+            score += 25;
+          }
+          candidatos.push({ t: t, score: score });
+        }
       }
+      candidatos.sort(function (a, b) {
+        return b.score - a.score;
+      });
+      if (candidatos.length) return candidatos[0].t;
     }
   } catch (ignore) {}
   var parsed = parseNombreSugerido_(name);
   return parsed.title || name;
+}
+
+/** Pie / cabecera de diapositiva (URL, “Diapositiva N”, marca UCCuyo). */
+function esTituloPieDiapositiva_(t) {
+  var s = String(t || "").replace(/\s+/g, " ").trim();
+  if (!s) return true;
+  if (/diapositiva\s*\d/i.test(s)) return true;
+  if (/github\.io/i.test(s)) return true;
+  if (/observatorio[- ]?ia\.uccuyo/i.test(s)) return true;
+  if (/claudiomlarrea\.github/i.test(s)) return true;
+  if (/^https?:\/\//i.test(s)) return true;
+  if (/#jornadas/i.test(s)) return true;
+  if (/uc\s*cuyo/i.test(s) && /observatorio/i.test(s)) return true;
+  if (/^universidad\s+cat/i.test(s)) return true;
+  return false;
 }
 
 /**
@@ -781,9 +812,18 @@ function esTituloBasuraCuerpo_(t) {
   if (!s) return true;
   if (s.length > 140) return true;
   if (/https?:\/\//i.test(s)) return true;
+  if (/www\./i.test(s)) return true;
   if (/diapositiva\s*\d/i.test(s)) return true;
+  if (/\/\s*\d+\s*$/.test(s) && /diapositiva|slide/i.test(s)) return true;
   if (/github\.io/i.test(s)) return true;
+  if (/#jornadas/i.test(s)) return true;
+  if (/claudiomlarrea/i.test(s)) return true;
+  if (esTituloPieDiapositiva_(s)) return true;
+  // Pie concatenado: "Observatorio de IA - UC Cuyo - …"
+  if (/observatorio de ia\b/i.test(s) && /uc\s*cuyo/i.test(s)) return true;
   if (/observatorio de ia\s*[-–—]/i.test(s) && /jornadas/i.test(s)) return true;
+  // Nombre de archivo versionado colado como título
+  if (/\bjornadas\s*2026\b/i.test(s) && /\bv\s*\d+\b/i.test(s)) return true;
   if (/^(el|la|los|las|este|esta|estos|estas|en)\s+/i.test(s) && s.length > 80) {
     return true;
   }
@@ -798,17 +838,31 @@ function esTituloBasuraCuerpo_(t) {
   return false;
 }
 
+/** Título débil típico de nombre de archivo PPT (mejor usar el del artículo). */
+function esTituloDebilCatalogo_(t) {
+  var s = String(t || "").replace(/\s+/g, " ").trim();
+  if (!s || s.length < 8) return true;
+  if (esTituloBasuraCuerpo_(s) || esTituloInstitucionalBoilerplate_(s)) return true;
+  if (/\bv\s*\d+\b/i.test(s)) return true;
+  if (/\bjornadas\s*2026\b/i.test(s)) return true;
+  if (/_v\d+/i.test(s)) return true;
+  return false;
+}
+
 function humanizarTituloCatalogo_(s) {
   s = String(s || "")
     .replace(/[_-]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
   if (!s) return s;
-  // Preservar siglas frecuentes antes del split CamelCase
+  // Placeholders en minúsculas: si no, el split CamelCase parte PYMES → "PYM Es"
   var protect = [
-    [/PyMEs/gi, "§PYMES§"],
-    [/GEMEPH/gi, "§GEMEPH§"],
-    [/\bIA\b/g, "§IA§"]
+    [/Py\s*M\s*Es/gi, "§pymes§"],
+    [/PyMEs/gi, "§pymes§"],
+    [/PYMES/g, "§pymes§"],
+    [/Pymes/g, "§pymes§"],
+    [/GEMEPH/gi, "§gemeph§"],
+    [/\bIA\b/g, "§ia§"]
   ];
   var i;
   for (i = 0; i < protect.length; i++) {
@@ -817,9 +871,12 @@ function humanizarTituloCatalogo_(s) {
   s = s.replace(/([a-zà-ÿ0-9])([A-ZÁÉÍÓÚÑ])/g, "$1 $2");
   s = s.replace(/([A-ZÁÉÍÓÚÑ]+)([A-ZÁÉÍÓÚÑ][a-zà-ÿ])/g, "$1 $2");
   s = s
-    .replace(/§PYMES§/g, "PyMEs")
-    .replace(/§GEMEPH§/g, "GEMEPH")
-    .replace(/§IA§/g, "IA");
+    .replace(/§pymes§/g, "PyMEs")
+    .replace(/§gemeph§/g, "GEMEPH")
+    .replace(/§ia§/g, "IA");
+  // Por si el CamelCase ya partió PyMEs antes de proteger
+  s = s.replace(/\bPy\s+M\s+Es\b/gi, "PyMEs");
+  s = s.replace(/\bPYM\s+Es\b/g, "PyMEs");
   return s.replace(/\s+/g, " ").trim();
 }
 
@@ -854,7 +911,8 @@ function emparejarAutoresEntreCatalogos_(arts, ppts) {
   var i;
   for (i = 0; i < ppts.length; i++) {
     var p = ppts[i];
-    if (p.author && limpiarAutorCatalogo_(p.author)) continue;
+    var autorOk = p.author && limpiarAutorCatalogo_(p.author);
+    if (!autorOk) p.author = "";
     var best = null;
     var bestScore = 0;
     var j;
@@ -863,6 +921,7 @@ function emparejarAutoresEntreCatalogos_(arts, ppts) {
       if (!a.author) continue;
       var score = puntajeSimilitudTitulo_(p.title, a.title);
       score += puntajeSimilitudTitulo_(p.fileName, a.fileName) * 0.5;
+      score += puntajeSimilitudTitulo_(p.fileName, a.author + " " + a.title);
       if (p.area && a.area && normalizarClaveSuave_(p.area) === normalizarClaveSuave_(a.area)) {
         score += 2;
       }
@@ -872,10 +931,16 @@ function emparejarAutoresEntreCatalogos_(arts, ppts) {
       }
     }
     if (best && bestScore >= 2) {
-      p.author = best.author;
+      if (!autorOk) p.author = best.author;
       if (!p.area && best.area) p.area = best.area;
-      if (esTituloBasuraCuerpo_(p.title) || p.title.length < 8) {
+      if (esTituloDebilCatalogo_(p.title) || esTituloBasuraCuerpo_(p.title)) {
         p.title = best.title;
+      }
+    } else if (esTituloDebilCatalogo_(p.title) && p.author) {
+      // Sin match fuerte: al menos no dejar pie de diapositiva / v3 en el catálogo
+      var meta = parseNombreSugerido_(p.fileName || "");
+      if (meta.title && !esTituloDebilCatalogo_(meta.title)) {
+        p.title = humanizarTituloCatalogo_(meta.title);
       }
     }
   }
