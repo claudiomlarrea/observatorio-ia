@@ -28,12 +28,17 @@ La web del Observatorio descarga esos PDF desde el propio sitio (sin abrir Drive
 
 Tras regenerar en Apps Script
 -----------------------------
+IMPORTANTE: en Código.gs tiene que existir el texto
+  MARKER_CATALOGOS_PYMES_20260908
+Si no está, el pegado es viejo y van a seguir saliendo §PyMEs§ / portadas.
+
 1. Pegá el JornadasCatalogos.gs actualizado en el proyecto de Apps Script
 2. Activá Servicios → Drive API (avanzado) — hace falta para leer títulos de .docx
 3. Ejecutá actualizarCatalogosJornadas
-4. Descargá los PDF desde la carpeta «OIA · Catálogos Jornadas IA 2026»
-5. Reemplazá los archivos en assets/jornadas/ del repo
-6. Commit + push
+4. Implementar → Nueva versión (también hace falta JornadasPrograma.gs en el proyecto)
+5. Descargá los PDF desde la carpeta «OIA · Catálogos Jornadas IA 2026»
+6. Reemplazá los archivos en assets/jornadas/ del repo
+7. Commit + push
 
 Notificaciones a Investigación (no Observatorio)
 ------------------------------------------------
