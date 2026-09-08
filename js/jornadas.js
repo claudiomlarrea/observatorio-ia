@@ -30,6 +30,10 @@ function wirePrograma_() {
 
   var cfg = window.JORNADAS_IA_2026 || {};
   var api = String(cfg.CATALOGOS_API_URL || "").trim().replace(/\?.*$/, "");
+  var editLink = document.getElementById("jornadas-programa-edit-link");
+  if (editLink && cfg.PROGRAMA_EDITOR_URL) {
+    editLink.href = String(cfg.PROGRAMA_EDITOR_URL).trim();
+  }
   var localUrl = "data/jornadas-programa-2026.json?v=5";
   var remoteUrl = api ? api + "?action=programa" : "";
 

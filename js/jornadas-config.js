@@ -15,9 +15,18 @@ window.JORNADAS_IA_2026 = {
     "https://drive.google.com/drive/folders/1oEx8kOI1x4Hx2LppKv35DTIB6S48LXLa",
   PRESENTACION_FOLDER_URL:
     "https://drive.google.com/drive/folders/10Ma7p_Lo3tObfE0N_nXEgwqZogqQzXQE",
-  /** URL /exec del despliegue de JornadasCatalogos.gs (solo para conteo / fecha). */
+  /**
+   * API pública (programa, catálogos). Debe ser «Ejecutar como: Yo» + Cualquier usuario.
+   * No usar para el editor: esa implementación no ve el correo del visitante.
+   */
   CATALOGOS_API_URL:
     "https://script.google.com/macros/s/AKfycbwqC9p3EUiTK2DnPHKLT30y0-I3yMcVLzO0S0yNWgvjQVhpDj6z3ScWqo3eJ7LkgDhwQA/exec",
+  /**
+   * Editor del programa (equipo). Implementación aparte:
+   * «Ejecutar como: Usuario que accede» + cuenta Google.
+   */
+  PROGRAMA_EDITOR_URL:
+    "https://script.google.com/macros/s/AKfycby-iPVY572kZOubTA_eFv0WRWCponjQde778ibv2daEYvIDdza6N6HFnyw-tDdmWSB9/exec?action=editar_programa",
   /** PDFs publicados en el sitio (descarga directa; sin pasar por Drive). */
   CATALOGO_ARTICULOS_PDF:
     "assets/jornadas/catalogo-articulos-jornadas-ia-2026.pdf?v=10",
