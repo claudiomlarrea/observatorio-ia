@@ -167,6 +167,22 @@ function doGet(e) {
     }
   }
 
+  if (
+    action === "editar_programa" ||
+    action === "editar-programa" ||
+    action === "programa_editor"
+  ) {
+    try {
+      return servirEditorProgramaHtml_();
+    } catch (errEd) {
+      return HtmlService.createHtmlOutput(
+        "<p>No se pudo abrir el editor de programa: " +
+          String(errEd) +
+          "</p><p>Pegá <code>JornadasProgramaEditor.gs</code> y <code>JornadasProgramaEditor.html</code> en este proyecto e Implementá una nueva versión.</p>"
+      );
+    }
+  }
+
   if (action === "pdf" || action === "descargar") {
     try {
       return servirPdfCatalogo_(String(p.tipo || p.kind || "articulos"), String(p.id || ""));

@@ -1,5 +1,5 @@
-Programa automático desde Drive (sitio + agenda)
-================================================
+Programa automático desde Drive + editor del equipo
+===================================================
 
 Objetivo
 --------
@@ -8,10 +8,11 @@ el sistema:
 
   1. Manda el mail a Investigación
   2. Regenera los catálogos PDF
-  3. Actualiza el PROGRAMA del sitio (#jornadas-ia)
+  3. Actualiza el PROGRAMA del sitio (#jornadas-ia)  [si no está en modo manual]
   4. Actualiza la AGENDA de la app (jornadas-ia-2026/)
 
-Sin avisar a Cursor ni editar JSON a mano.
+Además, el equipo puede editar el programa a mano (alta / baja / reorden)
+con login Google y lista blanca de correos.
 
 
 Archivos a pegar (mismo proyecto Apps Script)
@@ -19,50 +20,74 @@ Archivos a pegar (mismo proyecto Apps Script)
 Cuenta: investigacion@uccuyo.edu.ar
 Proyecto: OIA · Catálogos Jornadas IA
 
-  1. Código.gs              ← JornadasCatalogos.gs (actualizado)
+  1. Código.gs                   ← JornadasCatalogos.gs
   2. JornadasNotificaciones.gs
-  3. JornadasPrograma.gs    ← NUEVO (este flujo)
+  3. JornadasPrograma.gs
+  4. JornadasProgramaEditor.gs   ← NUEVO
+  5. JornadasProgramaEditor.html ← NUEVO (Archivo → HTML)
 
-Guardá los tres.
+Guardá todos.
+
+
+Editor del programa (correos)
+-----------------------------
+URL:
+
+  …/exec?action=editar_programa
+
+  (también hay un enlace discreto «Editar programa (equipo)» en
+   https://observatorio-ia.uccuyo.edu.ar/#jornadas-ia)
+
+Implementación web app (importante):
+
+  Ejecutar como: Yo (investigacion@…)
+  Quién tiene acceso: Cualquier usuario de una cuenta de Google
+
+Así Google pide login y el script lee el correo.
+
+Lista blanca inicial:
+
+  investigacion@uccuyo.edu.ar
+  asistente.inv@uccuyo.edu.ar   ← Stefania Young
+  observatorioia@uccuyo.edu.ar
+
+Agregar alguien:
+
+  agregarEditorPrograma_("otra@uccuyo.edu.ar");
+
+Quitar:
+
+  quitarEditorPrograma_("otra@uccuyo.edu.ar");
+
+Al guardar desde el panel → modo MANUAL (Drive ya no pisa el programa).
+Botón «Regenerar desde Drive» → vuelve al modo automático.
 
 
 Activar
 -------
 1. Ejecutá: actualizarCatalogosJornadas
-   (debe terminar OK; en el resultado verás "programa": { ok: true, ... })
-
 2. Implementar → Administrar implementaciones → Editar
    → Nueva versión → Implementar
-   (hace falta para que ?action=programa responda en la URL /exec)
-
-3. Probá en el navegador:
+3. Probá:
 
    …/exec?action=programa
    …/exec?action=programa_agenda
+   …/exec?action=editar_programa
 
-   Deben devolver JSON con Meretta / Giboin / etc.
 
-
-Cómo se arman las ponencias
----------------------------
+Cómo se arman las ponencias (modo automático)
+---------------------------------------------
 - Apertura e indicaciones fijas (15:00–15:25)
 - Una ponencia por apellido detectado en los nombres
   Area_Universidad_Apellido_Titulo…
 - Orden alfabético por apellido
 - Turnos de 10 minutos desde 15:25
-- Estado “Provisional” hasta que marques confirmada
-
-
-Confirmar una ponencia (opcional)
----------------------------------
-En el editor Apps Script:
-
-  confirmarPonenciaJornadas_("meretta");
+- Estado “Provisional” hasta confirmar en el panel
 
 
 Sitio / agenda
 --------------
-El repo ya lee primero la API y, si falla, el JSON estático de respaldo.
+El repo lee primero la API y, si falla, el JSON estático de respaldo.
 
   https://observatorio-ia.uccuyo.edu.ar/#jornadas-ia
   https://observatorio-ia.uccuyo.edu.ar/jornadas-ia-2026/

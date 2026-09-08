@@ -25,6 +25,17 @@ var JORNADAS_PONENCIA_MINUTOS = 10;
  * Llamado desde actualizarCatalogosJornadas(arts, ppts).
  */
 function sincronizarProgramaDesdeCatalogos_(arts, ppts) {
+  // Modo manual (panel de edición): no pisar orden ni textos.
+  if (
+    typeof esProgramaManual_ === "function"
+      ? esProgramaManual_()
+      : PropertiesService.getScriptProperties().getProperty(
+          "jornadas_programa_manual"
+        ) === "1"
+  ) {
+    return { ok: true, skipped: "manual" };
+  }
+
   arts = arts || [];
   ppts = ppts || [];
   var confirmados = cargarConfirmados_();

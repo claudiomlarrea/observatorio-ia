@@ -3479,6 +3479,19 @@ form.simple-form small {
   text-align: center;
 }
 
+.jornadas-programa-edit-link {
+  display: inline-block;
+  margin-top: 0.45rem;
+  font-size: 0.8rem;
+  color: var(--color-text-soft, #5c4f54);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.jornadas-programa-edit-link:hover {
+  color: var(--color-text, #2a1f22);
+}
+
 .jornadas-programa-list {
   list-style: none;
   margin: 0.85rem 0 0.65rem;
