@@ -1,0 +1,68 @@
+Programa automático desde Drive (sitio + agenda)
+================================================
+
+Objetivo
+--------
+Cuando un investigador sube un artículo o un PowerPoint a las carpetas Drive,
+el sistema:
+
+  1. Manda el mail a Investigación
+  2. Regenera los catálogos PDF
+  3. Actualiza el PROGRAMA del sitio (#jornadas-ia)
+  4. Actualiza la AGENDA de la app (jornadas-ia-2026/)
+
+Sin avisar a Cursor ni editar JSON a mano.
+
+
+Archivos a pegar (mismo proyecto Apps Script)
+---------------------------------------------
+Cuenta: investigacion@uccuyo.edu.ar
+Proyecto: OIA · Catálogos Jornadas IA
+
+  1. Código.gs              ← JornadasCatalogos.gs (actualizado)
+  2. JornadasNotificaciones.gs
+  3. JornadasPrograma.gs    ← NUEVO (este flujo)
+
+Guardá los tres.
+
+
+Activar
+-------
+1. Ejecutá: actualizarCatalogosJornadas
+   (debe terminar OK; en el resultado verás "programa": { ok: true, ... })
+
+2. Implementar → Administrar implementaciones → Editar
+   → Nueva versión → Implementar
+   (hace falta para que ?action=programa responda en la URL /exec)
+
+3. Probá en el navegador:
+
+   …/exec?action=programa
+   …/exec?action=programa_agenda
+
+   Deben devolver JSON con Meretta / Giboin / etc.
+
+
+Cómo se arman las ponencias
+---------------------------
+- Apertura e indicaciones fijas (15:00–15:25)
+- Una ponencia por apellido detectado en los nombres
+  Area_Universidad_Apellido_Titulo…
+- Orden alfabético por apellido
+- Turnos de 10 minutos desde 15:25
+- Estado “Provisional” hasta que marques confirmada
+
+
+Confirmar una ponencia (opcional)
+---------------------------------
+En el editor Apps Script:
+
+  confirmarPonenciaJornadas_("meretta");
+
+
+Sitio / agenda
+--------------
+El repo ya lee primero la API y, si falla, el JSON estático de respaldo.
+
+  https://observatorio-ia.uccuyo.edu.ar/#jornadas-ia
+  https://observatorio-ia.uccuyo.edu.ar/jornadas-ia-2026/

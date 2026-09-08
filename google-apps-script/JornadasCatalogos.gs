@@ -83,10 +83,21 @@ function actualizarCatalogosJornadas() {
     notify = { ok: false, error: String(errNotify) };
   }
 
+  // Programa + agenda en vivo (sitio y app). Ver JornadasPrograma.gs
+  var programa = null;
+  try {
+    if (typeof sincronizarProgramaDesdeCatalogos_ === "function") {
+      programa = sincronizarProgramaDesdeCatalogos_(arts, ppts);
+    }
+  } catch (errProg) {
+    programa = { ok: false, error: String(errProg) };
+  }
+
   return {
     ok: true,
     updatedAt: updatedAt,
     notify: notify,
+    programa: programa,
     articulos: {
       count: arts.length,
       pdfId: pdfArts.getId(),
@@ -131,6 +142,26 @@ function doGet(e) {
       return jsonOut_(result);
     } catch (err) {
       return jsonOut_({ ok: false, error: String(err) });
+    }
+  }
+
+  if (action === "programa" || action === "program") {
+    try {
+      return jsonOut_(obtenerProgramaSitio_());
+    } catch (errProg) {
+      return jsonOut_({ ok: false, error: String(errProg), items: [] });
+    }
+  }
+
+  if (
+    action === "programa_agenda" ||
+    action === "agenda" ||
+    action === "programa-app"
+  ) {
+    try {
+      return jsonOut_(obtenerProgramaAgenda_());
+    } catch (errAg) {
+      return jsonOut_({ ok: false, error: String(errAg), sesiones: [] });
     }
   }
 

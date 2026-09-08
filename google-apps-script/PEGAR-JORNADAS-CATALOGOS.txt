@@ -40,6 +40,11 @@ Notificaciones a Investigación (no Observatorio)
 Ver PEGAR-JORNADAS-NOTIFICACIONES.txt y el archivo JornadasNotificaciones.gs
 (mismo proyecto Apps Script).
 
+Programa + agenda automáticos desde Drive
+-----------------------------------------
+Ver PEGAR-JORNADAS-PROGRAMA.txt y JornadasPrograma.gs.
+Tras pegar, ejecutá actualizarCatalogosJornadas e Implementar → Nueva versión.
+
 
 API (solo conteo / fecha en la web)
 -----------------------------------

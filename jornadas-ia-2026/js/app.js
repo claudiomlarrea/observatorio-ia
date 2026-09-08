@@ -23,7 +23,9 @@
   const REMINDER_LEAD_MIN = 10;
   const PROGRAM_STORE_KEY = "jornadas_ia_2026_programa";
   const PROGRAM_VERSION_KEY = "jornadas_ia_2026_programa_version";
-  const PROGRAM_VERSION = "6";
+  const PROGRAM_VERSION = "7";
+  const PROGRAMA_API_URL =
+    "https://script.google.com/macros/s/AKfycbwqC9p3EUiTK2DnPHKLT30y0-I3yMcVLzO0S0yNWgvjQVhpDj6z3ScWqo3eJ7LkgDhwQA/exec?action=programa_agenda";
 
   const state = {
     data: null,
@@ -1208,6 +1210,7 @@
         ? window.location.pathname
         : `${window.location.pathname.replace(/\/?$/, "")}/`;
       const candidates = [
+        PROGRAMA_API_URL,
         new URL(`data/programa.json?v=${PROGRAM_VERSION}`, `${window.location.origin}${basePath}`)
           .href,
         `data/programa.json?v=${PROGRAM_VERSION}`,
@@ -1216,7 +1219,7 @@
       let lastErr = null;
       for (const url of candidates) {
         try {
-          const res = await fetch(url, { cache: "no-store" });
+          const res = await fetch(url, { cache: "no-store", credentials: "omit" });
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const data = await res.json();
           if (!data?.sesiones?.length) throw new Error("empty program");

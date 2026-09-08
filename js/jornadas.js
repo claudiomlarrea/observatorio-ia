@@ -28,21 +28,46 @@ function wirePrograma_() {
   var list = document.getElementById("jornadas-programa-list");
   if (!list) return;
 
-  var url = "data/jornadas-programa-2026.json?v=5";
-  fetch(url, { credentials: "omit" })
-    .then(function (r) {
-      if (!r.ok) throw new Error("HTTP " + r.status);
-      return r.json();
-    })
-    .then(function (data) {
-      renderPrograma_(list, data);
-    })
-    .catch(function () {
-      list.innerHTML =
-        "<li class=\"jornadas-programa-item\"><div class=\"jornadas-programa-body\">" +
-        "<p class=\"jornadas-programa-titulo\">No se pudo cargar el programa. Reintentá más tarde.</p>" +
-        "</div></li>";
-    });
+  var cfg = window.JORNADAS_IA_2026 || {};
+  var api = String(cfg.CATALOGOS_API_URL || "").trim().replace(/\?.*$/, "");
+  var localUrl = "data/jornadas-programa-2026.json?v=5";
+  var remoteUrl = api ? api + "?action=programa" : "";
+
+  function paint(data) {
+    renderPrograma_(list, data);
+  }
+
+  function fail() {
+    list.innerHTML =
+      "<li class=\"jornadas-programa-item\"><div class=\"jornadas-programa-body\">" +
+      "<p class=\"jornadas-programa-titulo\">No se pudo cargar el programa. Reintentá más tarde.</p>" +
+      "</div></li>";
+  }
+
+  // 1) API en vivo (Drive → Apps Script). 2) JSON estático de respaldo.
+  var chain = remoteUrl
+    ? fetch(remoteUrl, { credentials: "omit", cache: "no-store" })
+        .then(function (r) {
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          return r.json();
+        })
+        .then(function (data) {
+          if (!data || !data.items || !data.items.length) {
+            throw new Error("programa vacío");
+          }
+          paint(data);
+        })
+    : Promise.reject(new Error("sin api"));
+
+  chain.catch(function () {
+    return fetch(localUrl, { credentials: "omit" })
+      .then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
+      .then(paint)
+      .catch(fail);
+  });
 }
 
 function renderPrograma_(list, data) {
