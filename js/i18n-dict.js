@@ -584,8 +584,8 @@ window.I18N_DICT = {
     "en": "Planned format: a single room. If 14 or more confirmed talks are reached by the deadline, splitting into two rooms (e.g. Technology / Sciences) will be considered."
   },
   "sec.jornadas.programa.btnPdf": {
-    "es": "Abrir programa (PDF)",
-    "en": "Open program (PDF)"
+    "es": "Ver / imprimir programa",
+    "en": "View / print program"
   },
   "sec.jornadas.programa.foot": {
     "es": "Las ponencias marcadas como provisionales figuran por haber cargado artículo y/o PowerPoint; falta confirmación de exposición el día del evento.",
