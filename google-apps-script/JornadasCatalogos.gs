@@ -801,6 +801,9 @@ function esTituloInstitucionalBoilerplate_(t) {
     return true;
   }
   if (/^uccuyo\b/i.test(s) && s.length < 40) return true;
+  // Portada del evento (no es título de la ponencia)
+  if (/jornadas\s+internas\s+de\s+inteligencia\s+artificial/i.test(s)) return true;
+  if (/^\d+[\.º°]?\s*jornadas\b/i.test(s)) return true;
   return false;
 }
 
@@ -845,6 +848,7 @@ function esTituloDebilCatalogo_(t) {
   if (esTituloBasuraCuerpo_(s) || esTituloInstitucionalBoilerplate_(s)) return true;
   if (/\bv\s*\d+\b/i.test(s)) return true;
   if (/\bjornadas\s*2026\b/i.test(s)) return true;
+  if (/jornadas\s+internas/i.test(s)) return true;
   if (/_v\d+/i.test(s)) return true;
   return false;
 }
@@ -855,14 +859,14 @@ function humanizarTituloCatalogo_(s) {
     .replace(/\s+/g, " ")
     .trim();
   if (!s) return s;
-  // Placeholders en minúsculas: si no, el split CamelCase parte PYMES → "PYM Es"
+  // Tokens ASCII (evitar § … que a veces quedan literales en el PDF)
   var protect = [
-    [/Py\s*M\s*Es/gi, "§pymes§"],
-    [/PyMEs/gi, "§pymes§"],
-    [/PYMES/g, "§pymes§"],
-    [/Pymes/g, "§pymes§"],
-    [/GEMEPH/gi, "§gemeph§"],
-    [/\bIA\b/g, "§ia§"]
+    [/Py\s*M\s*Es/gi, "{{pymes}}"],
+    [/PyMEs/gi, "{{pymes}}"],
+    [/PYMES/g, "{{pymes}}"],
+    [/Pymes/g, "{{pymes}}"],
+    [/GEMEPH/gi, "{{gemeph}}"],
+    [/\bIA\b/g, "{{ia}}"]
   ];
   var i;
   for (i = 0; i < protect.length; i++) {
@@ -871,10 +875,13 @@ function humanizarTituloCatalogo_(s) {
   s = s.replace(/([a-zà-ÿ0-9])([A-ZÁÉÍÓÚÑ])/g, "$1 $2");
   s = s.replace(/([A-ZÁÉÍÓÚÑ]+)([A-ZÁÉÍÓÚÑ][a-zà-ÿ])/g, "$1 $2");
   s = s
-    .replace(/§pymes§/g, "PyMEs")
-    .replace(/§gemeph§/g, "GEMEPH")
-    .replace(/§ia§/g, "IA");
-  // Por si el CamelCase ya partió PyMEs antes de proteger
+    .replace(/\{\{pymes\}\}/g, "PyMEs")
+    .replace(/\{\{gemeph\}\}/g, "GEMEPH")
+    .replace(/\{\{ia\}\}/g, "IA");
+  // Restos de corridas anteriores / CamelCase
+  s = s.replace(/§\s*pymes\s*§/gi, "PyMEs");
+  s = s.replace(/§\s*PyMEs\s*§/gi, "PyMEs");
+  s = s.replace(/§\s*PYM\s*Es\s*§/gi, "PyMEs");
   s = s.replace(/\bPy\s+M\s+Es\b/gi, "PyMEs");
   s = s.replace(/\bPYM\s+Es\b/g, "PyMEs");
   return s.replace(/\s+/g, " ").trim();
@@ -925,6 +932,19 @@ function emparejarAutoresEntreCatalogos_(arts, ppts) {
       if (p.area && a.area && normalizarClaveSuave_(p.area) === normalizarClaveSuave_(a.area)) {
         score += 2;
       }
+      if (
+        autorOk &&
+        normalizarClaveAutorCatalogo_(p.author) === normalizarClaveAutorCatalogo_(a.author)
+      ) {
+        score += 6;
+      }
+      if (
+        !autorOk &&
+        normalizarClaveAutorCatalogo_(parseNombreSugerido_(p.fileName || "").author) ===
+          normalizarClaveAutorCatalogo_(a.author)
+      ) {
+        score += 5;
+      }
       if (score > bestScore) {
         bestScore = score;
         best = a;
@@ -933,17 +953,29 @@ function emparejarAutoresEntreCatalogos_(arts, ppts) {
     if (best && bestScore >= 2) {
       if (!autorOk) p.author = best.author;
       if (!p.area && best.area) p.area = best.area;
-      if (esTituloDebilCatalogo_(p.title) || esTituloBasuraCuerpo_(p.title)) {
+      if (
+        esTituloDebilCatalogo_(p.title) ||
+        esTituloBasuraCuerpo_(p.title) ||
+        esTituloInstitucionalBoilerplate_(p.title)
+      ) {
         p.title = best.title;
       }
-    } else if (esTituloDebilCatalogo_(p.title) && p.author) {
-      // Sin match fuerte: al menos no dejar pie de diapositiva / v3 en el catálogo
+    } else if (esTituloDebilCatalogo_(p.title) || esTituloInstitucionalBoilerplate_(p.title)) {
       var meta = parseNombreSugerido_(p.fileName || "");
-      if (meta.title && !esTituloDebilCatalogo_(meta.title)) {
+      if (meta.title && !esTituloDebilCatalogo_(meta.title) && !esTituloInstitucionalBoilerplate_(meta.title)) {
         p.title = humanizarTituloCatalogo_(meta.title);
       }
     }
+    // Última pasada: nunca dejar placeholder raro ni título de portada del evento
+    p.title = humanizarTituloCatalogo_(p.title || "");
   }
+}
+
+function normalizarClaveAutorCatalogo_(s) {
+  return normalizarClaveSuave_(s)
+    .replace(/\bet\s+al\b/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function normalizarClaveSuave_(s) {
