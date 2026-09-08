@@ -1189,21 +1189,14 @@ function escribirCatalogoPdf_(folder, fileName, titulo, subtitulo, items, labelP
       var tituloItem = String(it.title || "").replace(/\s+/g, " ").trim();
       var autorItem = String(it.author || "").replace(/\s+/g, " ").trim();
       var areaItem = String(it.area || "").replace(/\s+/g, " ").trim();
+      // Solo título científico + investigador (+ área). Sin nombre de archivo Drive.
       var line = i + 1 + ". " + tituloItem;
       if (autorItem) line += " — " + autorItem;
       if (areaItem) line += " (" + areaItem + ")";
-      // Todos los ítems (incluido el 1.º) con el mismo estilo
       estiloCatalogo_(body.appendParagraph(line), 11, {
         bold: true,
-        spacingAfter: 2
+        spacingAfter: 10
       });
-      var arch = String(it.fileName || "").trim();
-      if (arch) {
-        estiloCatalogo_(body.appendParagraph("    Archivo: " + arch), 9, {
-          color: "#555555",
-          spacingAfter: 10
-        });
-      }
     }
   }
 
