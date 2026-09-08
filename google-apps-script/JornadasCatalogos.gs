@@ -39,6 +39,7 @@ var PRESENTACIONES_MIME_OK = {
 function actualizarCatalogosJornadas() {
   var arts = listarEntradas_(JORNADAS_ARTICULOS_FOLDER_ID, ARTICULOS_MIME_OK, "articulo");
   var ppts = listarEntradas_(JORNADAS_PRESENTACIONES_FOLDER_ID, PRESENTACIONES_MIME_OK, "presentacion");
+  emparejarAutoresEntreCatalogos_(arts, ppts);
 
   arts.sort(function (a, b) {
     return String(a.title).localeCompare(String(b.title), "es", { sensitivity: "base" });
@@ -389,26 +390,42 @@ function recolectarArchivos_(folder, mimeOk, kind, out, depth) {
     }
 
     var meta = parseNombreSugerido_(name);
-    var title = meta.title;
-    var author = meta.author || "";
+    var title = humanizarTituloCatalogo_(meta.title || "");
+    var author = limpiarAutorCatalogo_(meta.author || "");
     try {
       var docTitle = leerTituloDesdeArchivo_(f.getId(), mime);
-      if (docTitle && !esTituloInstitucionalBoilerplate_(docTitle)) {
-        title = docTitle;
+      if (
+        docTitle &&
+        !esTituloInstitucionalBoilerplate_(docTitle) &&
+        !esTituloBasuraCuerpo_(docTitle)
+      ) {
+        title = humanizarTituloCatalogo_(docTitle);
       }
     } catch (ignoreDoc) {}
-    if (mime === "application/vnd.google-apps.presentation") {
+    if (
+      mime === "application/vnd.google-apps.presentation" ||
+      /\.pptx?$/i.test(name)
+    ) {
       try {
-        var slidesTitle = leerTituloGoogleSlides_(f.getId());
-        // Portada institucional ≠ título de la ponencia: preferir nombre de archivo
-        if (slidesTitle && !esTituloInstitucionalBoilerplate_(slidesTitle)) {
-          title = slidesTitle;
+        if (mime === "application/vnd.google-apps.presentation") {
+          var slidesTitle = leerTituloGoogleSlides_(f.getId());
+          if (
+            slidesTitle &&
+            !esTituloInstitucionalBoilerplate_(slidesTitle) &&
+            !esTituloBasuraCuerpo_(slidesTitle)
+          ) {
+            title = humanizarTituloCatalogo_(slidesTitle);
+          }
         }
       } catch (ignoreSlides) {}
     }
-    // Si el título quedó vacío o es basura de portada, usar el del nombre sugerido
-    if (!title || esTituloInstitucionalBoilerplate_(title)) {
-      title = meta.title || name;
+    // Preferir título del nombre sugerido si el del cuerpo es abstract/basura/largo
+    if (
+      !title ||
+      esTituloInstitucionalBoilerplate_(title) ||
+      esTituloBasuraCuerpo_(title)
+    ) {
+      title = humanizarTituloCatalogo_(meta.title || name.replace(/\.[^.]+$/, ""));
     }
 
     // Varios autores en el cuerpo del artículo → "Apellido et al."
@@ -421,7 +438,7 @@ function recolectarArchivos_(folder, mimeOk, kind, out, depth) {
     out.push({
       title: normalizarTituloCatalogo_(title || name),
       author: normalizarTituloCatalogo_(author),
-      area: normalizarTituloCatalogo_(meta.area || ""),
+      area: normalizarAreaCatalogo_(meta.area || ""),
       universidad: normalizarTituloCatalogo_(meta.universidad || ""),
       fileName: name,
       fileId: f.getId(),
@@ -659,6 +676,7 @@ function leerTituloWordConvirtiendo_(fileId) {
 function esLineaNoTituloArticulo_(t) {
   t = String(t || "").replace(/\s+/g, " ").trim();
   if (!t || t.length < 12) return true;
+  if (esTituloBasuraCuerpo_(t)) return true;
   if (/^INSTRUCCIONES/i.test(t)) return true;
   if (/^Texto del artículo/i.test(t)) return true;
   if (/^N\.\s*Apellido/i.test(t)) return true;
@@ -693,8 +711,9 @@ function leerTituloGoogleDoc_(fileId) {
     var p = child.asParagraph();
     var t = String(p.getText() || "").replace(/\s+/g, " ").trim();
     if (esLineaNoTituloArticulo_(t)) continue;
+    if (esTituloBasuraCuerpo_(t)) continue;
     var attr = p.getHeading();
-    var score = t.length;
+    var score = 50;
     if (
       attr === DocumentApp.ParagraphHeading.TITLE ||
       attr === DocumentApp.ParagraphHeading.HEADING1
@@ -705,8 +724,10 @@ function leerTituloGoogleDoc_(fileId) {
     } else if (i <= 3) {
       score += 200;
     }
-    // Preferir títulos descriptivos (más de ~40 caracteres)
-    if (t.length >= 40) score += 150;
+    // Títulos reales: compactos. Penalizar párrafos largos (abstracts).
+    if (t.length >= 20 && t.length <= 120) score += 150;
+    if (t.length > 120) score -= 400;
+    if (t.length > 160) score -= 400;
     candidatos.push({ t: t, score: score });
   }
   candidatos.sort(function (a, b) {
@@ -727,7 +748,10 @@ function leerTituloGoogleSlides_(fileId) {
       for (var i = 0; i < shapes.length; i++) {
         if (!shapes[i].getText) continue;
         var t = String(shapes[i].getText().asString() || "").trim();
-        if (t && t.length >= 6) return t.split("\n")[0].trim();
+        t = t.split("\n")[0].trim();
+        if (!t || t.length < 6) continue;
+        if (esTituloInstitucionalBoilerplate_(t) || esTituloBasuraCuerpo_(t)) continue;
+        return t;
       }
     }
   } catch (ignore) {}
@@ -747,6 +771,121 @@ function esTituloInstitucionalBoilerplate_(t) {
   }
   if (/^uccuyo\b/i.test(s) && s.length < 40) return true;
   return false;
+}
+
+/**
+ * Abstract / primer párrafo del cuerpo colado como “título”.
+ */
+function esTituloBasuraCuerpo_(t) {
+  var s = String(t || "").replace(/\s+/g, " ").trim();
+  if (!s) return true;
+  if (s.length > 140) return true;
+  if (/^(el|la|los|las|este|esta|estos|estas|en)\s+/i.test(s) && s.length > 80) {
+    return true;
+  }
+  if (/^el objetivo\b/i.test(s)) return true;
+  if (/^este trabajo\b/i.test(s)) return true;
+  if (/^la presente\b/i.test(s)) return true;
+  if (/^en (este|el presente)\b/i.test(s)) return true;
+  if (/^el prop[oó]sito\b/i.test(s)) return true;
+  if (/^se presenta\b/i.test(s)) return true;
+  if (/arquitectura\b/i.test(s) && /objetivo|trabajo|presentar/i.test(s)) return true;
+  if ((s.match(/,/g) || []).length >= 3 && s.length > 100) return true;
+  return false;
+}
+
+function humanizarTituloCatalogo_(s) {
+  s = String(s || "")
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!s) return s;
+  // CamelCase / PascalCase → espacios (IAContabilidadDigitalPyMEs)
+  s = s.replace(/([a-zà-ÿ0-9])([A-ZÁÉÍÓÚÑ])/g, "$1 $2");
+  s = s.replace(/([A-ZÁÉÍÓÚÑ]+)([A-ZÁÉÍÓÚÑ][a-zà-ÿ])/g, "$1 $2");
+  return s;
+}
+
+function limpiarAutorCatalogo_(author) {
+  var a = String(author || "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!a) return "";
+  var stop =
+    /^(uso|sistema|gemelo|digital|ia|ppt|pptx|doc|docx|pdf|v\d+|jornadas\d*|presentaci[oó]n|art[ií]culo|plantilla|observatorio|observatoria)$/i;
+  if (stop.test(a.replace(/\s+/g, ""))) return "";
+  return a;
+}
+
+function normalizarAreaCatalogo_(area) {
+  var a = humanizarTituloCatalogo_(area);
+  a = normalizarTituloCatalogo_(a);
+  if (/observator/i.test(a)) return "Observatorio de IA";
+  if (/^investig/i.test(a)) return "Investigación";
+  if (/veterinar/i.test(a)) return "Veterinaria";
+  if (/contabil/i.test(a) || /econom/i.test(a)) return a;
+  return a;
+}
+
+/**
+ * Si una presentación quedó sin autor usable, copiar el del artículo
+ * más parecido (mismo tema / tokens de título).
+ */
+function emparejarAutoresEntreCatalogos_(arts, ppts) {
+  arts = arts || [];
+  ppts = ppts || [];
+  var i;
+  for (i = 0; i < ppts.length; i++) {
+    var p = ppts[i];
+    if (p.author && limpiarAutorCatalogo_(p.author)) continue;
+    var best = null;
+    var bestScore = 0;
+    var j;
+    for (j = 0; j < arts.length; j++) {
+      var a = arts[j];
+      if (!a.author) continue;
+      var score = puntajeSimilitudTitulo_(p.title, a.title);
+      score += puntajeSimilitudTitulo_(p.fileName, a.fileName) * 0.5;
+      if (p.area && a.area && normalizarClaveSuave_(p.area) === normalizarClaveSuave_(a.area)) {
+        score += 2;
+      }
+      if (score > bestScore) {
+        bestScore = score;
+        best = a;
+      }
+    }
+    if (best && bestScore >= 2) {
+      p.author = best.author;
+      if (!p.area && best.area) p.area = best.area;
+      if (esTituloBasuraCuerpo_(p.title) || p.title.length < 8) {
+        p.title = best.title;
+      }
+    }
+  }
+}
+
+function normalizarClaveSuave_(s) {
+  return String(s || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function puntajeSimilitudTitulo_(a, b) {
+  var ta = normalizarClaveSuave_(a).split(/\s+/).filter(Boolean);
+  var tb = normalizarClaveSuave_(b).split(/\s+/).filter(Boolean);
+  if (!ta.length || !tb.length) return 0;
+  var set = {};
+  var i;
+  for (i = 0; i < tb.length; i++) set[tb[i]] = true;
+  var hit = 0;
+  for (i = 0; i < ta.length; i++) {
+    if (ta[i].length < 3) continue;
+    if (set[ta[i]]) hit++;
+  }
+  return hit;
 }
 
 /**
@@ -965,16 +1104,20 @@ function escribirCatalogoPdf_(folder, fileName, titulo, subtitulo, items, labelP
   } else {
     for (var i = 0; i < items.length; i++) {
       var it = items[i];
-      var line = i + 1 + ". " + it.title;
-      if (it.author) line += " — " + it.author;
-      if (it.area) line += " (" + it.area + ")";
+      var tituloItem = String(it.title || "").replace(/\s+/g, " ").trim();
+      var autorItem = String(it.author || "").replace(/\s+/g, " ").trim();
+      var areaItem = String(it.area || "").replace(/\s+/g, " ").trim();
+      var line = i + 1 + ". " + tituloItem;
+      if (autorItem) line += " — " + autorItem;
+      if (areaItem) line += " (" + areaItem + ")";
       // Todos los ítems (incluido el 1.º) con el mismo estilo
       estiloCatalogo_(body.appendParagraph(line), 11, {
         bold: true,
         spacingAfter: 2
       });
-      if (it.fileName && it.fileName !== it.title) {
-        estiloCatalogo_(body.appendParagraph("    Archivo: " + it.fileName), 9, {
+      var arch = String(it.fileName || "").trim();
+      if (arch) {
+        estiloCatalogo_(body.appendParagraph("    Archivo: " + arch), 9, {
           color: "#555555",
           spacingAfter: 10
         });
