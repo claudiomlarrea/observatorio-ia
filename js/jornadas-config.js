@@ -22,13 +22,13 @@ window.JORNADAS_IA_2026 = {
   CATALOGOS_API_URL:
     "https://script.google.com/macros/s/AKfycbwqC9p3EUiTK2DnPHKLT30y0-I3yMcVLzO0S0yNWgvjQVhpDj6z3ScWqo3eJ7LkgDhwQA/exec",
   /**
-   * PDF del programa en vivo (se regenera al Guardar en el editor).
-   * Respaldo estático en assets/ por si la API falla.
+   * PDF del programa: archivo del sitio (siempre abre, sin pedir acceso Drive).
+   * Vista en vivo (imprimible) tras pegar el parche: …/exec?action=programa_pdf
    */
-  PROGRAMA_PDF_URL:
+  PROGRAMA_PDF_URL: "assets/jornadas/programa-jornadas-ia-2026.pdf?v=8",
+  PROGRAMA_PDF_FALLBACK: "assets/jornadas/programa-jornadas-ia-2026.pdf?v=8",
+  PROGRAMA_PDF_VIVO_URL:
     "https://script.google.com/macros/s/AKfycbwqC9p3EUiTK2DnPHKLT30y0-I3yMcVLzO0S0yNWgvjQVhpDj6z3ScWqo3eJ7LkgDhwQA/exec?action=programa_pdf",
-  PROGRAMA_PDF_FALLBACK:
-    "assets/jornadas/programa-jornadas-ia-2026.pdf?v=7",
   /**
    * Editor del programa (equipo). Implementación aparte:
    * «Ejecutar como: Usuario que accede» + cuenta Google.

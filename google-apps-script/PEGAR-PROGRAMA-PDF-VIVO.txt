@@ -1,35 +1,30 @@
-PARCHE — PDF del programa en vivo (al Guardar / al abrir)
-=========================================================
+PARCHE — PDF del programa SIN «Necesitas acceso»
+===============================================
 
-Problema: el listado web se actualiza al Guardar, pero el PDF del sitio
-era un archivo fijo y quedaba desfasado (orden, nuevas ponencias).
-
-Solución: ?action=programa_pdf regenera el PDF en Drive si cambió el
-programa y lo abre. El botón «Abrir programa (PDF)» del sitio ya apunta ahí.
-
-
-Qué pegar (proyecto OIA · Catálogos Jornadas IA)
------------------------------------------------
-1. Código.gs              ← contenido de JornadasCatalogos.gs (repo)
-2. JornadasPrograma.gs    ← contenido de JornadasPrograma.gs (repo)
-3. JornadasProgramaEditor.gs ← contenido de JornadasProgramaEditor.gs (repo)
-
-(No hace falta tocar el HTML del editor.)
+Causa del error
+---------------
+El botón abría un PDF en Drive. Con la cuenta observatorioia@ (u otras del
+dominio) Google muestra «Necesitas acceso» aunque el archivo esté «con enlace».
 
 
-Implementar
------------
-Solo la implementación PÚBLICA (A) — Ejecutar como: Yo / Cualquier usuario:
-
-  Implementar → Administrar → lápiz de A → Nueva versión → Implementar
-
-La del editor (B) puede quedar; el PDF lo sirve A.
+Qué hace ahora el sitio
+-----------------------
+«Abrir programa (PDF)» vuelve a abrir el PDF del propio sitio
+(assets/jornadas/programa-jornadas-ia-2026.pdf) — sin pedir permiso.
 
 
-Probar
-------
-1. Guardá el programa en el editor (orden que quieras).
-2. Abrí:
-   …AKfycbwqC9p3…/exec?action=programa_pdf
-   (primera vez puede tardar ~10–20 s mientras genera el Doc→PDF)
-3. En el sitio: «Abrir programa (PDF)» → debe coincidir con la pantalla.
+Opcional: vista en vivo (siempre al día tras Guardar)
+----------------------------------------------------
+Pegá de nuevo JornadasPrograma.gs (repo) en el proyecto Apps Script
+y en la implementación PÚBLICA (A): Nueva versión → Implementar.
+
+Luego podés abrir:
+
+  …/exec?action=programa_pdf
+
+Eso muestra el programa en vivo con botón «Imprimir / Guardar PDF».
+No usa Drive; no pide acceso.
+
+Si querés que el botón del sitio use esa vista en vivo, cambiá
+PROGRAMA_PDF_URL en js/jornadas-config.js a PROGRAMA_PDF_VIVO_URL
+(después de implementar).

@@ -789,66 +789,115 @@ function publicarProgramaPdfDrive_(site) {
 }
 
 /**
- * ?action=programa_pdf — PDF vivo desde Drive.
- * Si el programa cambió (updatedAt), regenera el PDF (ejecuta como dueño
- * del script en la implementación pública).
+ * ?action=programa_pdf — vista imprimible en vivo (sin Drive).
+ * Drive «Anyone with link» suele fallar en cuentas del dominio UCCuyo
+ * («Necesitas acceso»). Esta página siempre coincide con el programa guardado;
+ * el visitante puede Imprimir → Guardar como PDF.
  */
 function servirProgramaPdf_() {
-  var site = obtenerProgramaSitio_();
-  var props = PropertiesService.getScriptProperties();
-  var id = String(props.getProperty(JORNADAS_PROP_PROGRAMA_PDF_ID) || "").trim();
-  var pdfAt = String(props.getProperty("jornadas_programa_pdf_updated_at") || "");
-  var siteAt = String((site && site.updatedAt) || "");
+  var site = obtenerProgramaSitio_() || {};
+  var evento = site.evento || {};
+  var items = site.items || [];
+  var estado = String(site.estado || "provisorio").toLowerCase();
+  var nota =
+    estado === "confirmado"
+      ? "Programa confirmado."
+      : "Programa provisorio — se actualiza a medida que se confirman las ponencias.";
 
-  if (!id || !siteAt || pdfAt !== siteAt) {
-    try {
-      var pub = publicarProgramaPdfDrive_(site);
-      id = pub.pdfId;
-      props.setProperty("jornadas_programa_pdf_updated_at", siteAt || new Date().toISOString());
-    } catch (errGen) {
-      if (!id) {
-        return HtmlService.createHtmlOutput(
-          "<p>No se pudo generar el PDF del programa: " +
-            String(errGen) +
-            "</p><p>Ejecutá <code>publicarProgramaPdfDrive_()</code> desde el editor de Apps Script.</p>"
-        );
-      }
-    }
+  var tipoLabel = {
+    apertura: "APERTURA",
+    indicaciones: "INDICACIONES",
+    ponencia: "PONENCIA",
+    cierre: "CIERRE",
+    receso: "RECESO"
+  };
+
+  function esc(s) {
+    return String(s || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
   }
 
-  try {
-    DriveApp.getFileById(id).setSharing(
-      DriveApp.Access.ANYONE_WITH_LINK,
-      DriveApp.Permission.VIEW
+  var blocks = [];
+  for (var i = 0; i < items.length; i++) {
+    var it = items[i] || {};
+    var parts = [];
+    if (it.persona) parts.push(String(it.persona).trim());
+    if (it.rol) parts.push(String(it.rol).trim());
+    if (it.area) parts.push(String(it.area).trim());
+    if (String(it.tipo || "").toLowerCase() === "ponencia" && !it.confirmado) {
+      parts.push("Provisional");
+    }
+    blocks.push(
+      '<article class="item">' +
+        '<p class="hora">' +
+        esc(it.hora) +
+        "–" +
+        esc(it.horaFin) +
+        "</p>" +
+        '<p class="tipo">' +
+        esc(tipoLabel[String(it.tipo || "").toLowerCase()] || "ÍTEM") +
+        "</p>" +
+        '<p class="titulo">' +
+        esc(it.titulo) +
+        "</p>" +
+        (parts.length ? '<p class="meta">' + esc(parts.join(" · ")) + "</p>" : "") +
+        "</article>"
     );
-  } catch (ignoreShare) {}
-
-  var viewUrl = "https://drive.google.com/file/d/" + id + "/view";
-  var fallback =
-    "https://observatorio-ia.uccuyo.edu.ar/assets/jornadas/" + PROGRAMA_PDF_NAME;
+  }
 
   var html =
     "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"utf-8\">" +
     '<meta name="viewport" content="width=device-width, initial-scale=1">' +
-    '<meta http-equiv="refresh" content="0;url=' +
-    viewUrl +
-    '">' +
-    "<title>Programa Jornadas IA</title>" +
-    "<style>body{font-family:system-ui,sans-serif;max-width:32rem;margin:2rem auto;padding:0 1rem;line-height:1.45}" +
-    "a.btn{display:inline-block;margin:.4rem .4rem .4rem 0;padding:.65rem 1rem;background:#064a38;color:#fff;" +
-    "text-decoration:none;border-radius:.5rem;font-weight:700}</style></head><body>" +
-    "<h1 style=\"font-size:1.15rem\">Programa de las Jornadas</h1>" +
-    "<p>Abriendo el PDF actualizado…</p>" +
-    '<a class="btn" href="' +
-    viewUrl +
-    '" target="_blank" rel="noopener">Abrir PDF</a> ' +
-    '<a class="btn" href="' +
-    fallback +
-    '" target="_blank" rel="noopener">Copia del sitio</a>' +
-    "<script>window.location.replace(" +
-    JSON.stringify(viewUrl) +
-    ");</script>" +
-    "</body></html>";
+    "<title>" +
+    esc(evento.titulo || "Programa Jornadas IA") +
+    "</title>" +
+    "<style>" +
+    "body{margin:0;background:#f6f4f1;color:#1a1a1a;font-family:Georgia,'Times New Roman',serif}" +
+    ".bar{position:sticky;top:0;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;" +
+    "justify-content:space-between;padding:.75rem 1rem;background:#064a38;color:#fff}" +
+    ".bar button,.bar a{appearance:none;border:0;border-radius:.4rem;padding:.55rem .9rem;" +
+    "font:700 .9rem system-ui,sans-serif;cursor:pointer;text-decoration:none}" +
+    ".bar button{background:#fff;color:#064a38}" +
+    ".bar a{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.45)}" +
+    ".sheet{max-width:42rem;margin:1.25rem auto;padding:1.5rem 1.4rem 2rem;background:#fff;" +
+    "box-shadow:0 8px 28px rgba(0,0,0,.08)}" +
+    "h1{margin:0 0 .35rem;font-size:1.45rem;line-height:1.25;color:#7A1F2B;text-align:center}" +
+    ".sub,.nota{text-align:center;margin:0}" +
+    ".sub{font-size:.95rem}.nota{margin:.35rem 0 1.1rem;font-size:.85rem;color:#555;font-style:italic}" +
+    ".item{margin:0 0 .85rem}.hora{margin:0;font:700 .95rem system-ui,sans-serif;color:#064a38}" +
+    ".tipo{margin:.1rem 0;font:700 .72rem system-ui,sans-serif;letter-spacing:.04em;color:#666}" +
+    ".titulo{margin:.1rem 0;font-size:1.02rem;font-weight:700}" +
+    ".meta{margin:.15rem 0 0;font-size:.88rem;color:#555}" +
+    ".foot{margin-top:1.4rem;text-align:center;font-size:.78rem;color:#666}" +
+    "@media print{body{background:#fff}.bar{display:none}.sheet{box-shadow:none;margin:0;max-width:none}}" +
+    "</style></head><body>" +
+    '<div class="bar"><span>Programa en vivo · Jornadas IA</span><span>' +
+    '<button type="button" onclick="window.print()">Imprimir / Guardar PDF</button> ' +
+    '<a href="https://observatorio-ia.uccuyo.edu.ar/assets/jornadas/' +
+    PROGRAMA_PDF_NAME +
+    '" target="_blank" rel="noopener">Copia del sitio</a></span></div>' +
+    '<main class="sheet">' +
+    "<h1>" +
+    esc(evento.titulo || "1° Jornadas internas de Inteligencia Artificial") +
+    "</h1>" +
+    '<p class="sub">' +
+    esc(evento.fechaTexto || "6 de octubre de 2026") +
+    " · " +
+    esc(evento.horaInicio || "15:00") +
+    " · " +
+    esc(evento.modalidad || "Virtual") +
+    "</p>" +
+    '<p class="nota">' +
+    esc(nota) +
+    "</p>" +
+    blocks.join("") +
+    '<p class="foot">Observatorio de Inteligencia Artificial · UCCuyo · observatorioia@uccuyo.edu.ar</p>' +
+    "</main></body></html>";
 
-  return HtmlService.createHtmlOutput(html).setTitle("Programa Jornadas IA");
+  return HtmlService.createHtmlOutput(html)
+    .setTitle(String(evento.titulo || "Programa Jornadas IA"))
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
