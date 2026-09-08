@@ -224,10 +224,16 @@
             <span class="msg" id="updatedAt"></span>
           </div>
           <div class="toolbar">
-            <button type="button" class="primary" id="btnSave">Guardar cambios</button>
-            <button type="button" id="btnAdd">+ Ponencia</button>
-            <button type="button" id="btnReload">Recargar</button>
-            <button type="button" class="danger" id="btnDrive">
+            <button type="button" class="primary" id="btnSave" onclick="guardarPrograma()">
+              Guardar cambios
+            </button>
+            <button type="button" id="btnAdd" onclick="agregarPonencia()">
+              + Ponencia
+            </button>
+            <button type="button" id="btnReload" onclick="recargarPrograma()">
+              Recargar
+            </button>
+            <button type="button" class="danger" id="btnDrive" onclick="regenerarDesdeDrive()">
               Regenerar desde Drive
             </button>
           </div>
@@ -242,66 +248,44 @@
       var autorizadoTpl = <?= autorizado ? "true" : "false" ?>;
       var emailTpl = <?= JSON.stringify(email || "") ?>;
 
-      function $(id) {
+      function byId(id) {
         return document.getElementById(id);
       }
 
       function setStatus(text, kind) {
-        var el = $("status");
+        var el = byId("status");
+        if (!el) return;
         el.textContent = text || "";
-        el.className = "msg" + (kind === "err" ? " msg--err" : kind === "ok" ? " msg--ok" : "");
+        el.className =
+          "msg" + (kind === "err" ? " msg--err" : kind === "ok" ? " msg--ok" : "");
       }
 
       function isFijo(it) {
-        return it.tipo === "apertura" || it.tipo === "indicaciones";
+        return it && (it.tipo === "apertura" || it.tipo === "indicaciones");
       }
 
-      function render() {
-        var list = $("list");
-        list.innerHTML = "";
-        items.forEach(function (it, idx) {
-          var fijo = isFijo(it);
-          var wrap = document.createElement("div");
-          wrap.className = "item" + (fijo ? " item--fijo" : "");
-          wrap.innerHTML =
-            '<div class="item-head">' +
-            '<div class="item-meta">' +
-            escapeHtml(it.hora || "") +
-            (it.horaFin ? "–" + escapeHtml(it.horaFin) : "") +
-            " · " +
-            escapeHtml(String(it.tipo || "").toUpperCase()) +
-            (fijo ? " · fijo" : "") +
-            "</div>" +
-            '<div class="item-actions" data-idx="' +
-            idx +
-            '"></div></div>' +
-            (fijo
-              ? '<p style="margin:0;font-weight:600">' +
-                escapeHtml(it.titulo || "") +
-                "</p><p class=\"item-meta\" style=\"margin:0.25rem 0 0\">" +
-                escapeHtml(it.persona || "") +
-                (it.rol ? " · " + escapeHtml(it.rol) : "") +
-                "</p>"
-              : fieldsHtml(it, idx));
-          list.appendChild(wrap);
-          if (!fijo) {
-            var actions = wrap.querySelector(".item-actions");
-            actions.appendChild(btn("↑", function () {
-              move(idx, -1);
-            }));
-            actions.appendChild(btn("↓", function () {
-              move(idx, 1);
-            }));
-            actions.appendChild(
-              btn("Eliminar", function () {
-                if (confirm("¿Eliminar esta ponencia?")) {
-                  items.splice(idx, 1);
-                  render();
-                }
-              }, "danger")
-            );
-          }
-        });
+      function escapeHtml(s) {
+        return String(s || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function escapeAttr(s) {
+        return escapeHtml(s);
+      }
+
+      function syncFieldsFromDom() {
+        var nodes = document.querySelectorAll("[data-f][data-i]");
+        for (var i = 0; i < nodes.length; i++) {
+          var el = nodes[i];
+          var idx = Number(el.getAttribute("data-i"));
+          var f = el.getAttribute("data-f");
+          if (!items[idx] || isFijo(items[idx])) continue;
+          if (f === "confirmado") items[idx].confirmado = !!el.checked;
+          else items[idx][f] = el.value;
+        }
       }
 
       function fieldsHtml(it, idx) {
@@ -335,60 +319,128 @@
         );
       }
 
-      function btn(label, fn, cls) {
+      function makeBtn(label, fn, cls) {
         var b = document.createElement("button");
         b.type = "button";
         b.textContent = label;
         if (cls) b.className = cls;
-        b.addEventListener("click", fn);
+        b.onclick = fn;
         return b;
       }
 
-      function move(idx, dir) {
+      function render() {
+        var list = byId("list");
+        if (!list) return;
+        list.innerHTML = "";
+        for (var idx = 0; idx < items.length; idx++) {
+          (function (it, i) {
+            var fijo = isFijo(it);
+            var wrap = document.createElement("div");
+            wrap.className = "item" + (fijo ? " item--fijo" : "");
+            wrap.setAttribute("data-item-idx", String(i));
+            wrap.innerHTML =
+              '<div class="item-head">' +
+              '<div class="item-meta">' +
+              escapeHtml(it.hora || "") +
+              (it.horaFin ? "–" + escapeHtml(it.horaFin) : "") +
+              " · " +
+              escapeHtml(String(it.tipo || "").toUpperCase()) +
+              (fijo ? " · fijo" : "") +
+              "</div>" +
+              '<div class="item-actions"></div></div>' +
+              (fijo
+                ? '<p style="margin:0;font-weight:600">' +
+                  escapeHtml(it.titulo || "") +
+                  '</p><p class="item-meta" style="margin:0.25rem 0 0">' +
+                  escapeHtml(it.persona || "") +
+                  (it.rol ? " · " + escapeHtml(it.rol) : "") +
+                  "</p>"
+                : fieldsHtml(it, i));
+            list.appendChild(wrap);
+            if (!fijo) {
+              var actions = wrap.querySelector(".item-actions");
+              actions.appendChild(
+                makeBtn("↑", function () {
+                  moveItem(i, -1);
+                })
+              );
+              actions.appendChild(
+                makeBtn("↓", function () {
+                  moveItem(i, 1);
+                })
+              );
+              actions.appendChild(
+                makeBtn(
+                  "Eliminar",
+                  function () {
+                    if (confirm("¿Eliminar esta ponencia?")) {
+                      syncFieldsFromDom();
+                      items.splice(i, 1);
+                      render();
+                      setStatus("Ponencia eliminada (acordate de Guardar)", "ok");
+                    }
+                  },
+                  "danger"
+                )
+              );
+            }
+          })(items[idx], idx);
+        }
+      }
+
+      function moveItem(idx, dir) {
+        syncFieldsFromDom();
         var j = idx + dir;
         if (j < 0 || j >= items.length) return;
         if (isFijo(items[idx]) || isFijo(items[j])) return;
         var tmp = items[idx];
         items[idx] = items[j];
         items[j] = tmp;
-        syncFieldsFromDom();
         render();
       }
 
-      function syncFieldsFromDom() {
-        var nodes = document.querySelectorAll("[data-f][data-i]");
-        for (var i = 0; i < nodes.length; i++) {
-          var el = nodes[i];
-          var idx = Number(el.getAttribute("data-i"));
-          var f = el.getAttribute("data-f");
-          if (!items[idx] || isFijo(items[idx])) continue;
-          if (f === "confirmado") items[idx].confirmado = !!el.checked;
-          else items[idx][f] = el.value;
+      function agregarPonencia() {
+        try {
+          syncFieldsFromDom();
+          items.push({
+            tipo: "ponencia",
+            titulo: "Nueva ponencia",
+            persona: "",
+            rol: "Expositor/a",
+            area: "",
+            confirmado: false,
+            notas: "",
+            clave: "",
+            hora: "",
+            horaFin: ""
+          });
+          render();
+          setStatus(
+            "Ponencia agregada al final. Completá los datos y pulsá Guardar cambios.",
+            "ok"
+          );
+          var list = byId("list");
+          if (list && list.lastChild) {
+            list.lastChild.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        } catch (err) {
+          setStatus("Error al agregar: " + String(err), "err");
         }
       }
-
-      document.addEventListener("change", function (e) {
-        var t = e.target;
-        if (t && t.getAttribute("data-f")) syncFieldsFromDom();
-      });
-      document.addEventListener("input", function (e) {
-        var t = e.target;
-        if (t && t.getAttribute("data-f")) syncFieldsFromDom();
-      });
 
       function applyPayload(res) {
         if (!res || !res.ok) {
           showDeny(res);
           return;
         }
-        $("deny").classList.remove("show");
-        $("app").classList.add("show");
+        byId("deny").classList.remove("show");
+        byId("app").classList.add("show");
         items = Array.isArray(res.items) ? res.items.slice() : [];
-        $("userEmail").textContent = res.email ? "Sesión: " + res.email : "";
-        $("updatedAt").textContent = res.updatedAt
+        byId("userEmail").textContent = res.email ? "Sesión: " + res.email : "";
+        byId("updatedAt").textContent = res.updatedAt
           ? "Actualizado: " + res.updatedAt
           : "";
-        var badge = $("modeBadge");
+        var badge = byId("modeBadge");
         if (res.manual) {
           badge.textContent = "Modo: manual";
           badge.className = "badge badge--manual";
@@ -400,16 +452,16 @@
       }
 
       function showDeny(res) {
-        $("app").classList.remove("show");
-        $("deny").classList.add("show");
+        byId("app").classList.remove("show");
+        byId("deny").classList.add("show");
         var em = (res && res.email) || emailTpl || "";
-        $("denyEmail").textContent = em
+        byId("denyEmail").textContent = em
           ? "Correo detectado: " + em
           : "No se detectó correo (cerrá sesión de Google y volvé a abrir el enlace).";
-        if (res && res.error) $("denyText").textContent = res.error;
+        if (res && res.error) byId("denyText").textContent = res.error;
       }
 
-      function load() {
+      function recargarPrograma() {
         setStatus("Cargando…");
         google.script.run
           .withSuccessHandler(function (res) {
@@ -423,13 +475,14 @@
           .editorProgramaCargar();
       }
 
-      $("btnSave").addEventListener("click", function () {
+      function guardarPrograma() {
         syncFieldsFromDom();
         setStatus("Guardando…");
-        $("btnSave").disabled = true;
+        var btn = byId("btnSave");
+        if (btn) btn.disabled = true;
         google.script.run
           .withSuccessHandler(function (res) {
-            $("btnSave").disabled = false;
+            if (btn) btn.disabled = false;
             if (!res || !res.ok) {
               setStatus((res && res.error) || "Error al guardar", "err");
               return;
@@ -438,30 +491,13 @@
             applyPayload(res);
           })
           .withFailureHandler(function (err) {
-            $("btnSave").disabled = false;
+            if (btn) btn.disabled = false;
             setStatus(String(err), "err");
           })
           .editorProgramaGuardar(items);
-      });
+      }
 
-      $("btnAdd").addEventListener("click", function () {
-        syncFieldsFromDom();
-        items.push({
-          tipo: "ponencia",
-          titulo: "Nueva ponencia",
-          persona: "",
-          rol: "Expositor/a",
-          area: "",
-          confirmado: false,
-          notas: "",
-          clave: ""
-        });
-        render();
-      });
-
-      $("btnReload").addEventListener("click", load);
-
-      $("btnDrive").addEventListener("click", function () {
+      function regenerarDesdeDrive() {
         if (
           !confirm(
             "Esto reemplaza el programa editado por el armado automático desde Drive. ¿Continuar?"
@@ -483,24 +519,19 @@
             setStatus(String(err), "err");
           })
           .editorProgramaDesdeDrive();
-      });
+      }
 
-      function escapeHtml(s) {
-        return String(s)
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;");
-      }
-      function escapeAttr(s) {
-        return escapeHtml(s).replace(/"/g, "&quot;");
-      }
+      // Exponer para onclick= del HTML (más fiable en HtmlService)
+      window.agregarPonencia = agregarPonencia;
+      window.guardarPrograma = guardarPrograma;
+      window.recargarPrograma = recargarPrograma;
+      window.regenerarDesdeDrive = regenerarDesdeDrive;
 
       if (!autorizadoTpl) {
         showDeny({ email: emailTpl, error: "No autorizado con este correo." });
       } else {
-        $("app").classList.add("show");
-        load();
+        byId("app").classList.add("show");
+        recargarPrograma();
       }
     </script>
   </body>
