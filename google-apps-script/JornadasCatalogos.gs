@@ -40,6 +40,7 @@ function actualizarCatalogosJornadas() {
   var arts = listarEntradas_(JORNADAS_ARTICULOS_FOLDER_ID, ARTICULOS_MIME_OK, "articulo");
   var ppts = listarEntradas_(JORNADAS_PRESENTACIONES_FOLDER_ID, PRESENTACIONES_MIME_OK, "presentacion");
   emparejarAutoresEntreCatalogos_(arts, ppts);
+  sanearEntradasCatalogo_(arts, ppts);
 
   arts.sort(function (a, b) {
     return String(a.title).localeCompare(String(b.title), "es", { sensitivity: "base" });
@@ -878,13 +879,86 @@ function humanizarTituloCatalogo_(s) {
     .replace(/\{\{pymes\}\}/g, "PyMEs")
     .replace(/\{\{gemeph\}\}/g, "GEMEPH")
     .replace(/\{\{ia\}\}/g, "IA");
-  // Restos de corridas anteriores / CamelCase
-  s = s.replace(/§\s*pymes\s*§/gi, "PyMEs");
+  return limpiarResiduosTituloCatalogo_(s);
+}
+
+/** MARKER_CATALOGOS_PYMES_20260908 — buscá este texto en Código.gs para verificar el pegado */
+function limpiarResiduosTituloCatalogo_(s) {
+  s = String(s || "").replace(/\s+/g, " ").trim();
   s = s.replace(/§\s*PyMEs\s*§/gi, "PyMEs");
+  s = s.replace(/§\s*pymes\s*§/gi, "PyMEs");
   s = s.replace(/§\s*PYM\s*Es\s*§/gi, "PyMEs");
+  s = s.replace(/§/g, "");
+  s = s.replace(/\{\{pymes\}\}/gi, "PyMEs");
+  s = s.replace(/\{\{gemeph\}\}/gi, "GEMEPH");
+  s = s.replace(/\{\{ia\}\}/gi, "IA");
   s = s.replace(/\bPy\s+M\s+Es\b/gi, "PyMEs");
   s = s.replace(/\bPYM\s+Es\b/g, "PyMEs");
   return s.replace(/\s+/g, " ").trim();
+}
+
+/**
+ * Pasada final: títulos limpios + PPT débil/portada toma el del artículo.
+ */
+function sanearEntradasCatalogo_(arts, ppts) {
+  arts = arts || [];
+  ppts = ppts || [];
+  var i;
+  for (i = 0; i < arts.length; i++) {
+    arts[i].title = limpiarResiduosTituloCatalogo_(humanizarTituloCatalogo_(arts[i].title || ""));
+    arts[i].author = limpiarAutorCatalogo_(arts[i].author || "") || arts[i].author;
+  }
+  for (i = 0; i < ppts.length; i++) {
+    var p = ppts[i];
+    p.title = limpiarResiduosTituloCatalogo_(humanizarTituloCatalogo_(p.title || ""));
+    p.author = limpiarAutorCatalogo_(p.author || "") || p.author || "";
+    if (
+      !esTituloDebilCatalogo_(p.title) &&
+      !esTituloInstitucionalBoilerplate_(p.title) &&
+      !esTituloBasuraCuerpo_(p.title)
+    ) {
+      continue;
+    }
+    var best = buscarArticuloParaPresentacion_(arts, p);
+    if (best) {
+      p.title = best.title;
+      if (!p.author) p.author = best.author;
+      if (!p.area && best.area) p.area = best.area;
+    } else {
+      var meta = parseNombreSugerido_(p.fileName || "");
+      var alt = limpiarResiduosTituloCatalogo_(humanizarTituloCatalogo_(meta.title || ""));
+      if (alt && !esTituloDebilCatalogo_(alt) && !esTituloInstitucionalBoilerplate_(alt)) {
+        p.title = alt;
+      }
+      if (!p.author && meta.author) {
+        p.author = limpiarAutorCatalogo_(meta.author) || "";
+      }
+    }
+  }
+}
+
+function buscarArticuloParaPresentacion_(arts, p) {
+  var best = null;
+  var bestScore = 0;
+  var autorP =
+    normalizarClaveAutorCatalogo_(p.author || "") ||
+    normalizarClaveAutorCatalogo_(parseNombreSugerido_(p.fileName || "").author || "");
+  var j;
+  for (j = 0; j < arts.length; j++) {
+    var a = arts[j];
+    var score = puntajeSimilitudTitulo_(p.title, a.title);
+    score += puntajeSimilitudTitulo_(p.fileName, a.fileName);
+    score += puntajeSimilitudTitulo_(p.fileName, a.author + " " + a.title);
+    var autorA = normalizarClaveAutorCatalogo_(a.author || "");
+    if (autorP && autorA && (autorP === autorA || autorP.indexOf(autorA) >= 0 || autorA.indexOf(autorP) >= 0)) {
+      score += 8;
+    }
+    if (score > bestScore) {
+      bestScore = score;
+      best = a;
+    }
+  }
+  return bestScore >= 2 ? best : null;
 }
 
 function limpiarAutorCatalogo_(author) {
