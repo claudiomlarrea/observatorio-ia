@@ -207,9 +207,12 @@
         </p>
         <p class="msg" id="denyEmail"></p>
         <p class="msg">
-          Entrá con tu cuenta Google institucional (p. ej.
-          asistente.inv@uccuyo.edu.ar). Si ya entraste y no figura, pedí que te
-          agreguen a la lista blanca.
+          Usá un perfil de Edge/Chrome con cuenta <strong>@uccuyo.edu.ar</strong>
+          (p. ej. investigacion@ o asistente.inv@), no Hotmail.
+          En Apps Script la implementación debe ser:
+          <strong>Ejecutar como → Usuario que accede a la aplicación</strong>
+          y acceso → <strong>Cualquier usuario de una cuenta de Google</strong>.
+          Si «Correo detectado» queda vacío, falta ese ajuste del deploy.
         </p>
       </div>
 

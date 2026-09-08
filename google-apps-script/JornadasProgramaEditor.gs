@@ -5,9 +5,9 @@
  * OIA · Catálogos Jornadas IA (junto a JornadasPrograma.gs).
  *
  * Implementación web app:
- *   Ejecutar como: Yo (investigacion@…)
+ *   Ejecutar como: Usuario que accede a la aplicación web
  *   Quién tiene acceso: Cualquier usuario de una cuenta de Google
- *   (así Google pide login y leemos el correo)
+ *   (Si está en «Ejecutar como: Yo», el correo llega vacío.)
  *
  * Lista blanca (podés ampliar con agregarEditorPrograma_("mail@…")):
  *   investigacion@uccuyo.edu.ar

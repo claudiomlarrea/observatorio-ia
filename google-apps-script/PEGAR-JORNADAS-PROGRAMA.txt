@@ -40,11 +40,14 @@ URL:
 
 Implementación web app (importante):
 
-  Ejecutar como: Yo (investigacion@…)
+  Ejecutar como: Usuario que accede a la aplicación web
   Quién tiene acceso: Cualquier usuario de una cuenta de Google
 
-Así Google pide login y el script lee el correo.
+Así Google pide login y Session.getActiveUser() devuelve el correo.
+(Si queda en «Ejecutar como: Yo», el correo sale vacío para todos
+menos el dueño del script.)
 
+Entrá con perfil institucional (@uccuyo.edu.ar), no Hotmail.
 Lista blanca inicial:
 
   investigacion@uccuyo.edu.ar
