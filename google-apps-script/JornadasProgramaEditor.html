@@ -7,8 +7,6 @@
     <title>Editar programa · Jornadas IA 2026</title>
     <style>
       :root {
-        --bg: #f4f7f4;
-        --card: #fff;
         --ink: #1a2e1c;
         --muted: #5a6b5c;
         --line: #d5e0d6;
@@ -17,9 +15,7 @@
         --danger: #8b2e2e;
         --warn: #8a6d1d;
       }
-      * {
-        box-sizing: border-box;
-      }
+      * { box-sizing: border-box; }
       body {
         margin: 0;
         font-family: "Segoe UI", system-ui, sans-serif;
@@ -30,26 +26,13 @@
       header {
         padding: 1.25rem 1.5rem;
         border-bottom: 1px solid var(--line);
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(6px);
+        background: rgba(255, 255, 255, 0.9);
       }
-      header h1 {
-        margin: 0 0 0.25rem;
-        font-size: 1.25rem;
-        font-weight: 700;
-      }
-      header p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 0.9rem;
-      }
-      main {
-        max-width: 920px;
-        margin: 0 auto;
-        padding: 1.25rem 1rem 3rem;
-      }
+      header h1 { margin: 0 0 0.25rem; font-size: 1.25rem; }
+      header p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+      main { max-width: 920px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
       .card {
-        background: var(--card);
+        background: #fff;
         border: 1px solid var(--line);
         border-radius: 10px;
         padding: 1rem 1.1rem;
@@ -64,14 +47,8 @@
         background: var(--green-soft);
         color: var(--green);
       }
-      .badge--manual {
-        background: #fff3cd;
-        color: var(--warn);
-      }
-      .badge--deny {
-        background: #f8e8e8;
-        color: var(--danger);
-      }
+      .badge--manual { background: #fff3cd; color: var(--warn); }
+      .badge--deny { background: #f8e8e8; color: var(--danger); }
       .toolbar {
         display: flex;
         flex-wrap: wrap;
@@ -79,8 +56,7 @@
         align-items: center;
         margin-bottom: 0.75rem;
       }
-      button,
-      .btn {
+      button {
         appearance: none;
         border: 1px solid var(--line);
         background: #fff;
@@ -96,25 +72,11 @@
         color: #fff;
         font-weight: 600;
       }
-      button.danger {
-        color: var(--danger);
-        border-color: #e0b4b4;
-      }
-      button:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-      .msg {
-        font-size: 0.875rem;
-        color: var(--muted);
-        min-height: 1.25rem;
-      }
-      .msg--err {
-        color: var(--danger);
-      }
-      .msg--ok {
-        color: var(--green);
-      }
+      button.danger { color: var(--danger); border-color: #e0b4b4; }
+      button:disabled { opacity: 0.5; cursor: not-allowed; }
+      .msg { font-size: 0.875rem; color: var(--muted); min-height: 1.25rem; }
+      .msg--err { color: var(--danger); }
+      .msg--ok { color: var(--green); }
       .item {
         border: 1px solid var(--line);
         border-radius: 8px;
@@ -122,9 +84,7 @@
         margin-bottom: 0.65rem;
         background: #fafcfb;
       }
-      .item--fijo {
-        background: #f3f5f3;
-      }
+      .item--fijo { background: #f3f5f3; }
       .item-head {
         display: flex;
         flex-wrap: wrap;
@@ -133,23 +93,15 @@
         justify-content: space-between;
         margin-bottom: 0.5rem;
       }
-      .item-meta {
-        font-size: 0.8rem;
-        color: var(--muted);
-      }
-      .item-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.3rem;
-      }
+      .item-meta { font-size: 0.8rem; color: var(--muted); }
+      .item-actions { display: flex; flex-wrap: wrap; gap: 0.3rem; }
       label {
         display: block;
         font-size: 0.75rem;
         color: var(--muted);
         margin: 0.35rem 0 0.15rem;
       }
-      input[type="text"],
-      select {
+      input[type="text"] {
         width: 100%;
         padding: 0.4rem 0.5rem;
         border: 1px solid var(--line);
@@ -162,9 +114,7 @@
         gap: 0.5rem;
       }
       @media (max-width: 640px) {
-        .row2 {
-          grid-template-columns: 1fr;
-        }
+        .row2 { grid-template-columns: 1fr; }
       }
       .check {
         display: flex;
@@ -173,20 +123,12 @@
         margin-top: 0.55rem;
         font-size: 0.875rem;
       }
-      .check input {
-        width: auto;
-      }
-      a.sitio {
-        color: var(--green);
-      }
-      #deny,
-      #app {
-        display: none;
-      }
-      #deny.show,
-      #app.show {
-        display: block;
-      }
+      .check input { width: auto; }
+      a.sitio { color: var(--green); }
+      #deny { display: none; }
+      #deny.show { display: block; }
+      #app { display: block; }
+      #app.hide { display: none; }
     </style>
   </head>
   <body>
@@ -194,7 +136,7 @@
       <h1>Programa · Jornadas IA 2026</h1>
       <p>
         Observatorio de IA · UCCuyo ·
-        <a class="sitio" href="<?= sitioUrl ?>" target="_blank" rel="noopener"
+        <a class="sitio" href="https://observatorio-ia.uccuyo.edu.ar/#jornadas-ia" target="_blank" rel="noopener"
           >Ver en el sitio</a
         >
       </p>
@@ -206,14 +148,6 @@
           Esta página es solo para el equipo del Observatorio.
         </p>
         <p class="msg" id="denyEmail"></p>
-        <p class="msg">
-          Usá un perfil de Edge/Chrome con cuenta <strong>@uccuyo.edu.ar</strong>
-          (p. ej. investigacion@ o asistente.inv@), no Hotmail.
-          En Apps Script la implementación debe ser:
-          <strong>Ejecutar como → Usuario que accede a la aplicación</strong>
-          y acceso → <strong>Cualquier usuario de una cuenta de Google</strong>.
-          Si «Correo detectado» queda vacío, falta ese ajuste del deploy.
-        </p>
       </div>
 
       <div id="app">
@@ -224,56 +158,42 @@
             <span class="msg" id="updatedAt"></span>
           </div>
           <div class="toolbar">
-            <button type="button" class="primary" id="btnSave" onclick="guardarPrograma()">
-              Guardar cambios
-            </button>
-            <button type="button" id="btnAdd" onclick="agregarPonencia()">
-              + Ponencia
-            </button>
-            <button type="button" id="btnReload" onclick="recargarPrograma()">
-              Recargar
-            </button>
-            <button type="button" class="danger" id="btnDrive" onclick="regenerarDesdeDrive()">
-              Regenerar desde Drive
-            </button>
+            <button type="button" class="primary" id="btnSave">Guardar cambios</button>
+            <button type="button" id="btnAdd">+ Ponencia</button>
+            <button type="button" id="btnReload">Recargar</button>
+            <button type="button" class="danger" id="btnDrive">Regenerar desde Drive</button>
           </div>
-          <p class="msg" id="status"></p>
+          <p class="msg" id="status">Cargando…</p>
         </div>
         <div id="list"></div>
       </div>
     </main>
 
     <script>
+      // <?!= evita que Apps Script escape comillas y rompa el JS
+      var AUTORIZADO = <?!= autorizado ? "true" : "false" ?>;
+      var EMAIL = <?!= JSON.stringify(email || "") ?>;
       var items = [];
-      var autorizadoTpl = <?= autorizado ? "true" : "false" ?>;
-      var emailTpl = <?= JSON.stringify(email || "") ?>;
 
-      function byId(id) {
-        return document.getElementById(id);
-      }
+      function byId(id) { return document.getElementById(id); }
 
       function setStatus(text, kind) {
         var el = byId("status");
         if (!el) return;
         el.textContent = text || "";
-        el.className =
-          "msg" + (kind === "err" ? " msg--err" : kind === "ok" ? " msg--ok" : "");
+        el.className = "msg" + (kind === "err" ? " msg--err" : kind === "ok" ? " msg--ok" : "");
       }
 
       function isFijo(it) {
-        return it && (it.tipo === "apertura" || it.tipo === "indicaciones");
+        return !!(it && (it.tipo === "apertura" || it.tipo === "indicaciones"));
       }
 
-      function escapeHtml(s) {
-        return String(s || "")
+      function esc(s) {
+        return String(s == null ? "" : s)
           .replace(/&/g, "&amp;")
           .replace(/</g, "&lt;")
           .replace(/>/g, "&gt;")
           .replace(/"/g, "&quot;");
-      }
-
-      function escapeAttr(s) {
-        return escapeHtml(s);
       }
 
       function syncFieldsFromDom() {
@@ -290,42 +210,12 @@
 
       function fieldsHtml(it, idx) {
         return (
-          '<label>Título</label><input type="text" data-f="titulo" data-i="' +
-          idx +
-          '" value="' +
-          escapeAttr(it.titulo || "") +
-          '" />' +
-          '<div class="row2">' +
-          '<div><label>Persona</label><input type="text" data-f="persona" data-i="' +
-          idx +
-          '" value="' +
-          escapeAttr(it.persona || "") +
-          '" /></div>' +
-          '<div><label>Rol</label><input type="text" data-f="rol" data-i="' +
-          idx +
-          '" value="' +
-          escapeAttr(it.rol || "Expositor/a") +
-          '" /></div></div>' +
-          '<label>Área</label><input type="text" data-f="area" data-i="' +
-          idx +
-          '" value="' +
-          escapeAttr(it.area || "") +
-          '" />' +
-          '<label class="check"><input type="checkbox" data-f="confirmado" data-i="' +
-          idx +
-          '" ' +
-          (it.confirmado ? "checked" : "") +
-          " /> Confirmada (no provisional)</label>"
+          "<label>Título</label><input type=\"text\" data-f=\"titulo\" data-i=\"" + idx + "\" value=\"" + esc(it.titulo) + "\" />" +
+          "<div class=\"row2\"><div><label>Persona</label><input type=\"text\" data-f=\"persona\" data-i=\"" + idx + "\" value=\"" + esc(it.persona) + "\" /></div>" +
+          "<div><label>Rol</label><input type=\"text\" data-f=\"rol\" data-i=\"" + idx + "\" value=\"" + esc(it.rol || "Expositor/a") + "\" /></div></div>" +
+          "<label>Área</label><input type=\"text\" data-f=\"area\" data-i=\"" + idx + "\" value=\"" + esc(it.area) + "\" />" +
+          "<label class=\"check\"><input type=\"checkbox\" data-f=\"confirmado\" data-i=\"" + idx + "\" " + (it.confirmado ? "checked" : "") + " /> Confirmada (no provisional)</label>"
         );
-      }
-
-      function makeBtn(label, fn, cls) {
-        var b = document.createElement("button");
-        b.type = "button";
-        b.textContent = label;
-        if (cls) b.className = cls;
-        b.onclick = fn;
-        return b;
       }
 
       function render() {
@@ -333,58 +223,49 @@
         if (!list) return;
         list.innerHTML = "";
         for (var idx = 0; idx < items.length; idx++) {
-          (function (it, i) {
-            var fijo = isFijo(it);
-            var wrap = document.createElement("div");
-            wrap.className = "item" + (fijo ? " item--fijo" : "");
-            wrap.setAttribute("data-item-idx", String(i));
-            wrap.innerHTML =
-              '<div class="item-head">' +
-              '<div class="item-meta">' +
-              escapeHtml(it.hora || "") +
-              (it.horaFin ? "–" + escapeHtml(it.horaFin) : "") +
-              " · " +
-              escapeHtml(String(it.tipo || "").toUpperCase()) +
-              (fijo ? " · fijo" : "") +
-              "</div>" +
-              '<div class="item-actions"></div></div>' +
-              (fijo
-                ? '<p style="margin:0;font-weight:600">' +
-                  escapeHtml(it.titulo || "") +
-                  '</p><p class="item-meta" style="margin:0.25rem 0 0">' +
-                  escapeHtml(it.persona || "") +
-                  (it.rol ? " · " + escapeHtml(it.rol) : "") +
-                  "</p>"
-                : fieldsHtml(it, i));
-            list.appendChild(wrap);
-            if (!fijo) {
-              var actions = wrap.querySelector(".item-actions");
-              actions.appendChild(
-                makeBtn("↑", function () {
-                  moveItem(i, -1);
-                })
-              );
-              actions.appendChild(
-                makeBtn("↓", function () {
-                  moveItem(i, 1);
-                })
-              );
-              actions.appendChild(
-                makeBtn(
-                  "Eliminar",
-                  function () {
-                    if (confirm("¿Eliminar esta ponencia?")) {
-                      syncFieldsFromDom();
-                      items.splice(i, 1);
-                      render();
-                      setStatus("Ponencia eliminada (acordate de Guardar)", "ok");
-                    }
-                  },
-                  "danger"
-                )
-              );
-            }
-          })(items[idx], idx);
+          var it = items[idx];
+          var fijo = isFijo(it);
+          var wrap = document.createElement("div");
+          wrap.className = "item" + (fijo ? " item--fijo" : "");
+          wrap.innerHTML =
+            "<div class=\"item-head\"><div class=\"item-meta\">" +
+            esc(it.hora) + (it.horaFin ? "–" + esc(it.horaFin) : "") +
+            " · " + esc(String(it.tipo || "").toUpperCase()) +
+            (fijo ? " · fijo" : "") +
+            "</div><div class=\"item-actions\" id=\"act-" + idx + "\"></div></div>" +
+            (fijo
+              ? "<p style=\"margin:0;font-weight:600\">" + esc(it.titulo) + "</p>" +
+                "<p class=\"item-meta\" style=\"margin:0.25rem 0 0\">" + esc(it.persona) +
+                (it.rol ? " · " + esc(it.rol) : "") + "</p>"
+              : fieldsHtml(it, idx));
+          list.appendChild(wrap);
+          if (!fijo) {
+            (function (i) {
+              var act = byId("act-" + i);
+              var b1 = document.createElement("button");
+              b1.type = "button";
+              b1.textContent = "↑";
+              b1.onclick = function () { moveItem(i, -1); };
+              var b2 = document.createElement("button");
+              b2.type = "button";
+              b2.textContent = "↓";
+              b2.onclick = function () { moveItem(i, 1); };
+              var b3 = document.createElement("button");
+              b3.type = "button";
+              b3.textContent = "Eliminar";
+              b3.className = "danger";
+              b3.onclick = function () {
+                if (!confirm("¿Eliminar esta ponencia?")) return;
+                syncFieldsFromDom();
+                items.splice(i, 1);
+                render();
+                setStatus("Ponencia eliminada (acordate de Guardar)", "ok");
+              };
+              act.appendChild(b1);
+              act.appendChild(b2);
+              act.appendChild(b3);
+            })(idx);
+          }
         }
       }
 
@@ -400,46 +281,54 @@
       }
 
       function agregarPonencia() {
-        try {
-          syncFieldsFromDom();
-          items.push({
-            tipo: "ponencia",
-            titulo: "Nueva ponencia",
-            persona: "",
-            rol: "Expositor/a",
-            area: "",
-            confirmado: false,
-            notas: "",
-            clave: "",
-            hora: "",
-            horaFin: ""
-          });
-          render();
-          setStatus(
-            "Ponencia agregada al final. Completá los datos y pulsá Guardar cambios.",
-            "ok"
-          );
-          var list = byId("list");
-          if (list && list.lastChild) {
-            list.lastChild.scrollIntoView({ behavior: "smooth", block: "center" });
-          }
-        } catch (err) {
-          setStatus("Error al agregar: " + String(err), "err");
+        syncFieldsFromDom();
+        items.push({
+          tipo: "ponencia",
+          titulo: "Nueva ponencia",
+          persona: "",
+          rol: "Expositor/a",
+          area: "",
+          confirmado: false,
+          notas: "",
+          clave: "",
+          hora: "",
+          horaFin: ""
+        });
+        render();
+        setStatus("Ponencia agregada. Completá datos y Guardar cambios.", "ok");
+        var list = byId("list");
+        if (list && list.lastChild && list.lastChild.scrollIntoView) {
+          try { list.lastChild.scrollIntoView(true); } catch (e) {}
         }
+      }
+
+      function showDeny(msg, email) {
+        byId("app").className = "hide";
+        byId("app").style.display = "none";
+        byId("deny").className = "card show";
+        byId("deny").style.display = "block";
+        if (msg) byId("denyText").textContent = msg;
+        byId("denyEmail").textContent = email
+          ? "Correo detectado: " + email
+          : "Correo detectado: (vacío)";
+      }
+
+      function showApp() {
+        byId("deny").className = "card";
+        byId("deny").style.display = "none";
+        byId("app").className = "";
+        byId("app").style.display = "block";
       }
 
       function applyPayload(res) {
         if (!res || !res.ok) {
-          showDeny(res);
+          showDeny((res && res.error) || "No autorizado", (res && res.email) || EMAIL);
           return;
         }
-        byId("deny").classList.remove("show");
-        byId("app").classList.add("show");
-        items = Array.isArray(res.items) ? res.items.slice() : [];
+        showApp();
+        items = res.items ? res.items.slice() : [];
         byId("userEmail").textContent = res.email ? "Sesión: " + res.email : "";
-        byId("updatedAt").textContent = res.updatedAt
-          ? "Actualizado: " + res.updatedAt
-          : "";
+        byId("updatedAt").textContent = res.updatedAt ? "Actualizado: " + res.updatedAt : "";
         var badge = byId("modeBadge");
         if (res.manual) {
           badge.textContent = "Modo: manual";
@@ -451,16 +340,6 @@
         render();
       }
 
-      function showDeny(res) {
-        byId("app").classList.remove("show");
-        byId("deny").classList.add("show");
-        var em = (res && res.email) || emailTpl || "";
-        byId("denyEmail").textContent = em
-          ? "Correo detectado: " + em
-          : "No se detectó correo (cerrá sesión de Google y volvé a abrir el enlace).";
-        if (res && res.error) byId("denyText").textContent = res.error;
-      }
-
       function recargarPrograma() {
         setStatus("Cargando…");
         google.script.run
@@ -470,7 +349,7 @@
           })
           .withFailureHandler(function (err) {
             setStatus(String(err), "err");
-            showDeny({ error: String(err), email: emailTpl });
+            showDeny(String(err), EMAIL);
           })
           .editorProgramaCargar();
       }
@@ -478,11 +357,10 @@
       function guardarPrograma() {
         syncFieldsFromDom();
         setStatus("Guardando…");
-        var btn = byId("btnSave");
-        if (btn) btn.disabled = true;
+        byId("btnSave").disabled = true;
         google.script.run
           .withSuccessHandler(function (res) {
-            if (btn) btn.disabled = false;
+            byId("btnSave").disabled = false;
             if (!res || !res.ok) {
               setStatus((res && res.error) || "Error al guardar", "err");
               return;
@@ -491,20 +369,14 @@
             applyPayload(res);
           })
           .withFailureHandler(function (err) {
-            if (btn) btn.disabled = false;
+            byId("btnSave").disabled = false;
             setStatus(String(err), "err");
           })
           .editorProgramaGuardar(items);
       }
 
       function regenerarDesdeDrive() {
-        if (
-          !confirm(
-            "Esto reemplaza el programa editado por el armado automático desde Drive. ¿Continuar?"
-          )
-        ) {
-          return;
-        }
+        if (!confirm("¿Reemplazar el programa por el armado automático desde Drive?")) return;
         setStatus("Regenerando desde Drive…");
         google.script.run
           .withSuccessHandler(function (res) {
@@ -521,16 +393,16 @@
           .editorProgramaDesdeDrive();
       }
 
-      // Exponer para onclick= del HTML (más fiable en HtmlService)
-      window.agregarPonencia = agregarPonencia;
-      window.guardarPrograma = guardarPrograma;
-      window.recargarPrograma = recargarPrograma;
-      window.regenerarDesdeDrive = regenerarDesdeDrive;
+      byId("btnAdd").onclick = agregarPonencia;
+      byId("btnSave").onclick = guardarPrograma;
+      byId("btnReload").onclick = recargarPrograma;
+      byId("btnDrive").onclick = regenerarDesdeDrive;
 
-      if (!autorizadoTpl) {
-        showDeny({ email: emailTpl, error: "No autorizado con este correo." });
+      if (!AUTORIZADO) {
+        showDeny("No autorizado. Entrá con un correo del equipo del Observatorio (Google).", EMAIL);
       } else {
-        byId("app").classList.add("show");
+        showApp();
+        byId("userEmail").textContent = EMAIL ? "Sesión: " + EMAIL : "";
         recargarPrograma();
       }
     </script>
