@@ -33,9 +33,14 @@ window.JORNADAS_IA_2026 = {
    */
   PROGRAMA_EDITOR_URL:
     "https://script.google.com/macros/s/AKfycby-iPVY572kZOubTA_eFv0WRWCponjQde778ibv2daEYvIDdza6N6HFnyw-tDdmWSB9/exec?action=editar_programa",
-  /** PDFs publicados en el sitio (descarga directa; sin pasar por Drive). */
-  CATALOGO_ARTICULOS_PDF:
+  /**
+   * Catálogos en vivo (misma API que Drive). Imprimir → Guardar PDF.
+   * Los PDF en assets/ son respaldo y pueden quedar viejos.
+   */
+  CATALOGO_ARTICULOS_PDF: "jornadas-catalogo.html?tipo=articulos&v=1",
+  CATALOGO_PRESENTACIONES_PDF: "jornadas-catalogo.html?tipo=presentaciones&v=1",
+  CATALOGO_ARTICULOS_PDF_FALLBACK:
     "assets/jornadas/catalogo-articulos-jornadas-ia-2026.pdf?v=11",
-  CATALOGO_PRESENTACIONES_PDF:
+  CATALOGO_PRESENTACIONES_PDF_FALLBACK:
     "assets/jornadas/catalogo-presentaciones-jornadas-ia-2026.pdf?v=11",
 };

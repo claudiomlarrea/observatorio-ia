@@ -175,7 +175,35 @@ function revisarCargasDriveJornadas() {
     PRESENTACIONES_MIME_OK,
     "presentacion"
   );
-  return notificarNuevasCargasDriveJornadas_(arts, ppts);
+  var notify = notificarNuevasCargasDriveJornadas_(arts, ppts);
+  var sync = null;
+  // Si hubo archivos nuevos: regenerar catálogos PDF + programa/agenda en vivo
+  // (sin volver a mandar el mail; notify ya corrió arriba).
+  if (notify && Number(notify.nuevos) > 0) {
+    try {
+      emparejarAutoresEntreCatalogos_(arts, ppts);
+      sanearEntradasCatalogo_(arts, ppts);
+      arts.sort(function (a, b) {
+        return String(a.title).localeCompare(String(b.title), "es", {
+          sensitivity: "base"
+        });
+      });
+      ppts.sort(function (a, b) {
+        return String(a.title).localeCompare(String(b.title), "es", {
+          sensitivity: "base"
+        });
+      });
+      sync = regenerarCatalogosYProgramaCore_(arts, ppts);
+    } catch (errSync) {
+      sync = { ok: false, error: String(errSync) };
+    }
+  }
+  return {
+    ok: true,
+    notify: notify,
+    sync: sync,
+    regenerado: !!(sync && sync.ok)
+  };
 }
 
 /**

@@ -38,7 +38,11 @@ var PRESENTACIONES_MIME_OK = {
  */
 function actualizarCatalogosJornadas() {
   var arts = listarEntradas_(JORNADAS_ARTICULOS_FOLDER_ID, ARTICULOS_MIME_OK, "articulo");
-  var ppts = listarEntradas_(JORNADAS_PRESENTACIONES_FOLDER_ID, PRESENTACIONES_MIME_OK, "presentacion");
+  var ppts = listarEntradas_(
+    JORNADAS_PRESENTACIONES_FOLDER_ID,
+    PRESENTACIONES_MIME_OK,
+    "presentacion"
+  );
   emparejarAutoresEntreCatalogos_(arts, ppts);
   sanearEntradasCatalogo_(arts, ppts);
 
@@ -49,6 +53,27 @@ function actualizarCatalogosJornadas() {
     return String(a.title).localeCompare(String(b.title), "es", { sensitivity: "base" });
   });
 
+  var core = regenerarCatalogosYProgramaCore_(arts, ppts);
+
+  // Avisos a Investigación (no Observatorio). Ver JornadasNotificaciones.gs
+  var notify = null;
+  try {
+    if (typeof notificarNuevasCargasDriveJornadas_ === "function") {
+      notify = notificarNuevasCargasDriveJornadas_(arts, ppts);
+    }
+  } catch (errNotify) {
+    notify = { ok: false, error: String(errNotify) };
+  }
+  core.notify = notify;
+  return core;
+}
+
+/**
+ * Regenera PDF en Drive, guarda ítems para la API del sitio y sincroniza programa/agenda.
+ */
+function regenerarCatalogosYProgramaCore_(arts, ppts) {
+  arts = arts || [];
+  ppts = ppts || [];
   var outFolder = getCatalogosFolder_();
   var pdfArts = escribirCatalogoPdf_(
     outFolder,
@@ -74,18 +99,15 @@ function actualizarCatalogosJornadas() {
   props.setProperty("jornadas_catalogo_updated_at", updatedAt);
   props.setProperty("jornadas_catalogo_articulos_n", String(arts.length));
   props.setProperty("jornadas_catalogo_presentaciones_n", String(ppts.length));
+  props.setProperty(
+    "jornadas_catalogo_articulos_items_json",
+    JSON.stringify(resumenItemsCatalogo_(arts))
+  );
+  props.setProperty(
+    "jornadas_catalogo_presentaciones_items_json",
+    JSON.stringify(resumenItemsCatalogo_(ppts))
+  );
 
-  // Avisos a Investigación (no Observatorio). Ver JornadasNotificaciones.gs
-  var notify = null;
-  try {
-    if (typeof notificarNuevasCargasDriveJornadas_ === "function") {
-      notify = notificarNuevasCargasDriveJornadas_(arts, ppts);
-    }
-  } catch (errNotify) {
-    notify = { ok: false, error: String(errNotify) };
-  }
-
-  // Programa + agenda en vivo (sitio y app). Ver JornadasPrograma.gs
   var programa = null;
   try {
     if (typeof sincronizarProgramaDesdeCatalogos_ === "function") {
@@ -98,21 +120,46 @@ function actualizarCatalogosJornadas() {
   return {
     ok: true,
     updatedAt: updatedAt,
-    notify: notify,
     programa: programa,
     articulos: {
       count: arts.length,
       pdfId: pdfArts.getId(),
       pdfUrl: pdfArts.getUrl(),
-      items: arts
+      items: resumenItemsCatalogo_(arts)
     },
     presentaciones: {
       count: ppts.length,
       pdfId: pdfPpts.getId(),
       pdfUrl: pdfPpts.getUrl(),
-      items: ppts
+      items: resumenItemsCatalogo_(ppts)
     }
   };
+}
+
+function resumenItemsCatalogo_(list) {
+  list = list || [];
+  var out = [];
+  for (var i = 0; i < list.length; i++) {
+    var it = list[i] || {};
+    out.push({
+      title: it.title || "",
+      author: it.author || "",
+      area: it.area || "",
+      fileName: it.fileName || "",
+      fileId: it.fileId || ""
+    });
+  }
+  return out;
+}
+
+function parseCatalogoItemsProp_(raw) {
+  if (!raw) return [];
+  try {
+    var arr = JSON.parse(raw);
+    return Object.prototype.toString.call(arr) === "[object Array]" ? arr : [];
+  } catch (e) {
+    return [];
+  }
 }
 
 /**
@@ -250,7 +297,10 @@ function doGet(e) {
         pdfUrl: artId ? "https://drive.google.com/file/d/" + artId + "/view" : "",
         downloadUrl:
           "https://observatorio-ia.uccuyo.edu.ar/assets/jornadas/" +
-          CATALOGO_ARTICULOS_NAME
+          CATALOGO_ARTICULOS_NAME,
+        items: parseCatalogoItemsProp_(
+          props.getProperty("jornadas_catalogo_articulos_items_json")
+        )
       },
       presentaciones: {
         count: Number(props.getProperty("jornadas_catalogo_presentaciones_n") || 0),
@@ -258,7 +308,10 @@ function doGet(e) {
         pdfUrl: pptId ? "https://drive.google.com/file/d/" + pptId + "/view" : "",
         downloadUrl:
           "https://observatorio-ia.uccuyo.edu.ar/assets/jornadas/" +
-          CATALOGO_PRESENTACIONES_NAME
+          CATALOGO_PRESENTACIONES_NAME,
+        items: parseCatalogoItemsProp_(
+          props.getProperty("jornadas_catalogo_presentaciones_items_json")
+        )
       }
     };
     return jsonOut_(payload);

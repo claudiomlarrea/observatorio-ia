@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Catálogo · Jornadas IA 2026</title>
+    <meta name="robots" content="noindex" />
+    <style>
+      :root {
+        --wine: #7a1f2b;
+        --green: #064a38;
+        --ink: #1a1a1a;
+        --muted: #555;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #f6f4f1;
+        color: var(--ink);
+        font-family: Georgia, "Times New Roman", serif;
+      }
+      .bar {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem 1rem;
+        background: var(--green);
+        color: #fff;
+        font: 600 0.9rem system-ui, sans-serif;
+      }
+      .bar button,
+      .bar a {
+        appearance: none;
+        border: 0;
+        border-radius: 0.4rem;
+        padding: 0.55rem 0.9rem;
+        font: 700 0.9rem system-ui, sans-serif;
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
+      }
+      .bar button {
+        background: #fff;
+        color: var(--green);
+      }
+      .bar a {
+        border: 1px solid rgba(255, 255, 255, 0.45);
+      }
+      .sheet {
+        max-width: 44rem;
+        margin: 1.25rem auto;
+        padding: 1.5rem 1.4rem 2rem;
+        background: #fff;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+      }
+      h1 {
+        margin: 0 0 0.25rem;
+        font-size: 1.35rem;
+        color: var(--wine);
+        text-align: center;
+      }
+      .sub,
+      .meta,
+      .err {
+        text-align: center;
+        margin: 0;
+      }
+      .sub {
+        font-size: 0.95rem;
+      }
+      .meta {
+        margin: 0.4rem 0 1.1rem;
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+      .err {
+        color: var(--wine);
+        padding: 2rem 1rem;
+      }
+      ol {
+        margin: 0;
+        padding-left: 1.25rem;
+      }
+      li {
+        margin: 0 0 0.75rem;
+        font-size: 1rem;
+        line-height: 1.35;
+        font-weight: 700;
+      }
+      .foot {
+        margin-top: 1.4rem;
+        text-align: center;
+        font-size: 0.78rem;
+        color: #666;
+      }
+      @media print {
+        body {
+          background: #fff;
+        }
+        .bar {
+          display: none;
+        }
+        .sheet {
+          box-shadow: none;
+          margin: 0;
+          max-width: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bar">
+      <span id="bar-label">Catálogo en vivo · Jornadas IA</span>
+      <span>
+        <button type="button" id="btn-print">Imprimir / Guardar PDF</button>
+        <a href="https://observatorio-ia.uccuyo.edu.ar/#jornadas-ia">Volver al sitio</a>
+      </span>
+    </div>
+    <main class="sheet" id="sheet">
+      <p class="err">Cargando catálogo…</p>
+    </main>
+    <script src="js/jornadas-config.js"></script>
+    <script>
+      (function () {
+        function esc(s) {
+          return String(s || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+        }
+
+        var params = new URLSearchParams(window.location.search);
+        var tipo = String(params.get("tipo") || "articulos").toLowerCase();
+        var isPpt = tipo.indexOf("present") >= 0 || tipo === "ppt";
+        var titulo = isPpt
+          ? "Catálogo de presentaciones PowerPoint"
+          : "Catálogo de artículos científicos";
+        document.getElementById("bar-label").textContent = titulo + " · en vivo";
+        document.title = titulo;
+
+        function paint(data) {
+          var block = isPpt ? data.presentaciones : data.articulos;
+          var items = (block && block.items) || [];
+          var when = data.updatedAt
+            ? new Date(data.updatedAt).toLocaleString("es-AR", {
+                dateStyle: "short",
+                timeStyle: "short",
+              })
+            : "";
+          var html =
+            "<p class=\"sub\">UNIVERSIDAD CATÓLICA DE CUYO</p>" +
+            "<p class=\"sub\">Observatorio de Inteligencia Artificial</p>" +
+            "<h1>" +
+            esc(titulo) +
+            "</h1>" +
+            '<p class="sub">1° Jornadas internas de Inteligencia Artificial 2026</p>' +
+            '<p class="meta">Actualizado: ' +
+            esc(when || "—") +
+            " · " +
+            items.length +
+            (isPpt ? " presentaciones" : " artículos") +
+            " · Orden alfabético por título</p>";
+
+          if (!items.length) {
+            html +=
+              '<p class="err">Todavía no hay archivos en la carpeta correspondiente.</p>';
+          } else {
+            html += "<ol>";
+            for (var i = 0; i < items.length; i++) {
+              var it = items[i] || {};
+              var line = esc(it.title || "");
+              if (it.author) line += " — " + esc(it.author);
+              if (it.area) line += " (" + esc(it.area) + ")";
+              html += "<li>" + line + "</li>";
+            }
+            html += "</ol>";
+          }
+          html +=
+            '<p class="foot">Generado automáticamente · Observatorio de IA · UCCuyo · observatorioia@uccuyo.edu.ar</p>';
+          document.getElementById("sheet").innerHTML = html;
+        }
+
+        function fail(msg) {
+          document.getElementById("sheet").innerHTML =
+            '<p class="err">' + esc(msg || "No se pudo cargar el catálogo.") + "</p>";
+        }
+
+        var cfg = window.JORNADAS_IA_2026 || {};
+        var api = String(cfg.CATALOGOS_API_URL || "").trim().replace(/\?.*$/, "");
+        if (!api) {
+          fail("Falta CATALOGOS_API_URL.");
+          return;
+        }
+
+        fetch(api + "?action=catalogos", { credentials: "omit", cache: "no-store" })
+          .then(function (r) {
+            if (!r.ok) throw new Error("HTTP " + r.status);
+            return r.json();
+          })
+          .then(function (data) {
+            if (!data || !data.ok) throw new Error("sin datos");
+            // Si la API aún no guarda items, forzar regeneración una vez
+            var block = isPpt ? data.presentaciones : data.articulos;
+            if (block && (!block.items || !block.items.length) && block.count > 0) {
+              return fetch(api + "?action=actualizar", {
+                credentials: "omit",
+                cache: "no-store",
+              }).then(function (r2) {
+                return r2.json();
+              });
+            }
+            return data;
+          })
+          .then(paint)
+          .catch(function () {
+            fail("No se pudo cargar el catálogo en vivo. Reintentá en unos minutos.");
+          });
+
+        document.getElementById("btn-print").addEventListener("click", function () {
+          window.print();
+        });
+      })();
+    </script>
+  </body>
+</html>

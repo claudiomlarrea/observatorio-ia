@@ -1,0 +1,44 @@
+AUTOMÁTICO: cargas Drive → catálogos + programa + agenda
+========================================================
+
+Importante
+----------
+NO es Google Sheets. El sistema mira las carpetas Drive:
+
+  Artículos:     …/folders/1oEx8kOI1x4Hx2LppKv35DTIB6S48LXLa
+  Presentaciones: …/folders/10Ma7p_Lo3tObfE0N_nXEgwqZogqQzXQE
+
+Cuando alguien sube un .docx / .pptx:
+
+  1. Mail a Investigación (cada ~5 min)
+  2. Regenera catálogos (PDF en Drive + JSON para el sitio)
+  3. Actualiza PROGRAMA y AGENDA (anexa en modo manual)
+
+
+Pegar en Apps Script (investigacion@ · OIA · Catálogos Jornadas IA)
+-------------------------------------------------------------------
+Reemplazá TODO el contenido de:
+
+  1. Código.gs                 ← JornadasCatalogos.gs
+  2. JornadasNotificaciones.gs ← JornadasNotificaciones.gs
+  3. JornadasPrograma.gs       ← JornadasPrograma.gs
+  4. JornadasProgramaEditor.gs ← JornadasProgramaEditor.gs  (si aún no)
+
+Implementación PÚBLICA (A · Ejecutar como Yo · Cualquier usuario):
+  Nueva versión → Implementar
+
+Ejecutá una vez:
+
+  actualizarCatalogosJornadas
+
+(eso deja ítems en la API y agrega Martinez al programa si faltaba)
+
+
+Sitio (ya en el repo)
+---------------------
+- Programa: jornadas-programa-pdf.html (en vivo)
+- Catálogos: jornadas-catalogo.html?tipo=articulos|presentaciones (en vivo)
+- Agenda app: lee ?action=programa_agenda
+
+Tras pegar + Nueva versión, las próximas cargas actualizan solas
+(listado, agenda y catálogos en vivo). No hace falta republicar assets.
