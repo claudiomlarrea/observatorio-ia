@@ -52,20 +52,24 @@ Enlace en el sitio:
   https://observatorio-ia.uccuyo.edu.ar/#jornadas-ia
   → «Editar programa (equipo)»
 
-Entrá con perfil institucional (@uccuyo.edu.ar), no Hotmail.
+Entrá con cualquier cuenta Google de la lista blanca (Edge, Chrome, etc.).
 Lista blanca inicial:
 
   investigacion@uccuyo.edu.ar
   asistente.inv@uccuyo.edu.ar   ← Stefania Young
   observatorioia@uccuyo.edu.ar
+  claudio.larrea@hotmail.com
 
 Agregar alguien:
 
-  agregarEditorPrograma_("otra@uccuyo.edu.ar");
+  agregarEditorPrograma_("otra@dominio.com");
 
 Quitar:
 
-  quitarEditorPrograma_("otra@uccuyo.edu.ar");
+  quitarEditorPrograma_("otra@dominio.com");
+
+La primera vez Google muestra «Unverified» → REVIEW PERMISSIONS →
+Advanced → Go to OIA · Catálogos… → Allow.
 
 Al guardar desde el panel → modo MANUAL (Drive ya no reordena el programa;
 sí ANEXA ponencias nuevas detectadas en las carpetas).

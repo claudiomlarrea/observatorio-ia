@@ -13,6 +13,7 @@
  *   investigacion@uccuyo.edu.ar
  *   asistente.inv@uccuyo.edu.ar
  *   observatorioia@uccuyo.edu.ar
+ *   claudio.larrea@hotmail.com
  *
  * Abrir: …/exec?action=editar_programa
  */
@@ -24,7 +25,8 @@ var JORNADAS_PROP_EDITORES = "jornadas_programa_editores_json";
 var JORNADAS_EDITORES_DEFAULT = [
   "investigacion@uccuyo.edu.ar",
   "asistente.inv@uccuyo.edu.ar",
-  "observatorioia@uccuyo.edu.ar"
+  "observatorioia@uccuyo.edu.ar",
+  "claudio.larrea@hotmail.com"
 ];
 
 function servirEditorProgramaHtml_() {
@@ -209,17 +211,22 @@ function cargarEditoresPrograma_() {
   var seen = {};
   var out = [];
   var i;
-  for (i = 0; i < list.length; i++) {
-    var em = normalizarEmailEditor_(list[i]);
-    if (!em || seen[em]) continue;
+  function pushEmail(em) {
+    em = normalizarEmailEditor_(em);
+    if (!em || seen[em]) return;
     seen[em] = true;
     out.push(em);
   }
-  // Sembrar defaults si la prop estaba vacía
-  if (!raw) {
+  for (i = 0; i < list.length; i++) pushEmail(list[i]);
+  // Incorporar defaults nuevos (p. ej. hotmail) sin borrar los ya agregados a mano
+  for (i = 0; i < JORNADAS_EDITORES_DEFAULT.length; i++) {
+    pushEmail(JORNADAS_EDITORES_DEFAULT[i]);
+  }
+  var serialized = JSON.stringify(out);
+  if (!raw || raw !== serialized) {
     PropertiesService.getScriptProperties().setProperty(
       JORNADAS_PROP_EDITORES,
-      JSON.stringify(out)
+      serialized
     );
   }
   return out;

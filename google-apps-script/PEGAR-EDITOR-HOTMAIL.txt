@@ -1,0 +1,20 @@
+Permitir editor con claudio.larrea@hotmail.com (Edge)
+=====================================================
+
+1) En Apps Script (cuenta investigacion@), archivo JornadasProgramaEditor.gs:
+   - Pegá el del repo (o ejecutá una sola vez):
+
+       agregarEditorPrograma_("claudio.larrea@hotmail.com");
+
+2) Implementación del EDITOR (B · Usuario que accede):
+   Nueva versión → Implementar
+   (si solo corriste agregarEditorPrograma_, no hace falta redeploy)
+
+3) En Edge, logueado con hotmail, abrí:
+   https://script.google.com/macros/s/AKfycby-iPVY572kZOubTA_eFv0WRWCponjQde778ibv2daEYvIDdza6N6HFnyw-tDdmWSB9/exec?action=editar_programa
+
+4) Pantalla «Unverified»:
+   REVIEW PERMISSIONS → Advanced → Go to OIA · Catálogos Jornadas IA (unsafe)
+   → Allow / Permitir
+
+5) Debe decir: Sesión: claudio.larrea@hotmail.com
