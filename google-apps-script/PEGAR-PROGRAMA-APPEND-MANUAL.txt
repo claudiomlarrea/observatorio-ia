@@ -1,0 +1,35 @@
+Cargas Drive → programa / catálogos (modo manual)
+=================================================
+
+Qué pasaba
+----------
+1. El PROGRAMA quedó en modo MANUAL (edición del equipo). En ese modo
+   Drive ya no rearmaba el listado → Martinez y nuevas cargas no entraban.
+2. Los CATÁLOGOS PDF del sitio (assets/) son una copia: Drive sí se
+   regeneraba (5 ítems), pero el sitio seguía con la copia vieja (4).
+
+
+Arreglo de código (pegar)
+-------------------------
+En el proyecto Apps Script, reemplazá TODO el archivo:
+
+  JornadasPrograma.gs  ← repo google-apps-script/JornadasPrograma.gs
+
+Implementación PÚBLICA (A · Ejecutar como Yo):
+  Nueva versión → Implementar
+
+Luego ejecutá una vez:
+
+  actualizarCatalogosJornadas
+
+(o abrí …/exec?action=actualizar)
+
+Eso, en modo manual, ANEXA al final las ponencias nuevas de Drive
+sin pisar el orden que ya editaron.
+
+
+Catálogos en el sitio
+---------------------
+Los PDF de assets/ hay que republicar cuando Drive cambia (el repo ya
+incluye la versión con Martinez, ?v=11). A futuro el equipo puede
+avisar y se sincronizan, o se abre el PDF de Drive desde la API.

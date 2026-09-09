@@ -67,8 +67,9 @@ Quitar:
 
   quitarEditorPrograma_("otra@uccuyo.edu.ar");
 
-Al guardar desde el panel → modo MANUAL (Drive ya no pisa el programa).
-Botón «Regenerar desde Drive» → vuelve al modo automático.
+Al guardar desde el panel → modo MANUAL (Drive ya no reordena el programa;
+sí ANEXA ponencias nuevas detectadas en las carpetas).
+Botón «Regenerar desde Drive» → vuelve al modo automático completo.
 
 
 Activar

@@ -25,7 +25,8 @@ var JORNADAS_PONENCIA_MINUTOS = 10;
  * Llamado desde actualizarCatalogosJornadas(arts, ppts).
  */
 function sincronizarProgramaDesdeCatalogos_(arts, ppts) {
-  // Modo manual (panel de edición): no pisar orden ni textos.
+  // Modo manual: no reordenar ni pisar textos, pero SÍ anexar ponencias nuevas
+  // detectadas en Drive (p. ej. Martinez) para que el programa no quede congelado.
   if (
     typeof esProgramaManual_ === "function"
       ? esProgramaManual_()
@@ -33,7 +34,7 @@ function sincronizarProgramaDesdeCatalogos_(arts, ppts) {
           "jornadas_programa_manual"
         ) === "1"
   ) {
-    return { ok: true, skipped: "manual" };
+    return incorporarNuevasCargasEnProgramaManual_(arts, ppts);
   }
 
   arts = arts || [];
@@ -529,7 +530,150 @@ function esCargaInstitucionalPrograma_(row) {
   if (t.indexOf("observatorio de inteligencia artificial") === 0 && t.length < 60) {
     return true;
   }
+  // PPT institucional del encuentro (no es una ponencia de investigación)
+  if (t.indexOf("encuentro virtual") === 0) return true;
   if (p === "observatorio" || p === "observatorio de ia") return true;
+  return false;
+}
+
+/**
+ * En modo manual: conserva orden/textos editados y agrega al final las
+ * ponencias nuevas detectadas en Drive (artículo y/o PPT).
+ */
+function incorporarNuevasCargasEnProgramaManual_(arts, ppts) {
+  arts = arts || [];
+  ppts = ppts || [];
+  var site = null;
+  try {
+    site = obtenerProgramaSitio_();
+  } catch (ignore) {}
+  if (!site || !site.items || !site.items.length) {
+    PropertiesService.getScriptProperties().setProperty(
+      "jornadas_programa_manual",
+      "0"
+    );
+    return sincronizarProgramaDesdeCatalogos_(arts, ppts);
+  }
+
+  var porClave = {};
+  var i;
+  for (i = 0; i < arts.length; i++) {
+    acumularCargaPrograma_(porClave, arts[i], "articulo");
+  }
+  for (i = 0; i < ppts.length; i++) {
+    acumularCargaPrograma_(porClave, ppts[i], "presentacion");
+  }
+  fusionarCargasDuplicadasPrograma_(porClave);
+
+  var items = [];
+  for (i = 0; i < site.items.length; i++) {
+    items.push(site.items[i]);
+  }
+
+  var existentes = {};
+  for (i = 0; i < items.length; i++) {
+    var c1 = normalizarClavePrograma_(items[i].clave || "");
+    var c2 = normalizarClavePrograma_(items[i].persona || "");
+    if (c1) {
+      existentes[c1] = true;
+      existentes[c1.split(/\s+/).pop()] = true;
+    }
+    if (c2) {
+      existentes[c2] = true;
+      existentes[c2.split(/\s+/).pop()] = true;
+    }
+  }
+
+  var confirmados = cargarConfirmados_();
+  var nuevas = [];
+  var claves = Object.keys(porClave).sort(function (a, b) {
+    return a.localeCompare(b, "es", { sensitivity: "base" });
+  });
+
+  for (i = 0; i < claves.length; i++) {
+    var clave = claves[i];
+    var row = porClave[clave];
+    if (!row || (!row.articuloOk && !row.pptOk)) continue;
+    if (esCargaInstitucionalPrograma_(row)) continue;
+    if (existentes[clave]) {
+      actualizarFlagsCargaEnItems_(items, clave, row);
+      continue;
+    }
+    var apellido = clave.split(/\s+/).pop();
+    if (apellido && existentes[apellido]) {
+      actualizarFlagsCargaEnItems_(items, apellido, row);
+      continue;
+    }
+    if (yaEstaTituloEnPrograma_(items, row.titulo)) continue;
+
+    nuevas.push({
+      tipo: "ponencia",
+      titulo: row.titulo || "Ponencia",
+      persona: row.personaDisplay || row.claveDisplay || "Expositor/a",
+      rol: "Expositor/a",
+      area: row.area || "",
+      sala: JORNADAS_SALA,
+      articuloOk: !!row.articuloOk,
+      pptOk: !!row.pptOk,
+      confirmado: !!confirmados[clave],
+      notas: "Incluido automáticamente desde Drive (provisorio)",
+      clave: clave,
+      articuloFileId: row.articuloFileId || "",
+      pptFileId: row.pptFileId || ""
+    });
+    existentes[clave] = true;
+    if (apellido) existentes[apellido] = true;
+  }
+
+  if (!nuevas.length) {
+    return { ok: true, skipped: "manual", added: 0 };
+  }
+
+  if (typeof publicarProgramaManualDesdeItems_ !== "function") {
+    return {
+      ok: false,
+      error: "Falta JornadasProgramaEditor.gs (publicarProgramaManualDesdeItems_)"
+    };
+  }
+
+  var merged = items.concat(nuevas);
+  var published = publicarProgramaManualDesdeItems_(merged);
+  return {
+    ok: true,
+    mode: "manual-append",
+    added: nuevas.length,
+    claves: nuevas.map(function (n) {
+      return n.clave;
+    }),
+    updatedAt: published.updatedAt
+  };
+}
+
+function actualizarFlagsCargaEnItems_(items, claveNorm, row) {
+  claveNorm = normalizarClavePrograma_(claveNorm);
+  if (!claveNorm || !row) return;
+  for (var i = 0; i < items.length; i++) {
+    var it = items[i];
+    if (String(it.tipo || "") !== "ponencia") continue;
+    var c = normalizarClavePrograma_(it.clave || it.persona || "");
+    if (!c) continue;
+    if (c !== claveNorm && c.split(/\s+/).pop() !== claveNorm) continue;
+    if (row.articuloOk) it.articuloOk = true;
+    if (row.pptOk) it.pptOk = true;
+    if (row.articuloFileId) it.articuloFileId = row.articuloFileId;
+    if (row.pptFileId) it.pptFileId = row.pptFileId;
+  }
+}
+
+function yaEstaTituloEnPrograma_(items, titulo) {
+  var t = normalizarClavePrograma_(titulo || "");
+  if (!t || t.length < 8) return false;
+  for (var i = 0; i < items.length; i++) {
+    var other = normalizarClavePrograma_(items[i].titulo || "");
+    if (!other) continue;
+    if (other === t) return true;
+    if (puntajeSimilitudTituloPrograma_(titulo, items[i].titulo) >= 3) return true;
+  }
   return false;
 }
 
