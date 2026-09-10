@@ -45,6 +45,8 @@ function actualizarCatalogosJornadas() {
   );
   emparejarAutoresEntreCatalogos_(arts, ppts);
   sanearEntradasCatalogo_(arts, ppts);
+  arts = deduplicarEntradasCatalogo_(arts);
+  ppts = deduplicarEntradasCatalogo_(ppts);
 
   arts.sort(function (a, b) {
     return String(a.title).localeCompare(String(b.title), "es", { sensitivity: "base" });
@@ -240,6 +242,8 @@ function listarCatalogosRapido_() {
   );
   emparejarAutoresEntreCatalogos_(arts, ppts);
   sanearEntradasCatalogo_(arts, ppts);
+  arts = deduplicarEntradasCatalogo_(arts);
+  ppts = deduplicarEntradasCatalogo_(ppts);
   arts.sort(function (a, b) {
     return String(a.title).localeCompare(String(b.title), "es", { sensitivity: "base" });
   });
@@ -264,9 +268,20 @@ function listarCatalogosRapido_() {
       props.setProperty("jornadas_catalogo_updated_at", updatedAt);
     }
   } catch (ignoreCache) {}
+  // En modo manual, anexar al programa las ponencias de Drive que aún no estén
+  // (p. ej. Gil / Castillo / Ojeda) sin esperar al trigger horario.
+  var programaSync = null;
+  try {
+    if (typeof sincronizarProgramaDesdeCatalogos_ === "function") {
+      programaSync = sincronizarProgramaDesdeCatalogos_(arts, ppts);
+    }
+  } catch (errProgSync) {
+    programaSync = { ok: false, error: String(errProgSync) };
+  }
   return {
     ok: true,
     updatedAt: updatedAt,
+    programa: programaSync,
     articulos: {
       count: arts.length,
       items: resumenItemsCatalogo_(arts)
@@ -1264,10 +1279,60 @@ function limpiarAutorCatalogo_(author) {
     .replace(/\s+/g, " ")
     .trim();
   if (!a) return "";
+  // Prefijo del template Area_Universidad_Apellido…
+  a = a.replace(/^UCCuyo\s+/i, "").replace(/^Uccuyosl\s+/i, "");
+  a = a.replace(/,/g, ", ").replace(/\s+/g, " ").trim();
   var stop =
     /^(uso|sistema|gemelo|digital|ia|ppt|pptx|doc|docx|pdf|v\d+|jornadas\d*|presentaci[oó]n|art[ií]culo|plantilla|observatorio|observatoria)$/i;
   if (stop.test(a.replace(/\s+/g, ""))) return "";
   return a;
+}
+
+/**
+ * Misma ponencia subida varias veces (p. ej. Castillo ×3) → una sola entrada.
+ * Clave: título + autor normalizados. Conserva el más reciente si hay fechas.
+ */
+function deduplicarEntradasCatalogo_(list) {
+  list = list || [];
+  var byKey = {};
+  var order = [];
+  var i;
+  for (i = 0; i < list.length; i++) {
+    var it = list[i] || {};
+    var key =
+      normalizarClaveDedupCatalogo_(it.title) +
+      "|" +
+      normalizarClaveDedupCatalogo_(it.author);
+    if (!key || key === "|") {
+      order.push(it);
+      continue;
+    }
+    var prev = byKey[key];
+    if (!prev) {
+      byKey[key] = it;
+      order.push({ __key: key });
+      continue;
+    }
+    var prevTs = Date.parse(prev.updated || "") || 0;
+    var nextTs = Date.parse(it.updated || "") || 0;
+    if (nextTs >= prevTs) byKey[key] = it;
+  }
+  var out = [];
+  for (i = 0; i < order.length; i++) {
+    if (order[i].__key) out.push(byKey[order[i].__key]);
+    else out.push(order[i]);
+  }
+  return out;
+}
+
+function normalizarClaveDedupCatalogo_(s) {
+  s = String(s || "").toLowerCase();
+  try {
+    if (typeof s.normalize === "function") {
+      s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+  } catch (ignoreNorm) {}
+  return s.replace(/[^a-z0-9]+/g, " ").trim();
 }
 
 function normalizarAreaCatalogo_(area) {
