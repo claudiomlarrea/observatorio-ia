@@ -24,43 +24,30 @@ window.JORNADAS_IA_2026 = {
   /**
    * Panel equipo: cruza artículo ↔ PowerPoint por ponencia.
    */
-  CARGAS_STATUS_URL: "jornadas-cargas.html?v=4",
+  CARGAS_STATUS_URL: "jornadas-cargas.html?v=5",
   /**
-   * Títulos / autores canónicos (portada de los .docx revisados).
-   * El fix de programa/agenda los aplica por palabra clave.
+   * Títulos / autores canónicos (portada Word + PPT revisados).
+   * pptOk: true si ya revisamos el PowerPoint correspondiente.
    */
   TITULOS_CANON: {
-    dividuo: {
-      match: /dividuo|dividualidad/i,
-      titulo:
-        "Del individuo al dividuo en el aula universitaria. La dividualidad como categoría pedagógico-didáctica para una práctica docente digital crítica ante la IA",
-      persona: "Gil, Ojeda",
-      area: "Asesoría Pedagógica",
-      clave: "gil ojeda dividuo",
+    uso_ia: {
+      match: /uso\s+de\s+(la\s+)?ia\s+en\s+estudiantes|uso\s+de\s+inteligencia\s+artificial\s+en\s+estudiantes/i,
+      titulo: "Uso de inteligencia artificial en estudiantes de la UCCuyo",
+      persona: "La Malfa",
+      area: "Observatorio de IA",
+      clave: "la malfa",
+      articuloOk: true,
+      pptOk: true,
     },
-    lenguaje: {
-      match: /lenguaje\s+cultural/i,
+    gemeph: {
+      match: /gemeph|gemelo\s+digital/i,
       titulo:
-        "La Inteligencia Artificial como lenguaje cultural en la Educación Superior",
-      persona: "Gil",
-      area: "Asesoría Pedagógica",
-      clave: "gil",
-    },
-    abogacia: {
-      match: /abogac/i,
-      titulo:
-        "Inteligencia artificial y enseñanza de la abogacía: una perspectiva humanista sobre el proceso de aprendizaje",
-      persona: "Ojeda, Cali, Maluf",
-      area: "Educación",
-      clave: "ojeda cali maluf",
-    },
-    derechos: {
-      match: /derechos\s+humanos|eficacia\s+a\s+los\s+desc/i,
-      titulo:
-        "IA y Derechos Humanos: la IA como herramienta para dotar de eficacia a los DESC",
-      persona: "Martinez, Maluf",
-      area: "Derecho",
-      clave: "martinez",
+        "GEMEPH — Gemelo digital sociodemográfico de la EPH-INDEC. Exclusión digital, vulnerabilidad y brechas territoriales en Argentina",
+      persona: "Larrea et al.",
+      area: "Observatorio de IA",
+      clave: "larrea",
+      articuloOk: true,
+      pptOk: true,
     },
     castillo: {
       match:
@@ -70,16 +57,69 @@ window.JORNADAS_IA_2026 = {
       persona: "Castillo et al.",
       area: "Salud",
       clave: "castillo",
+      articuloOk: true,
+      pptOk: true,
+    },
+    giboin: {
+      match: /alerta\s+temprana|epidemiolog|giboin/i,
+      titulo:
+        "Sistema de Alerta Temprana (SAT) en Epidemiología Veterinaria, vínculo entre conocimiento científico e IA",
+      persona: "Giboin",
+      area: "Veterinaria",
+      clave: "giboin",
+      articuloOk: true,
+      pptOk: true,
     },
     meretta: {
-      match: /contabilidad|pymes|meretta/i,
+      match: /meretta|contabilidad\s*digital|pymes/i,
       titulo:
         "Inteligencia artificial aplicada a la Contabilidad Digital: un modelo metodológico para su integración en PyMEs",
       persona: "Meretta",
       area: "Contabilidad",
       clave: "meretta",
-      /** Evitar cruzar con otras ponencias que digan solo «IA». */
+      articuloOk: true,
+      pptOk: true,
       requirePersonaOrTitulo: /meretta|contabilidad|pymes/i,
+    },
+    derechos: {
+      match: /derechos\s+humanos|eficacia\s+a\s+los\s+desc/i,
+      titulo:
+        "IA y Derechos Humanos: la IA como herramienta para dotar de eficacia a los DESC",
+      persona: "Martinez, Maluf",
+      area: "Derecho",
+      clave: "martinez",
+      articuloOk: true,
+      pptOk: true,
+    },
+    lenguaje: {
+      match: /lenguaje\s+cultural/i,
+      titulo:
+        "La Inteligencia Artificial como lenguaje cultural en la Educación Superior",
+      persona: "Gil",
+      area: "Asesoría Pedagógica",
+      clave: "gil",
+      articuloOk: true,
+      pptOk: true,
+    },
+    abogacia: {
+      match: /abogac/i,
+      titulo:
+        "Inteligencia artificial y enseñanza de la abogacía: una perspectiva humanista sobre el proceso de aprendizaje",
+      persona: "Ojeda, Cali, Maluf",
+      area: "Educación",
+      clave: "ojeda cali maluf",
+      articuloOk: true,
+      pptOk: false,
+    },
+    dividuo: {
+      match: /dividuo|dividualidad/i,
+      titulo:
+        "Del individuo al dividuo en el aula universitaria. La dividualidad como categoría pedagógico-didáctica para una práctica docente digital crítica ante la IA",
+      persona: "Gil, Ojeda",
+      area: "Asesoría Pedagógica",
+      clave: "gil ojeda dividuo",
+      articuloOk: true,
+      pptOk: true,
     },
   },
   /** @deprecated usar TITULOS_CANON.dividuo.titulo */
@@ -95,7 +135,7 @@ window.JORNADAS_IA_2026 = {
    * Vista en vivo del programa (misma API que el listado). Imprimir → Guardar PDF.
    * El .pdf en assets/ es solo respaldo y puede quedar desfasado.
    */
-  PROGRAMA_PDF_URL: "jornadas-programa-pdf.html?v=4",
+  PROGRAMA_PDF_URL: "jornadas-programa-pdf.html?v=5",
   PROGRAMA_PDF_FALLBACK: "assets/jornadas/programa-jornadas-ia-2026.pdf?v=10",
   /**
    * Editor del programa (equipo). Implementación aparte:
@@ -108,7 +148,7 @@ window.JORNADAS_IA_2026 = {
    * El catálogo de PowerPoint quedó desactivado en la UI; el seguimiento
    * artículo↔PPT es jornadas-cargas.html. La carpeta Drive de PPT sigue activa.
    */
-  CATALOGO_ARTICULOS_PDF: "jornadas-catalogo.html?tipo=articulos&v=8",
+  CATALOGO_ARTICULOS_PDF: "jornadas-catalogo.html?tipo=articulos&v=9",
   CATALOGO_PRESENTACIONES_PDF: "",
   CATALOGO_ARTICULOS_PDF_FALLBACK:
     "assets/jornadas/catalogo-articulos-jornadas-ia-2026.pdf?v=13",
@@ -116,54 +156,73 @@ window.JORNADAS_IA_2026 = {
 };
 
 /**
- * Aplica títulos/autores canónicos (portadas Word) a ítems del programa.
+ * Aplica títulos/autores canónicos y quita duplicados (p. ej. Castillo ×2).
  */
 window.JORNADAS_fixProgramaItems = function (items) {
   var canon =
     (window.JORNADAS_IA_2026 && window.JORNADAS_IA_2026.TITULOS_CANON) || {};
   items = items || [];
+  var out = [];
+  var seenClave = {};
+
   for (var i = 0; i < items.length; i++) {
     var it = items[i] || {};
-    if (String(it.tipo || "ponencia") !== "ponencia") continue;
-    var blob =
-      String(it.titulo || "") +
-      " " +
-      String(it.persona || "") +
-      " " +
-      String(it.clave || "") +
-      " " +
-      String(it.area || "");
-    for (var key in canon) {
-      if (!Object.prototype.hasOwnProperty.call(canon, key)) continue;
-      var rule = canon[key];
-      if (!rule || !rule.match || !rule.match.test(blob)) continue;
-      if (
-        rule.requirePersonaOrTitulo &&
-        !rule.requirePersonaOrTitulo.test(blob)
-      ) {
-        continue;
-      }
-      // Castillo: no pisar otras ponencias que digan solo «castillo» en notas
-      if (key === "castillo") {
+    if (String(it.tipo || "ponencia") === "ponencia") {
+      var blob =
+        String(it.titulo || "") +
+        " " +
+        String(it.persona || "") +
+        " " +
+        String(it.clave || "") +
+        " " +
+        String(it.area || "");
+      for (var key in canon) {
+        if (!Object.prototype.hasOwnProperty.call(canon, key)) continue;
+        var rule = canon[key];
+        if (!rule || !rule.match || !rule.match.test(blob)) continue;
         if (
-          !/razonamiento|2050|simulador|castillo|salud/i.test(blob) &&
-          !/^razonamiento$/i.test(String(it.persona || ""))
+          rule.requirePersonaOrTitulo &&
+          !rule.requirePersonaOrTitulo.test(blob)
         ) {
           continue;
         }
+        if (key === "meretta" && !/meretta|contabilidad|pymes/i.test(blob)) {
+          continue;
+        }
+        if (key === "giboin" && !/alerta|epidemiolog|giboin|veterinar/i.test(blob)) {
+          continue;
+        }
+        if (
+          key === "uso_ia" &&
+          !/uso\s+de|estudiantes/i.test(blob)
+        ) {
+          continue;
+        }
+        it.titulo = rule.titulo;
+        it.persona = rule.persona;
+        if (rule.area) it.area = rule.area;
+        if (rule.clave) it.clave = rule.clave;
+        if (rule.articuloOk === true) it.articuloOk = true;
+        if (rule.pptOk === true) it.pptOk = true;
+        if (rule.pptOk === false) it.pptOk = false;
+        break;
       }
-      if (key === "meretta" && !/meretta|contabilidad|pymes/i.test(blob)) {
-        continue;
-      }
-      it.titulo = rule.titulo;
-      it.persona = rule.persona;
-      if (rule.area) it.area = rule.area;
-      if (rule.clave) it.clave = rule.clave;
-      it.articuloOk = true;
-      break;
+      var ck = String(it.clave || it.titulo || "")
+        .toLowerCase()
+        .replace(/\s+/g, " ")
+        .trim();
+      if (ck && seenClave[ck]) continue;
+      if (ck) seenClave[ck] = true;
     }
+    out.push(it);
   }
-  return items;
+
+  var orden = 0;
+  for (var j = 0; j < out.length; j++) {
+    orden++;
+    out[j].orden = orden;
+  }
+  return out;
 };
 
 /** Idem para sesiones de la agenda app. */
@@ -171,33 +230,45 @@ window.JORNADAS_fixAgendaSesiones = function (sesiones) {
   var canon =
     (window.JORNADAS_IA_2026 && window.JORNADAS_IA_2026.TITULOS_CANON) || {};
   sesiones = sesiones || [];
+  var out = [];
+  var seen = {};
   for (var i = 0; i < sesiones.length; i++) {
     var s = sesiones[i] || {};
-    if (String(s.tipo || "ponencia") !== "ponencia") continue;
-    var people = Array.isArray(s.disertantes) ? s.disertantes.join(" ") : "";
-    var blob =
-      String(s.titulo || "") + " " + people + " " + String(s.area || "");
-    for (var key in canon) {
-      if (!Object.prototype.hasOwnProperty.call(canon, key)) continue;
-      var rule = canon[key];
-      if (!rule || !rule.match || !rule.match.test(blob)) continue;
-      if (
-        rule.requirePersonaOrTitulo &&
-        !rule.requirePersonaOrTitulo.test(blob)
-      ) {
-        continue;
+    if (String(s.tipo || "ponencia") === "ponencia") {
+      var people = Array.isArray(s.disertantes) ? s.disertantes.join(" ") : "";
+      var blob =
+        String(s.titulo || "") + " " + people + " " + String(s.area || "");
+      for (var key in canon) {
+        if (!Object.prototype.hasOwnProperty.call(canon, key)) continue;
+        var rule = canon[key];
+        if (!rule || !rule.match || !rule.match.test(blob)) continue;
+        if (
+          rule.requirePersonaOrTitulo &&
+          !rule.requirePersonaOrTitulo.test(blob)
+        ) {
+          continue;
+        }
+        if (key === "meretta" && !/meretta|contabilidad|pymes/i.test(blob)) {
+          continue;
+        }
+        s.titulo = rule.titulo;
+        s.disertantes = String(rule.persona || "")
+          .split(/\s*,\s*/)
+          .filter(Boolean);
+        if (rule.area) s.area = rule.area;
+        if (rule.articuloOk === true) s.articuloOk = true;
+        if (rule.pptOk === true) s.pptOk = true;
+        if (rule.pptOk === false) s.pptOk = false;
+        break;
       }
-      if (key === "meretta" && !/meretta|contabilidad|pymes/i.test(blob)) {
-        continue;
-      }
-      s.titulo = rule.titulo;
-      s.disertantes = String(rule.persona || "")
-        .split(/\s*,\s*/)
-        .filter(Boolean);
-      if (rule.area) s.area = rule.area;
-      s.articuloOk = true;
-      break;
+      var sk = String(s.titulo || "")
+        .toLowerCase()
+        .replace(/\s+/g, " ")
+        .trim();
+      if (sk && seen[sk]) continue;
+      if (sk) seen[sk] = true;
     }
+    out.push(s);
   }
-  return sesiones;
+  return out;
 };

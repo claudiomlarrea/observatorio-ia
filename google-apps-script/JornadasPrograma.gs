@@ -727,7 +727,7 @@ function aplicarCargaAItemPrograma_(it, row) {
 }
 
 /**
- * Títulos / autores canónicos (portada de los .docx revisados).
+ * Títulos / autores canónicos (portada Word + PPT revisados).
  * Se aplican al listar/sincronizar el programa.
  */
 var JORNADAS_TITULO_DIVIDUO =
@@ -735,39 +735,25 @@ var JORNADAS_TITULO_DIVIDUO =
 
 var JORNADAS_TITULOS_CANON = [
   {
-    id: "dividuo",
-    match: /dividuo|dividualidad/i,
-    titulo: JORNADAS_TITULO_DIVIDUO,
-    persona: "Gil, Ojeda",
-    area: "Asesoría Pedagógica",
-    clave: "gil ojeda dividuo"
+    id: "uso_ia",
+    match: /uso\s+de\s+(la\s+)?ia\s+en\s+estudiantes|uso\s+de\s+inteligencia\s+artificial\s+en\s+estudiantes/i,
+    titulo: "Uso de inteligencia artificial en estudiantes de la UCCuyo",
+    persona: "La Malfa",
+    area: "Observatorio de IA",
+    clave: "la malfa",
+    articuloOk: true,
+    pptOk: true
   },
   {
-    id: "lenguaje",
-    match: /lenguaje\s+cultural/i,
+    id: "gemeph",
+    match: /gemeph|gemelo\s+digital/i,
     titulo:
-      "La Inteligencia Artificial como lenguaje cultural en la Educación Superior",
-    persona: "Gil",
-    area: "Asesoría Pedagógica",
-    clave: "gil"
-  },
-  {
-    id: "abogacia",
-    match: /abogac/i,
-    titulo:
-      "Inteligencia artificial y enseñanza de la abogacía: una perspectiva humanista sobre el proceso de aprendizaje",
-    persona: "Ojeda, Cali, Maluf",
-    area: "Educación",
-    clave: "ojeda cali maluf"
-  },
-  {
-    id: "derechos",
-    match: /derechos\s+humanos|eficacia\s+a\s+los\s+desc/i,
-    titulo:
-      "IA y Derechos Humanos: la IA como herramienta para dotar de eficacia a los DESC",
-    persona: "Martinez, Maluf",
-    area: "Derecho",
-    clave: "martinez"
+      "GEMEPH — Gemelo digital sociodemográfico de la EPH-INDEC. Exclusión digital, vulnerabilidad y brechas territoriales en Argentina",
+    persona: "Larrea et al.",
+    area: "Observatorio de IA",
+    clave: "larrea",
+    articuloOk: true,
+    pptOk: true
   },
   {
     id: "castillo",
@@ -776,7 +762,20 @@ var JORNADAS_TITULOS_CANON = [
       "Del contenido fragmentado al razonamiento integrado: uso de un simulador conversacional con IA en estudiantes de Medicina",
     persona: "Castillo et al.",
     area: "Salud",
-    clave: "castillo"
+    clave: "castillo",
+    articuloOk: true,
+    pptOk: true
+  },
+  {
+    id: "giboin",
+    match: /alerta\s+temprana|epidemiolog|giboin/i,
+    titulo:
+      "Sistema de Alerta Temprana (SAT) en Epidemiología Veterinaria, vínculo entre conocimiento científico e IA",
+    persona: "Giboin",
+    area: "Veterinaria",
+    clave: "giboin",
+    articuloOk: true,
+    pptOk: true
   },
   {
     id: "meretta",
@@ -785,12 +784,57 @@ var JORNADAS_TITULOS_CANON = [
       "Inteligencia artificial aplicada a la Contabilidad Digital: un modelo metodológico para su integración en PyMEs",
     persona: "Meretta",
     area: "Contabilidad",
-    clave: "meretta"
+    clave: "meretta",
+    articuloOk: true,
+    pptOk: true
+  },
+  {
+    id: "derechos",
+    match: /derechos\s+humanos|eficacia\s+a\s+los\s+desc/i,
+    titulo:
+      "IA y Derechos Humanos: la IA como herramienta para dotar de eficacia a los DESC",
+    persona: "Martinez, Maluf",
+    area: "Derecho",
+    clave: "martinez",
+    articuloOk: true,
+    pptOk: true
+  },
+  {
+    id: "lenguaje",
+    match: /lenguaje\s+cultural/i,
+    titulo:
+      "La Inteligencia Artificial como lenguaje cultural en la Educación Superior",
+    persona: "Gil",
+    area: "Asesoría Pedagógica",
+    clave: "gil",
+    articuloOk: true,
+    pptOk: true
+  },
+  {
+    id: "abogacia",
+    match: /abogac/i,
+    titulo:
+      "Inteligencia artificial y enseñanza de la abogacía: una perspectiva humanista sobre el proceso de aprendizaje",
+    persona: "Ojeda, Cali, Maluf",
+    area: "Educación",
+    clave: "ojeda cali maluf",
+    articuloOk: true,
+    pptOk: false
+  },
+  {
+    id: "dividuo",
+    match: /dividuo|dividualidad/i,
+    titulo: JORNADAS_TITULO_DIVIDUO,
+    persona: "Gil, Ojeda",
+    area: "Asesoría Pedagógica",
+    clave: "gil ojeda dividuo",
+    articuloOk: true,
+    pptOk: true
   }
 ];
 
 /**
- * Persiste títulos canónicos desde Word en el programa publicado.
+ * Persiste títulos canónicos + dedupe en el programa publicado.
  */
 function corregirPonenciaDividuoOjeda() {
   return normalizarYPublicarTitulosCanon_();
@@ -806,6 +850,7 @@ function normalizarYPublicarTitulosCanon_() {
   var site = obtenerProgramaSitio_();
   var items = (site && site.items) || [];
   var touched = normalizarItemsTitulosCanon_(items);
+  touched += dedupeProgramaItemsInPlace_(items);
   if (!touched) {
     return { ok: false, error: "No hubo títulos canónicos para corregir" };
   }
@@ -820,10 +865,43 @@ function normalizarYPublicarTitulosCanon_() {
 
 /** Alias histórico. */
 function normalizarItemsDividuoOjeda_(items) {
-  return normalizarItemsTitulosCanon_(items);
+  var n = normalizarItemsTitulosCanon_(items);
+  n += dedupeProgramaItemsInPlace_(items);
+  return n;
 }
 
-/** Aplica títulos/autores canónicos in-place. Devuelve cuántos ítems tocó. */
+/** Quita ponencias duplicadas por clave (p. ej. Castillo ×2). Devuelve cuántas quitó. */
+function dedupeProgramaItemsInPlace_(items) {
+  items = items || [];
+  var seen = {};
+  var out = [];
+  var removed = 0;
+  var i;
+  for (i = 0; i < items.length; i++) {
+    var it = items[i] || {};
+    if (String(it.tipo || "") === "ponencia") {
+      var ck = String(it.clave || it.titulo || "")
+        .toLowerCase()
+        .replace(/\s+/g, " ")
+        .trim();
+      if (ck && seen[ck]) {
+        removed++;
+        continue;
+      }
+      if (ck) seen[ck] = true;
+    }
+    out.push(it);
+  }
+  if (!removed) return 0;
+  items.length = 0;
+  for (i = 0; i < out.length; i++) {
+    out[i].orden = i + 1;
+    items.push(out[i]);
+  }
+  return removed;
+}
+
+/** Aplica títulos/autores/flags canónicos in-place. Devuelve cuántos ítems tocó. */
 function normalizarItemsTitulosCanon_(items) {
   items = items || [];
   var rules =
@@ -855,6 +933,9 @@ function normalizarItemsTitulosCanon_(items) {
       ) {
         continue;
       }
+      if (rule.id === "giboin" && !/alerta|epidemiolog|giboin|veterinar/i.test(blob)) {
+        continue;
+      }
       var changed = false;
       if (String(it.titulo || "") !== rule.titulo) {
         it.titulo = rule.titulo;
@@ -872,8 +953,16 @@ function normalizarItemsTitulosCanon_(items) {
         it.clave = rule.clave;
         changed = true;
       }
-      if (!it.articuloOk) {
+      if (rule.articuloOk === true && !it.articuloOk) {
         it.articuloOk = true;
+        changed = true;
+      }
+      if (rule.pptOk === true && !it.pptOk) {
+        it.pptOk = true;
+        changed = true;
+      }
+      if (rule.pptOk === false && it.pptOk) {
+        it.pptOk = false;
         changed = true;
       }
       if (changed) touched++;

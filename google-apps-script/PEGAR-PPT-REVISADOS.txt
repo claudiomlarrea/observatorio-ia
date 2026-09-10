@@ -1,0 +1,23 @@
+PowerPoint revisados (2026-09-10)
+=================================
+
+8 PPT únicos (Meretta (1) = duplicado).
+
+Con PPT
+  · La Malfa — Uso de inteligencia artificial en estudiantes de la UCCuyo
+  · Larrea et al. — GEMEPH — Gemelo digital sociodemográfico…
+  · Castillo et al. — Del contenido fragmentado al razonamiento integrado…
+  · Giboin — Sistema de Alerta Temprana (SAT) en Epidemiología Veterinaria…
+  · Meretta — IA aplicada a la Contabilidad Digital…
+  · Martinez, Maluf — IA y Derechos Humanos…
+  · Gil — IA como lenguaje cultural…
+  · Gil, Ojeda — Del individuo al dividuo…
+
+Falta PPT
+  · Ojeda, Cali, Maluf — enseñanza de la abogacía
+
+También: quitar Castillo duplicado en el programa (API).
+
+Sitio: js/jornadas-config.js (TITULOS_CANON + dedupe).
+
+API: pegá JornadasPrograma.gs → Nueva versión → ?action=programa

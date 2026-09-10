@@ -2,7 +2,7 @@
   "ok": true,
   "source": "manual",
   "editedBy": "",
-  "updatedAt": "2026-09-10T19:40:00.000Z",
+  "updatedAt": "2026-09-10T20:15:00.000Z",
   "meta": {
     "titulo": "1° Jornadas internas de Inteligencia Artificial — UCCuyo",
     "subtitulo": "Observatorio de Inteligencia Artificial",
@@ -124,7 +124,7 @@
       "fin": "15:55",
       "sala": "Ponencia",
       "tipo": "ponencia",
-      "titulo": "Uso de IA en estudiantes",
+      "titulo": "Uso de inteligencia artificial en estudiantes de la UCCuyo",
       "disertantes": [
         "La Malfa"
       ],
@@ -143,7 +143,7 @@
       "fin": "16:05",
       "sala": "Ponencia",
       "tipo": "ponencia",
-      "titulo": "GEMEPH Gemelo Digital EPH",
+      "titulo": "GEMEPH — Gemelo digital sociodemográfico de la EPH-INDEC. Exclusión digital, vulnerabilidad y brechas territoriales en Argentina",
       "disertantes": [
         "Larrea et al."
       ],
@@ -181,7 +181,7 @@
       "fin": "16:25",
       "sala": "Ponencia",
       "tipo": "ponencia",
-      "titulo": "Sistema de Alerta Temprana en Epidemiologia Veterinaria",
+      "titulo": "Sistema de Alerta Temprana (SAT) en Epidemiología Veterinaria, vínculo entre conocimiento científico e IA",
       "disertantes": [
         "Giboin"
       ],

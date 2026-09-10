@@ -131,7 +131,7 @@
     <main class="sheet" id="sheet">
       <p class="err">Cargando catálogo…</p>
     </main>
-    <script src="js/jornadas-config.js?v=28"></script>
+    <script src="js/jornadas-config.js?v=29"></script>
     <script>
       (function () {
         /**
@@ -242,7 +242,7 @@
 
         var cfg = window.JORNADAS_IA_2026 || {};
         var api = String(cfg.CATALOGOS_API_URL || "").trim().replace(/\?.*$/, "");
-        var local = "data/jornadas-programa-2026.json?v=12";
+        var local = "data/jornadas-programa-2026.json?v=13";
 
         function fetchJson(url, ms) {
           var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
