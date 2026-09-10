@@ -44,13 +44,13 @@ window.JORNADAS_IA_2026 = {
   PROGRAMA_EDITOR_URL:
     "https://script.google.com/macros/s/AKfycby-iPVY572kZOubTA_eFv0WRWCponjQde778ibv2daEYvIDdza6N6HFnyw-tDdmWSB9/exec?action=editar_programa",
   /**
-   * Catálogos en vivo = mismas ponencias que el programa (?action=programa).
-   * Imprimir → Guardar PDF. Los PDF en assets/ son solo respaldo.
+   * Catálogo público = artículos (desde el programa).
+   * El catálogo de PowerPoint quedó desactivado en la UI; el seguimiento
+   * artículo↔PPT es jornadas-cargas.html. La carpeta Drive de PPT sigue activa.
    */
   CATALOGO_ARTICULOS_PDF: "jornadas-catalogo.html?tipo=articulos&v=4",
-  CATALOGO_PRESENTACIONES_PDF: "jornadas-catalogo.html?tipo=presentaciones&v=3",
+  CATALOGO_PRESENTACIONES_PDF: "",
   CATALOGO_ARTICULOS_PDF_FALLBACK:
     "assets/jornadas/catalogo-articulos-jornadas-ia-2026.pdf?v=13",
-  CATALOGO_PRESENTACIONES_PDF_FALLBACK:
-    "assets/jornadas/catalogo-presentaciones-jornadas-ia-2026.pdf?v=12",
+  CATALOGO_PRESENTACIONES_PDF_FALLBACK: "",
 };

@@ -532,12 +532,12 @@ window.I18N_DICT = {
     "en": "Download PowerPoint template (6 slides)"
   },
   "sec.jornadas.catalogos.title": {
-    "es": "Catálogos actualizados automáticamente",
-    "en": "Automatically updated catalogs"
+    "es": "Catálogo de artículos",
+    "en": "Articles catalog"
   },
   "sec.jornadas.catalogos.intro": {
-    "es": "Descargá los listados en PDF (orden alfabético por título): uno de artículos y otro de presentaciones PowerPoint. Se actualizan solos a medida que el equipo carga archivos.",
-    "en": "Download the alphabetical PDF lists: one for articles and one for PowerPoint presentations. They update automatically as the team uploads files."
+    "es": "Listado en PDF (orden alfabético por título) de los artículos científicos. Se actualiza con el programa. El seguimiento de PowerPoint (quién ya cargó PPT) está en el panel de estado.",
+    "en": "Alphabetical PDF list of scientific articles. It follows the program. PowerPoint upload tracking is on the status panel."
   },
   "sec.jornadas.catalogos.btnArticulos": {
     "es": "Abrir catálogo de artículos (PDF)",
@@ -546,6 +546,10 @@ window.I18N_DICT = {
   "sec.jornadas.catalogos.btnPresentaciones": {
     "es": "Abrir catálogo de PowerPoint (PDF)",
     "en": "Open PowerPoint catalog (PDF)"
+  },
+  "sec.jornadas.catalogos.btnCargas": {
+    "es": "Estado artículo ↔ PowerPoint",
+    "en": "Article ↔ PowerPoint status"
   },
   "sec.jornadas.agenda.title": {
     "es": "Agenda de consulta",

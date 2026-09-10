@@ -150,15 +150,13 @@ function escapeHtml_(s) {
 function wireCatalogos_(cfg) {
   var api = String(cfg.CATALOGOS_API_URL || "").trim();
   var btnArt = document.getElementById("jornadas-catalogo-articulos");
-  var btnPpt = document.getElementById("jornadas-catalogo-presentaciones");
   var meta = document.getElementById("jornadas-catalogos-meta");
 
-  if (!btnArt && !btnPpt) return;
+  if (!btnArt) return;
 
   // Abrir PDF en pestaña (como el flayer e instructivos). El atributo download
   // en Arc/Chromium a veces guarda un UUID sin .pdf y no se puede abrir.
   var artPdf = String(cfg.CATALOGO_ARTICULOS_PDF || "").trim();
-  var pptPdf = String(cfg.CATALOGO_PRESENTACIONES_PDF || "").trim();
   if (btnArt && artPdf) {
     btnArt.href = artPdf;
     btnArt.removeAttribute("download");
@@ -166,34 +164,28 @@ function wireCatalogos_(cfg) {
     btnArt.setAttribute("rel", "noopener noreferrer");
     btnArt.removeAttribute("aria-disabled");
   }
-  if (btnPpt && pptPdf) {
-    btnPpt.href = pptPdf;
-    btnPpt.removeAttribute("download");
-    btnPpt.setAttribute("target", "_blank");
-    btnPpt.setAttribute("rel", "noopener noreferrer");
-    btnPpt.removeAttribute("aria-disabled");
-  }
 
   if (!api) {
     if (meta) {
       meta.hidden = false;
-      meta.textContent = "Catálogos PDF listos para descargar.";
+      meta.textContent = "Catálogo de artículos listo.";
     }
     return;
   }
 
-  var url = api.replace(/\?.*$/, "") + "?action=catalogos";
-  fetch(url, { credentials: "omit" })
+  var url = api.replace(/\?.*$/, "") + "?action=programa";
+  fetch(url, { credentials: "omit", cache: "no-store" })
     .then(function (r) {
       return r.json();
     })
     .then(function (data) {
-      if (!data || !data.ok) throw new Error((data && data.error) || "Sin catálogos");
-      // Los PDF del sitio (assets/) tienen tipografía uniforme; la API solo
-      // aporta el conteo / fecha. Drive queda como respaldo si faltan assets.
+      if (!data || !data.ok || !data.items) throw new Error("Sin programa");
+      var nA = 0;
+      var i;
+      for (i = 0; i < data.items.length; i++) {
+        if (String(data.items[i].tipo || "").toLowerCase() === "ponencia") nA++;
+      }
       if (meta) {
-        var nA = (data.articulos && data.articulos.count) || 0;
-        var nP = (data.presentaciones && data.presentaciones.count) || 0;
         var when = data.updatedAt
           ? new Date(data.updatedAt).toLocaleString("es-AR", {
               dateStyle: "short",
@@ -202,17 +194,13 @@ function wireCatalogos_(cfg) {
           : "";
         meta.hidden = false;
         meta.textContent =
-          nA +
-          " artículo(s) · " +
-          nP +
-          " presentación(es)" +
-          (when ? " · actualizado " + when : "");
+          nA + " artículo(s) / ponencia(s)" + (when ? " · actualizado " + when : "");
       }
     })
     .catch(function () {
       if (meta && meta.hidden) {
         meta.hidden = false;
-        meta.textContent = "Catálogos PDF listos para descargar.";
+        meta.textContent = "Catálogo de artículos listo.";
       }
     });
 }
