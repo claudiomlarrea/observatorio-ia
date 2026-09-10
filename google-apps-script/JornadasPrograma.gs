@@ -219,15 +219,26 @@ function obtenerProgramaSitio_() {
     raw = PropertiesService.getScriptProperties().getProperty(JORNADAS_PROP_PROGRAMA);
     data = raw ? JSON.parse(raw) : { ok: false, items: [] };
   }
-  if (data && data.items && normalizarItemsDividuoOjeda_(data.items)) {
-    // Persistir corrección Ojeda sin exigir abrir el editor
+  // Solo normaliza en memoria. NO publicar aquí:
+  // publicarProgramaManualDesdeItems_ vuelve a llamar obtenerProgramaSitio_
+  // y eso colgaba el navegador (bucle infinito).
+  if (data && data.items) {
     try {
-      if (typeof publicarProgramaManualDesdeItems_ === "function") {
-        return publicarProgramaManualDesdeItems_(data.items);
-      }
-    } catch (ignorePub) {}
+      normalizarItemsDividuoOjeda_(data.items);
+    } catch (ignoreNorm) {}
   }
   return data;
+}
+
+/** Lectura cruda del programa (sin normalizar ni publicar). */
+function leerProgramaSitioCrudo_() {
+  var raw = PropertiesService.getScriptProperties().getProperty(JORNADAS_PROP_PROGRAMA);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw);
+  } catch (e) {
+    return null;
+  }
 }
 
 function obtenerProgramaAgenda_() {
@@ -841,18 +852,21 @@ function corregirPonenciaDividuoOjeda() {
 }
 
 function normalizarYPublicarTitulosCanon_() {
-  if (typeof obtenerProgramaSitio_ !== "function") {
-    throw new Error("Falta obtenerProgramaSitio_");
-  }
   if (typeof publicarProgramaManualDesdeItems_ !== "function") {
     throw new Error("Falta publicarProgramaManualDesdeItems_");
   }
-  var site = obtenerProgramaSitio_();
+  var site = typeof leerProgramaSitioCrudo_ === "function"
+    ? leerProgramaSitioCrudo_()
+    : null;
+  if (!site) {
+    var raw = PropertiesService.getScriptProperties().getProperty(JORNADAS_PROP_PROGRAMA);
+    site = raw ? JSON.parse(raw) : { items: [] };
+  }
   var items = (site && site.items) || [];
   var touched = normalizarItemsTitulosCanon_(items);
   touched += dedupeProgramaItemsInPlace_(items);
   if (!touched) {
-    return { ok: false, error: "No hubo títulos canónicos para corregir" };
+    return { ok: true, touched: 0, note: "ya estaba al día", updatedAt: site.updatedAt };
   }
   var published = publicarProgramaManualDesdeItems_(items);
   return {

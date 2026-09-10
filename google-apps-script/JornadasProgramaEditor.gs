@@ -307,7 +307,11 @@ function publicarProgramaManualDesdeItems_(itemsIn) {
   var updatedAt = new Date().toISOString();
   var prev = null;
   try {
-    prev = obtenerProgramaSitio_();
+    // NO usar obtenerProgramaSitio_ (puede normalizar y reentrar).
+    var rawPrev = PropertiesService.getScriptProperties().getProperty(
+      typeof JORNADAS_PROP_PROGRAMA !== "undefined" ? JORNADAS_PROP_PROGRAMA : "JORNADAS_PROGRAMA_SITIO"
+    );
+    if (rawPrev) prev = JSON.parse(rawPrev);
   } catch (ignore) {}
 
   var site = {

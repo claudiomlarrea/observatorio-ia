@@ -1,0 +1,23 @@
+El enlace ?action=programa se “tildaba”
+========================================
+
+Causa: bucle infinito (leer programa → publicar → leer → …).
+
+Arreglo (ya en el repo):
+  · JornadasPrograma.gs  → obtenerProgramaSitio_ solo lee/normaliza en memoria
+  · JornadasProgramaEditor.gs → publicar no vuelve a llamar obtenerProgramaSitio_
+
+Qué hacer vos
+  1. Pegá de nuevo JornadasPrograma.gs Y JornadasProgramaEditor.gs
+  2. Guardar
+  3. Implementar → Nueva versión (deployment público)
+
+Probar el enlace (ya no debería colgarse):
+  …/exec?action=programa
+
+Para PERSISTIR títulos/dedupe Castillo (opcional, desde el editor):
+  · Abrí Apps Script → selecciona la función corregirPonenciaDividuoOjeda → Ejecutar
+  · O abrí …/exec?action=corregir_dividuo
+
+Nota: el sitio ya muestra títulos bien con js/jornadas-config.js aunque
+la API tarde; este pegado es para que la API deje de colgarse.
