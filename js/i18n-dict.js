@@ -536,8 +536,8 @@ window.I18N_DICT = {
     "en": "Articles catalog"
   },
   "sec.jornadas.catalogos.intro": {
-    "es": "Listado en PDF (orden alfabético por título) de los artículos científicos. Se actualiza con el programa. El seguimiento de PowerPoint (quién ya cargó PPT) está en el panel de estado.",
-    "en": "Alphabetical PDF list of scientific articles. It follows the program. PowerPoint upload tracking is on the status panel."
+    "es": "Listado en PDF en el mismo orden que el programa. Se actualiza al reorganizar expositores. El seguimiento de PowerPoint está en el panel de estado.",
+    "en": "PDF list in the same order as the program. It updates when speakers are reordered. PowerPoint tracking is on the status panel."
   },
   "sec.jornadas.catalogos.btnArticulos": {
     "es": "Abrir catálogo de artículos (PDF)",

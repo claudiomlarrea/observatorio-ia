@@ -1,10 +1,8 @@
 Catálogo = Programa (regla definitiva)
 
-El catálogo vivo lee ?action=programa (ponencias), no la carpeta Drive.
+El catálogo vivo lee ?action=programa (ponencias), en el MISMO ORDEN
+del programa (no alfabético).
 
-URL: https://observatorio-ia.uccuyo.edu.ar/jornadas-catalogo.html?tipo=articulos&v=4
+URL: https://observatorio-ia.uccuyo.edu.ar/jornadas-catalogo.html?tipo=articulos&v=5
 
-Marimon / Encuesta UC Cuyo aparecen aunque no haya archivo
-(marcados “sin artículo en Drive”).
-
-Drive solo sirve para subir el archivo y quitar esa marca.
+Si reordenás expositores en el editor, el catálogo sigue ese orden.

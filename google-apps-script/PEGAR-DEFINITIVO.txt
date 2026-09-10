@@ -10,8 +10,8 @@ Regla (una sola fuente de verdad)
   DRIVE     →  solo indica si hay artículo/PPT (marca “sin archivo”)
 
 Sitio (ya publicado en el repo, sin depender de pegar .gs)
-  https://observatorio-ia.uccuyo.edu.ar/jornadas-catalogo.html?tipo=articulos&v=4
-  Lee ?action=programa y lista las ponencias en orden alfabético.
+  https://observatorio-ia.uccuyo.edu.ar/jornadas-catalogo.html?tipo=articulos&v=5
+  Lee ?action=programa y lista las ponencias en el mismo orden del programa.
   Imprimir / Guardar PDF desde el navegador.
 
 Apps Script (opcional, para PDF en Drive)

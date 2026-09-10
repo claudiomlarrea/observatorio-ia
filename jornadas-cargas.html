@@ -312,18 +312,13 @@
           .then(function (data) {
             if (!data || !data.ok) throw new Error("sin datos");
             rows = data.items || [];
-            rows.sort(function (a, b) {
-              return String(a.titulo || "").localeCompare(String(b.titulo || ""), "es", {
-                sensitivity: "base",
-              });
-            });
             var when = data.updatedAt
               ? new Date(data.updatedAt).toLocaleString("es-AR")
               : "";
             document.getElementById("meta").textContent =
               "Actualizado: " +
               (when || "—") +
-              " · Fuente: programa + flags de Drive (artículo / PPT)";
+              " · Orden del programa · Fuente: programa + flags de Drive";
             paint();
           })
           .catch(function () {

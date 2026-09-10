@@ -167,14 +167,12 @@
               title: String(it.titulo || "").trim(),
               author: String(it.persona || "").trim(),
               area: String(it.area || "").trim(),
+              hora: String(it.hora || "").trim(),
+              horaFin: String(it.horaFin || "").trim(),
               tieneArchivo: tieneArchivo,
             });
           }
-          out.sort(function (a, b) {
-            return String(a.title).localeCompare(String(b.title), "es", {
-              sensitivity: "base",
-            });
-          });
+          // Mismo orden que el programa (no alfabético).
           return out;
         }
 
@@ -199,7 +197,7 @@
             " · " +
             items.length +
             labelCount +
-            " · Misma fuente que el programa · Orden alfabético</p>";
+            " · Misma fuente y orden que el programa</p>";
 
           if (!items.length) {
             html +=
@@ -208,7 +206,15 @@
             html += "<ol>";
             for (var i = 0; i < items.length; i++) {
               var it = items[i];
-              var line = esc(it.title || "");
+              var line = "";
+              if (it.hora) {
+                line +=
+                  '<span class="note">' +
+                  esc(it.hora) +
+                  (it.horaFin ? "–" + esc(it.horaFin) : "") +
+                  "</span> ";
+              }
+              line += esc(it.title || "");
               if (it.author) line += " — " + esc(it.author);
               if (it.area) line += " (" + esc(it.area) + ")";
               if (!it.tieneArchivo) {

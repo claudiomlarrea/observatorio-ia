@@ -176,6 +176,9 @@ function entradasCatalogoDesdePrograma_(kind) {
       title: title,
       author: author,
       area: area,
+      hora: String(it.hora || "").trim(),
+      horaFin: String(it.horaFin || "").trim(),
+      orden: Number(it.orden) || out.length + 1,
       fileName: "",
       fileId: isPpt ? it.pptFileId || "" : it.articuloFileId || "",
       fileUrl: "",
@@ -183,9 +186,7 @@ function entradasCatalogoDesdePrograma_(kind) {
       sinArchivo: !tiene
     });
   }
-  out.sort(function (a, b) {
-    return String(a.title).localeCompare(String(b.title), "es", { sensitivity: "base" });
-  });
+  // Conservar el orden del programa (el que manda / se reorganiza a mano).
   return out;
 }
 
@@ -324,6 +325,8 @@ function informePareoCargasJornadas_() {
         titulo: String(it.titulo || "").trim(),
         persona: String(it.persona || "").trim(),
         area: String(it.area || "").trim(),
+        orden: Number(it.orden) || 0,
+        hora: String(it.hora || "").trim(),
         articuloOk: art,
         pptOk: ppt,
         articuloFileId: it.articuloFileId || "",
@@ -333,10 +336,9 @@ function informePareoCargasJornadas_() {
     }
   }
   items.sort(function (a, b) {
-    return String(a.titulo).localeCompare(String(b.titulo), "es", {
-      sensitivity: "base"
-    });
+    return (Number(a.orden) || 0) - (Number(b.orden) || 0);
   });
+  // Preferir orden del programa; si no hay orden, dejar como vino.
   var totales = {
     ponencias: items.length,
     conArticulo: 0,
@@ -406,12 +408,6 @@ function listarCatalogosRapido_() {
   if (!arts.length) arts = artsDrive;
   if (!ppts.length) ppts = pptsDrive;
 
-  arts.sort(function (a, b) {
-    return String(a.title).localeCompare(String(b.title), "es", { sensitivity: "base" });
-  });
-  ppts.sort(function (a, b) {
-    return String(a.title).localeCompare(String(b.title), "es", { sensitivity: "base" });
-  });
   var updatedAt = new Date().toISOString();
   try {
     var props = PropertiesService.getScriptProperties();
@@ -1802,7 +1798,7 @@ function escribirCatalogoPdf_(folder, fileName, titulo, subtitulo, items, labelP
         items.length +
         " " +
         labelPlural +
-        " · Orden alfabético por título"
+        " · Orden del programa"
     ),
     9,
     { align: center, color: "#555555", spacingAfter: 12 }
@@ -1823,8 +1819,14 @@ function escribirCatalogoPdf_(folder, fileName, titulo, subtitulo, items, labelP
       var tituloItem = String(it.title || "").replace(/\s+/g, " ").trim();
       var autorItem = String(it.author || "").replace(/\s+/g, " ").trim();
       var areaItem = String(it.area || "").replace(/\s+/g, " ").trim();
-      // Solo título científico + investigador (+ área). Sin nombre de archivo Drive.
-      var line = i + 1 + ". " + tituloItem;
+      var horaItem = String(it.hora || "").trim();
+      var horaFinItem = String(it.horaFin || "").trim();
+      // Orden del programa; opcional franja horaria.
+      var line = i + 1 + ". ";
+      if (horaItem) {
+        line += horaItem + (horaFinItem ? "–" + horaFinItem : "") + " · ";
+      }
+      line += tituloItem;
       if (autorItem) line += " — " + autorItem;
       if (areaItem) line += " (" + areaItem + ")";
       if (it.sinArchivo) {
