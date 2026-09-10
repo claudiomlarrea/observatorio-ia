@@ -72,43 +72,11 @@ function actualizarCatalogosJornadas() {
 
 /**
  * Regenera PDF en Drive, guarda ítems para la API del sitio y sincroniza programa/agenda.
+ * Fuente de listado de catálogos = PROGRAMA (ponencias), no solo archivos Drive.
  */
 function regenerarCatalogosYProgramaCore_(arts, ppts) {
   arts = arts || [];
   ppts = ppts || [];
-  var outFolder = getCatalogosFolder_();
-  var pdfArts = escribirCatalogoPdf_(
-    outFolder,
-    CATALOGO_ARTICULOS_NAME,
-    "Catálogo de artículos científicos",
-    "1° Jornadas internas de Inteligencia Artificial 2026",
-    arts,
-    "artículos"
-  );
-  var pdfPpts = escribirCatalogoPdf_(
-    outFolder,
-    CATALOGO_PRESENTACIONES_NAME,
-    "Catálogo de presentaciones PowerPoint",
-    "1° Jornadas internas de Inteligencia Artificial 2026",
-    ppts,
-    "presentaciones"
-  );
-
-  var props = PropertiesService.getScriptProperties();
-  var updatedAt = new Date().toISOString();
-  props.setProperty("jornadas_catalogo_articulos_id", pdfArts.getId());
-  props.setProperty("jornadas_catalogo_presentaciones_id", pdfPpts.getId());
-  props.setProperty("jornadas_catalogo_updated_at", updatedAt);
-  props.setProperty("jornadas_catalogo_articulos_n", String(arts.length));
-  props.setProperty("jornadas_catalogo_presentaciones_n", String(ppts.length));
-  props.setProperty(
-    "jornadas_catalogo_articulos_items_json",
-    JSON.stringify(resumenItemsCatalogo_(arts))
-  );
-  props.setProperty(
-    "jornadas_catalogo_presentaciones_items_json",
-    JSON.stringify(resumenItemsCatalogo_(ppts))
-  );
 
   var programa = null;
   try {
@@ -119,23 +87,105 @@ function regenerarCatalogosYProgramaCore_(arts, ppts) {
     programa = { ok: false, error: String(errProg) };
   }
 
+  // Catálogos = ponencias del programa (alfabético). Drive solo aporta flags de archivo.
+  var catalogoArts = entradasCatalogoDesdePrograma_("articulo");
+  var catalogoPpts = entradasCatalogoDesdePrograma_("presentacion");
+  if (!catalogoArts.length) catalogoArts = arts;
+  if (!catalogoPpts.length) catalogoPpts = ppts;
+
+  var outFolder = getCatalogosFolder_();
+  var pdfArts = escribirCatalogoPdf_(
+    outFolder,
+    CATALOGO_ARTICULOS_NAME,
+    "Catálogo de artículos científicos",
+    "1° Jornadas internas de Inteligencia Artificial 2026",
+    catalogoArts,
+    "artículos"
+  );
+  var pdfPpts = escribirCatalogoPdf_(
+    outFolder,
+    CATALOGO_PRESENTACIONES_NAME,
+    "Catálogo de presentaciones PowerPoint",
+    "1° Jornadas internas de Inteligencia Artificial 2026",
+    catalogoPpts,
+    "presentaciones"
+  );
+
+  var props = PropertiesService.getScriptProperties();
+  var updatedAt = new Date().toISOString();
+  props.setProperty("jornadas_catalogo_articulos_id", pdfArts.getId());
+  props.setProperty("jornadas_catalogo_presentaciones_id", pdfPpts.getId());
+  props.setProperty("jornadas_catalogo_updated_at", updatedAt);
+  props.setProperty("jornadas_catalogo_articulos_n", String(catalogoArts.length));
+  props.setProperty("jornadas_catalogo_presentaciones_n", String(catalogoPpts.length));
+  props.setProperty(
+    "jornadas_catalogo_articulos_items_json",
+    JSON.stringify(resumenItemsCatalogo_(catalogoArts))
+  );
+  props.setProperty(
+    "jornadas_catalogo_presentaciones_items_json",
+    JSON.stringify(resumenItemsCatalogo_(catalogoPpts))
+  );
+
   return {
     ok: true,
     updatedAt: updatedAt,
     programa: programa,
+    fuenteCatalogos: "programa",
     articulos: {
-      count: arts.length,
+      count: catalogoArts.length,
       pdfId: pdfArts.getId(),
       pdfUrl: pdfArts.getUrl(),
-      items: resumenItemsCatalogo_(arts)
+      items: resumenItemsCatalogo_(catalogoArts)
     },
     presentaciones: {
-      count: ppts.length,
+      count: catalogoPpts.length,
       pdfId: pdfPpts.getId(),
       pdfUrl: pdfPpts.getUrl(),
-      items: resumenItemsCatalogo_(ppts)
+      items: resumenItemsCatalogo_(catalogoPpts)
     }
   };
+}
+
+/**
+ * Lista de catálogo = ponencias del programa actual (orden alfabético).
+ * kind: "articulo" | "presentacion"
+ */
+function entradasCatalogoDesdePrograma_(kind) {
+  var site = null;
+  try {
+    if (typeof obtenerProgramaSitio_ === "function") {
+      site = obtenerProgramaSitio_();
+    }
+  } catch (ignore) {}
+  if (!site || !site.items || !site.items.length) return [];
+
+  var isPpt = String(kind || "").indexOf("present") >= 0;
+  var out = [];
+  var i;
+  for (i = 0; i < site.items.length; i++) {
+    var it = site.items[i] || {};
+    if (String(it.tipo || "").toLowerCase() !== "ponencia") continue;
+    var title = String(it.titulo || "").replace(/\s+/g, " ").trim();
+    if (!title) continue;
+    var author = String(it.persona || "").replace(/\s+/g, " ").trim();
+    var area = String(it.area || "").replace(/\s+/g, " ").trim();
+    var tiene = isPpt ? !!it.pptOk : !!it.articuloOk;
+    out.push({
+      title: title,
+      author: author,
+      area: area,
+      fileName: "",
+      fileId: isPpt ? it.pptFileId || "" : it.articuloFileId || "",
+      fileUrl: "",
+      kind: isPpt ? "presentacion" : "articulo",
+      sinArchivo: !tiene
+    });
+  }
+  out.sort(function (a, b) {
+    return String(a.title).localeCompare(String(b.title), "es", { sensitivity: "base" });
+  });
+  return out;
 }
 
 function resumenItemsCatalogo_(list) {
@@ -148,7 +198,8 @@ function resumenItemsCatalogo_(list) {
       author: it.author || "",
       area: it.area || "",
       fileName: it.fileName || "",
-      fileId: it.fileId || ""
+      fileId: it.fileId || "",
+      sinArchivo: !!it.sinArchivo
     });
   }
   return out;
@@ -230,20 +281,36 @@ function estadoSistemaJornadas_() {
  * No abre Docs ni regenera PDF (evita la demora de minutos).
  */
 function listarCatalogosRapido_() {
-  var arts = listarEntradasRapido_(
+  var artsDrive = listarEntradasRapido_(
     JORNADAS_ARTICULOS_FOLDER_ID,
     ARTICULOS_MIME_OK,
     "articulo"
   );
-  var ppts = listarEntradasRapido_(
+  var pptsDrive = listarEntradasRapido_(
     JORNADAS_PRESENTACIONES_FOLDER_ID,
     PRESENTACIONES_MIME_OK,
     "presentacion"
   );
-  emparejarAutoresEntreCatalogos_(arts, ppts);
-  sanearEntradasCatalogo_(arts, ppts);
-  arts = deduplicarEntradasCatalogo_(arts);
-  ppts = deduplicarEntradasCatalogo_(ppts);
+  emparejarAutoresEntreCatalogos_(artsDrive, pptsDrive);
+  sanearEntradasCatalogo_(artsDrive, pptsDrive);
+  artsDrive = deduplicarEntradasCatalogo_(artsDrive);
+  pptsDrive = deduplicarEntradasCatalogo_(pptsDrive);
+
+  // Mantener programa al día con Drive, pero el listado público sale del programa.
+  var programaSync = null;
+  try {
+    if (typeof sincronizarProgramaDesdeCatalogos_ === "function") {
+      programaSync = sincronizarProgramaDesdeCatalogos_(artsDrive, pptsDrive);
+    }
+  } catch (errProgSync) {
+    programaSync = { ok: false, error: String(errProgSync) };
+  }
+
+  var arts = entradasCatalogoDesdePrograma_("articulo");
+  var ppts = entradasCatalogoDesdePrograma_("presentacion");
+  if (!arts.length) arts = artsDrive;
+  if (!ppts.length) ppts = pptsDrive;
+
   arts.sort(function (a, b) {
     return String(a.title).localeCompare(String(b.title), "es", { sensitivity: "base" });
   });
@@ -251,7 +318,6 @@ function listarCatalogosRapido_() {
     return String(a.title).localeCompare(String(b.title), "es", { sensitivity: "base" });
   });
   var updatedAt = new Date().toISOString();
-  // Cachear items para ?action=catalogos sin regenerar PDF
   try {
     var props = PropertiesService.getScriptProperties();
     props.setProperty(
@@ -268,19 +334,10 @@ function listarCatalogosRapido_() {
       props.setProperty("jornadas_catalogo_updated_at", updatedAt);
     }
   } catch (ignoreCache) {}
-  // En modo manual, anexar al programa las ponencias de Drive que aún no estén
-  // (p. ej. Gil / Castillo / Ojeda) sin esperar al trigger horario.
-  var programaSync = null;
-  try {
-    if (typeof sincronizarProgramaDesdeCatalogos_ === "function") {
-      programaSync = sincronizarProgramaDesdeCatalogos_(arts, ppts);
-    }
-  } catch (errProgSync) {
-    programaSync = { ok: false, error: String(errProgSync) };
-  }
   return {
     ok: true,
     updatedAt: updatedAt,
+    fuente: "programa",
     programa: programaSync,
     articulos: {
       count: arts.length,
@@ -1646,8 +1703,8 @@ function escribirCatalogoPdf_(folder, fileName, titulo, subtitulo, items, labelP
   if (!items.length) {
     estiloCatalogo_(
       body.appendParagraph(
-        "Todavía no hay archivos cargados en la carpeta correspondiente. " +
-          "Este catálogo se actualizará automáticamente cuando se suban nuevos trabajos."
+        "Todavía no hay ponencias en el programa. " +
+          "Este catálogo se arma desde el programa oficial (misma fuente que el sitio)."
       ),
       11,
       {}
@@ -1662,6 +1719,12 @@ function escribirCatalogoPdf_(folder, fileName, titulo, subtitulo, items, labelP
       var line = i + 1 + ". " + tituloItem;
       if (autorItem) line += " — " + autorItem;
       if (areaItem) line += " (" + areaItem + ")";
+      if (it.sinArchivo) {
+        line +=
+          labelPlural && String(labelPlural).indexOf("present") >= 0
+            ? " · sin PowerPoint en Drive"
+            : " · sin artículo en Drive";
+      }
       estiloCatalogo_(body.appendParagraph(line), 11, {
         bold: true,
         spacingAfter: 10

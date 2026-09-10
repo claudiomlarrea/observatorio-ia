@@ -1,30 +1,10 @@
-Catálogo ≠ Programa (qué mirar)
+Catálogo = Programa (regla definitiva)
 
-Programa (sitio / editor / PDF vivo)
-  = agenda del evento (bloques fijos + ediciones manuales + anexos Drive).
-  Puede incluir ponencias SIN archivo (p. ej. Marimon, Encuesta UC Cuyo).
+El catálogo vivo lee ?action=programa (ponencias), no la carpeta Drive.
 
-Catálogo de artículos / presentaciones
-  = solo archivos aceptados en las carpetas Drive, orden alfabético.
-  Si no hay .docx/.pdf/.pptx en Drive → no aparece en el catálogo.
-  Eso es correcto: el catálogo no es una copia del programa.
+URL: https://observatorio-ia.uccuyo.edu.ar/jornadas-catalogo.html?tipo=articulos&v=4
 
-Hoy (diagnóstico)
-  · En Drive HAY: GEMEPH, Uso IA, Giboin, Meretta, Martinez, Gil, Ojeda,
-    Castillo (Castillo estaba 2–3 veces → el código ahora deduplica).
-  · En Drive NO HAY: Encuesta Cataluña (Marimon), Encuesta UC Cuyo (José).
-    Por eso no salen en https://observatorio-ia.uccuyo.edu.ar/jornadas-catalogo.html?tipo=articulos
-  · El programa en modo manual a veces se atrasaba respecto de Drive
-    (Gil / Ojeda / Castillo en catálogo pero no en agenda). El listado
-    rápido de catálogos ahora también anexa esas ponencias al programa.
+Marimon / Encuesta UC Cuyo aparecen aunque no haya archivo
+(marcados “sin artículo en Drive”).
 
-Qué pegar / desplegar
-  1. Pegá completo google-apps-script/JornadasCatalogos.gs → Código.gs
-  2. Implementar → Nueva versión (deployment API pública)
-  3. Ejecutá actualizarCatalogosJornadas (o abrí el catálogo vivo una vez)
-  4. Verificá:
-       ?action=programa   → debe incluir Gil, Ojeda, Castillo + las manuales
-       ?action=listar_catalogos → Castillo una sola vez; sin Marimon/José
-
-Si Marimon / Encuesta UC Cuyo deben figurar en el catálogo:
-  subí el artículo a la carpeta Drive de artículos con el nombre sugerido.
+Drive solo sirve para subir el archivo y quitar esa marca.

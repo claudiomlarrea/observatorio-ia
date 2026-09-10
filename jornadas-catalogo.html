@@ -94,6 +94,11 @@
         line-height: 1.35;
         font-weight: 700;
       }
+      li .note {
+        font-weight: 400;
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
       .foot {
         margin-top: 1.4rem;
         text-align: center;
@@ -129,6 +134,11 @@
     <script src="js/jornadas-config.js"></script>
     <script>
       (function () {
+        /**
+         * Fuente única: el PROGRAMA (?action=programa).
+         * El catálogo lista las ponencias del programa (alfabético).
+         * Drive solo indica si hay archivo; ya no define quién entra al catálogo.
+         */
         function esc(s) {
           return String(s || "")
             .replace(/&/g, "&amp;")
@@ -146,15 +156,37 @@
         document.getElementById("bar-label").textContent = titulo + " · en vivo";
         document.title = titulo;
 
-        function paint(data) {
-          var block = isPpt ? data.presentaciones : data.articulos;
-          var items = (block && block.items) || [];
-          var when = data.updatedAt
-            ? new Date(data.updatedAt).toLocaleString("es-AR", {
+        function itemsDesdePrograma(prog) {
+          var raw = (prog && prog.items) || [];
+          var out = [];
+          for (var i = 0; i < raw.length; i++) {
+            var it = raw[i] || {};
+            if (String(it.tipo || "").toLowerCase() !== "ponencia") continue;
+            var tieneArchivo = isPpt ? !!it.pptOk : !!it.articuloOk;
+            out.push({
+              title: String(it.titulo || "").trim(),
+              author: String(it.persona || "").trim(),
+              area: String(it.area || "").trim(),
+              tieneArchivo: tieneArchivo,
+            });
+          }
+          out.sort(function (a, b) {
+            return String(a.title).localeCompare(String(b.title), "es", {
+              sensitivity: "base",
+            });
+          });
+          return out;
+        }
+
+        function paint(prog) {
+          var items = itemsDesdePrograma(prog);
+          var when = prog && prog.updatedAt
+            ? new Date(prog.updatedAt).toLocaleString("es-AR", {
                 dateStyle: "short",
                 timeStyle: "short",
               })
             : "";
+          var labelCount = isPpt ? " presentaciones" : " artículos";
           var html =
             "<p class=\"sub\">UNIVERSIDAD CATÓLICA DE CUYO</p>" +
             "<p class=\"sub\">Observatorio de Inteligencia Artificial</p>" +
@@ -166,25 +198,31 @@
             esc(when || "—") +
             " · " +
             items.length +
-            (isPpt ? " presentaciones" : " artículos") +
-            " · Orden alfabético por título</p>";
+            labelCount +
+            " · Misma fuente que el programa · Orden alfabético</p>";
 
           if (!items.length) {
             html +=
-              '<p class="err">Todavía no hay archivos en la carpeta correspondiente.</p>';
+              '<p class="err">Todavía no hay ponencias en el programa.</p>';
           } else {
             html += "<ol>";
             for (var i = 0; i < items.length; i++) {
-              var it = items[i] || {};
+              var it = items[i];
               var line = esc(it.title || "");
               if (it.author) line += " — " + esc(it.author);
               if (it.area) line += " (" + esc(it.area) + ")";
+              if (!it.tieneArchivo) {
+                line +=
+                  ' <span class="note">· sin ' +
+                  (isPpt ? "PowerPoint" : "artículo") +
+                  " en Drive</span>";
+              }
               html += "<li>" + line + "</li>";
             }
             html += "</ol>";
           }
           html +=
-            '<p class="foot">Generado automáticamente · Observatorio de IA · UCCuyo · observatorioia@uccuyo.edu.ar</p>';
+            '<p class="foot">Generado desde el programa · Observatorio de IA · UCCuyo · observatorioia@uccuyo.edu.ar</p>';
           document.getElementById("sheet").innerHTML = html;
         }
 
@@ -200,68 +238,21 @@
           return;
         }
 
-        // Nunca llamar ?action=actualizar acá: regenera PDFs y puede tardar minutos.
-        // 1) catálogos (rápido, con items cacheados) 2) listado ligero 3) debug.
-        function loadCatalogos() {
-          return fetch(api + "?action=catalogos", {
-            credentials: "omit",
-            cache: "no-store",
-          }).then(function (r) {
+        fetch(api + "?action=programa", {
+          credentials: "omit",
+          cache: "no-store",
+        })
+          .then(function (r) {
             if (!r.ok) throw new Error("HTTP " + r.status);
             return r.json();
-          });
-        }
-
-        function loadListado() {
-          return fetch(api + "?action=listar_catalogos", {
-            credentials: "omit",
-            cache: "no-store",
-          }).then(function (r) {
-            if (!r.ok) throw new Error("HTTP " + r.status);
-            return r.json();
-          });
-        }
-
-        // Preferir listado liviano (sin regenerar PDF). Catálogos cacheados como 2º.
-        loadListado()
-          .catch(function () {
-            return loadCatalogos();
           })
           .then(function (data) {
-            if (!data || !data.ok) throw new Error("sin datos");
-            var block = isPpt ? data.presentaciones : data.articulos;
-            if (block && block.items && block.items.length) {
-              paint(data);
-              return;
-            }
-            return loadCatalogos().then(function (cached) {
-              var b = isPpt ? cached.presentaciones : cached.articulos;
-              if (b && b.items && b.items.length) {
-                paint(cached);
-                return;
-              }
-              var cfg2 = window.JORNADAS_IA_2026 || {};
-              var fb = isPpt
-                ? cfg2.CATALOGO_PRESENTACIONES_PDF_FALLBACK
-                : cfg2.CATALOGO_ARTICULOS_PDF_FALLBACK;
-              if (fb) {
-                window.location.replace(fb);
-                return;
-              }
-              paint(cached || data);
-            });
+            if (!data || !data.ok || !data.items) throw new Error("sin programa");
+            paint(data);
           })
           .catch(function () {
-            var cfg2 = window.JORNADAS_IA_2026 || {};
-            var fb = isPpt
-              ? cfg2.CATALOGO_PRESENTACIONES_PDF_FALLBACK
-              : cfg2.CATALOGO_ARTICULOS_PDF_FALLBACK;
-            if (fb) {
-              window.location.replace(fb);
-              return;
-            }
             fail(
-              "No se pudo cargar el catálogo en vivo. Probá desde el sitio o reintentá en un minuto."
+              "No se pudo cargar el programa. Probá desde el sitio o reintentá en un minuto."
             );
           });
 
