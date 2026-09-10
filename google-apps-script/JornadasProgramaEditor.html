@@ -164,6 +164,12 @@
             <button type="button" class="danger" id="btnDrive">Regenerar desde Drive</button>
           </div>
           <p class="msg" id="status">Cargando…</p>
+          <p class="msg" id="hint401" style="display:none;margin-top:0.35rem;color:var(--danger)">
+            Si ves error 401: cerrá otras cuentas Google, abrí el editor en una ventana nueva
+            (solo observatorioia@ o investigacion@) y volvé a autorizar
+            (Avanzado → Ir a OIA · Catálogos… → Permitir). No uses «Regenerar desde Drive»
+            si querés conservar el orden manual.
+          </p>
         </div>
         <div id="list"></div>
       </div>
@@ -172,15 +178,35 @@
     <script>
       var AUTORIZADO = <?!= autorizado ? "true" : "false" ?>;
       var EMAIL = <?!= JSON.stringify(email || "") ?>;
+      var INITIAL = <?!= initialJson ?>;
       var items = [];
 
       function byId(id) { return document.getElementById(id); }
+
+      function mensajeErrorRed(err) {
+        var s = String(err || "");
+        if (/401|NetworkError|Unauthorized|autorizaci[oó]n/i.test(s)) {
+          var hint = byId("hint401");
+          if (hint) hint.style.display = "block";
+          return (
+            "NetworkError HTTP 401 (Google cortó la sesión del editor). " +
+            "Cerrá otras cuentas Google → abrí de nuevo el enlace del editor → " +
+            "si pide permisos: Avanzado → Ir a la app → Permitir. " +
+            "Mejor en ventana de incógnito solo con observatorioia@uccuyo.edu.ar."
+          );
+        }
+        return s;
+      }
 
       function setStatus(text, kind) {
         var el = byId("status");
         if (!el) return;
         el.textContent = text || "";
         el.className = "msg" + (kind === "err" ? " msg--err" : kind === "ok" ? " msg--ok" : "");
+        if (kind !== "err") {
+          var hint = byId("hint401");
+          if (hint) hint.style.display = "none";
+        }
       }
 
       function isFijo(it) {
@@ -347,8 +373,7 @@
             applyPayload(res);
           })
           .withFailureHandler(function (err) {
-            setStatus(String(err), "err");
-            showDeny(String(err), EMAIL);
+            setStatus(mensajeErrorRed(err), "err");
           })
           .editorProgramaCargar();
       }
@@ -369,13 +394,13 @@
           })
           .withFailureHandler(function (err) {
             byId("btnSave").disabled = false;
-            setStatus(String(err), "err");
+            setStatus(mensajeErrorRed(err), "err");
           })
           .editorProgramaGuardar(items);
       }
 
       function regenerarDesdeDrive() {
-        if (!confirm("¿Reemplazar el programa por el armado automático desde Drive?")) return;
+        if (!confirm("¿Reemplazar el programa por el armado automático desde Drive? Se pierde el orden manual.")) return;
         setStatus("Regenerando desde Drive…");
         google.script.run
           .withSuccessHandler(function (res) {
@@ -387,7 +412,7 @@
             applyPayload(res);
           })
           .withFailureHandler(function (err) {
-            setStatus(String(err), "err");
+            setStatus(mensajeErrorRed(err), "err");
           })
           .editorProgramaDesdeDrive();
       }
@@ -402,7 +427,12 @@
       } else {
         showApp();
         byId("userEmail").textContent = EMAIL ? "Sesión: " + EMAIL : "";
-        recargarPrograma();
+        if (INITIAL && INITIAL.ok) {
+          applyPayload(INITIAL);
+          setStatus("Listo para editar. Reordená y pulsá Guardar cambios.", "ok");
+        } else {
+          recargarPrograma();
+        }
       }
     </script>
   </body>

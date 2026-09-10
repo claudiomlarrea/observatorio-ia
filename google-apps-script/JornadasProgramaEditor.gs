@@ -34,6 +34,22 @@ function servirEditorProgramaHtml_() {
   t.sitioUrl = "https://observatorio-ia.uccuyo.edu.ar/#jornadas-ia";
   t.email = emailUsuarioEditor_() || "";
   t.autorizado = !!editorProgramaAutorizado_();
+  // Precargar programa en el HTML para no depender de google.script.run al abrir
+  // (evita NetworkError HTTP 401 al primer “Recargar”).
+  var initial = { ok: false };
+  if (t.autorizado) {
+    try {
+      initial = payloadEditorOk_();
+    } catch (errInit) {
+      initial = {
+        ok: false,
+        error: String(errInit),
+        email: t.email,
+        autorizado: true
+      };
+    }
+  }
+  t.initialJson = JSON.stringify(initial);
   return t
     .evaluate()
     .setTitle("Editar programa · Jornadas IA 2026")

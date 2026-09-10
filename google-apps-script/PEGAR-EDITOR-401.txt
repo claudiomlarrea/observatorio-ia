@@ -1,0 +1,34 @@
+Editor programa — NetworkError HTTP 401
+=======================================
+
+Qué significa
+-------------
+El panel se abrió (ves el programa) pero Guardar / Recargar / Regenerar
+falla porque Google cortó la sesión de google.script.run.
+
+
+Arreglo rápido (2 minutos)
+--------------------------
+1. Cerrá TODAS las cuentas Google del navegador (o usá ventana de incógnito).
+2. Entrá SOLO con observatorioia@uccuyo.edu.ar (o investigacion@).
+3. Abrí de nuevo:
+   https://script.google.com/macros/s/AKfycby-iPVY572kZOubTA_eFv0WRWCponjQde778ibv2daEYvIDdza6N6HFnyw-tDdmWSB9/exec?action=editar_programa
+4. Si dice «Authorization needed» / app no verificada:
+   Review permissions → Advanced → Go to OIA · Catálogos… → Allow
+5. Reordená ponencias → Guardar cambios (verde).
+   NO pulses «Regenerar desde Drive» (borra el orden manual).
+
+
+Tras pegar el editor actualizado
+--------------------------------
+Pegá JornadasProgramaEditor.gs + JornadasProgramaEditor.html
+→ Implementar → Nueva versión (deployment B: Usuario que accede).
+
+El programa ya viene precargado al abrir (no hace falta Recargar).
+
+
+Comprobar que el sitio se actualizó
+-----------------------------------
+https://observatorio-ia.uccuyo.edu.ar/#jornadas-ia
+https://observatorio-ia.uccuyo.edu.ar/jornadas-catalogo.html?tipo=articulos&v=5
+(mismo orden que el programa guardado)
