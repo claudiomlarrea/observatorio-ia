@@ -164,6 +164,9 @@
         function paint(data) {
           var evento = (data && data.evento) || {};
           var items = (data && data.items) || [];
+          if (typeof window.JORNADAS_fixProgramaItems === "function") {
+            items = window.JORNADAS_fixProgramaItems(items);
+          }
           var estado = String((data && data.estado) || "provisorio").toLowerCase();
           var nota =
             estado === "confirmado"
