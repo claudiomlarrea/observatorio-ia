@@ -24,7 +24,7 @@ window.JORNADAS_IA_2026 = {
   /**
    * Panel equipo: cruza artículo ↔ PowerPoint por ponencia.
    */
-  CARGAS_STATUS_URL: "jornadas-cargas.html?v=6",
+  CARGAS_STATUS_URL: "jornadas-cargas.html?v=7",
   /**
    * Títulos / autores canónicos (portada Word + PPT revisados).
    * pptOk: true si ya revisamos el PowerPoint correspondiente.
@@ -113,7 +113,17 @@ window.JORNADAS_IA_2026 = {
       area: "Educación",
       clave: "ojeda cali maluf",
       articuloOk: true,
-      pptOk: false,
+      pptOk: true,
+    },
+    garcia: {
+      match: /quo\s*vadis|antropolog|etica\s+y\s+antrop|ética\s+antrop/i,
+      titulo:
+        "Inteligencia artificial, conocimiento y educación: desafíos antropológicos y educativos desde Quo vadis, humanitas",
+      persona: "García",
+      area: "Cultura Religiosa y Pastoral",
+      clave: "garcia quo vadis",
+      articuloOk: true,
+      pptOk: true,
     },
     dividuo: {
       match: /dividuo|dividualidad/i,
@@ -139,7 +149,7 @@ window.JORNADAS_IA_2026 = {
    * Vista en vivo del programa (misma API que el listado). Imprimir → Guardar PDF.
    * El .pdf en assets/ es solo respaldo y puede quedar desfasado.
    */
-  PROGRAMA_PDF_URL: "jornadas-programa-pdf.html?v=6",
+  PROGRAMA_PDF_URL: "jornadas-programa-pdf.html?v=7",
   PROGRAMA_PDF_FALLBACK: "assets/jornadas/programa-jornadas-ia-2026.pdf?v=10",
   /**
    * Editor del programa (equipo). Implementación aparte:
@@ -152,7 +162,7 @@ window.JORNADAS_IA_2026 = {
    * El catálogo de PowerPoint quedó desactivado en la UI; el seguimiento
    * artículo↔PPT es jornadas-cargas.html. La carpeta Drive de PPT sigue activa.
    */
-  CATALOGO_ARTICULOS_PDF: "jornadas-catalogo.html?tipo=articulos&v=10",
+  CATALOGO_ARTICULOS_PDF: "jornadas-catalogo.html?tipo=articulos&v=11",
   CATALOGO_PRESENTACIONES_PDF: "",
   CATALOGO_ARTICULOS_PDF_FALLBACK:
     "assets/jornadas/catalogo-articulos-jornadas-ia-2026.pdf?v=13",
@@ -176,6 +186,7 @@ window.JORNADAS_fixProgramaItems = function (items) {
       .replace(/\s+/g, " ")
       .trim();
     if (/^(jose\s+)?la\s+malfa$/.test(ck)) return "jose la malfa";
+    if (/garcia|garcía|quo\s*vadis|antropolog/.test(ck)) return "garcia quo vadis";
     return ck;
   }
 
@@ -229,8 +240,8 @@ window.JORNADAS_fixProgramaItems = function (items) {
         if (rule.area) it.area = rule.area;
         if (rule.clave) it.clave = rule.clave;
         if (rule.articuloOk === true) it.articuloOk = true;
-        if (rule.pptOk === true) it.pptOk = true;
-        if (rule.pptOk === false) it.pptOk = false;
+        if (rule.pptOk === true || it.pptFileId) it.pptOk = true;
+        else if (rule.pptOk === false && !it.pptFileId) it.pptOk = false;
         break;
       }
       var ck = claveNorm(it.clave || it.titulo || "");
@@ -286,8 +297,8 @@ window.JORNADAS_fixAgendaSesiones = function (sesiones) {
           .filter(Boolean);
         if (rule.area) s.area = rule.area;
         if (rule.articuloOk === true) s.articuloOk = true;
-        if (rule.pptOk === true) s.pptOk = true;
-        if (rule.pptOk === false) s.pptOk = false;
+        if (rule.pptOk === true || s.pptFileId) s.pptOk = true;
+        else if (rule.pptOk === false && !s.pptFileId) s.pptOk = false;
         break;
       }
       var sk = String(s.titulo || "")

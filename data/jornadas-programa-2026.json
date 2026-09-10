@@ -2,7 +2,7 @@
   "ok": true,
   "source": "manual",
   "editedBy": "",
-  "updatedAt": "2026-09-10T20:50:00.000Z",
+  "updatedAt": "2026-09-10T21:35:00.000Z",
   "version": "2026-09-10",
   "estado": "provisorio",
   "evento": {
@@ -108,8 +108,8 @@
     },
     {
       "orden": 6,
-      "hora": "15:55",
-      "horaFin": "16:05",
+      "hora": "15:45",
+      "horaFin": "15:55",
       "tipo": "ponencia",
       "titulo": "GEMEPH — Gemelo digital sociodemográfico de la EPH-INDEC. Exclusión digital, vulnerabilidad y brechas territoriales en Argentina",
       "persona": "Larrea et al.",
@@ -126,8 +126,8 @@
     },
     {
       "orden": 7,
-      "hora": "16:05",
-      "horaFin": "16:15",
+      "hora": "15:55",
+      "horaFin": "16:05",
       "tipo": "ponencia",
       "titulo": "Del contenido fragmentado al razonamiento integrado: uso de un simulador conversacional con IA en estudiantes de Medicina",
       "persona": "Castillo et al.",
@@ -144,8 +144,8 @@
     },
     {
       "orden": 8,
-      "hora": "16:15",
-      "horaFin": "16:25",
+      "hora": "16:05",
+      "horaFin": "16:15",
       "tipo": "ponencia",
       "titulo": "Sistema de Alerta Temprana (SAT) en Epidemiología Veterinaria, vínculo entre conocimiento científico e IA",
       "persona": "Giboin",
@@ -162,8 +162,8 @@
     },
     {
       "orden": 9,
-      "hora": "16:25",
-      "horaFin": "16:35",
+      "hora": "16:15",
+      "horaFin": "16:25",
       "tipo": "ponencia",
       "titulo": "Inteligencia artificial aplicada a la Contabilidad Digital: un modelo metodológico para su integración en PyMEs",
       "persona": "Meretta",
@@ -180,8 +180,8 @@
     },
     {
       "orden": 10,
-      "hora": "16:35",
-      "horaFin": "16:45",
+      "hora": "16:25",
+      "horaFin": "16:35",
       "tipo": "ponencia",
       "titulo": "IA y Derechos Humanos: la IA como herramienta para dotar de eficacia a los DESC",
       "persona": "Martinez, Maluf",
@@ -198,8 +198,8 @@
     },
     {
       "orden": 11,
-      "hora": "16:45",
-      "horaFin": "16:55",
+      "hora": "16:35",
+      "horaFin": "16:45",
       "tipo": "ponencia",
       "titulo": "La Inteligencia Artificial como lenguaje cultural en la Educación Superior",
       "persona": "Gil",
@@ -216,8 +216,8 @@
     },
     {
       "orden": 12,
-      "hora": "16:55",
-      "horaFin": "17:05",
+      "hora": "16:45",
+      "horaFin": "16:55",
       "tipo": "ponencia",
       "titulo": "Inteligencia artificial y enseñanza de la abogacía: una perspectiva humanista sobre el proceso de aprendizaje",
       "persona": "Ojeda, Cali, Maluf",
@@ -225,17 +225,17 @@
       "area": "Educación",
       "sala": "Ponencia",
       "articuloOk": true,
-      "pptOk": false,
+      "pptOk": true,
       "confirmado": false,
       "notas": "Incluido automáticamente desde Drive (provisorio)",
       "clave": "ojeda cali maluf",
       "articuloFileId": "1rGKBnee7XWjal9cfbCBYRuScBjh86fB4",
-      "pptFileId": ""
+      "pptFileId": "1IDW_uOH-NyuHwXywgMl_J00uZ2Vljjtj"
     },
     {
       "orden": 13,
-      "hora": "17:05",
-      "horaFin": "17:15",
+      "hora": "16:55",
+      "horaFin": "17:05",
       "tipo": "ponencia",
       "titulo": "Del individuo al dividuo en el aula universitaria. La dividualidad como categoría pedagógico-didáctica para una práctica docente digital crítica ante la IA",
       "persona": "Gil, Ojeda",
@@ -249,6 +249,24 @@
       "clave": "gil ojeda dividuo",
       "articuloFileId": "1siz1tw8ijyvXWZryQjPC60s3Vo1opRSg",
       "pptFileId": "1SfbgDkbKUa-PGnNlqm1CzBPb9MuqoGGZ"
+    },
+    {
+      "orden": 14,
+      "hora": "17:05",
+      "horaFin": "17:15",
+      "tipo": "ponencia",
+      "titulo": "Inteligencia artificial, conocimiento y educación: desafíos antropológicos y educativos desde Quo vadis, humanitas",
+      "persona": "García",
+      "rol": "Expositor/a",
+      "area": "Cultura Religiosa y Pastoral",
+      "sala": "Ponencia",
+      "articuloOk": true,
+      "pptOk": true,
+      "confirmado": false,
+      "notas": "Incluido automáticamente desde Drive (provisorio)",
+      "clave": "garcia quo vadis",
+      "articuloFileId": "1DrtieQgKTmu0neBae0Reh315a9lNnZzk",
+      "pptFileId": "1WzAKQG8zKf735Zrknt7O-k_xWJyN3MTc"
     }
   ]
 }

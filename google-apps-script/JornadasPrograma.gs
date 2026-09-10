@@ -831,7 +831,18 @@ var JORNADAS_TITULOS_CANON = [
     area: "Educación",
     clave: "ojeda cali maluf",
     articuloOk: true,
-    pptOk: false
+    pptOk: true
+  },
+  {
+    id: "garcia",
+    match: /quo\s*vadis|antropolog|etica\s+y\s+antrop|ética\s+antrop/i,
+    titulo:
+      "Inteligencia artificial, conocimiento y educación: desafíos antropológicos y educativos desde Quo vadis, humanitas",
+    persona: "García",
+    area: "Cultura Religiosa y Pastoral",
+    clave: "garcia quo vadis",
+    articuloOk: true,
+    pptOk: true
   },
   {
     id: "dividuo",
@@ -899,6 +910,7 @@ function dedupeProgramaItemsInPlace_(items) {
       .replace(/\s+/g, " ")
       .trim();
     if (/^(jose\s+)?la\s+malfa$/.test(ck)) return "jose la malfa";
+    if (/garcia|garcía|quo\s*vadis|antropolog/.test(ck)) return "garcia quo vadis";
     return ck;
   }
 
@@ -992,11 +1004,11 @@ function normalizarItemsTitulosCanon_(items) {
         it.articuloOk = true;
         changed = true;
       }
-      if (rule.pptOk === true && !it.pptOk) {
+      if ((rule.pptOk === true || it.pptFileId) && !it.pptOk) {
         it.pptOk = true;
         changed = true;
       }
-      if (rule.pptOk === false && it.pptOk) {
+      if (rule.pptOk === false && it.pptOk && !it.pptFileId) {
         it.pptOk = false;
         changed = true;
       }
