@@ -37,10 +37,10 @@ window.JORNADAS_IA_2026 = {
    * Catálogos en vivo (misma API que Drive). Imprimir → Guardar PDF.
    * Los PDF en assets/ son respaldo y pueden quedar viejos.
    */
-  CATALOGO_ARTICULOS_PDF: "jornadas-catalogo.html?tipo=articulos&v=2",
+  CATALOGO_ARTICULOS_PDF: "jornadas-catalogo.html?tipo=articulos&v=3",
   CATALOGO_PRESENTACIONES_PDF: "jornadas-catalogo.html?tipo=presentaciones&v=2",
   CATALOGO_ARTICULOS_PDF_FALLBACK:
-    "assets/jornadas/catalogo-articulos-jornadas-ia-2026.pdf?v=12",
+    "assets/jornadas/catalogo-articulos-jornadas-ia-2026.pdf?v=13",
   CATALOGO_PRESENTACIONES_PDF_FALLBACK:
     "assets/jornadas/catalogo-presentaciones-jornadas-ia-2026.pdf?v=12",
 };

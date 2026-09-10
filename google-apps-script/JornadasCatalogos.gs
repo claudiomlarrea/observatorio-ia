@@ -1103,6 +1103,15 @@ function humanizarTituloCatalogo_(s) {
 /** MARKER_CATALOGOS_PYMES_20260908 — buscá este texto en Código.gs para verificar el pegado */
 function limpiarResiduosTituloCatalogo_(s) {
   s = String(s || "").replace(/\s+/g, " ").trim();
+  // Quitar extensión de archivo pegada al título (…abogacia.docx)
+  s = s.replace(
+    /\.(docx?|pptx?|pdf|odt|odp|rtf|xlsx?|csv|zip)(\s|$)/gi,
+    "$2"
+  );
+  s = s.replace(/\s+/g, " ").trim();
+  // "I Ay …" / "IAy …" → "IA y …"
+  s = s.replace(/\bI\s*Ay\b/gi, "IA y");
+  s = s.replace(/\bIAy\b/g, "IA y");
   s = s.replace(/§\s*PyMEs\s*§/gi, "PyMEs");
   s = s.replace(/§\s*pymes\s*§/gi, "PyMEs");
   s = s.replace(/§\s*PYM\s*Es\s*§/gi, "PyMEs");
@@ -1112,6 +1121,8 @@ function limpiarResiduosTituloCatalogo_(s) {
   s = s.replace(/\{\{ia\}\}/gi, "IA");
   s = s.replace(/\bPy\s+M\s+Es\b/gi, "PyMEs");
   s = s.replace(/\bPYM\s+Es\b/g, "PyMEs");
+  // Ortografía frecuente en nombres de archivo
+  s = s.replace(/\babogacia\b/gi, "abogacía");
   return s.replace(/\s+/g, " ").trim();
 }
 

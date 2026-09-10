@@ -570,6 +570,9 @@ function incorporarNuevasCargasEnProgramaManual_(arts, ppts) {
     items.push(site.items[i]);
   }
 
+  // Limpiar títulos ya publicados (p. ej. “…abogacia.docx”, “I Ay …”)
+  var titulosLimpios = sanearTitulosItemsPrograma_(items);
+
   var existentes = {};
   for (i = 0; i < items.length; i++) {
     var c1 = normalizarClavePrograma_(items[i].clave || "");
@@ -626,6 +629,16 @@ function incorporarNuevasCargasEnProgramaManual_(arts, ppts) {
   }
 
   if (!nuevas.length) {
+    if (titulosLimpios && typeof publicarProgramaManualDesdeItems_ === "function") {
+      var republished = publicarProgramaManualDesdeItems_(items);
+      return {
+        ok: true,
+        skipped: "manual",
+        added: 0,
+        cleanedTitles: true,
+        updatedAt: republished.updatedAt
+      };
+    }
     return { ok: true, skipped: "manual", added: 0 };
   }
 
@@ -675,6 +688,47 @@ function yaEstaTituloEnPrograma_(items, titulo) {
     if (puntajeSimilitudTituloPrograma_(titulo, items[i].titulo) >= 3) return true;
   }
   return false;
+}
+
+/** Quita .docx/.pdf y corrige “I Ay” / “abogacia” en ítems del programa. */
+function sanearTitulosItemsPrograma_(items) {
+  items = items || [];
+  var changed = false;
+  for (var i = 0; i < items.length; i++) {
+    var raw = String(items[i].titulo || "");
+    if (!raw) continue;
+    var clean =
+      typeof limpiarResiduosTituloCatalogo_ === "function"
+        ? limpiarResiduosTituloCatalogo_(raw)
+        : raw
+            .replace(/\.(docx?|pptx?|pdf)(\s|$)/gi, "$2")
+            .replace(/\bI\s*Ay\b/gi, "IA y")
+            .replace(/\babogacia\b/gi, "abogacía")
+            .replace(/\s+/g, " ")
+            .trim();
+    if (typeof humanizarTituloCatalogo_ === "function") {
+      clean = limpiarResiduosTituloCatalogo_(humanizarTituloCatalogo_(clean));
+    }
+    if (typeof normalizarTituloCatalogo_ === "function") {
+      clean = normalizarTituloCatalogo_(clean);
+    }
+    if (clean && clean !== raw) {
+      items[i].titulo = clean;
+      changed = true;
+    }
+    // Persona: “UCCuyo Ojeda,Cali,Maluf” → “Ojeda, Cali, Maluf”
+    var per = String(items[i].persona || "");
+    var per2 = per
+      .replace(/^UCCuyo\s+/i, "")
+      .replace(/,/g, ", ")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (per2 && per2 !== per) {
+      items[i].persona = per2;
+      changed = true;
+    }
+  }
+  return changed;
 }
 
 function limpiarTituloPrograma_(titulo, fileName) {
