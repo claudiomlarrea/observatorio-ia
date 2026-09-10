@@ -1,8 +1,8 @@
 {
   "ok": true,
   "source": "manual",
-  "editedBy": "observatorioia@uccuyo.edu.ar",
-  "updatedAt": "2026-09-08T22:28:36.497Z",
+  "editedBy": "",
+  "updatedAt": "2026-09-10T19:40:00.000Z",
   "meta": {
     "titulo": "1° Jornadas internas de Inteligencia Artificial — UCCuyo",
     "subtitulo": "Observatorio de Inteligencia Artificial",
@@ -19,7 +19,7 @@
     "catalogoArticulos": "../assets/jornadas/catalogo-articulos-jornadas-ia-2026.pdf",
     "catalogoPresentaciones": "../assets/jornadas/catalogo-presentaciones-jornadas-ia-2026.pdf",
     "minutosPorPonencia": 10,
-    "notaFormato": "Una sola sala virtual. Se evaluará dividir en dos salas si al 16/9 hay 14 o más ponencias confirmadas."
+    "notaFormato": "Por ahora una sola sala virtual. Se evaluará dividir en dos salas si al cierre de expositores hay 14 o más ponencias confirmadas."
   },
   "sesiones": [
     {
@@ -99,13 +99,13 @@
       "notas": ""
     },
     {
-      "id": "j-ponencia-jose-la-malfa",
+      "id": "j-ponencia-jos-la-malfa",
       "dia": "2026-10-06",
       "inicio": "15:35",
       "fin": "15:45",
       "sala": "Ponencia",
       "tipo": "ponencia",
-      "titulo": "Encuesta alumnos de la UCCuyo",
+      "titulo": "Encuesta alumnos de la UC Cuyo",
       "disertantes": [
         "José La Malfa"
       ],
@@ -118,29 +118,10 @@
       "notas": ""
     },
     {
-      "id": "j-ponencia-larrea",
+      "id": "j-ponencia-la-malfa",
       "dia": "2026-10-06",
       "inicio": "15:45",
       "fin": "15:55",
-      "sala": "Ponencia",
-      "tipo": "ponencia",
-      "titulo": "GEMEPH Gemelo Digital EPH",
-      "disertantes": [
-        "Larrea et al."
-      ],
-      "moderadores": [],
-      "area": "Observatorio de IA",
-      "rol": "Expositor/a",
-      "articuloOk": true,
-      "pptOk": true,
-      "confirmado": false,
-      "notas": "Incluido automáticamente desde Drive (provisorio)"
-    },
-    {
-      "id": "j-ponencia-la-malfa",
-      "dia": "2026-10-06",
-      "inicio": "15:55",
-      "fin": "16:05",
       "sala": "Ponencia",
       "tipo": "ponencia",
       "titulo": "Uso de IA en estudiantes",
@@ -156,10 +137,48 @@
       "notas": "Incluido automáticamente desde Drive (provisorio)"
     },
     {
-      "id": "j-ponencia-giboin",
+      "id": "j-ponencia-larrea-et-al",
+      "dia": "2026-10-06",
+      "inicio": "15:55",
+      "fin": "16:05",
+      "sala": "Ponencia",
+      "tipo": "ponencia",
+      "titulo": "GEMEPH Gemelo Digital EPH",
+      "disertantes": [
+        "Larrea et al."
+      ],
+      "moderadores": [],
+      "area": "Observatorio de IA",
+      "rol": "Expositor/a",
+      "articuloOk": true,
+      "pptOk": true,
+      "confirmado": false,
+      "notas": "Incluido automáticamente desde Drive (provisorio)"
+    },
+    {
+      "id": "j-ponencia-castillo-et-al",
       "dia": "2026-10-06",
       "inicio": "16:05",
       "fin": "16:15",
+      "sala": "Ponencia",
+      "tipo": "ponencia",
+      "titulo": "Del contenido fragmentado al razonamiento integrado: uso de un simulador conversacional con IA en estudiantes de Medicina",
+      "disertantes": [
+        "Castillo et al."
+      ],
+      "moderadores": [],
+      "area": "Salud",
+      "rol": "Expositor/a",
+      "articuloOk": true,
+      "pptOk": true,
+      "confirmado": false,
+      "notas": "Incluido automáticamente desde Drive (provisorio)"
+    },
+    {
+      "id": "j-ponencia-giboin",
+      "dia": "2026-10-06",
+      "inicio": "16:15",
+      "fin": "16:25",
       "sala": "Ponencia",
       "tipo": "ponencia",
       "titulo": "Sistema de Alerta Temprana en Epidemiologia Veterinaria",
@@ -177,16 +196,96 @@
     {
       "id": "j-ponencia-meretta",
       "dia": "2026-10-06",
-      "inicio": "16:15",
-      "fin": "16:25",
+      "inicio": "16:25",
+      "fin": "16:35",
       "sala": "Ponencia",
       "tipo": "ponencia",
-      "titulo": "IA Contabilidad DigitalPyMEs",
+      "titulo": "Inteligencia artificial aplicada a la Contabilidad Digital: un modelo metodológico para su integración en PyMEs",
       "disertantes": [
         "Meretta"
       ],
       "moderadores": [],
       "area": "Contabilidad",
+      "rol": "Expositor/a",
+      "articuloOk": true,
+      "pptOk": true,
+      "confirmado": false,
+      "notas": "Incluido automáticamente desde Drive (provisorio)"
+    },
+    {
+      "id": "j-ponencia-martinez",
+      "dia": "2026-10-06",
+      "inicio": "16:35",
+      "fin": "16:45",
+      "sala": "Ponencia",
+      "tipo": "ponencia",
+      "titulo": "IA y Derechos Humanos: la IA como herramienta para dotar de eficacia a los DESC",
+      "disertantes": [
+        "Martinez",
+        "Maluf"
+      ],
+      "moderadores": [],
+      "area": "Derecho",
+      "rol": "Expositor/a",
+      "articuloOk": true,
+      "pptOk": true,
+      "confirmado": false,
+      "notas": ""
+    },
+    {
+      "id": "j-ponencia-gil",
+      "dia": "2026-10-06",
+      "inicio": "16:45",
+      "fin": "16:55",
+      "sala": "Ponencia",
+      "tipo": "ponencia",
+      "titulo": "La Inteligencia Artificial como lenguaje cultural en la Educación Superior",
+      "disertantes": [
+        "Gil"
+      ],
+      "moderadores": [],
+      "area": "Asesoría Pedagógica",
+      "rol": "Expositor/a",
+      "articuloOk": true,
+      "pptOk": true,
+      "confirmado": false,
+      "notas": "Incluido automáticamente desde Drive (provisorio)"
+    },
+    {
+      "id": "j-ponencia-ojeda",
+      "dia": "2026-10-06",
+      "inicio": "16:55",
+      "fin": "17:05",
+      "sala": "Ponencia",
+      "tipo": "ponencia",
+      "titulo": "Inteligencia artificial y enseñanza de la abogacía: una perspectiva humanista sobre el proceso de aprendizaje",
+      "disertantes": [
+        "Ojeda",
+        "Cali",
+        "Maluf"
+      ],
+      "moderadores": [],
+      "area": "Educación",
+      "rol": "Expositor/a",
+      "articuloOk": true,
+      "pptOk": false,
+      "confirmado": false,
+      "notas": "Incluido automáticamente desde Drive (provisorio)"
+    },
+    {
+      "id": "j-ponencia-gil",
+      "dia": "2026-10-06",
+      "inicio": "17:05",
+      "fin": "17:15",
+      "sala": "Ponencia",
+      "tipo": "ponencia",
+      "titulo": "Del individuo al dividuo en el aula universitaria. La dividualidad como categoría pedagógico-didáctica para una práctica docente digital crítica ante la IA",
+      "disertantes": [
+        "Gil",
+        "Ojeda"
+      ],
+      "moderadores": [],
+      "area": "Asesoría Pedagógica",
       "rol": "Expositor/a",
       "articuloOk": true,
       "pptOk": true,

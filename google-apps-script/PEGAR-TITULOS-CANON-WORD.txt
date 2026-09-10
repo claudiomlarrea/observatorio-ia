@@ -1,0 +1,20 @@
+Artículos Word → títulos canónicos en sitio + API
+================================================
+
+Revisados 6 .docx únicos (duplicados (1)/(2)/(3) son idénticos).
+
+1. Gil, Ojeda — Del individuo al dividuo en el aula universitaria. La dividualidad como categoría pedagógico-didáctica para una práctica docente digital crítica ante la IA
+2. Gil — La Inteligencia Artificial como lenguaje cultural en la Educación Superior
+3. Ojeda, Cali, Maluf — Inteligencia artificial y enseñanza de la abogacía: una perspectiva humanista sobre el proceso de aprendizaje
+4. Martinez, Maluf — IA y Derechos Humanos: la IA como herramienta para dotar de eficacia a los DESC
+5. Castillo et al. — Del contenido fragmentado al razonamiento integrado: uso de un simulador conversacional con IA en estudiantes de Medicina
+6. Meretta — Inteligencia artificial aplicada a la Contabilidad Digital: un modelo metodológico para su integración en PyMEs
+
+Sitio
+  js/jornadas-config.js aplica TITULOS_CANON al cargar programa/catálogo/agenda.
+
+API (Apps Script)
+  1. Pegá JornadasPrograma.gs (+ JornadasCatalogos.gs si falta corregir_dividuo)
+  2. Implementar → Nueva versión (deployment público)
+  3. Abrí ?action=programa  ó  ?action=corregir_dividuo
+     (persiste los 6 títulos canónicos)

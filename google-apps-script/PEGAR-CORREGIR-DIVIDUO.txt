@@ -1,16 +1,14 @@
-Ojeda — Del individuo al dividuo en el aula universitaria
-========================================================
+Ojeda / Gil — título completo (desde Word)
+==========================================
 
-Título canónico (el que debe verse):
-  Del individuo al dividuo en el aula universitaria
+Título canónico:
+  Del individuo al dividuo en el aula universitaria. La dividualidad como categoría pedagógico-didáctica para una práctica docente digital crítica ante la IA
 
-Sitio / catálogo / panel / agenda
-  Ya corrigen el título en el navegador (js/jornadas-config.js).
+Autores: Gil, Ojeda
 
-API permanente (Apps Script)
-  1. Pegá JornadasPrograma.gs + JornadasCatalogos.gs
+Ver también: PEGAR-TITULOS-CANON-WORD.txt (los 6 artículos revisados).
+
+API:
+  1. Pegá JornadasPrograma.gs
   2. Implementar → Nueva versión
-  3. Abrí una vez ?action=programa
-     (persiste título + articuloOk + pptOk)
-  O ejecutá: corregirPonenciaDividuoOjeda
-  O: ?action=corregir_dividuo
+  3. ?action=programa  o  ?action=corregir_dividuo

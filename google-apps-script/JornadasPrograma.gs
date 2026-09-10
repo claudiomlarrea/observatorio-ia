@@ -727,16 +727,76 @@ function aplicarCargaAItemPrograma_(it, row) {
 }
 
 /**
- * Título canónico Ojeda (el que debe verse en programa / catálogo / agenda).
+ * Títulos / autores canónicos (portada de los .docx revisados).
+ * Se aplican al listar/sincronizar el programa.
  */
 var JORNADAS_TITULO_DIVIDUO =
-  "Del individuo al dividuo en el aula universitaria";
+  "Del individuo al dividuo en el aula universitaria. La dividualidad como categoría pedagógico-didáctica para una práctica docente digital crítica ante la IA";
+
+var JORNADAS_TITULOS_CANON = [
+  {
+    id: "dividuo",
+    match: /dividuo|dividualidad/i,
+    titulo: JORNADAS_TITULO_DIVIDUO,
+    persona: "Gil, Ojeda",
+    area: "Asesoría Pedagógica",
+    clave: "gil ojeda dividuo"
+  },
+  {
+    id: "lenguaje",
+    match: /lenguaje\s+cultural/i,
+    titulo:
+      "La Inteligencia Artificial como lenguaje cultural en la Educación Superior",
+    persona: "Gil",
+    area: "Asesoría Pedagógica",
+    clave: "gil"
+  },
+  {
+    id: "abogacia",
+    match: /abogac/i,
+    titulo:
+      "Inteligencia artificial y enseñanza de la abogacía: una perspectiva humanista sobre el proceso de aprendizaje",
+    persona: "Ojeda, Cali, Maluf",
+    area: "Educación",
+    clave: "ojeda cali maluf"
+  },
+  {
+    id: "derechos",
+    match: /derechos\s+humanos|eficacia\s+a\s+los\s+desc/i,
+    titulo:
+      "IA y Derechos Humanos: la IA como herramienta para dotar de eficacia a los DESC",
+    persona: "Martinez, Maluf",
+    area: "Derecho",
+    clave: "martinez"
+  },
+  {
+    id: "castillo",
+    match: /razonamiento\s+integrado|simulador\s+conversacional|argentina\s*2050|^razonamiento$/i,
+    titulo:
+      "Del contenido fragmentado al razonamiento integrado: uso de un simulador conversacional con IA en estudiantes de Medicina",
+    persona: "Castillo et al.",
+    area: "Salud",
+    clave: "castillo"
+  },
+  {
+    id: "meretta",
+    match: /meretta|contabilidad\s*digital|pymes/i,
+    titulo:
+      "Inteligencia artificial aplicada a la Contabilidad Digital: un modelo metodológico para su integración en PyMEs",
+    persona: "Meretta",
+    area: "Contabilidad",
+    clave: "meretta"
+  }
+];
 
 /**
- * Corrección puntual Ojeda «Del individuo al dividuo…».
- * También se dispara sola al sincronizar / listar catálogos.
+ * Persiste títulos canónicos desde Word en el programa publicado.
  */
 function corregirPonenciaDividuoOjeda() {
+  return normalizarYPublicarTitulosCanon_();
+}
+
+function normalizarYPublicarTitulosCanon_() {
   if (typeof obtenerProgramaSitio_ !== "function") {
     throw new Error("Falta obtenerProgramaSitio_");
   }
@@ -745,9 +805,9 @@ function corregirPonenciaDividuoOjeda() {
   }
   var site = obtenerProgramaSitio_();
   var items = (site && site.items) || [];
-  var touched = normalizarItemsDividuoOjeda_(items);
+  var touched = normalizarItemsTitulosCanon_(items);
   if (!touched) {
-    return { ok: false, error: "No se encontró la ponencia «dividuo» en el programa" };
+    return { ok: false, error: "No hubo títulos canónicos para corregir" };
   }
   var published = publicarProgramaManualDesdeItems_(items);
   return {
@@ -758,15 +818,19 @@ function corregirPonenciaDividuoOjeda() {
   };
 }
 
-/** Ajusta título/persona/flags de la ponencia dividuo in-place. Devuelve cuántas tocó. */
+/** Alias histórico. */
 function normalizarItemsDividuoOjeda_(items) {
+  return normalizarItemsTitulosCanon_(items);
+}
+
+/** Aplica títulos/autores canónicos in-place. Devuelve cuántos ítems tocó. */
+function normalizarItemsTitulosCanon_(items) {
   items = items || [];
-  var tituloCanon =
-    typeof JORNADAS_TITULO_DIVIDUO !== "undefined"
-      ? JORNADAS_TITULO_DIVIDUO
-      : "Del individuo al dividuo en el aula universitaria";
+  var rules =
+    typeof JORNADAS_TITULOS_CANON !== "undefined" ? JORNADAS_TITULOS_CANON : [];
   var touched = 0;
   var i;
+  var r;
   for (i = 0; i < items.length; i++) {
     var it = items[i] || {};
     if (String(it.tipo || "") !== "ponencia") continue;
@@ -775,34 +839,46 @@ function normalizarItemsDividuoOjeda_(items) {
       " " +
       String(it.persona || "") +
       " " +
-      String(it.clave || "");
-    if (!/dividuo/i.test(blob)) continue;
-    var changed = false;
-    if (String(it.titulo || "") !== tituloCanon) {
-      it.titulo = tituloCanon;
-      changed = true;
+      String(it.clave || "") +
+      " " +
+      String(it.area || "");
+    for (r = 0; r < rules.length; r++) {
+      var rule = rules[r];
+      if (!rule || !rule.match || !rule.match.test(blob)) continue;
+      if (rule.id === "meretta" && !/meretta|contabilidad|pymes/i.test(blob)) {
+        continue;
+      }
+      if (
+        rule.id === "castillo" &&
+        !/razonamiento|2050|simulador|castillo|salud/i.test(blob) &&
+        !/^razonamiento$/i.test(String(it.persona || ""))
+      ) {
+        continue;
+      }
+      var changed = false;
+      if (String(it.titulo || "") !== rule.titulo) {
+        it.titulo = rule.titulo;
+        changed = true;
+      }
+      if (String(it.persona || "") !== rule.persona) {
+        it.persona = rule.persona;
+        changed = true;
+      }
+      if (rule.area && String(it.area || "") !== rule.area) {
+        it.area = rule.area;
+        changed = true;
+      }
+      if (rule.clave && String(it.clave || "") !== rule.clave) {
+        it.clave = rule.clave;
+        changed = true;
+      }
+      if (!it.articuloOk) {
+        it.articuloOk = true;
+        changed = true;
+      }
+      if (changed) touched++;
+      break;
     }
-    if (String(it.persona || "") !== "Ojeda") {
-      it.persona = "Ojeda";
-      changed = true;
-    }
-    if (!it.area) {
-      it.area = "Asesoría Pedagógica";
-      changed = true;
-    }
-    if (!it.articuloOk) {
-      it.articuloOk = true;
-      changed = true;
-    }
-    if (!it.pptOk) {
-      it.pptOk = true;
-      changed = true;
-    }
-    if (String(it.clave || "") !== "ojeda") {
-      it.clave = "ojeda";
-      changed = true;
-    }
-    if (changed) touched++;
   }
   return touched;
 }
@@ -842,33 +918,17 @@ function sanearTitulosItemsPrograma_(items) {
     if (typeof normalizarTituloCatalogo_ === "function") {
       clean = normalizarTituloCatalogo_(clean);
     }
-    // Título Ojeda → canónico corto
-    if (/dividuo/i.test(clean)) {
+    // Títulos canónicos desde Word (Castillo, Meretta, Gil/Ojeda, etc.)
+    if (typeof normalizarItemsTitulosCanon_ === "function") {
+      // Se aplica al final del bucle sobre el array completo
+    } else if (/dividuo/i.test(clean)) {
       clean = typeof JORNADAS_TITULO_DIVIDUO !== "undefined"
         ? JORNADAS_TITULO_DIVIDUO
-        : "Del individuo al dividuo en el aula universitaria";
+        : clean;
     }
     if (clean && clean !== raw) {
       items[i].titulo = clean;
       changed = true;
-    }
-    if (/dividuo/i.test(String(items[i].titulo || ""))) {
-      if (!items[i].persona || /^gil$/i.test(String(items[i].persona))) {
-        items[i].persona = "Ojeda";
-        changed = true;
-      }
-      if (!items[i].area) {
-        items[i].area = "Asesoría Pedagógica";
-        changed = true;
-      }
-      if (!items[i].articuloOk) {
-        items[i].articuloOk = true;
-        changed = true;
-      }
-      if (!items[i].pptOk) {
-        items[i].pptOk = true;
-        changed = true;
-      }
     }
     // Persona: “UCCuyo Ojeda,Cali,Maluf” → “Ojeda, Cali, Maluf”
     var per = String(items[i].persona || "");
@@ -881,6 +941,9 @@ function sanearTitulosItemsPrograma_(items) {
       items[i].persona = per2;
       changed = true;
     }
+  }
+  if (typeof normalizarItemsTitulosCanon_ === "function") {
+    if (normalizarItemsTitulosCanon_(items)) changed = true;
   }
   return changed;
 }
