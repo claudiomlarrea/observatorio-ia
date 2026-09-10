@@ -24,7 +24,7 @@ window.JORNADAS_IA_2026 = {
   /**
    * Panel equipo: cruza artículo ↔ PowerPoint por ponencia.
    */
-  CARGAS_STATUS_URL: "jornadas-cargas.html?v=7",
+  CARGAS_STATUS_URL: "jornadas-cargas.html?v=8",
   /**
    * Títulos / autores canónicos (portada Word + PPT revisados).
    * pptOk: true si ya revisamos el PowerPoint correspondiente.
@@ -116,7 +116,7 @@ window.JORNADAS_IA_2026 = {
       pptOk: true,
     },
     garcia: {
-      match: /quo\s*vadis|antropolog|etica\s+y\s+antrop|ética\s+antrop/i,
+      match: /quo\s*vadis|antropolog|antroplog|etica\s+y\s+antrop|ética\s+antrop/i,
       titulo:
         "Inteligencia artificial, conocimiento y educación: desafíos antropológicos y educativos desde Quo vadis, humanitas",
       persona: "García",
@@ -149,7 +149,7 @@ window.JORNADAS_IA_2026 = {
    * Vista en vivo del programa (misma API que el listado). Imprimir → Guardar PDF.
    * El .pdf en assets/ es solo respaldo y puede quedar desfasado.
    */
-  PROGRAMA_PDF_URL: "jornadas-programa-pdf.html?v=7",
+  PROGRAMA_PDF_URL: "jornadas-programa-pdf.html?v=8",
   PROGRAMA_PDF_FALLBACK: "assets/jornadas/programa-jornadas-ia-2026.pdf?v=10",
   /**
    * Editor del programa (equipo). Implementación aparte:
@@ -162,7 +162,7 @@ window.JORNADAS_IA_2026 = {
    * El catálogo de PowerPoint quedó desactivado en la UI; el seguimiento
    * artículo↔PPT es jornadas-cargas.html. La carpeta Drive de PPT sigue activa.
    */
-  CATALOGO_ARTICULOS_PDF: "jornadas-catalogo.html?tipo=articulos&v=11",
+  CATALOGO_ARTICULOS_PDF: "jornadas-catalogo.html?tipo=articulos&v=12",
   CATALOGO_PRESENTACIONES_PDF: "",
   CATALOGO_ARTICULOS_PDF_FALLBACK:
     "assets/jornadas/catalogo-articulos-jornadas-ia-2026.pdf?v=13",
@@ -186,7 +186,7 @@ window.JORNADAS_fixProgramaItems = function (items) {
       .replace(/\s+/g, " ")
       .trim();
     if (/^(jose\s+)?la\s+malfa$/.test(ck)) return "jose la malfa";
-    if (/garcia|garcía|quo\s*vadis|antropolog/.test(ck)) return "garcia quo vadis";
+    if (/garcia|garcía|quo\s*vadis|antropolog|antroplog/.test(ck)) return "garcia quo vadis";
     return ck;
   }
 

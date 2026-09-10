@@ -2,7 +2,7 @@
   "ok": true,
   "source": "manual",
   "editedBy": "",
-  "updatedAt": "2026-09-10T21:35:00.000Z",
+  "updatedAt": "2026-09-10T21:38:17.481Z",
   "meta": {
     "titulo": "1° Jornadas internas de Inteligencia Artificial — UCCuyo",
     "subtitulo": "Observatorio de Inteligencia Artificial",
@@ -194,7 +194,7 @@
       "notas": "Incluido automáticamente desde Drive (provisorio)"
     },
     {
-      "id": "j-ponencia-martinez",
+      "id": "j-ponencia-martinez-maluf",
       "dia": "2026-10-06",
       "inicio": "16:25",
       "fin": "16:35",
@@ -202,8 +202,7 @@
       "tipo": "ponencia",
       "titulo": "IA y Derechos Humanos: la IA como herramienta para dotar de eficacia a los DESC",
       "disertantes": [
-        "Martinez",
-        "Maluf"
+        "Martinez, Maluf"
       ],
       "moderadores": [],
       "area": "Derecho",
@@ -233,7 +232,7 @@
       "notas": "Incluido automáticamente desde Drive (provisorio)"
     },
     {
-      "id": "j-ponencia-ojeda",
+      "id": "j-ponencia-ojeda-cali-maluf",
       "dia": "2026-10-06",
       "inicio": "16:45",
       "fin": "16:55",
@@ -241,9 +240,7 @@
       "tipo": "ponencia",
       "titulo": "Inteligencia artificial y enseñanza de la abogacía: una perspectiva humanista sobre el proceso de aprendizaje",
       "disertantes": [
-        "Ojeda",
-        "Cali",
-        "Maluf"
+        "Ojeda, Cali, Maluf"
       ],
       "moderadores": [],
       "area": "Educación",
@@ -254,7 +251,7 @@
       "notas": "Incluido automáticamente desde Drive (provisorio)"
     },
     {
-      "id": "j-ponencia-gil",
+      "id": "j-ponencia-gil-ojeda",
       "dia": "2026-10-06",
       "inicio": "16:55",
       "fin": "17:05",
@@ -262,8 +259,7 @@
       "tipo": "ponencia",
       "titulo": "Del individuo al dividuo en el aula universitaria. La dividualidad como categoría pedagógico-didáctica para una práctica docente digital crítica ante la IA",
       "disertantes": [
-        "Gil",
-        "Ojeda"
+        "Gil, Ojeda"
       ],
       "moderadores": [],
       "area": "Asesoría Pedagógica",

@@ -1,0 +1,17 @@
+Sincronizar títulos: Programa = Catálogo = Agenda
+================================================
+
+Una sola fuente: el PROGRAMA (ítems canónicos).
+Catálogo y agenda se derivan de ahí.
+
+1. Pegá JornadasPrograma.gs + JornadasProgramaEditor.gs
+2. Guardar → Implementar → Nueva versión (público)
+3. Abrí UNA vez:
+   …/exec?action=programa
+   (limpia duplicados García, marca PPT abogacía, guarda)
+4. Abrí también:
+   …/exec?action=agenda
+   (rearma la agenda desde el programa limpio)
+
+Sitio (ya aplica los mismos títulos en el navegador):
+  js/jornadas-config.js → TITULOS_CANON

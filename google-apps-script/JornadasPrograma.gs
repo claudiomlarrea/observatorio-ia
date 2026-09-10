@@ -219,13 +219,18 @@ function obtenerProgramaSitio_() {
     raw = PropertiesService.getScriptProperties().getProperty(JORNADAS_PROP_PROGRAMA);
     data = raw ? JSON.parse(raw) : { ok: false, items: [] };
   }
-  // Solo normaliza en memoria. NO publicar aquí:
-  // publicarProgramaManualDesdeItems_ vuelve a llamar obtenerProgramaSitio_
-  // y eso colgaba el navegador (bucle infinito).
+  // Normaliza títulos canónicos + dedupe. Si hubo cambios, publicar
+  // (también regenera la agenda) para que catálogo/programa/agenda coincidan.
   if (data && data.items) {
+    var touched = 0;
     try {
-      normalizarItemsDividuoOjeda_(data.items);
+      touched = normalizarItemsDividuoOjeda_(data.items);
     } catch (ignoreNorm) {}
+    if (touched && typeof publicarProgramaManualDesdeItems_ === "function") {
+      try {
+        return publicarProgramaManualDesdeItems_(data.items);
+      } catch (ignorePub) {}
+    }
   }
   return data;
 }
@@ -242,15 +247,46 @@ function leerProgramaSitioCrudo_() {
 }
 
 function obtenerProgramaAgenda_() {
-  var raw = PropertiesService.getScriptProperties().getProperty(JORNADAS_PROP_AGENDA);
-  if (raw) {
-    try {
-      return JSON.parse(raw);
-    } catch (e) {}
-  }
-  obtenerProgramaSitio_();
-  raw = PropertiesService.getScriptProperties().getProperty(JORNADAS_PROP_AGENDA);
-  return raw ? JSON.parse(raw) : { ok: false, sesiones: [] };
+  // Fuente única = programa (mismos títulos/autores que catálogo y panel).
+  var site = obtenerProgramaSitio_() || {};
+  var items = site.items || [];
+  var sesiones =
+    typeof itemsASesionesAgenda_ === "function"
+      ? itemsASesionesAgenda_(items)
+      : [];
+  var agendaPrev = null;
+  try {
+    var rawPrev = PropertiesService.getScriptProperties().getProperty(
+      JORNADAS_PROP_AGENDA
+    );
+    if (rawPrev) agendaPrev = JSON.parse(rawPrev);
+  } catch (ignorePrev) {}
+
+  var agenda = {
+    ok: true,
+    source: site.source || "manual",
+    editedBy: site.editedBy || "",
+    updatedAt: site.updatedAt || new Date().toISOString(),
+    meta: (agendaPrev && agendaPrev.meta) || {
+      titulo: "1° Jornadas internas de Inteligencia Artificial — UCCuyo",
+      subtitulo: "Observatorio de Inteligencia Artificial",
+      fechas: [JORNADAS_EVENTO_DIA],
+      sede: "Virtual",
+      salas: [JORNADAS_SALA],
+      sitioOficial: "https://observatorio-ia.uccuyo.edu.ar/#jornadas-ia",
+      fuente: "Programa editado por el equipo · Jornadas IA 2026",
+      estado: site.estado || "provisorio",
+      minutosPorPonencia: JORNADAS_PONENCIA_MINUTOS
+    },
+    sesiones: sesiones
+  };
+  try {
+    PropertiesService.getScriptProperties().setProperty(
+      JORNADAS_PROP_AGENDA,
+      JSON.stringify(agenda)
+    );
+  } catch (ignoreSave) {}
+  return agenda;
 }
 
 function bloquesFijosPrograma_() {
@@ -835,7 +871,7 @@ var JORNADAS_TITULOS_CANON = [
   },
   {
     id: "garcia",
-    match: /quo\s*vadis|antropolog|etica\s+y\s+antrop|ética\s+antrop/i,
+    match: /quo\s*vadis|antropolog|antroplog|etica\s+y\s+antrop|ética\s+antrop/i,
     titulo:
       "Inteligencia artificial, conocimiento y educación: desafíos antropológicos y educativos desde Quo vadis, humanitas",
     persona: "García",
@@ -910,7 +946,7 @@ function dedupeProgramaItemsInPlace_(items) {
       .replace(/\s+/g, " ")
       .trim();
     if (/^(jose\s+)?la\s+malfa$/.test(ck)) return "jose la malfa";
-    if (/garcia|garcía|quo\s*vadis|antropolog/.test(ck)) return "garcia quo vadis";
+    if (/garcia|garcía|quo\s*vadis|antropolog|antroplog/.test(ck)) return "garcia quo vadis";
     return ck;
   }
 
