@@ -1,0 +1,34 @@
+Artículo ↔ PowerPoint (dos carpetas, un control)
+
+Importante
+  La URL …/folders/13j0Gk4SZmCl_2lo2lBgpt8AMGnP36afI es la carpeta PADRE
+  «Jornadas de IA 2026». Adentro hay DOS carpetas:
+
+  Artículos científicos
+    https://drive.google.com/drive/folders/1oEx8kOI1x4Hx2LppKv35DTIB6S48LXLa
+
+  Presentaciones PowerPoint
+    https://drive.google.com/drive/folders/10Ma7p_Lo3tObfE0N_nXEgwqZogqQzXQE
+
+Flujo normal
+  1. El investigador sube el Word/PDF al carpeta de artículos.
+  2. Días después sube el PPT a la carpeta de presentaciones.
+  3. El sistema empareja por autor/título y marca articuloOk + pptOk.
+
+Panel (ya en el sitio, sin Apps Script)
+  https://observatorio-ia.uccuyo.edu.ar/jornadas-cargas.html
+  Filtros: Falta PowerPoint / Falta artículo / Completo.
+
+API
+  ?action=pareo   → JSON con totales + lista
+  ?action=estado  → incluye resumen pareo + IDs de carpetas
+
+Mail automático (pegar Notificaciones + Código actualizados)
+  · Cada carga nueva indica si el par está completo o qué falta.
+  · Opcional: ejecutar instalarTriggerPendientesPptJornadas
+    → mail diario 9:00 con quién tiene artículo y aún no PPT.
+  · Manual: notificarPendientesPptJornadas
+
+Catálogos
+  · Catálogo artículos = ponencias del programa (marca sin artículo)
+  · Catálogo PowerPoint = mismas ponencias (marca sin PowerPoint)

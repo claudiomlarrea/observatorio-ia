@@ -430,6 +430,7 @@ function notificarNuevasCargasDriveJornadas_(arts, ppts) {
     var fallidos = [];
     for (i = 0; i < nuevos.length; i++) {
       var n = nuevos[i];
+      var par = textoEstadoParCarga_(n, arts, ppts);
       var cuerpo =
         "Se cargó un nuevo archivo en las Jornadas de IA 2026.\n\n" +
         "Tipo: " +
@@ -446,9 +447,12 @@ function notificarNuevasCargasDriveJornadas_(arts, ppts) {
         (n.fileId
           ? "Enlace Drive: https://drive.google.com/file/d/" + n.fileId + "/view\n"
           : "") +
+        "\n" +
+        par +
         "\nSección Jornadas: " +
         JORNADAS_SITE_URL +
-        "\n";
+        "\n" +
+        "Control artículo↔PPT: https://observatorio-ia.uccuyo.edu.ar/jornadas-cargas.html\n";
       try {
         enviarNotificacionJornadas_(
           "[Jornadas IA] Nueva carga — " + n.tipo,
@@ -577,4 +581,177 @@ function enviarNotificacionJornadas_(subject, body) {
     }
   }
   return ok;
+}
+
+/**
+ * Texto para el mail: si el artículo ya tiene PPT pareja (o al revés).
+ * Empareja por autor / apellido / similitud de título.
+ */
+function textoEstadoParCarga_(nuevo, arts, ppts) {
+  arts = arts || [];
+  ppts = ppts || [];
+  var esArt = String(nuevo.tipo || "").indexOf("artículo") >= 0;
+  var tieneArt = esArt
+    ? true
+    : !!buscarParCarga_(nuevo, arts);
+  var tienePpt = !esArt
+    ? true
+    : !!buscarParCarga_(nuevo, ppts);
+  var line =
+    "Estado del par artículo ↔ PowerPoint:\n" +
+    "  · Artículo científico: " +
+    (tieneArt ? "SÍ" : "NO (pendiente)") +
+    "\n" +
+    "  · Presentación PowerPoint: " +
+    (tienePpt ? "SÍ" : "NO (pendiente)") +
+    "\n";
+  if (tieneArt && !tienePpt) {
+    line +=
+      "  → Hay artículo, falta el PowerPoint en la carpeta de presentaciones.\n";
+  } else if (!tieneArt && tienePpt) {
+    line +=
+      "  → Hay PowerPoint, falta el artículo en la carpeta de artículos.\n";
+  } else if (tieneArt && tienePpt) {
+    line += "  → Par completo.\n";
+  }
+  return line;
+}
+
+function buscarParCarga_(nuevo, lista) {
+  lista = lista || [];
+  var autorN = normalizarClavePar_(nuevo.author || "");
+  var tituloN = normalizarClavePar_(nuevo.title || "");
+  var apellidoN = autorN ? autorN.split(/\s+/).pop() : "";
+  var i;
+  for (i = 0; i < lista.length; i++) {
+    var it = lista[i] || {};
+    if (nuevo.fileId && it.fileId && String(it.fileId) === String(nuevo.fileId)) {
+      continue;
+    }
+    var autor = normalizarClavePar_(it.author || "");
+    var titulo = normalizarClavePar_(it.title || "");
+    if (autorN && autor && (autor === autorN || autor.indexOf(autorN) >= 0 || autorN.indexOf(autor) >= 0)) {
+      return it;
+    }
+    if (apellidoN && apellidoN.length >= 4 && autor.indexOf(apellidoN) >= 0) {
+      return it;
+    }
+    if (tituloN && titulo && puntajeTokensPar_(tituloN, titulo) >= 2) {
+      return it;
+    }
+  }
+  return null;
+}
+
+function normalizarClavePar_(s) {
+  return String(s || "")
+    .toLowerCase()
+    .replace(/[áàäâ]/g, "a")
+    .replace(/[éèëê]/g, "e")
+    .replace(/[íìïî]/g, "i")
+    .replace(/[óòöô]/g, "o")
+    .replace(/[úùüû]/g, "u")
+    .replace(/ñ/g, "n")
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function puntajeTokensPar_(a, b) {
+  var ta = String(a || "")
+    .split(/\s+/)
+    .filter(function (t) {
+      return t.length >= 4;
+    });
+  var hit = 0;
+  var i;
+  for (i = 0; i < ta.length; i++) {
+    if (String(b || "").indexOf(ta[i]) >= 0) hit++;
+  }
+  return hit;
+}
+
+/**
+ * Resumen diario/manual: quién tiene artículo y todavía no PowerPoint.
+ * Ejecutar a mano o instalar trigger: instalarTriggerPendientesPptJornadas
+ */
+function notificarPendientesPptJornadas() {
+  var informe =
+    typeof informePareoCargasJornadas_ === "function"
+      ? informePareoCargasJornadas_()
+      : null;
+  if (!informe || !informe.items) {
+    throw new Error("Falta informePareoCargasJornadas_ (pegá JornadasCatalogos.gs actualizado).");
+  }
+  var faltan = [];
+  var i;
+  for (i = 0; i < informe.items.length; i++) {
+    if (informe.items[i].estado === "falta_ppt") faltan.push(informe.items[i]);
+  }
+  var t = informe.totales || {};
+  var cuerpo =
+    "Resumen de cargas Jornadas IA 2026 (artículo ↔ PowerPoint)\n\n" +
+    "Ponencias: " +
+    (t.ponencias || 0) +
+    "\n" +
+    "Con artículo: " +
+    (t.conArticulo || 0) +
+    "\n" +
+    "Con PowerPoint: " +
+    (t.conPpt || 0) +
+    "\n" +
+    "Completos: " +
+    (t.completos || 0) +
+    "\n" +
+    "Falta PowerPoint: " +
+    faltan.length +
+    "\n" +
+    "Falta artículo: " +
+    (t.faltaArticulo || 0) +
+    "\n\n";
+  if (faltan.length) {
+    cuerpo += "Pendientes de PowerPoint:\n";
+    for (i = 0; i < faltan.length; i++) {
+      cuerpo +=
+        "  · " +
+        faltan[i].titulo +
+        " — " +
+        faltan[i].persona +
+        (faltan[i].area ? " (" + faltan[i].area + ")" : "") +
+        "\n";
+    }
+    cuerpo += "\n";
+  } else {
+    cuerpo += "No hay artículos pendientes de PowerPoint.\n\n";
+  }
+  cuerpo +=
+    "Panel: https://observatorio-ia.uccuyo.edu.ar/jornadas-cargas.html\n" +
+    "Carpeta PPT: https://drive.google.com/drive/folders/" +
+    (typeof JORNADAS_PRESENTACIONES_FOLDER_ID !== "undefined"
+      ? JORNADAS_PRESENTACIONES_FOLDER_ID
+      : "10Ma7p_Lo3tObfE0N_nXEgwqZogqQzXQE") +
+    "\n";
+  enviarNotificacionJornadas_(
+    "[Jornadas IA] Pendientes PowerPoint — " + faltan.length,
+    cuerpo
+  );
+  return { ok: true, faltaPpt: faltan.length, totales: t };
+}
+
+/** Trigger diario 9:00 (Argentina aprox.) para el resumen de pendientes. */
+function instalarTriggerPendientesPptJornadas() {
+  var triggers = ScriptApp.getProjectTriggers();
+  var i;
+  for (i = 0; i < triggers.length; i++) {
+    if (triggers[i].getHandlerFunction() === "notificarPendientesPptJornadas") {
+      ScriptApp.deleteTrigger(triggers[i]);
+    }
+  }
+  ScriptApp.newTrigger("notificarPendientesPptJornadas")
+    .timeBased()
+    .atHour(9)
+    .everyDays(1)
+    .inTimezone("America/Argentina/Buenos_Aires")
+    .create();
+  return { ok: true, handler: "notificarPendientesPptJornadas", hora: "09:00 ART" };
 }

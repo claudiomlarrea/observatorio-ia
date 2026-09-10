@@ -7,6 +7,7 @@
  * y regenera dos PDF ordenados alfabéticamente.
  *
  * Carpetas fuente:
+ *  - Padre:     13j0Gk4SZmCl_2lo2lBgpt8AMGnP36afI  («Jornadas de IA 2026»)
  *  - Artículos: 1oEx8kOI1x4Hx2LppKv35DTIB6S48LXLa
  *  - PPT:       10Ma7p_Lo3tObfE0N_nXEgwqZogqQzXQE
  *
@@ -239,6 +240,10 @@ function estadoSistemaJornadas_() {
   var manual =
     props.getProperty("jornadas_programa_manual") === "1" ||
     (prog && prog.source === "manual");
+  var pareo = null;
+  try {
+    pareo = informePareoCargasJornadas_();
+  } catch (ignorePareo) {}
   return {
     ok: true,
     ahora: new Date().toISOString(),
@@ -246,6 +251,23 @@ function estadoSistemaJornadas_() {
     triggers: triggers,
     tieneTriggerCargas: triggers.indexOf("revisarCargasDriveJornadas") >= 0,
     tieneTriggerCatalogos: triggers.indexOf("actualizarCatalogosJornadas") >= 0,
+    carpetas: {
+      padreJornadas: "13j0Gk4SZmCl_2lo2lBgpt8AMGnP36afI",
+      articulos: JORNADAS_ARTICULOS_FOLDER_ID,
+      presentaciones: JORNADAS_PRESENTACIONES_FOLDER_ID,
+      nota:
+        "La carpeta padre «Jornadas de IA 2026» contiene dos subcarpetas distintas: Artículos y Presentaciones."
+    },
+    pareo: pareo
+      ? {
+          ponencias: pareo.totales && pareo.totales.ponencias,
+          conArticulo: pareo.totales && pareo.totales.conArticulo,
+          conPpt: pareo.totales && pareo.totales.conPpt,
+          completos: pareo.totales && pareo.totales.completos,
+          faltaPpt: pareo.totales && pareo.totales.faltaPpt,
+          faltaArticulo: pareo.totales && pareo.totales.faltaArticulo
+        }
+      : null,
     catalogos: {
       updatedAt: props.getProperty("jornadas_catalogo_updated_at") || "",
       articulos: Number(props.getProperty("jornadas_catalogo_articulos_n") || 0),
@@ -270,9 +292,82 @@ function estadoSistemaJornadas_() {
       listado: "API ?action=programa (vivo)",
       agendaApp: "API ?action=programa_agenda (vivo)",
       catalogosVivos: "jornadas-catalogo.html / ?action=catalogos",
+      controlCargas: "jornadas-cargas.html (artículo ↔ PowerPoint)",
       pdfAssets:
         "Copia estática en GitHub (puede atrasarse; no es la fuente de verdad)"
     }
+  };
+}
+
+/**
+ * ?action=pareo — cruza artículo y PowerPoint por ponencia del programa.
+ * Sirve para ver quién cargó Word y todavía no subió el PPT (días después).
+ */
+function informePareoCargasJornadas_() {
+  var site = null;
+  try {
+    site = obtenerProgramaSitio_();
+  } catch (ignore) {}
+  var items = [];
+  var i;
+  if (site && site.items) {
+    for (i = 0; i < site.items.length; i++) {
+      var it = site.items[i] || {};
+      if (String(it.tipo || "").toLowerCase() !== "ponencia") continue;
+      var art = !!it.articuloOk;
+      var ppt = !!it.pptOk;
+      var estado = "sin_archivos";
+      if (art && ppt) estado = "completo";
+      else if (art && !ppt) estado = "falta_ppt";
+      else if (!art && ppt) estado = "falta_articulo";
+      items.push({
+        titulo: String(it.titulo || "").trim(),
+        persona: String(it.persona || "").trim(),
+        area: String(it.area || "").trim(),
+        articuloOk: art,
+        pptOk: ppt,
+        articuloFileId: it.articuloFileId || "",
+        pptFileId: it.pptFileId || "",
+        estado: estado
+      });
+    }
+  }
+  items.sort(function (a, b) {
+    return String(a.titulo).localeCompare(String(b.titulo), "es", {
+      sensitivity: "base"
+    });
+  });
+  var totales = {
+    ponencias: items.length,
+    conArticulo: 0,
+    conPpt: 0,
+    completos: 0,
+    faltaPpt: 0,
+    faltaArticulo: 0,
+    sinArchivos: 0
+  };
+  for (i = 0; i < items.length; i++) {
+    if (items[i].articuloOk) totales.conArticulo++;
+    if (items[i].pptOk) totales.conPpt++;
+    if (items[i].estado === "completo") totales.completos++;
+    if (items[i].estado === "falta_ppt") totales.faltaPpt++;
+    if (items[i].estado === "falta_articulo") totales.faltaArticulo++;
+    if (items[i].estado === "sin_archivos") totales.sinArchivos++;
+  }
+  return {
+    ok: true,
+    updatedAt: (site && site.updatedAt) || new Date().toISOString(),
+    carpetas: {
+      articulos:
+        "https://drive.google.com/drive/folders/" + JORNADAS_ARTICULOS_FOLDER_ID,
+      presentaciones:
+        "https://drive.google.com/drive/folders/" +
+        JORNADAS_PRESENTACIONES_FOLDER_ID,
+      padre:
+        "https://drive.google.com/drive/folders/13j0Gk4SZmCl_2lo2lBgpt8AMGnP36afI"
+    },
+    totales: totales,
+    items: items
   };
 }
 
@@ -440,6 +535,19 @@ function doGet(e) {
       return jsonOut_(estadoSistemaJornadas_());
     } catch (errEst) {
       return jsonOut_({ ok: false, error: String(errEst) });
+    }
+  }
+
+  if (
+    action === "pareo" ||
+    action === "cargas" ||
+    action === "estado_cargas" ||
+    action === "pairing"
+  ) {
+    try {
+      return jsonOut_(informePareoCargasJornadas_());
+    } catch (errPareo) {
+      return jsonOut_({ ok: false, error: String(errPareo), items: [] });
     }
   }
 

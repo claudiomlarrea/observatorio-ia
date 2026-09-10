@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Estado de cargas · Jornadas IA 2026</title>
+    <meta name="robots" content="noindex" />
+    <style>
+      :root {
+        --green: #064a38;
+        --wine: #7a1f2b;
+        --ok: #0d6b4c;
+        --warn: #9a6b00;
+        --muted: #555;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font: 15px/1.4 system-ui, sans-serif;
+        background: #f4f2ef;
+        color: #1a1a1a;
+      }
+      .bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem 1rem;
+        background: var(--green);
+        color: #fff;
+        font-weight: 600;
+      }
+      .bar a {
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        border-radius: 0.4rem;
+        padding: 0.45rem 0.75rem;
+        text-decoration: none;
+        font-size: 0.85rem;
+      }
+      main {
+        max-width: 52rem;
+        margin: 1rem auto;
+        padding: 0 1rem 2rem;
+      }
+      h1 {
+        font-size: 1.25rem;
+        margin: 0 0 0.35rem;
+      }
+      .help {
+        color: var(--muted);
+        margin: 0 0 1rem;
+        font-size: 0.92rem;
+      }
+      .summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      .summary div {
+        background: #fff;
+        border-radius: 0.5rem;
+        padding: 0.75rem;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+      }
+      .summary strong {
+        display: block;
+        font-size: 1.4rem;
+      }
+      .summary span {
+        font-size: 0.78rem;
+        color: var(--muted);
+      }
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-bottom: 0.75rem;
+      }
+      .filters button {
+        appearance: none;
+        border: 1px solid #ccc;
+        background: #fff;
+        border-radius: 999px;
+        padding: 0.35rem 0.75rem;
+        font: inherit;
+        cursor: pointer;
+      }
+      .filters button.is-on {
+        border-color: var(--green);
+        background: #e7f3ee;
+        font-weight: 600;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 0.65rem 0.75rem;
+        border-bottom: 1px solid #eee;
+        vertical-align: top;
+      }
+      th {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+        background: #fafafa;
+      }
+      .mark {
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .mark.ok {
+        color: var(--ok);
+      }
+      .mark.no {
+        color: var(--wine);
+      }
+      .err {
+        color: var(--wine);
+        padding: 1.5rem;
+        text-align: center;
+      }
+      .foot {
+        margin-top: 1rem;
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+      .folders a {
+        color: var(--green);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bar">
+      <span>Artículo ↔ PowerPoint · control de cargas</span>
+      <a href="https://observatorio-ia.uccuyo.edu.ar/#jornadas-ia">Volver al sitio</a>
+    </div>
+    <main>
+      <h1>Estado de cargas por ponencia</h1>
+      <p class="help">
+        Cada investigador sube el <strong>artículo (Word/PDF)</strong> en una carpeta y,
+        a veces días después, el <strong>PowerPoint</strong> en otra. Esta pantalla
+        cruza ambas carpetas con el programa y marca qué falta.
+      </p>
+      <p class="help folders" id="folders"></p>
+      <div class="summary" id="summary"></div>
+      <div class="filters" id="filters">
+        <button type="button" data-f="all" class="is-on">Todas</button>
+        <button type="button" data-f="faltapppt">Falta PowerPoint</button>
+        <button type="button" data-f="faltaart">Falta artículo</button>
+        <button type="button" data-f="completo">Completo</button>
+        <button type="button" data-f="ninguno">Sin archivos</button>
+      </div>
+      <div id="table-wrap"><p class="err">Cargando…</p></div>
+      <p class="foot" id="meta"></p>
+    </main>
+    <script src="js/jornadas-config.js"></script>
+    <script>
+      (function () {
+        var filter = "all";
+        var rows = [];
+
+        function esc(s) {
+          return String(s || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+        }
+
+        function mark(ok) {
+          return ok
+            ? '<span class="mark ok">Sí</span>'
+            : '<span class="mark no">No</span>';
+        }
+
+        function paint() {
+          var list = rows.filter(function (r) {
+            if (filter === "faltapppt") return r.articuloOk && !r.pptOk;
+            if (filter === "faltaart") return r.pptOk && !r.articuloOk;
+            if (filter === "completo") return r.articuloOk && r.pptOk;
+            if (filter === "ninguno") return !r.articuloOk && !r.pptOk;
+            return true;
+          });
+
+          var nArt = rows.filter(function (r) {
+            return r.articuloOk;
+          }).length;
+          var nPpt = rows.filter(function (r) {
+            return r.pptOk;
+          }).length;
+          var nBoth = rows.filter(function (r) {
+            return r.articuloOk && r.pptOk;
+          }).length;
+          var nMissPpt = rows.filter(function (r) {
+            return r.articuloOk && !r.pptOk;
+          }).length;
+          var nMissArt = rows.filter(function (r) {
+            return r.pptOk && !r.articuloOk;
+          }).length;
+
+          document.getElementById("summary").innerHTML =
+            "<div><strong>" +
+            rows.length +
+            "</strong><span>Ponencias</span></div>" +
+            "<div><strong>" +
+            nArt +
+            "</strong><span>Con artículo</span></div>" +
+            "<div><strong>" +
+            nPpt +
+            "</strong><span>Con PowerPoint</span></div>" +
+            "<div><strong>" +
+            nBoth +
+            "</strong><span>Completos</span></div>" +
+            "<div><strong>" +
+            nMissPpt +
+            "</strong><span>Falta PPT</span></div>" +
+            "<div><strong>" +
+            nMissArt +
+            "</strong><span>Falta artículo</span></div>";
+
+          if (!list.length) {
+            document.getElementById("table-wrap").innerHTML =
+              '<p class="err">No hay filas con ese filtro.</p>';
+            return;
+          }
+
+          var html =
+            "<table><thead><tr><th>Ponencia</th><th>Expositor/a</th><th>Área</th><th>Artículo</th><th>PowerPoint</th></tr></thead><tbody>";
+          for (var i = 0; i < list.length; i++) {
+            var r = list[i];
+            html +=
+              "<tr><td>" +
+              esc(r.titulo) +
+              "</td><td>" +
+              esc(r.persona) +
+              "</td><td>" +
+              esc(r.area || "—") +
+              "</td><td>" +
+              mark(r.articuloOk) +
+              "</td><td>" +
+              mark(r.pptOk) +
+              "</td></tr>";
+          }
+          html += "</tbody></table>";
+          document.getElementById("table-wrap").innerHTML = html;
+        }
+
+        document.getElementById("filters").addEventListener("click", function (e) {
+          var btn = e.target.closest("button[data-f]");
+          if (!btn) return;
+          filter = btn.getAttribute("data-f");
+          var btns = document.querySelectorAll("#filters button");
+          for (var i = 0; i < btns.length; i++) {
+            btns[i].classList.toggle("is-on", btns[i] === btn);
+          }
+          paint();
+        });
+
+        var cfg = window.JORNADAS_IA_2026 || {};
+        document.getElementById("folders").innerHTML =
+          'Carpetas Drive (distintas): <a href="' +
+          esc(cfg.RESUMEN_FOLDER_URL) +
+          '" target="_blank" rel="noopener">Artículos científicos</a> · <a href="' +
+          esc(cfg.PRESENTACION_FOLDER_URL) +
+          '" target="_blank" rel="noopener">Presentaciones PowerPoint</a>';
+
+        var api = String(cfg.CATALOGOS_API_URL || "").trim().replace(/\?.*$/, "");
+        if (!api) {
+          document.getElementById("table-wrap").innerHTML =
+            '<p class="err">Falta CATALOGOS_API_URL.</p>';
+          return;
+        }
+
+        fetch(api + "?action=pareo", { credentials: "omit", cache: "no-store" })
+          .then(function (r) {
+            if (!r.ok) throw new Error("HTTP " + r.status);
+            return r.json();
+          })
+          .catch(function () {
+            return fetch(api + "?action=programa", {
+              credentials: "omit",
+              cache: "no-store",
+            }).then(function (r) {
+              if (!r.ok) throw new Error("HTTP " + r.status);
+              return r.json().then(function (prog) {
+                return { ok: true, from: "programa", items: (prog.items || []).filter(function (it) {
+                  return String(it.tipo || "").toLowerCase() === "ponencia";
+                }).map(function (it) {
+                  return {
+                    titulo: it.titulo,
+                    persona: it.persona,
+                    area: it.area,
+                    articuloOk: !!it.articuloOk,
+                    pptOk: !!it.pptOk,
+                  };
+                }), updatedAt: prog.updatedAt };
+              });
+            });
+          })
+          .then(function (data) {
+            if (!data || !data.ok) throw new Error("sin datos");
+            rows = data.items || [];
+            rows.sort(function (a, b) {
+              return String(a.titulo || "").localeCompare(String(b.titulo || ""), "es", {
+                sensitivity: "base",
+              });
+            });
+            var when = data.updatedAt
+              ? new Date(data.updatedAt).toLocaleString("es-AR")
+              : "";
+            document.getElementById("meta").textContent =
+              "Actualizado: " +
+              (when || "—") +
+              " · Fuente: programa + flags de Drive (artículo / PPT)";
+            paint();
+          })
+          .catch(function () {
+            document.getElementById("table-wrap").innerHTML =
+              '<p class="err">No se pudo cargar el estado de cargas.</p>';
+          });
+      })();
+    </script>
+  </body>
+</html>

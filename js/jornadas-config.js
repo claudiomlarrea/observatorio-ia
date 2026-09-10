@@ -11,10 +11,20 @@ window.JORNADAS_IA_2026 = {
     "https://docs.google.com/forms/d/e/1FAIpQLSc1GgR1PuBtnud5xlOGQSYUGeSYPmk1OjhHpefMSnm5XuUnvg/viewform?usp=sharing&ouid=102865527515262890038",
   FORM_EXPOSITORES_URL:
     "https://docs.google.com/forms/d/e/1FAIpQLSdwoONOXU-N-r26LRvrYWBOA4SfKQjaJ4BDXTcJoD48whT7Tw/viewform?usp=sharing&ouid=102865527515262890038",
+  /**
+   * Carpetas de carga (DOS carpetas distintas; no usar la carpeta padre).
+   * Padre «Jornadas de IA 2026»: …/folders/13j0Gk4SZmCl_2lo2lBgpt8AMGnP36afI
+   *   ├─ Artículos científicos
+   *   └─ Presentaciones PowerPoint
+   */
   RESUMEN_FOLDER_URL:
     "https://drive.google.com/drive/folders/1oEx8kOI1x4Hx2LppKv35DTIB6S48LXLa",
   PRESENTACION_FOLDER_URL:
     "https://drive.google.com/drive/folders/10Ma7p_Lo3tObfE0N_nXEgwqZogqQzXQE",
+  /**
+   * Panel equipo: cruza artículo ↔ PowerPoint por ponencia.
+   */
+  CARGAS_STATUS_URL: "jornadas-cargas.html?v=1",
   /**
    * API pública (programa, catálogos). Debe ser «Ejecutar como: Yo» + Cualquier usuario.
    * No usar para el editor: esa implementación no ve el correo del visitante.
