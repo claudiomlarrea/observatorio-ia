@@ -2,7 +2,7 @@
   "ok": true,
   "source": "manual",
   "editedBy": "",
-  "updatedAt": "2026-09-10T20:15:00.000Z",
+  "updatedAt": "2026-09-10T20:50:00.000Z",
   "meta": {
     "titulo": "1° Jornadas internas de Inteligencia Artificial — UCCuyo",
     "subtitulo": "Observatorio de Inteligencia Artificial",
@@ -105,28 +105,9 @@
       "fin": "15:45",
       "sala": "Ponencia",
       "tipo": "ponencia",
-      "titulo": "Encuesta alumnos de la UC Cuyo",
+      "titulo": "Uso de inteligencia artificial en estudiantes de la Universidad Católica de Cuyo",
       "disertantes": [
         "José La Malfa"
-      ],
-      "moderadores": [],
-      "area": "",
-      "rol": "Expositor/a",
-      "articuloOk": null,
-      "pptOk": null,
-      "confirmado": false,
-      "notas": ""
-    },
-    {
-      "id": "j-ponencia-la-malfa",
-      "dia": "2026-10-06",
-      "inicio": "15:45",
-      "fin": "15:55",
-      "sala": "Ponencia",
-      "tipo": "ponencia",
-      "titulo": "Uso de inteligencia artificial en estudiantes de la UCCuyo",
-      "disertantes": [
-        "La Malfa"
       ],
       "moderadores": [],
       "area": "Observatorio de IA",
@@ -134,7 +115,7 @@
       "articuloOk": true,
       "pptOk": true,
       "confirmado": false,
-      "notas": "Incluido automáticamente desde Drive (provisorio)"
+      "notas": ""
     },
     {
       "id": "j-ponencia-larrea-et-al",

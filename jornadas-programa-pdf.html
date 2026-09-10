@@ -142,7 +142,7 @@
     <main class="sheet" id="sheet">
       <p class="err">Cargando programa…</p>
     </main>
-    <script src="js/jornadas-config.js?v=29"></script>
+    <script src="js/jornadas-config.js?v=30"></script>
     <script>
       (function () {
         var TIPO = {
@@ -228,7 +228,7 @@
         var cfg = window.JORNADAS_IA_2026 || {};
         var api = String(cfg.CATALOGOS_API_URL || "").trim().replace(/\?.*$/, "");
         var remote = api ? api + "?action=programa" : "";
-        var local = "data/jornadas-programa-2026.json?v=13";
+        var local = "data/jornadas-programa-2026.json?v=14";
 
         function fetchJson(url, ms) {
           var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;

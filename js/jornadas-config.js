@@ -24,20 +24,24 @@ window.JORNADAS_IA_2026 = {
   /**
    * Panel equipo: cruza artículo ↔ PowerPoint por ponencia.
    */
-  CARGAS_STATUS_URL: "jornadas-cargas.html?v=5",
+  CARGAS_STATUS_URL: "jornadas-cargas.html?v=6",
   /**
    * Títulos / autores canónicos (portada Word + PPT revisados).
    * pptOk: true si ya revisamos el PowerPoint correspondiente.
    */
   TITULOS_CANON: {
     uso_ia: {
-      match: /uso\s+de\s+(la\s+)?ia\s+en\s+estudiantes|uso\s+de\s+inteligencia\s+artificial\s+en\s+estudiantes/i,
-      titulo: "Uso de inteligencia artificial en estudiantes de la UCCuyo",
-      persona: "La Malfa",
+      match:
+        /uso\s+de\s+(la\s+)?ia\s+en\s+estudiantes|uso\s+de\s+inteligencia\s+artificial\s+en\s+estudiantes|encuesta\s+alumnos\s+de\s+la\s+uc\s*cuyo/i,
+      titulo:
+        "Uso de inteligencia artificial en estudiantes de la Universidad Católica de Cuyo",
+      persona: "José La Malfa",
       area: "Observatorio de IA",
-      clave: "la malfa",
+      clave: "jose la malfa",
       articuloOk: true,
       pptOk: true,
+      /** No cruzar con la encuesta de Marimon (UIC). */
+      requirePersonaOrTitulo: /la\s*malfa|uso\s+de|encuesta\s+alumnos\s+de\s+la\s+uc/i,
     },
     gemeph: {
       match: /gemeph|gemelo\s+digital/i,
@@ -135,7 +139,7 @@ window.JORNADAS_IA_2026 = {
    * Vista en vivo del programa (misma API que el listado). Imprimir → Guardar PDF.
    * El .pdf en assets/ es solo respaldo y puede quedar desfasado.
    */
-  PROGRAMA_PDF_URL: "jornadas-programa-pdf.html?v=5",
+  PROGRAMA_PDF_URL: "jornadas-programa-pdf.html?v=6",
   PROGRAMA_PDF_FALLBACK: "assets/jornadas/programa-jornadas-ia-2026.pdf?v=10",
   /**
    * Editor del programa (equipo). Implementación aparte:
@@ -148,7 +152,7 @@ window.JORNADAS_IA_2026 = {
    * El catálogo de PowerPoint quedó desactivado en la UI; el seguimiento
    * artículo↔PPT es jornadas-cargas.html. La carpeta Drive de PPT sigue activa.
    */
-  CATALOGO_ARTICULOS_PDF: "jornadas-catalogo.html?tipo=articulos&v=9",
+  CATALOGO_ARTICULOS_PDF: "jornadas-catalogo.html?tipo=articulos&v=10",
   CATALOGO_PRESENTACIONES_PDF: "",
   CATALOGO_ARTICULOS_PDF_FALLBACK:
     "assets/jornadas/catalogo-articulos-jornadas-ia-2026.pdf?v=13",
@@ -156,14 +160,35 @@ window.JORNADAS_IA_2026 = {
 };
 
 /**
- * Aplica títulos/autores canónicos y quita duplicados (p. ej. Castillo ×2).
+ * Aplica títulos/autores canónicos y quita duplicados (p. ej. Castillo ×2,
+ * «Encuesta UC Cuyo» + «Uso de IA» de José La Malfa).
  */
 window.JORNADAS_fixProgramaItems = function (items) {
   var canon =
     (window.JORNADAS_IA_2026 && window.JORNADAS_IA_2026.TITULOS_CANON) || {};
   items = items || [];
   var out = [];
-  var seenClave = {};
+  var seenIdx = {};
+
+  function claveNorm(ck) {
+    ck = String(ck || "")
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .trim();
+    if (/^(jose\s+)?la\s+malfa$/.test(ck)) return "jose la malfa";
+    return ck;
+  }
+
+  function mergeInto(dest, src) {
+    if (src.articuloOk) dest.articuloOk = true;
+    if (src.pptOk) dest.pptOk = true;
+    if (src.articuloFileId && !dest.articuloFileId) {
+      dest.articuloFileId = src.articuloFileId;
+    }
+    if (src.pptFileId && !dest.pptFileId) dest.pptFileId = src.pptFileId;
+    if (src.hora && !dest.hora) dest.hora = src.hora;
+    if (src.horaFin && !dest.horaFin) dest.horaFin = src.horaFin;
+  }
 
   for (var i = 0; i < items.length; i++) {
     var it = items[i] || {};
@@ -192,9 +217,10 @@ window.JORNADAS_fixProgramaItems = function (items) {
         if (key === "giboin" && !/alerta|epidemiolog|giboin|veterinar/i.test(blob)) {
           continue;
         }
+        // Encuesta UIC (Marimon) no es Uso IA
         if (
           key === "uso_ia" &&
-          !/uso\s+de|estudiantes/i.test(blob)
+          /internacional\s+de\s+catalu/i.test(blob)
         ) {
           continue;
         }
@@ -207,12 +233,12 @@ window.JORNADAS_fixProgramaItems = function (items) {
         if (rule.pptOk === false) it.pptOk = false;
         break;
       }
-      var ck = String(it.clave || it.titulo || "")
-        .toLowerCase()
-        .replace(/\s+/g, " ")
-        .trim();
-      if (ck && seenClave[ck]) continue;
-      if (ck) seenClave[ck] = true;
+      var ck = claveNorm(it.clave || it.titulo || "");
+      if (ck && seenIdx[ck] != null) {
+        mergeInto(out[seenIdx[ck]], it);
+        continue;
+      }
+      if (ck) seenIdx[ck] = out.length;
     }
     out.push(it);
   }
@@ -249,6 +275,9 @@ window.JORNADAS_fixAgendaSesiones = function (sesiones) {
           continue;
         }
         if (key === "meretta" && !/meretta|contabilidad|pymes/i.test(blob)) {
+          continue;
+        }
+        if (key === "uso_ia" && /internacional\s+de\s+catalu/i.test(blob)) {
           continue;
         }
         s.titulo = rule.titulo;

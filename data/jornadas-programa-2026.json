@@ -2,7 +2,7 @@
   "ok": true,
   "source": "manual",
   "editedBy": "",
-  "updatedAt": "2026-09-10T20:15:00.000Z",
+  "updatedAt": "2026-09-10T20:50:00.000Z",
   "version": "2026-09-10",
   "estado": "provisorio",
   "evento": {
@@ -93,39 +93,21 @@
       "hora": "15:35",
       "horaFin": "15:45",
       "tipo": "ponencia",
-      "titulo": "Encuesta alumnos de la UC Cuyo",
+      "titulo": "Uso de inteligencia artificial en estudiantes de la Universidad Católica de Cuyo",
       "persona": "José La Malfa",
-      "rol": "Expositor/a",
-      "area": "",
-      "sala": "Ponencia",
-      "articuloOk": null,
-      "pptOk": null,
-      "confirmado": false,
-      "notas": "",
-      "clave": "jose la malfa",
-      "articuloFileId": "",
-      "pptFileId": ""
-    },
-    {
-      "orden": 6,
-      "hora": "15:45",
-      "horaFin": "15:55",
-      "tipo": "ponencia",
-      "titulo": "Uso de inteligencia artificial en estudiantes de la UCCuyo",
-      "persona": "La Malfa",
       "rol": "Expositor/a",
       "area": "Observatorio de IA",
       "sala": "Ponencia",
       "articuloOk": true,
       "pptOk": true,
       "confirmado": false,
-      "notas": "Incluido automáticamente desde Drive (provisorio)",
-      "clave": "la malfa",
+      "notas": "",
+      "clave": "jose la malfa",
       "articuloFileId": "1j4Vv7u3FGXkQdwtvKGpfC7qLQR3nfmjt",
       "pptFileId": "1s3iMBrVDxMA9OXIsPzmi-7LoljY0elkh"
     },
     {
-      "orden": 7,
+      "orden": 6,
       "hora": "15:55",
       "horaFin": "16:05",
       "tipo": "ponencia",
@@ -143,7 +125,7 @@
       "pptFileId": "1g74AlDdmnlvAB9BudxR_bDZ5OOUMwRxAIhzarfP9JOs"
     },
     {
-      "orden": 8,
+      "orden": 7,
       "hora": "16:05",
       "horaFin": "16:15",
       "tipo": "ponencia",
@@ -161,7 +143,7 @@
       "pptFileId": "1JzP0yxwkN1L6P8WuT6bDfwp02nSbGNvV"
     },
     {
-      "orden": 9,
+      "orden": 8,
       "hora": "16:15",
       "horaFin": "16:25",
       "tipo": "ponencia",
@@ -179,7 +161,7 @@
       "pptFileId": "1QODo85GsXn7BDJx0UZI9fl_8ybGx-o85"
     },
     {
-      "orden": 10,
+      "orden": 9,
       "hora": "16:25",
       "horaFin": "16:35",
       "tipo": "ponencia",
@@ -197,7 +179,7 @@
       "pptFileId": "1ghABYdqaq-U3VwOGjQbUyM1me2jLvAOp"
     },
     {
-      "orden": 11,
+      "orden": 10,
       "hora": "16:35",
       "horaFin": "16:45",
       "tipo": "ponencia",
@@ -215,7 +197,7 @@
       "pptFileId": "1Lmi3pghcZTkCVPw8cmxeg344K57kWnAW"
     },
     {
-      "orden": 12,
+      "orden": 11,
       "hora": "16:45",
       "horaFin": "16:55",
       "tipo": "ponencia",
@@ -233,7 +215,7 @@
       "pptFileId": "1bQhv8PJaG2TcIymYxqNMGCDmQrOGFtJg"
     },
     {
-      "orden": 13,
+      "orden": 12,
       "hora": "16:55",
       "horaFin": "17:05",
       "tipo": "ponencia",
@@ -251,7 +233,7 @@
       "pptFileId": ""
     },
     {
-      "orden": 14,
+      "orden": 13,
       "hora": "17:05",
       "horaFin": "17:15",
       "tipo": "ponencia",

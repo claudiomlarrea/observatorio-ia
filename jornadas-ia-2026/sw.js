@@ -1,6 +1,6 @@
 /* Service worker — App de Consulta Jornadas IA 2026 (offline-first) */
-const CACHE = "jornadas-ia-2026-v17";
-const DATA_VERSION = "13";
+const CACHE = "jornadas-ia-2026-v18";
+const DATA_VERSION = "14";
 
 const CORE_ASSETS = [
   "./",

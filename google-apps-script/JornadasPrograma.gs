@@ -747,11 +747,12 @@ var JORNADAS_TITULO_DIVIDUO =
 var JORNADAS_TITULOS_CANON = [
   {
     id: "uso_ia",
-    match: /uso\s+de\s+(la\s+)?ia\s+en\s+estudiantes|uso\s+de\s+inteligencia\s+artificial\s+en\s+estudiantes/i,
-    titulo: "Uso de inteligencia artificial en estudiantes de la UCCuyo",
-    persona: "La Malfa",
+    match: /uso\s+de\s+(la\s+)?ia\s+en\s+estudiantes|uso\s+de\s+inteligencia\s+artificial\s+en\s+estudiantes|encuesta\s+alumnos\s+de\s+la\s+uc\s*cuyo/i,
+    titulo:
+      "Uso de inteligencia artificial en estudiantes de la Universidad Católica de Cuyo",
+    persona: "José La Malfa",
     area: "Observatorio de IA",
-    clave: "la malfa",
+    clave: "jose la malfa",
     articuloOk: true,
     pptOk: true
   },
@@ -884,25 +885,42 @@ function normalizarItemsDividuoOjeda_(items) {
   return n;
 }
 
-/** Quita ponencias duplicadas por clave (p. ej. Castillo ×2). Devuelve cuántas quitó. */
+/** Quita ponencias duplicadas por clave (p. ej. Castillo ×2, La Malfa ×2). Devuelve cuántas quitó. */
 function dedupeProgramaItemsInPlace_(items) {
   items = items || [];
   var seen = {};
   var out = [];
   var removed = 0;
   var i;
+
+  function claveNorm_(ck) {
+    ck = String(ck || "")
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .trim();
+    if (/^(jose\s+)?la\s+malfa$/.test(ck)) return "jose la malfa";
+    return ck;
+  }
+
+  function mergeFlags_(dest, src) {
+    if (src.articuloOk) dest.articuloOk = true;
+    if (src.pptOk) dest.pptOk = true;
+    if (src.articuloFileId && !dest.articuloFileId) {
+      dest.articuloFileId = src.articuloFileId;
+    }
+    if (src.pptFileId && !dest.pptFileId) dest.pptFileId = src.pptFileId;
+  }
+
   for (i = 0; i < items.length; i++) {
     var it = items[i] || {};
     if (String(it.tipo || "") === "ponencia") {
-      var ck = String(it.clave || it.titulo || "")
-        .toLowerCase()
-        .replace(/\s+/g, " ")
-        .trim();
-      if (ck && seen[ck]) {
+      var ck = claveNorm_(it.clave || it.titulo || "");
+      if (ck && seen[ck] != null) {
+        mergeFlags_(out[seen[ck]], it);
         removed++;
         continue;
       }
-      if (ck) seen[ck] = true;
+      if (ck) seen[ck] = out.length;
     }
     out.push(it);
   }
@@ -938,6 +956,9 @@ function normalizarItemsTitulosCanon_(items) {
       var rule = rules[r];
       if (!rule || !rule.match || !rule.match.test(blob)) continue;
       if (rule.id === "meretta" && !/meretta|contabilidad|pymes/i.test(blob)) {
+        continue;
+      }
+      if (rule.id === "uso_ia" && /internacional\s+de\s+catalu/i.test(blob)) {
         continue;
       }
       if (
