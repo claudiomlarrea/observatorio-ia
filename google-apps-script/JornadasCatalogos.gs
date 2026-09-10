@@ -163,6 +163,67 @@ function parseCatalogoItemsProp_(raw) {
 }
 
 /**
+ * Diagnóstico público: ?action=estado
+ * Sirve para ver si triggers, modo manual y conteos están OK.
+ */
+function estadoSistemaJornadas_() {
+  var props = PropertiesService.getScriptProperties();
+  var triggers = [];
+  try {
+    var hs = ScriptApp.getProjectTriggers();
+    for (var i = 0; i < hs.length; i++) {
+      triggers.push(hs[i].getHandlerFunction());
+    }
+  } catch (ignoreT) {}
+  var prog = null;
+  try {
+    prog = obtenerProgramaSitio_();
+  } catch (ignoreP) {}
+  var agenda = null;
+  try {
+    agenda = obtenerProgramaAgenda_();
+  } catch (ignoreA) {}
+  var manual =
+    props.getProperty("jornadas_programa_manual") === "1" ||
+    (prog && prog.source === "manual");
+  return {
+    ok: true,
+    ahora: new Date().toISOString(),
+    manual: !!manual,
+    triggers: triggers,
+    tieneTriggerCargas: triggers.indexOf("revisarCargasDriveJornadas") >= 0,
+    tieneTriggerCatalogos: triggers.indexOf("actualizarCatalogosJornadas") >= 0,
+    catalogos: {
+      updatedAt: props.getProperty("jornadas_catalogo_updated_at") || "",
+      articulos: Number(props.getProperty("jornadas_catalogo_articulos_n") || 0),
+      presentaciones: Number(
+        props.getProperty("jornadas_catalogo_presentaciones_n") || 0
+      ),
+      articulosItems: parseCatalogoItemsProp_(
+        props.getProperty("jornadas_catalogo_articulos_items_json")
+      ).length
+    },
+    programa: {
+      source: (prog && prog.source) || "",
+      updatedAt: (prog && prog.updatedAt) || "",
+      items: (prog && prog.items && prog.items.length) || 0
+    },
+    agenda: {
+      source: (agenda && agenda.source) || "",
+      updatedAt: (agenda && agenda.updatedAt) || "",
+      sesiones: (agenda && agenda.sesiones && agenda.sesiones.length) || 0
+    },
+    sitio: {
+      listado: "API ?action=programa (vivo)",
+      agendaApp: "API ?action=programa_agenda (vivo)",
+      catalogosVivos: "jornadas-catalogo.html / ?action=catalogos",
+      pdfAssets:
+        "Copia estática en GitHub (puede atrasarse; no es la fuente de verdad)"
+    }
+  };
+}
+
+/**
  * Listado rápido para el sitio (solo nombre de archivo → título/autor/área).
  * No abre Docs ni regenera PDF (evita la demora de minutos).
  */
@@ -299,6 +360,14 @@ function doGet(e) {
       return jsonOut_(result);
     } catch (err) {
       return jsonOut_({ ok: false, error: String(err) });
+    }
+  }
+
+  if (action === "estado" || action === "health" || action === "status") {
+    try {
+      return jsonOut_(estadoSistemaJornadas_());
+    } catch (errEst) {
+      return jsonOut_({ ok: false, error: String(errEst) });
     }
   }
 

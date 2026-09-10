@@ -1,0 +1,82 @@
+SOLUCIÓN DEFINITIVA — Jornadas IA (programa / catálogos / agenda)
+=================================================================
+
+No es “difícil”: el sistema tenía TRES capas y una de ellas no se
+actualiza sola. Por eso parecía roto.
+
+
+Qué pasa en realidad
+--------------------
+1) Un investigador sube a carpetas Drive (NO a Google Sheets).
+2) Apps Script (cuenta investigacion@) detecta el archivo → mail,
+   regenera catálogos en Drive, actualiza programa + agenda en la API.
+3) El sitio web lee la API en vivo para el LISTADO y la AGENDA.
+
+El PDF de assets/… en GitHub Pages es solo una COPIA. Apps Script
+NO puede pushear a GitHub. Si abrís ese PDF fijo, puede verse viejo
+aunque la API ya esté al día.
+
+
+Fuente de verdad (usar siempre)
+-------------------------------
+- Programa listado:  https://observatorio-ia.uccuyo.edu.ar/#jornadas-ia
+- Programa imprimible: …/jornadas-programa-pdf.html
+- Catálogo vivo:       …/jornadas-catalogo.html?tipo=articulos
+- Agenda app:          …/jornadas-ia-2026/
+- Diagnóstico:         …/exec?action=estado
+
+
+Proyecto Apps Script (único)
+----------------------------
+Cuenta: investigacion@uccuyo.edu.ar
+Proyecto: OIA · Catálogos Jornadas IA
+
+Pegar (reemplazar todo) y Guardar:
+  Código.gs                 ← JornadasCatalogos.gs
+  JornadasNotificaciones.gs ← JornadasNotificaciones.gs
+  JornadasPrograma.gs       ← JornadasPrograma.gs
+  JornadasProgramaEditor.gs ← JornadasProgramaEditor.gs  (si cambió)
+
+Implementación PÚBLICA (URL …AKfycbwqC9p3…):
+  Ejecutar como: Yo
+  Acceso: Cualquier usuario
+  → Nueva versión → Implementar
+
+UNA vez:
+  instalarTriggersNotificacionesJornadas
+  actualizarCatalogosJornadas
+
+Verificar:
+  …/exec?action=estado
+  → tieneTriggerCargas: true
+  → tieneTriggerCatalogos: true
+  → catalogos.articulos / programa.items > 0
+
+
+Comportamiento automático (cuando está bien desplegado)
+-------------------------------------------------------
+Cada ~5 min (revisarCargasDriveJornadas):
+  - mail si hay archivo nuevo
+  - regenera catálogos + anexa programa/agenda (también en modo manual)
+
+Cada ~15 min (actualizarCatalogosJornadas):
+  - refresco completo de catálogos + sync programa
+
+Modo manual (editor del equipo):
+  - NO reordena lo que editaron
+  - SÍ agrega ponencias nuevas de Drive al final
+
+
+Qué NO hacer
+------------
+- No depender del PDF assets/…?v=N como “prueba” de actualización.
+- No pegar código sin “Nueva versión” (el /exec sigue con código viejo).
+- No mezclar la implementación del editor (Usuario que accede) con la API pública.
+
+
+Si algo falla
+-------------
+1) ?action=estado
+2) Ejecutar actualizarCatalogosJornadas
+3) Revisar Activadores (reloj) en Apps Script
+4) Recargar el sitio con Cmd+Shift+R

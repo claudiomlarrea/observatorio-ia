@@ -222,37 +222,34 @@
           });
         }
 
-        loadCatalogos()
-          .then(function (data) {
-            if (!data || !data.ok) throw new Error("sin datos");
-            var block = isPpt ? data.presentaciones : data.articulos;
-            if (block && block.items && block.items.length) return data;
-            // Sin items en caché: listado ligero (sin regenerar PDF)
-            return loadListado()
-              .then(function (live) {
-                if (live && live.ok) return live;
-                return data;
-              })
-              .catch(function () {
-                return data;
-              });
+        // Preferir listado liviano (sin regenerar PDF). Catálogos cacheados como 2º.
+        loadListado()
+          .catch(function () {
+            return loadCatalogos();
           })
           .then(function (data) {
+            if (!data || !data.ok) throw new Error("sin datos");
             var block = isPpt ? data.presentaciones : data.articulos;
             if (block && block.items && block.items.length) {
               paint(data);
               return;
             }
-            // Respaldo inmediato: PDF del sitio (ya actualizado)
-            var cfg2 = window.JORNADAS_IA_2026 || {};
-            var fb = isPpt
-              ? cfg2.CATALOGO_PRESENTACIONES_PDF_FALLBACK
-              : cfg2.CATALOGO_ARTICULOS_PDF_FALLBACK;
-            if (fb) {
-              window.location.replace(fb);
-              return;
-            }
-            paint(data);
+            return loadCatalogos().then(function (cached) {
+              var b = isPpt ? cached.presentaciones : cached.articulos;
+              if (b && b.items && b.items.length) {
+                paint(cached);
+                return;
+              }
+              var cfg2 = window.JORNADAS_IA_2026 || {};
+              var fb = isPpt
+                ? cfg2.CATALOGO_PRESENTACIONES_PDF_FALLBACK
+                : cfg2.CATALOGO_ARTICULOS_PDF_FALLBACK;
+              if (fb) {
+                window.location.replace(fb);
+                return;
+              }
+              paint(cached || data);
+            });
           })
           .catch(function () {
             var cfg2 = window.JORNADAS_IA_2026 || {};
