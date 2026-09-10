@@ -163,6 +163,114 @@ function parseCatalogoItemsProp_(raw) {
 }
 
 /**
+ * Listado rápido para el sitio (solo nombre de archivo → título/autor/área).
+ * No abre Docs ni regenera PDF (evita la demora de minutos).
+ */
+function listarCatalogosRapido_() {
+  var arts = listarEntradasRapido_(
+    JORNADAS_ARTICULOS_FOLDER_ID,
+    ARTICULOS_MIME_OK,
+    "articulo"
+  );
+  var ppts = listarEntradasRapido_(
+    JORNADAS_PRESENTACIONES_FOLDER_ID,
+    PRESENTACIONES_MIME_OK,
+    "presentacion"
+  );
+  emparejarAutoresEntreCatalogos_(arts, ppts);
+  sanearEntradasCatalogo_(arts, ppts);
+  arts.sort(function (a, b) {
+    return String(a.title).localeCompare(String(b.title), "es", { sensitivity: "base" });
+  });
+  ppts.sort(function (a, b) {
+    return String(a.title).localeCompare(String(b.title), "es", { sensitivity: "base" });
+  });
+  var updatedAt = new Date().toISOString();
+  // Cachear items para ?action=catalogos sin regenerar PDF
+  try {
+    var props = PropertiesService.getScriptProperties();
+    props.setProperty(
+      "jornadas_catalogo_articulos_items_json",
+      JSON.stringify(resumenItemsCatalogo_(arts))
+    );
+    props.setProperty(
+      "jornadas_catalogo_presentaciones_items_json",
+      JSON.stringify(resumenItemsCatalogo_(ppts))
+    );
+    props.setProperty("jornadas_catalogo_articulos_n", String(arts.length));
+    props.setProperty("jornadas_catalogo_presentaciones_n", String(ppts.length));
+    if (!props.getProperty("jornadas_catalogo_updated_at")) {
+      props.setProperty("jornadas_catalogo_updated_at", updatedAt);
+    }
+  } catch (ignoreCache) {}
+  return {
+    ok: true,
+    updatedAt: updatedAt,
+    articulos: {
+      count: arts.length,
+      items: resumenItemsCatalogo_(arts)
+    },
+    presentaciones: {
+      count: ppts.length,
+      items: resumenItemsCatalogo_(ppts)
+    }
+  };
+}
+
+function listarEntradasRapido_(folderId, mimeOk, kind) {
+  var folder = DriveApp.getFolderById(folderId);
+  var out = [];
+  recolectarArchivosRapido_(folder, mimeOk, kind, out, 0);
+  return out;
+}
+
+function recolectarArchivosRapido_(folder, mimeOk, kind, out, depth) {
+  if (depth > 4) return;
+  var files = folder.getFiles();
+  while (files.hasNext()) {
+    var f = files.next();
+    var name = f.getName();
+    var mime = String(f.getMimeType() || "");
+    if (/^catalogo-/i.test(name)) continue;
+    if (!archivoAceptado_(name, mime, mimeOk, kind)) continue;
+    if (mime === "application/vnd.google-apps.shortcut") {
+      try {
+        var target = resolverAtajo_(f);
+        if (target) {
+          f = target;
+          name = f.getName();
+          mime = String(f.getMimeType() || "");
+          if (!archivoAceptado_(name, mime, mimeOk, kind)) continue;
+        }
+      } catch (ignoreShortcut) {
+        continue;
+      }
+    }
+    var meta = parseNombreSugerido_(name);
+    var title = humanizarTituloCatalogo_(
+      meta.title || name.replace(/\.[^.]+$/, "")
+    );
+    var author = limpiarAutorCatalogo_(meta.author || "");
+    out.push({
+      title: normalizarTituloCatalogo_(title || name),
+      author: normalizarTituloCatalogo_(author),
+      area: normalizarAreaCatalogo_(meta.area || ""),
+      universidad: normalizarTituloCatalogo_(meta.universidad || ""),
+      fileName: name,
+      fileId: f.getId(),
+      fileUrl: f.getUrl(),
+      mime: mime,
+      kind: kind,
+      updated: f.getLastUpdated() ? f.getLastUpdated().toISOString() : ""
+    });
+  }
+  var subs = folder.getFolders();
+  while (subs.hasNext()) {
+    recolectarArchivosRapido_(subs.next(), mimeOk, kind, out, depth + 1);
+  }
+}
+
+/**
  * Instalá UNA vez (Ejecutar → instalarTriggerCatalogosJornadas).
  * Regenera los PDF cada 15 minutos.
  */
@@ -191,6 +299,18 @@ function doGet(e) {
       return jsonOut_(result);
     } catch (err) {
       return jsonOut_({ ok: false, error: String(err) });
+    }
+  }
+
+  if (
+    action === "listar_catalogos" ||
+    action === "catalogos_list" ||
+    action === "catalogos-items"
+  ) {
+    try {
+      return jsonOut_(listarCatalogosRapido_());
+    } catch (errList) {
+      return jsonOut_({ ok: false, error: String(errList) });
     }
   }
 
@@ -288,30 +408,45 @@ function doGet(e) {
     var base =
       ScriptApp.getService().getUrl() ||
       "";
+    var artItems = parseCatalogoItemsProp_(
+      props.getProperty("jornadas_catalogo_articulos_items_json")
+    );
+    var pptItems = parseCatalogoItemsProp_(
+      props.getProperty("jornadas_catalogo_presentaciones_items_json")
+    );
+    // Si hay conteo pero falta el JSON de ítems (deploy viejo), rellenar rápido.
+    if (
+      (!artItems.length && Number(props.getProperty("jornadas_catalogo_articulos_n") || 0) > 0) ||
+      (!pptItems.length && Number(props.getProperty("jornadas_catalogo_presentaciones_n") || 0) > 0)
+    ) {
+      try {
+        var live = listarCatalogosRapido_();
+        artItems = (live.articulos && live.articulos.items) || artItems;
+        pptItems = (live.presentaciones && live.presentaciones.items) || pptItems;
+      } catch (ignoreLive) {}
+    }
     var payload = {
       ok: true,
       updatedAt: props.getProperty("jornadas_catalogo_updated_at") || "",
       articulos: {
-        count: Number(props.getProperty("jornadas_catalogo_articulos_n") || 0),
+        count: Number(props.getProperty("jornadas_catalogo_articulos_n") || artItems.length || 0),
         pdfId: artId || "",
         pdfUrl: artId ? "https://drive.google.com/file/d/" + artId + "/view" : "",
         downloadUrl:
           "https://observatorio-ia.uccuyo.edu.ar/assets/jornadas/" +
           CATALOGO_ARTICULOS_NAME,
-        items: parseCatalogoItemsProp_(
-          props.getProperty("jornadas_catalogo_articulos_items_json")
-        )
+        items: artItems
       },
       presentaciones: {
-        count: Number(props.getProperty("jornadas_catalogo_presentaciones_n") || 0),
+        count: Number(
+          props.getProperty("jornadas_catalogo_presentaciones_n") || pptItems.length || 0
+        ),
         pdfId: pptId || "",
         pdfUrl: pptId ? "https://drive.google.com/file/d/" + pptId + "/view" : "",
         downloadUrl:
           "https://observatorio-ia.uccuyo.edu.ar/assets/jornadas/" +
           CATALOGO_PRESENTACIONES_NAME,
-        items: parseCatalogoItemsProp_(
-          props.getProperty("jornadas_catalogo_presentaciones_items_json")
-        )
+        items: pptItems
       }
     };
     return jsonOut_(payload);

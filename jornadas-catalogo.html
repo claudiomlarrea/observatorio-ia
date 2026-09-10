@@ -200,28 +200,72 @@
           return;
         }
 
-        fetch(api + "?action=catalogos", { credentials: "omit", cache: "no-store" })
-          .then(function (r) {
+        // Nunca llamar ?action=actualizar acá: regenera PDFs y puede tardar minutos.
+        // 1) catálogos (rápido, con items cacheados) 2) listado ligero 3) debug.
+        function loadCatalogos() {
+          return fetch(api + "?action=catalogos", {
+            credentials: "omit",
+            cache: "no-store",
+          }).then(function (r) {
             if (!r.ok) throw new Error("HTTP " + r.status);
             return r.json();
-          })
+          });
+        }
+
+        function loadListado() {
+          return fetch(api + "?action=listar_catalogos", {
+            credentials: "omit",
+            cache: "no-store",
+          }).then(function (r) {
+            if (!r.ok) throw new Error("HTTP " + r.status);
+            return r.json();
+          });
+        }
+
+        loadCatalogos()
           .then(function (data) {
             if (!data || !data.ok) throw new Error("sin datos");
-            // Si la API aún no guarda items, forzar regeneración una vez
             var block = isPpt ? data.presentaciones : data.articulos;
-            if (block && (!block.items || !block.items.length) && block.count > 0) {
-              return fetch(api + "?action=actualizar", {
-                credentials: "omit",
-                cache: "no-store",
-              }).then(function (r2) {
-                return r2.json();
+            if (block && block.items && block.items.length) return data;
+            // Sin items en caché: listado ligero (sin regenerar PDF)
+            return loadListado()
+              .then(function (live) {
+                if (live && live.ok) return live;
+                return data;
+              })
+              .catch(function () {
+                return data;
               });
-            }
-            return data;
           })
-          .then(paint)
+          .then(function (data) {
+            var block = isPpt ? data.presentaciones : data.articulos;
+            if (block && block.items && block.items.length) {
+              paint(data);
+              return;
+            }
+            // Respaldo inmediato: PDF del sitio (ya actualizado)
+            var cfg2 = window.JORNADAS_IA_2026 || {};
+            var fb = isPpt
+              ? cfg2.CATALOGO_PRESENTACIONES_PDF_FALLBACK
+              : cfg2.CATALOGO_ARTICULOS_PDF_FALLBACK;
+            if (fb) {
+              window.location.replace(fb);
+              return;
+            }
+            paint(data);
+          })
           .catch(function () {
-            fail("No se pudo cargar el catálogo en vivo. Reintentá en unos minutos.");
+            var cfg2 = window.JORNADAS_IA_2026 || {};
+            var fb = isPpt
+              ? cfg2.CATALOGO_PRESENTACIONES_PDF_FALLBACK
+              : cfg2.CATALOGO_ARTICULOS_PDF_FALLBACK;
+            if (fb) {
+              window.location.replace(fb);
+              return;
+            }
+            fail(
+              "No se pudo cargar el catálogo en vivo. Probá desde el sitio o reintentá en un minuto."
+            );
           });
 
         document.getElementById("btn-print").addEventListener("click", function () {
