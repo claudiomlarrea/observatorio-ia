@@ -142,7 +142,7 @@
     <main class="sheet" id="sheet">
       <p class="err">Cargando programa…</p>
     </main>
-    <script src="js/jornadas-config.js?v=27"></script>
+    <script src="js/jornadas-config.js?v=28"></script>
     <script>
       (function () {
         var TIPO = {
@@ -228,21 +228,39 @@
         var cfg = window.JORNADAS_IA_2026 || {};
         var api = String(cfg.CATALOGOS_API_URL || "").trim().replace(/\?.*$/, "");
         var remote = api ? api + "?action=programa" : "";
-        var local = "data/jornadas-programa-2026.json?v=10";
+        var local = "data/jornadas-programa-2026.json?v=12";
 
-        var chain = remote
-          ? fetch(remote, { credentials: "omit", cache: "no-store" }).then(function (r) {
+        function fetchJson(url, ms) {
+          var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+          var timer =
+            ctrl && ms
+              ? setTimeout(function () {
+                  try {
+                    ctrl.abort();
+                  } catch (e) {}
+                }, ms)
+              : null;
+          return fetch(url, {
+            credentials: "omit",
+            cache: "no-store",
+            signal: ctrl ? ctrl.signal : undefined,
+          })
+            .then(function (r) {
               if (!r.ok) throw new Error("HTTP " + r.status);
               return r.json();
             })
+            .finally(function () {
+              if (timer) clearTimeout(timer);
+            });
+        }
+
+        var chain = remote
+          ? fetchJson(remote, 10000)
           : Promise.reject(new Error("sin api"));
 
         chain
           .catch(function () {
-            return fetch(local, { credentials: "omit", cache: "no-store" }).then(function (r) {
-              if (!r.ok) throw new Error("HTTP " + r.status);
-              return r.json();
-            });
+            return fetchJson(local, 8000);
           })
           .then(function (data) {
             if (!data || !data.items || !data.items.length) throw new Error("vacío");
