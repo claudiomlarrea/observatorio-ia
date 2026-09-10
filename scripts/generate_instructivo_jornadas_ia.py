@@ -181,7 +181,7 @@ def _build_story(styles) -> list:
             [
                 "<b>Encuentro:</b> 6 de octubre de 2026, 15:00 h · modalidad virtual.",
                 "<b>Cierre artículo científico y PowerPoint (expositores):</b> "
-                "10 de septiembre de 2026.",
+                "16 de septiembre de 2026.",
                 "<b>Cierre inscripción como asistente:</b> 28 de septiembre de 2026.",
             ],
         ),
@@ -230,7 +230,7 @@ def _build_story(styles) -> list:
             "7. Requisitos de las entregas",
             [
                 "Artículo científico y PowerPoint son entregas distintas e independientes; "
-                "ambas vencen el <b>10 de septiembre de 2026</b> para expositores.",
+                "ambas vencen el <b>16 de septiembre de 2026</b> para expositores.",
                 "Ejes temáticos: IA en Educación; Derecho y Ciencias Sociales; Salud y "
                 "Ciencias Médicas; Ciencias Veterinarias; Economía y sectores productivos; "
                 "Seguridad; Ciencias Químicas y Tecnológicas; Ética, teología y antropología; "

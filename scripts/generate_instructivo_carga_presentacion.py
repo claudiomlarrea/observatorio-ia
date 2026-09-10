@@ -107,7 +107,7 @@ class CoverPage(Flowable):
         for i, line in enumerate(
             [
                 "Hasta 6 diapositivas · Exposición de hasta 10 minutos",
-                "Cierre de carga: 10 de septiembre de 2026",
+                "Cierre de carga: 16 de septiembre de 2026",
                 JORNADAS_URL,
             ]
         ):
@@ -203,7 +203,7 @@ def _build_story(styles) -> list:
         (
             "4. Fecha límite y dónde cargar",
             [
-                "<b>Fecha para carga del PPT:</b> 10 de septiembre de 2026.",
+                "<b>Fecha para carga del PPT:</b> 16 de septiembre de 2026.",
                 f"Sitio del Observatorio: <link href=\"{OBS_URL}\">{OBS_URL}</link>",
                 f"Sección Jornadas (paso 3): <link href=\"{JORNADAS_URL}\">{JORNADAS_URL}</link>",
             ],
@@ -228,7 +228,7 @@ def _build_story(styles) -> list:
             "7. Relación con el artículo científico e inscripción",
             [
                 "La presentación PowerPoint y el <b>artículo científico de 2.000 palabras</b> "
-                "son entregas distintas; ambas vencen el <b>10 de septiembre de 2026</b> "
+                "son entregas distintas; ambas vencen el <b>16 de septiembre de 2026</b> "
                 "para expositores.",
                 "Completá también la <b>inscripción</b> (paso 1) y la "
                 "<b>carga del artículo</b> (paso 2).",

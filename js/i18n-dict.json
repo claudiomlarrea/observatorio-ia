@@ -512,8 +512,8 @@
     "en": "Presenter deadline"
   },
   "sec.jornadas.facts.cierreExpositores.value": {
-    "es": "Artículo y PPT hasta el <strong>10 de septiembre</strong>",
-    "en": "Article and PPT due by <strong>September 10</strong>"
+    "es": "Artículo y PPT hasta el <strong>16 de septiembre</strong>",
+    "en": "Article and PPT due by <strong>September 16</strong>"
   },
   "sec.jornadas.facts.cierreAsistentes.label": {
     "es": "Cierre asistentes",
@@ -636,8 +636,8 @@
     "en": "PDF · updated as talks are confirmed"
   },
   "sec.jornadas.programa.intro": {
-    "es": "El 6 de octubre a las <strong>15:00</strong> (virtual). Apertura a cargo de la Rectora y del Director del Observatorio; luego ponencias de <strong>10 minutos</strong>. El orden oficial se publica en el PDF del programa y se completa a medida que se confirman las exposiciones (cierre expositores: 10 de septiembre).",
-    "en": "October 6 at <strong>15:00</strong> (online). Opening remarks by the Rector and the Observatory Director, then <strong>10-minute</strong> presentations. The official order is published in the program PDF and completed as talks are confirmed (presenter deadline: September 10)."
+    "es": "El 6 de octubre a las <strong>15:00</strong> (virtual). Apertura a cargo de la Rectora y del Director del Observatorio; luego ponencias de <strong>10 minutos</strong>. El orden oficial se publica en el PDF del programa y se completa a medida que se confirman las exposiciones (cierre expositores: 16 de septiembre).",
+    "en": "October 6 at <strong>15:00</strong> (online). Opening remarks by the Rector and the Observatory Director, then <strong>10-minute</strong> presentations. The official order is published in the program PDF and completed as talks are confirmed (presenter deadline: September 16)."
   },
   "sec.jornadas.programa.notaSalas": {
     "es": "Formato previsto: una sola sala. Si al cierre hay 14 o más ponencias confirmadas, se evaluará dividir en dos salas (p. ej. Tecnología / Ciencias).",

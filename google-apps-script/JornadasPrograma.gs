@@ -154,7 +154,7 @@ function sincronizarProgramaDesdeCatalogos_(arts, ppts) {
         "../assets/jornadas/catalogo-presentaciones-jornadas-ia-2026.pdf",
       minutosPorPonencia: JORNADAS_PONENCIA_MINUTOS,
       notaFormato:
-        "Una sola sala virtual. Se evaluará dividir en dos salas si al 10/9 hay 14 o más ponencias confirmadas."
+        "Una sola sala virtual. Se evaluará dividir en dos salas si al 16/9 hay 14 o más ponencias confirmadas."
     },
     sesiones: sesiones
   };

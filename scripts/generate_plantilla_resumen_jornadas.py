@@ -182,7 +182,7 @@ def build() -> Path:
         "INSTRUCCIONES (borrar este párrafo al enviar): Artículo científico de "
         "aproximadamente 2.000 palabras para la Revista Cuadernos. Completá título, "
         "autores, unidad y cuerpo. Nombre del archivo: Area_Universidad_Apellido_Titulo.docx. "
-        "Cierre de carga: 10 de septiembre de 2026.",
+        "Cierre de carga: 16 de septiembre de 2026.",
         size=9,
         italic=True,
         color=MUTED,
@@ -246,7 +246,7 @@ def build() -> Path:
 
     _p(
         doc,
-        "Artículo de 2.000 palabras · Cierre: 10 de septiembre de 2026 · Observatorio de IA — "
+        "Artículo de 2.000 palabras · Cierre: 16 de septiembre de 2026 · Observatorio de IA — "
         "https://claudiomlarrea.github.io/observatorio-ia/#jornadas-ia",
         size=9,
         italic=True,

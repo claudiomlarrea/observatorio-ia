@@ -108,7 +108,7 @@ class CoverPage(Flowable):
         for i, line in enumerate(
             [
                 "Word · 2.000 palabras · Revista Cuadernos",
-                "Cierre: 10 de septiembre de 2026",
+                "Cierre: 16 de septiembre de 2026",
                 JORNADAS_URL,
             ]
         ):
@@ -187,7 +187,7 @@ def _build_story(styles) -> list:
             [
                 "Extensión: <b>2.000 palabras</b> (conforme al documento maestro de las Jornadas "
                 "y a la normativa editorial de la Revista Cuadernos).",
-                "<b>Fecha límite de carga:</b> 10 de septiembre de 2026.",
+                "<b>Fecha límite de carga:</b> 16 de septiembre de 2026.",
                 f"Sección Jornadas: <link href=\"{JORNADAS_URL}\">{JORNADAS_URL}</link>",
             ],
         ),
@@ -245,7 +245,7 @@ def _build_story(styles) -> list:
             [
                 "El artículo (Word, 2.000 palabras) y la presentación (PowerPoint, hasta "
                 "6 diapositivas) son entregas distintas e independientes; ambas vencen el "
-                "10 de septiembre de 2026.",
+                "16 de septiembre de 2026.",
             ],
         ),
         (

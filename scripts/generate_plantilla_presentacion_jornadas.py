@@ -266,7 +266,7 @@ def build() -> Path:
             ("", 10, False, MUTED),
             (
                 "Exposición: hasta 10 minutos · Máximo 6 diapositivas · "
-                "Carga hasta el 10 de septiembre de 2026",
+                "Carga hasta el 16 de septiembre de 2026",
                 14,
                 False,
                 MUTED,
