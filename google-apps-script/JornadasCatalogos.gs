@@ -954,9 +954,27 @@ function resolverAtajo_(shortcutFile) {
  */
 function parseNombreSugerido_(fileName) {
   var base = String(fileName || "").replace(/\.[^.]+$/, "");
+  // Colapsar dobles extensiones residuales en el stem
+  base = base.replace(/\.(docx?|pptx?|pdf)$/i, "");
   var parts = base.split("_").filter(function (p) {
     return p && String(p).trim();
   });
+  if (parts.length >= 5 && pareceUniversidadArchivo_(parts[1])) {
+    // Area_Universidad_Autor1_Autor2_Titulo… (p. ej. Gil_Ojeda_Del individuo…)
+    // El expositor suele ser el 2º apellido; el título empieza en parts[4].
+    return {
+      area: parts[0].replace(/-/g, " "),
+      universidad: parts[1].replace(/-/g, " "),
+      author: parts[3].replace(/-/g, " "),
+      coauthor: parts[2].replace(/-/g, " "),
+      title: parts
+        .slice(4)
+        .join(" ")
+        .replace(/-/g, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+    };
+  }
   if (parts.length >= 4) {
     return {
       area: parts[0].replace(/-/g, " "),
@@ -984,6 +1002,11 @@ function parseNombreSugerido_(fileName) {
     author: "",
     title: base.replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim()
   };
+}
+
+function pareceUniversidadArchivo_(s) {
+  s = String(s || "").replace(/\s+/g, "");
+  return /^(uccuyo|uccuyosl|uccuyosa|unsl|uncuyo|observatorioia|observatoria)$/i.test(s);
 }
 
 /**

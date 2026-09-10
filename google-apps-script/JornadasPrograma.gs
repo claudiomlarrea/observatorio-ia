@@ -607,7 +607,11 @@ function incorporarNuevasCargasEnProgramaManual_(arts, ppts) {
       actualizarFlagsCargaEnItems_(items, apellido, row);
       continue;
     }
-    if (yaEstaTituloEnPrograma_(items, row.titulo)) continue;
+    // Mismo tema ya en el programa (título corto vs largo) → solo flags/título, no duplicar
+    if (yaEstaTituloEnPrograma_(items, row.titulo)) {
+      actualizarFlagsPorTituloEnItems_(items, row);
+      continue;
+    }
 
     nuevas.push({
       tipo: "ponencia",
@@ -671,11 +675,90 @@ function actualizarFlagsCargaEnItems_(items, claveNorm, row) {
     var c = normalizarClavePrograma_(it.clave || it.persona || "");
     if (!c) continue;
     if (c !== claveNorm && c.split(/\s+/).pop() !== claveNorm) continue;
-    if (row.articuloOk) it.articuloOk = true;
-    if (row.pptOk) it.pptOk = true;
-    if (row.articuloFileId) it.articuloFileId = row.articuloFileId;
-    if (row.pptFileId) it.pptFileId = row.pptFileId;
+    aplicarCargaAItemPrograma_(it, row);
   }
+}
+
+/** Empareja por similitud de título (p. ej. «Del individuo…» corto vs largo). */
+function actualizarFlagsPorTituloEnItems_(items, row) {
+  if (!row || !row.titulo) return;
+  for (var i = 0; i < items.length; i++) {
+    var it = items[i];
+    if (String(it.tipo || "") !== "ponencia") continue;
+    if (puntajeSimilitudTituloPrograma_(row.titulo, it.titulo) < 3) continue;
+    aplicarCargaAItemPrograma_(it, row);
+  }
+}
+
+function aplicarCargaAItemPrograma_(it, row) {
+  if (!it || !row) return;
+  if (row.articuloOk) it.articuloOk = true;
+  if (row.pptOk) it.pptOk = true;
+  if (row.articuloFileId) it.articuloFileId = row.articuloFileId;
+  if (row.pptFileId) it.pptFileId = row.pptFileId;
+  // Preferir título más completo (el del artículo suele ser el canónico)
+  var tRow = String(row.titulo || "").replace(/\s+/g, " ").trim();
+  var tIt = String(it.titulo || "").replace(/\s+/g, " ").trim();
+  if (tRow && tRow.length > tIt.length + 8) {
+    it.titulo = tRow;
+  }
+  if (
+    row.personaDisplay &&
+    (!it.persona || String(it.persona).length < String(row.personaDisplay).length)
+  ) {
+    // No pisar si ya hay varios expositores listados
+    if (!/,/.test(String(it.persona || ""))) {
+      it.persona = row.personaDisplay;
+    }
+  }
+  if (row.area && !it.area) it.area = row.area;
+}
+
+/**
+ * Corrección puntual: título completo Ojeda «Del individuo al dividuo…».
+ * Ejecutar una vez en Apps Script tras pegar este archivo.
+ */
+function corregirPonenciaDividuoOjeda() {
+  var TITULO =
+    "Del individuo al dividuo en el aula universitaria. La dividualidad como categoría pedagógico didáctica para una práctica docente digital crítica ante la IA";
+  if (typeof obtenerProgramaSitio_ !== "function") {
+    throw new Error("Falta obtenerProgramaSitio_");
+  }
+  if (typeof publicarProgramaManualDesdeItems_ !== "function") {
+    throw new Error("Falta publicarProgramaManualDesdeItems_");
+  }
+  var site = obtenerProgramaSitio_();
+  var items = (site && site.items) || [];
+  var touched = 0;
+  var i;
+  for (i = 0; i < items.length; i++) {
+    var it = items[i] || {};
+    if (String(it.tipo || "") !== "ponencia") continue;
+    var blob =
+      String(it.titulo || "") +
+      " " +
+      String(it.persona || "") +
+      " " +
+      String(it.clave || "");
+    if (!/dividuo/i.test(blob)) continue;
+    it.titulo = TITULO;
+    it.persona = "Ojeda";
+    it.area = it.area || "Asesoría Pedagógica";
+    it.articuloOk = true;
+    it.pptOk = true;
+    it.clave = "ojeda";
+    touched++;
+  }
+  if (!touched) {
+    return { ok: false, error: "No se encontró la ponencia «dividuo» en el programa" };
+  }
+  var published = publicarProgramaManualDesdeItems_(items);
+  return {
+    ok: true,
+    touched: touched,
+    titulo: TITULO,
+    updatedAt: published.updatedAt
+  };
 }
 
 function yaEstaTituloEnPrograma_(items, titulo) {
@@ -712,9 +795,24 @@ function sanearTitulosItemsPrograma_(items) {
     if (typeof normalizarTituloCatalogo_ === "function") {
       clean = normalizarTituloCatalogo_(clean);
     }
+    // Título corto de Ojeda → canónico completo
+    if (/dividuo/i.test(clean) && clean.length < 55) {
+      clean =
+        "Del individuo al dividuo en el aula universitaria. La dividualidad como categoría pedagógico didáctica para una práctica docente digital crítica ante la IA";
+    }
     if (clean && clean !== raw) {
       items[i].titulo = clean;
       changed = true;
+    }
+    if (/dividuo/i.test(String(items[i].titulo || ""))) {
+      if (!items[i].persona || /^gil$/i.test(String(items[i].persona))) {
+        items[i].persona = "Ojeda";
+        changed = true;
+      }
+      if (!items[i].area) {
+        items[i].area = "Asesoría Pedagógica";
+        changed = true;
+      }
     }
     // Persona: “UCCuyo Ojeda,Cali,Maluf” → “Ojeda, Cali, Maluf”
     var per = String(items[i].persona || "");

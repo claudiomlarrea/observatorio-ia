@@ -1,0 +1,26 @@
+Corregir Ojeda «Del individuo al dividuo» (título completo)
+===========================================================
+
+Problema
+--------
+El Word se llamaba …_Gil_Ojeda_Del individuo al dividuo en el aula…
+y el sistema tomaba autor=Gil y un título corto desde el PPT.
+
+Arreglo en código (ya en el repo)
+---------------------------------
+- parseNombreSugerido_: Area_UCCuyo_Autor1_Autor2_Titulo → autor=Autor2
+- Empareje por título en modo manual (flags + título largo)
+- sanearTitulosItemsPrograma_: título canónico si dice «dividuo»
+
+Aplicar YA en Apps Script
+-------------------------
+1. Pegá JornadasCatalogos.gs → Código.gs
+2. Pegá JornadasPrograma.gs
+3. Implementar → Nueva versión (API pública)
+4. Ejecutá la función: corregirPonenciaDividuoOjeda
+5. (Opcional) actualizarCatalogosJornadas
+
+Verificar
+---------
+?action=programa → título completo, persona Ojeda, articuloOk+pptOk
+Catálogo vivo y agenda deben coincidir.
