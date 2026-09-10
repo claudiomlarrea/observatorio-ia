@@ -1246,6 +1246,9 @@
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const data = await res.json();
           if (!data?.sesiones?.length) throw new Error("empty program");
+          if (typeof window.JORNADAS_fixAgendaSesiones === "function") {
+            data.sesiones = window.JORNADAS_fixAgendaSesiones(data.sesiones);
+          }
           return data;
         } catch (err) {
           lastErr = err;

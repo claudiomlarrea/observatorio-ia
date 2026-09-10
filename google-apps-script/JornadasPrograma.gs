@@ -201,21 +201,33 @@ function confirmarPonenciaJornadas_(clave) {
 
 function obtenerProgramaSitio_() {
   var raw = PropertiesService.getScriptProperties().getProperty(JORNADAS_PROP_PROGRAMA);
+  var data = null;
   if (raw) {
     try {
-      return JSON.parse(raw);
+      data = JSON.parse(raw);
     } catch (e) {}
   }
-  // Primera vez: construir ya
-  var arts = listarEntradas_(JORNADAS_ARTICULOS_FOLDER_ID, ARTICULOS_MIME_OK, "articulo");
-  var ppts = listarEntradas_(
-    JORNADAS_PRESENTACIONES_FOLDER_ID,
-    PRESENTACIONES_MIME_OK,
-    "presentacion"
-  );
-  sincronizarProgramaDesdeCatalogos_(arts, ppts);
-  raw = PropertiesService.getScriptProperties().getProperty(JORNADAS_PROP_PROGRAMA);
-  return raw ? JSON.parse(raw) : { ok: false, items: [] };
+  if (!data) {
+    // Primera vez: construir ya
+    var arts = listarEntradas_(JORNADAS_ARTICULOS_FOLDER_ID, ARTICULOS_MIME_OK, "articulo");
+    var ppts = listarEntradas_(
+      JORNADAS_PRESENTACIONES_FOLDER_ID,
+      PRESENTACIONES_MIME_OK,
+      "presentacion"
+    );
+    sincronizarProgramaDesdeCatalogos_(arts, ppts);
+    raw = PropertiesService.getScriptProperties().getProperty(JORNADAS_PROP_PROGRAMA);
+    data = raw ? JSON.parse(raw) : { ok: false, items: [] };
+  }
+  if (data && data.items && normalizarItemsDividuoOjeda_(data.items)) {
+    // Persistir corrección Ojeda sin exigir abrir el editor
+    try {
+      if (typeof publicarProgramaManualDesdeItems_ === "function") {
+        return publicarProgramaManualDesdeItems_(data.items);
+      }
+    } catch (ignorePub) {}
+  }
+  return data;
 }
 
 function obtenerProgramaAgenda_() {
@@ -715,12 +727,16 @@ function aplicarCargaAItemPrograma_(it, row) {
 }
 
 /**
- * Corrección puntual: título completo Ojeda «Del individuo al dividuo…».
- * Ejecutar una vez en Apps Script tras pegar este archivo.
+ * Título canónico Ojeda (el que debe verse en programa / catálogo / agenda).
+ */
+var JORNADAS_TITULO_DIVIDUO =
+  "Del individuo al dividuo en el aula universitaria";
+
+/**
+ * Corrección puntual Ojeda «Del individuo al dividuo…».
+ * También se dispara sola al sincronizar / listar catálogos.
  */
 function corregirPonenciaDividuoOjeda() {
-  var TITULO =
-    "Del individuo al dividuo en el aula universitaria. La dividualidad como categoría pedagógico didáctica para una práctica docente digital crítica ante la IA";
   if (typeof obtenerProgramaSitio_ !== "function") {
     throw new Error("Falta obtenerProgramaSitio_");
   }
@@ -729,6 +745,26 @@ function corregirPonenciaDividuoOjeda() {
   }
   var site = obtenerProgramaSitio_();
   var items = (site && site.items) || [];
+  var touched = normalizarItemsDividuoOjeda_(items);
+  if (!touched) {
+    return { ok: false, error: "No se encontró la ponencia «dividuo» en el programa" };
+  }
+  var published = publicarProgramaManualDesdeItems_(items);
+  return {
+    ok: true,
+    touched: touched,
+    titulo: JORNADAS_TITULO_DIVIDUO,
+    updatedAt: published.updatedAt
+  };
+}
+
+/** Ajusta título/persona/flags de la ponencia dividuo in-place. Devuelve cuántas tocó. */
+function normalizarItemsDividuoOjeda_(items) {
+  items = items || [];
+  var tituloCanon =
+    typeof JORNADAS_TITULO_DIVIDUO !== "undefined"
+      ? JORNADAS_TITULO_DIVIDUO
+      : "Del individuo al dividuo en el aula universitaria";
   var touched = 0;
   var i;
   for (i = 0; i < items.length; i++) {
@@ -741,24 +777,34 @@ function corregirPonenciaDividuoOjeda() {
       " " +
       String(it.clave || "");
     if (!/dividuo/i.test(blob)) continue;
-    it.titulo = TITULO;
-    it.persona = "Ojeda";
-    it.area = it.area || "Asesoría Pedagógica";
-    it.articuloOk = true;
-    it.pptOk = true;
-    it.clave = "ojeda";
-    touched++;
+    var changed = false;
+    if (String(it.titulo || "") !== tituloCanon) {
+      it.titulo = tituloCanon;
+      changed = true;
+    }
+    if (String(it.persona || "") !== "Ojeda") {
+      it.persona = "Ojeda";
+      changed = true;
+    }
+    if (!it.area) {
+      it.area = "Asesoría Pedagógica";
+      changed = true;
+    }
+    if (!it.articuloOk) {
+      it.articuloOk = true;
+      changed = true;
+    }
+    if (!it.pptOk) {
+      it.pptOk = true;
+      changed = true;
+    }
+    if (String(it.clave || "") !== "ojeda") {
+      it.clave = "ojeda";
+      changed = true;
+    }
+    if (changed) touched++;
   }
-  if (!touched) {
-    return { ok: false, error: "No se encontró la ponencia «dividuo» en el programa" };
-  }
-  var published = publicarProgramaManualDesdeItems_(items);
-  return {
-    ok: true,
-    touched: touched,
-    titulo: TITULO,
-    updatedAt: published.updatedAt
-  };
+  return touched;
 }
 
 function yaEstaTituloEnPrograma_(items, titulo) {
@@ -768,6 +814,7 @@ function yaEstaTituloEnPrograma_(items, titulo) {
     var other = normalizarClavePrograma_(items[i].titulo || "");
     if (!other) continue;
     if (other === t) return true;
+    if (/dividuo/.test(t) && /dividuo/.test(other)) return true;
     if (puntajeSimilitudTituloPrograma_(titulo, items[i].titulo) >= 3) return true;
   }
   return false;
@@ -795,10 +842,11 @@ function sanearTitulosItemsPrograma_(items) {
     if (typeof normalizarTituloCatalogo_ === "function") {
       clean = normalizarTituloCatalogo_(clean);
     }
-    // Título corto de Ojeda → canónico completo
-    if (/dividuo/i.test(clean) && clean.length < 55) {
-      clean =
-        "Del individuo al dividuo en el aula universitaria. La dividualidad como categoría pedagógico didáctica para una práctica docente digital crítica ante la IA";
+    // Título Ojeda → canónico corto
+    if (/dividuo/i.test(clean)) {
+      clean = typeof JORNADAS_TITULO_DIVIDUO !== "undefined"
+        ? JORNADAS_TITULO_DIVIDUO
+        : "Del individuo al dividuo en el aula universitaria";
     }
     if (clean && clean !== raw) {
       items[i].titulo = clean;
@@ -811,6 +859,14 @@ function sanearTitulosItemsPrograma_(items) {
       }
       if (!items[i].area) {
         items[i].area = "Asesoría Pedagógica";
+        changed = true;
+      }
+      if (!items[i].articuloOk) {
+        items[i].articuloOk = true;
+        changed = true;
+      }
+      if (!items[i].pptOk) {
+        items[i].pptOk = true;
         changed = true;
       }
     }

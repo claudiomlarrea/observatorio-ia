@@ -312,6 +312,9 @@
           .then(function (data) {
             if (!data || !data.ok) throw new Error("sin datos");
             rows = data.items || [];
+            if (typeof window.JORNADAS_fixProgramaItems === "function") {
+              rows = window.JORNADAS_fixProgramaItems(rows);
+            }
             var when = data.updatedAt
               ? new Date(data.updatedAt).toLocaleString("es-AR")
               : "";

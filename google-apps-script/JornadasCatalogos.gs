@@ -568,6 +568,18 @@ function doGet(e) {
   }
 
   if (
+    action === "corregir_dividuo" ||
+    action === "arreglar_dividuo" ||
+    action === "fix_ojeda_dividuo"
+  ) {
+    try {
+      return jsonOut_(corregirPonenciaDividuoOjeda());
+    } catch (errDiv) {
+      return jsonOut_({ ok: false, error: String(errDiv) });
+    }
+  }
+
+  if (
     action === "programa_pdf" ||
     action === "programa-pdf" ||
     action === "pdf_programa"

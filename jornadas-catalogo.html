@@ -158,6 +158,9 @@
 
         function itemsDesdePrograma(prog) {
           var raw = (prog && prog.items) || [];
+          if (typeof window.JORNADAS_fixProgramaItems === "function") {
+            raw = window.JORNADAS_fixProgramaItems(raw);
+          }
           var out = [];
           for (var i = 0; i < raw.length; i++) {
             var it = raw[i] || {};

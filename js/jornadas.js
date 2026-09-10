@@ -49,6 +49,9 @@ function wirePrograma_() {
   var remoteUrl = api ? api + "?action=programa" : "";
 
   function paint(data) {
+    if (data && data.items && typeof window.JORNADAS_fixProgramaItems === "function") {
+      data.items = window.JORNADAS_fixProgramaItems(data.items);
+    }
     renderPrograma_(list, data);
   }
 

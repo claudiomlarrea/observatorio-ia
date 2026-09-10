@@ -24,7 +24,9 @@ window.JORNADAS_IA_2026 = {
   /**
    * Panel equipo: cruza artículo ↔ PowerPoint por ponencia.
    */
-  CARGAS_STATUS_URL: "jornadas-cargas.html?v=1",
+  CARGAS_STATUS_URL: "jornadas-cargas.html?v=2",
+  /** Título canónico Ojeda (archivo mal nombrado Gil_Ojeda_…). */
+  TITULO_DIVIDUO: "Del individuo al dividuo en el aula universitaria",
   /**
    * API pública (programa, catálogos). Debe ser «Ejecutar como: Yo» + Cualquier usuario.
    * No usar para el editor: esa implementación no ve el correo del visitante.
@@ -48,9 +50,53 @@ window.JORNADAS_IA_2026 = {
    * El catálogo de PowerPoint quedó desactivado en la UI; el seguimiento
    * artículo↔PPT es jornadas-cargas.html. La carpeta Drive de PPT sigue activa.
    */
-  CATALOGO_ARTICULOS_PDF: "jornadas-catalogo.html?tipo=articulos&v=5",
+  CATALOGO_ARTICULOS_PDF: "jornadas-catalogo.html?tipo=articulos&v=6",
   CATALOGO_PRESENTACIONES_PDF: "",
   CATALOGO_ARTICULOS_PDF_FALLBACK:
     "assets/jornadas/catalogo-articulos-jornadas-ia-2026.pdf?v=13",
   CATALOGO_PRESENTACIONES_PDF_FALLBACK: "",
+};
+
+/** Corrige Ojeda «dividuo» en ítems del programa (API / JSON). */
+window.JORNADAS_fixProgramaItems = function (items) {
+  var titulo =
+    (window.JORNADAS_IA_2026 && window.JORNADAS_IA_2026.TITULO_DIVIDUO) ||
+    "Del individuo al dividuo en el aula universitaria";
+  items = items || [];
+  for (var i = 0; i < items.length; i++) {
+    var it = items[i] || {};
+    var blob =
+      String(it.titulo || "") +
+      " " +
+      String(it.persona || "") +
+      " " +
+      String(it.clave || "");
+    if (!/dividuo/i.test(blob)) continue;
+    it.titulo = titulo;
+    it.persona = "Ojeda";
+    it.area = it.area || "Asesoría Pedagógica";
+    it.articuloOk = true;
+    it.pptOk = true;
+  }
+  return items;
+};
+
+/** Idem para sesiones de la agenda app. */
+window.JORNADAS_fixAgendaSesiones = function (sesiones) {
+  var titulo =
+    (window.JORNADAS_IA_2026 && window.JORNADAS_IA_2026.TITULO_DIVIDUO) ||
+    "Del individuo al dividuo en el aula universitaria";
+  sesiones = sesiones || [];
+  for (var i = 0; i < sesiones.length; i++) {
+    var s = sesiones[i] || {};
+    var people = Array.isArray(s.disertantes) ? s.disertantes.join(" ") : "";
+    var blob = String(s.titulo || "") + " " + people;
+    if (!/dividuo/i.test(blob)) continue;
+    s.titulo = titulo;
+    s.disertantes = ["Ojeda"];
+    s.area = s.area || "Asesoría Pedagógica";
+    s.articuloOk = true;
+    s.pptOk = true;
+  }
+  return sesiones;
 };
