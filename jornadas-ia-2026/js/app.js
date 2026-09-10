@@ -459,6 +459,30 @@
     return [...map.values()].sort((a, b) => toMinutes(a.inicio) - toMinutes(b.inicio));
   }
 
+  /** Subtítulo del slot: título de la ponencia (no el nombre de sala “Ponencia”). */
+  function slotSubtitle(items) {
+    const list = items || [];
+    const titles = [
+      ...new Set(list.map((s) => String(s.titulo || "").trim()).filter(Boolean)),
+    ];
+    if (titles.length === 1) return titles[0];
+    if (titles.length > 1) {
+      const short = titles.slice(0, 2).join(" · ");
+      return titles.length > 2 ? `${short} · +${titles.length - 2}` : short;
+    }
+    const speakers = [
+      ...new Set(
+        list
+          .flatMap((s) => (Array.isArray(s.disertantes) ? s.disertantes : []))
+          .map((n) => String(n || "").trim())
+          .filter(Boolean)
+      ),
+    ];
+    if (speakers.length) return speakers.slice(0, 2).join(" · ");
+    const salas = [...new Set(list.map((s) => s.sala).filter(Boolean))];
+    return salas.join(" · ");
+  }
+
   function groupByDay(sessions) {
     const map = new Map();
     for (const s of sessions) {
@@ -890,11 +914,10 @@
         }) +
         slots
           .map((slot) => {
-            const salas = [...new Set(slot.items.map((s) => s.sala).filter(Boolean))].join(" · ");
             return optionButton({
               value: slot.inicio,
               title: `${slot.inicio} – ${slot.fin}`,
-              subtitle: salas,
+              subtitle: slotSubtitle(slot.items),
               count: slot.items.length,
             });
           })
@@ -937,11 +960,10 @@
       }) +
       slots
         .map((slot) => {
-          const salas = [...new Set(slot.items.map((s) => s.sala).filter(Boolean))].join(" · ");
           return optionButton({
             value: slot.inicio,
             title: `${slot.inicio} – ${slot.fin}`,
-            subtitle: salas,
+            subtitle: slotSubtitle(slot.items),
             count: slot.items.length,
           });
         })
