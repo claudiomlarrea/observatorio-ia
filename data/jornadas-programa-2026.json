@@ -2,7 +2,7 @@
   "ok": true,
   "source": "manual",
   "editedBy": "",
-  "updatedAt": "2026-09-11T13:40:00.000Z",
+  "updatedAt": "2026-09-11T14:10:00.000Z",
   "version": "2026-09-11",
   "estado": "provisorio",
   "evento": {
@@ -111,6 +111,24 @@
       "hora": "15:45",
       "horaFin": "15:55",
       "tipo": "ponencia",
+      "titulo": "La Inteligencia Artificial como lenguaje cultural en la Educación Superior",
+      "persona": "Gil",
+      "rol": "Expositor/a",
+      "area": "Asesoría Pedagógica",
+      "sala": "Ponencia",
+      "articuloOk": true,
+      "pptOk": true,
+      "confirmado": false,
+      "notas": "Incluido automáticamente desde Drive (provisorio)",
+      "clave": "gil",
+      "articuloFileId": "1TLBL3UGGAMg5b8SZefUOwfXOuuo95iZi",
+      "pptFileId": "1bQhv8PJaG2TcIymYxqNMGCDmQrOGFtJg"
+    },
+    {
+      "orden": 7,
+      "hora": "15:55",
+      "horaFin": "16:05",
+      "tipo": "ponencia",
       "titulo": "GEMEPH — Gemelo digital sociodemográfico de la EPH-INDEC. Exclusión digital, vulnerabilidad y brechas territoriales en Argentina",
       "persona": "Larrea et al.",
       "rol": "Expositor/a",
@@ -125,9 +143,9 @@
       "pptFileId": "1g74AlDdmnlvAB9BudxR_bDZ5OOUMwRxAIhzarfP9JOs"
     },
     {
-      "orden": 7,
-      "hora": "15:55",
-      "horaFin": "16:05",
+      "orden": 8,
+      "hora": "16:05",
+      "horaFin": "16:15",
       "tipo": "ponencia",
       "titulo": "Del contenido fragmentado al razonamiento integrado: uso de un simulador conversacional con IA en estudiantes de Medicina",
       "persona": "Castillo et al.",
@@ -143,9 +161,9 @@
       "pptFileId": "1JzP0yxwkN1L6P8WuT6bDfwp02nSbGNvV"
     },
     {
-      "orden": 8,
-      "hora": "16:05",
-      "horaFin": "16:15",
+      "orden": 9,
+      "hora": "16:15",
+      "horaFin": "16:25",
       "tipo": "ponencia",
       "titulo": "Sistema de Alerta Temprana (SAT) en Epidemiología Veterinaria, vínculo entre conocimiento científico e IA",
       "persona": "Giboin",
@@ -161,9 +179,9 @@
       "pptFileId": "1QODo85GsXn7BDJx0UZI9fl_8ybGx-o85"
     },
     {
-      "orden": 9,
-      "hora": "16:15",
-      "horaFin": "16:25",
+      "orden": 10,
+      "hora": "16:25",
+      "horaFin": "16:35",
       "tipo": "ponencia",
       "titulo": "Inteligencia artificial aplicada a la Contabilidad Digital: un modelo metodológico para su integración en PyMEs",
       "persona": "Meretta",
@@ -179,9 +197,9 @@
       "pptFileId": "1ghABYdqaq-U3VwOGjQbUyM1me2jLvAOp"
     },
     {
-      "orden": 10,
-      "hora": "16:25",
-      "horaFin": "16:35",
+      "orden": 11,
+      "hora": "16:35",
+      "horaFin": "16:45",
       "tipo": "ponencia",
       "titulo": "IA y Derechos Humanos: la IA como herramienta para dotar de eficacia a los DESC",
       "persona": "Martinez, Maluf",
@@ -195,24 +213,6 @@
       "clave": "martinez",
       "articuloFileId": "1aLXbK6j3y-deb_sZm-W4VC2XPrtYlXBi",
       "pptFileId": "1Lmi3pghcZTkCVPw8cmxeg344K57kWnAW"
-    },
-    {
-      "orden": 11,
-      "hora": "16:35",
-      "horaFin": "16:45",
-      "tipo": "ponencia",
-      "titulo": "La Inteligencia Artificial como lenguaje cultural en la Educación Superior",
-      "persona": "Gil",
-      "rol": "Expositor/a",
-      "area": "Asesoría Pedagógica",
-      "sala": "Ponencia",
-      "articuloOk": true,
-      "pptOk": true,
-      "confirmado": false,
-      "notas": "Incluido automáticamente desde Drive (provisorio)",
-      "clave": "gil",
-      "articuloFileId": "1TLBL3UGGAMg5b8SZefUOwfXOuuo95iZi",
-      "pptFileId": "1bQhv8PJaG2TcIymYxqNMGCDmQrOGFtJg"
     },
     {
       "orden": 12,

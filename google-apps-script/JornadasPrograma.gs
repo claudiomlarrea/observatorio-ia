@@ -247,8 +247,15 @@ function leerProgramaSitioCrudo_() {
 }
 
 function obtenerProgramaAgenda_() {
-  // Fuente única = programa (mismos títulos/autores que catálogo y panel).
-  var site = obtenerProgramaSitio_() || {};
+  // Fuente única = programa (mismos títulos/autores/orden que catálogo y panel).
+  // Lectura cruda: no normalizar/republicar aquí (evita pisar un Guardar en curso).
+  var site =
+    typeof leerProgramaSitioCrudo_ === "function"
+      ? leerProgramaSitioCrudo_()
+      : null;
+  if (!site || !site.items || !site.items.length) {
+    site = obtenerProgramaSitio_() || {};
+  }
   var items = site.items || [];
   var sesiones =
     typeof itemsASesionesAgenda_ === "function"
@@ -280,6 +287,10 @@ function obtenerProgramaAgenda_() {
     },
     sesiones: sesiones
   };
+  if (!agenda.meta.fechas || !agenda.meta.fechas.length) {
+    agenda.meta.fechas = [JORNADAS_EVENTO_DIA];
+  }
+  agenda.meta.estado = site.estado || agenda.meta.estado || "provisorio";
   try {
     PropertiesService.getScriptProperties().setProperty(
       JORNADAS_PROP_AGENDA,

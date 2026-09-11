@@ -23,9 +23,18 @@
   const REMINDER_LEAD_MIN = 10;
   const PROGRAM_STORE_KEY = "jornadas_ia_2026_programa";
   const PROGRAM_VERSION_KEY = "jornadas_ia_2026_programa_version";
-  const PROGRAM_VERSION = "11";
-  const PROGRAMA_API_URL =
-    "https://script.google.com/macros/s/AKfycbwqC9p3EUiTK2DnPHKLT30y0-I3yMcVLzO0S0yNWgvjQVhpDj6z3ScWqo3eJ7LkgDhwQA/exec?action=programa_agenda";
+  const PROGRAM_VERSION = "12";
+  const cfg = window.JORNADAS_IA_2026 || {};
+  const apiBase = String(cfg.CATALOGOS_API_URL || "")
+    .trim()
+    .replace(/\?.*$/, "");
+  // Misma fuente que el sitio/catálogo (?action=programa). La agenda se deriva.
+  const PROGRAMA_API_URL = apiBase
+    ? `${apiBase}?action=programa`
+    : "https://script.google.com/macros/s/AKfycbwqC9p3EUiTK2DnPHKLT30y0-I3yMcVLzO0S0yNWgvjQVhpDj6z3ScWqo3eJ7LkgDhwQA/exec?action=programa";
+  const PROGRAMA_AGENDA_API_URL = apiBase
+    ? `${apiBase}?action=programa_agenda`
+    : "https://script.google.com/macros/s/AKfycbwqC9p3EUiTK2DnPHKLT30y0-I3yMcVLzO0S0yNWgvjQVhpDj6z3ScWqo3eJ7LkgDhwQA/exec?action=programa_agenda";
 
   const state = {
     data: null,
@@ -1231,24 +1240,53 @@
       const basePath = window.location.pathname.endsWith("/")
         ? window.location.pathname
         : `${window.location.pathname.replace(/\/?$/, "")}/`;
-      // API primero (siempre); JSON local solo como respaldo offline.
+      // 1) ?action=programa (misma fuente que sitio/catálogo)
+      // 2) ?action=programa_agenda (respaldo)
+      // 3) JSON local offline
       const candidates = [
-        PROGRAMA_API_URL,
-        new URL(`data/programa.json?v=${PROGRAM_VERSION}`, `${window.location.origin}${basePath}`)
-          .href,
-        `data/programa.json?v=${PROGRAM_VERSION}`,
-        "data/programa.json",
+        { url: PROGRAMA_API_URL, kind: "programa" },
+        { url: PROGRAMA_AGENDA_API_URL, kind: "agenda" },
+        {
+          url: new URL(
+            `data/programa.json?v=${PROGRAM_VERSION}`,
+            `${window.location.origin}${basePath}`
+          ).href,
+          kind: "agenda",
+        },
+        { url: `data/programa.json?v=${PROGRAM_VERSION}`, kind: "agenda" },
+        { url: "data/programa.json", kind: "agenda" },
       ];
       let lastErr = null;
-      for (const url of candidates) {
+      for (const cand of candidates) {
         try {
-          const res = await fetch(url, { cache: "no-store", credentials: "omit" });
+          const ctrl =
+            typeof AbortController !== "undefined" ? new AbortController() : null;
+          const timer =
+            ctrl &&
+            setTimeout(function () {
+              try {
+                ctrl.abort();
+              } catch (_e) {}
+            }, 10000);
+          const res = await fetch(cand.url, {
+            cache: "no-store",
+            credentials: "omit",
+            signal: ctrl ? ctrl.signal : undefined,
+          });
+          if (timer) clearTimeout(timer);
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          const data = await res.json();
-          if (!data?.sesiones?.length) throw new Error("empty program");
-          if (typeof window.JORNADAS_fixAgendaSesiones === "function") {
-            data.sesiones = window.JORNADAS_fixAgendaSesiones(data.sesiones);
+          let data = await res.json();
+          if (cand.kind === "programa") {
+            if (!data?.items?.length) throw new Error("empty program");
+            if (typeof window.JORNADAS_programaToAgenda === "function") {
+              data = window.JORNADAS_programaToAgenda(data);
+            } else {
+              throw new Error("missing JORNADAS_programaToAgenda");
+            }
+          } else if (typeof window.JORNADAS_fixAgendaSesiones === "function") {
+            data.sesiones = window.JORNADAS_fixAgendaSesiones(data.sesiones || []);
           }
+          if (!data?.sesiones?.length) throw new Error("empty program");
           return data;
         } catch (err) {
           lastErr = err;

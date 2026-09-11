@@ -2,7 +2,7 @@
   "ok": true,
   "source": "manual",
   "editedBy": "",
-  "updatedAt": "2026-09-10T21:38:17.481Z",
+  "updatedAt": "2026-09-11T14:10:00.000Z",
   "meta": {
     "titulo": "1° Jornadas internas de Inteligencia Artificial — UCCuyo",
     "subtitulo": "Observatorio de Inteligencia Artificial",
@@ -80,7 +80,7 @@
       "notas": "10 minutos por ponencia"
     },
     {
-      "id": "j-ponencia-frederic-marimon",
+      "id": "j-ponencia-marimon",
       "dia": "2026-10-06",
       "inicio": "15:25",
       "fin": "15:35",
@@ -88,8 +88,7 @@
       "tipo": "ponencia",
       "titulo": "Conciencia sobre la inteligencia artificial en el trabajo y continuidad de uso",
       "disertantes": [
-        "Marimon",
-        "Arias-Valle"
+        "Marimon, Arias-Valle"
       ],
       "moderadores": [],
       "area": "Educación",
@@ -100,7 +99,7 @@
       "notas": "Incluido automáticamente desde Drive (provisorio)"
     },
     {
-      "id": "j-ponencia-jos-la-malfa",
+      "id": "j-ponencia-jose-la-malfa",
       "dia": "2026-10-06",
       "inicio": "15:35",
       "fin": "15:45",
@@ -119,10 +118,29 @@
       "notas": ""
     },
     {
-      "id": "j-ponencia-larrea-et-al",
+      "id": "j-ponencia-gil",
       "dia": "2026-10-06",
       "inicio": "15:45",
       "fin": "15:55",
+      "sala": "Ponencia",
+      "tipo": "ponencia",
+      "titulo": "La Inteligencia Artificial como lenguaje cultural en la Educación Superior",
+      "disertantes": [
+        "Gil"
+      ],
+      "moderadores": [],
+      "area": "Asesoría Pedagógica",
+      "rol": "Expositor/a",
+      "articuloOk": true,
+      "pptOk": true,
+      "confirmado": false,
+      "notas": "Incluido automáticamente desde Drive (provisorio)"
+    },
+    {
+      "id": "j-ponencia-larrea",
+      "dia": "2026-10-06",
+      "inicio": "15:55",
+      "fin": "16:05",
       "sala": "Ponencia",
       "tipo": "ponencia",
       "titulo": "GEMEPH — Gemelo digital sociodemográfico de la EPH-INDEC. Exclusión digital, vulnerabilidad y brechas territoriales en Argentina",
@@ -138,10 +156,10 @@
       "notas": "Incluido automáticamente desde Drive (provisorio)"
     },
     {
-      "id": "j-ponencia-castillo-et-al",
+      "id": "j-ponencia-castillo",
       "dia": "2026-10-06",
-      "inicio": "15:55",
-      "fin": "16:05",
+      "inicio": "16:05",
+      "fin": "16:15",
       "sala": "Ponencia",
       "tipo": "ponencia",
       "titulo": "Del contenido fragmentado al razonamiento integrado: uso de un simulador conversacional con IA en estudiantes de Medicina",
@@ -159,8 +177,8 @@
     {
       "id": "j-ponencia-giboin",
       "dia": "2026-10-06",
-      "inicio": "16:05",
-      "fin": "16:15",
+      "inicio": "16:15",
+      "fin": "16:25",
       "sala": "Ponencia",
       "tipo": "ponencia",
       "titulo": "Sistema de Alerta Temprana (SAT) en Epidemiología Veterinaria, vínculo entre conocimiento científico e IA",
@@ -178,8 +196,8 @@
     {
       "id": "j-ponencia-meretta",
       "dia": "2026-10-06",
-      "inicio": "16:15",
-      "fin": "16:25",
+      "inicio": "16:25",
+      "fin": "16:35",
       "sala": "Ponencia",
       "tipo": "ponencia",
       "titulo": "Inteligencia artificial aplicada a la Contabilidad Digital: un modelo metodológico para su integración en PyMEs",
@@ -195,10 +213,10 @@
       "notas": "Incluido automáticamente desde Drive (provisorio)"
     },
     {
-      "id": "j-ponencia-martinez-maluf",
+      "id": "j-ponencia-martinez",
       "dia": "2026-10-06",
-      "inicio": "16:25",
-      "fin": "16:35",
+      "inicio": "16:35",
+      "fin": "16:45",
       "sala": "Ponencia",
       "tipo": "ponencia",
       "titulo": "IA y Derechos Humanos: la IA como herramienta para dotar de eficacia a los DESC",
@@ -212,25 +230,6 @@
       "pptOk": true,
       "confirmado": false,
       "notas": ""
-    },
-    {
-      "id": "j-ponencia-gil",
-      "dia": "2026-10-06",
-      "inicio": "16:35",
-      "fin": "16:45",
-      "sala": "Ponencia",
-      "tipo": "ponencia",
-      "titulo": "La Inteligencia Artificial como lenguaje cultural en la Educación Superior",
-      "disertantes": [
-        "Gil"
-      ],
-      "moderadores": [],
-      "area": "Asesoría Pedagógica",
-      "rol": "Expositor/a",
-      "articuloOk": true,
-      "pptOk": true,
-      "confirmado": false,
-      "notas": "Incluido automáticamente desde Drive (provisorio)"
     },
     {
       "id": "j-ponencia-ojeda-cali-maluf",
@@ -252,7 +251,7 @@
       "notas": "Incluido automáticamente desde Drive (provisorio)"
     },
     {
-      "id": "j-ponencia-gil-ojeda",
+      "id": "j-ponencia-gil-ojeda-dividuo",
       "dia": "2026-10-06",
       "inicio": "16:55",
       "fin": "17:05",
@@ -271,7 +270,7 @@
       "notas": "Incluido automáticamente desde Drive (provisorio)"
     },
     {
-      "id": "j-ponencia-garc-a",
+      "id": "j-ponencia-garcia-quo-vadis",
       "dia": "2026-10-06",
       "inicio": "17:05",
       "fin": "17:15",

@@ -334,3 +334,79 @@ window.JORNADAS_fixAgendaSesiones = function (sesiones) {
   }
   return out;
 };
+
+/**
+ * Convierte el programa del sitio (?action=programa) al formato de la app
+ * (sesiones). Así horario/agenda usan exactamente el mismo orden que el
+ * listado y el catálogo.
+ */
+window.JORNADAS_programaToAgenda = function (prog) {
+  prog = prog || {};
+  var items = prog.items || [];
+  if (typeof window.JORNADAS_fixProgramaItems === "function") {
+    items = window.JORNADAS_fixProgramaItems(items);
+  }
+  var dia =
+    (prog.evento && prog.evento.fecha) ||
+    (prog.meta && prog.meta.fechas && prog.meta.fechas[0]) ||
+    "2026-10-06";
+  var sesiones = [];
+  for (var i = 0; i < items.length; i++) {
+    var it = items[i] || {};
+    var tipo = String(it.tipo || "ponencia");
+    var id;
+    if (tipo === "apertura" && i === 0) id = "j-apertura-1";
+    else if (tipo === "apertura") id = "j-apertura-" + (i + 1);
+    else if (tipo === "indicaciones") id = "j-indicaciones";
+    else {
+      id =
+        "j-ponencia-" +
+        String(it.clave || it.persona || it.titulo || i)
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "");
+    }
+    sesiones.push({
+      id: id,
+      dia: dia,
+      inicio: it.hora || "",
+      fin: it.horaFin || "",
+      sala: it.sala || "Ponencia",
+      tipo: tipo,
+      titulo: it.titulo || "",
+      disertantes: it.persona ? [String(it.persona)] : [],
+      moderadores: [],
+      area: it.area || "",
+      rol: it.rol || "",
+      articuloOk: it.articuloOk,
+      pptOk: it.pptOk,
+      confirmado: !!it.confirmado,
+      notas: it.notas || "",
+    });
+  }
+  if (typeof window.JORNADAS_fixAgendaSesiones === "function") {
+    sesiones = window.JORNADAS_fixAgendaSesiones(sesiones);
+  }
+  return {
+    ok: true,
+    source: prog.source || "programa",
+    updatedAt: prog.updatedAt || "",
+    meta: {
+      titulo:
+        (prog.evento && prog.evento.titulo) ||
+        "1° Jornadas internas de Inteligencia Artificial — UCCuyo",
+      subtitulo: "Observatorio de Inteligencia Artificial",
+      fechas: [dia],
+      sede: (prog.evento && prog.evento.modalidad) || "Virtual",
+      salas: ["Ponencia"],
+      sitioOficial: "https://observatorio-ia.uccuyo.edu.ar/#jornadas-ia",
+      fuente: "Programa en vivo · Jornadas IA 2026",
+      estado: prog.estado || "provisorio",
+      minutosPorPonencia:
+        (prog.evento && prog.evento.minutosPorPonencia) || 10,
+    },
+    sesiones: sesiones,
+  };
+};

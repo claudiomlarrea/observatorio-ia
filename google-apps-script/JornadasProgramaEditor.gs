@@ -410,9 +410,15 @@ function publicarProgramaManualDesdeItems_(itemsIn) {
     items: items
   };
 
+  // Meta previa sin reconstruir agenda (obtenerProgramaAgenda_ pisaba el guardado).
   var agendaPrev = null;
   try {
-    agendaPrev = obtenerProgramaAgenda_();
+    var rawAg = PropertiesService.getScriptProperties().getProperty(
+      typeof JORNADAS_PROP_AGENDA !== "undefined"
+        ? JORNADAS_PROP_AGENDA
+        : "jornadas_programa_agenda_json"
+    );
+    if (rawAg) agendaPrev = JSON.parse(rawAg);
   } catch (ignore2) {}
 
   var agenda = {
@@ -438,6 +444,7 @@ function publicarProgramaManualDesdeItems_(itemsIn) {
     },
     sesiones: sesiones
   };
+  agenda.meta.fechas = [JORNADAS_EVENTO_DIA];
   agenda.meta.estado = site.estado;
   agenda.meta.fuente = "Programa editado por el equipo · Jornadas IA 2026";
 
