@@ -2041,19 +2041,22 @@
           <article class="card section-block mesa-ayuda-card" id="mesa-ayuda">
             <h3 data-i18n="bot.card.title">Mesa de ayuda</h3>
             <p data-i18n="bot.card.body">
-              Consultas frecuentes del portal: Semillero, aplicaciones IA,
-              encuestas y contacto. El bot responde con lo que dice este sitio;
-              no carga archivos ni envía mails.
+              Lo más consultado: Jornadas de IA (inscripción, artículo, PPT,
+              catálogo y agenda) y Aplicaciones IA. El bot responde con lo que
+              dice este sitio; no carga archivos ni envía mails.
             </p>
             <p class="tile-actions">
-              <button type="button" class="btn btn-primary" data-mesa-q="semillero" data-i18n="bot.q.semillero">
-                Semillero de IA
+              <button type="button" class="btn btn-primary" data-mesa-q="jornadas" data-i18n="bot.q.jornadas">
+                Flujo de las Jornadas
+              </button>
+              <button type="button" class="btn btn-ghost" data-mesa-q="asistente" data-i18n="bot.q.asistente">
+                Inscribirme como asistente
+              </button>
+              <button type="button" class="btn btn-ghost" data-mesa-q="expositor" data-i18n="bot.q.expositor">
+                Inscribirme como expositor
               </button>
               <button type="button" class="btn btn-ghost" data-mesa-q="herramientas" data-i18n="bot.q.herramientas">
                 Aplicaciones IA
-              </button>
-              <button type="button" class="btn btn-ghost" data-mesa-q="contacto" data-i18n="bot.q.contacto">
-                Contacto
               </button>
             </p>
           </article>
@@ -2148,13 +2151,13 @@
           type="text"
           autocomplete="off"
           data-i18n-attr="placeholder:bot.input.placeholder"
-          placeholder="Ej.: ¿cómo me inscribo al Semillero?"
+          placeholder="Ej.: ¿cómo cargo el artículo de las Jornadas?"
         />
         <button type="submit" class="btn btn-primary" data-i18n="bot.send">Enviar</button>
       </form>
     </div>
 
-    <script src="js/i18n-dict.js?v=52"></script>
+    <script src="js/i18n-dict.js?v=53"></script>
     <script src="js/i18n.js?v=4"></script>
     <script src="js/observatorio-numeros-config.js?v=8" defer></script>
     <script src="js/observatorio-numeros.js?v=4" defer></script>
@@ -2180,6 +2183,6 @@
       }
     </script>
     <script src="js/main.js?v=7" defer></script>
-    <script src="js/mesa-ayuda.js?v=1" defer></script>
+    <script src="js/mesa-ayuda.js?v=2" defer></script>
   </body>
 </html>

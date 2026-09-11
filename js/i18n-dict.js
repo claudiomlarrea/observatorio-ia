@@ -1954,14 +1954,21 @@ window.I18N_DICT = {
   "bot.send": {"es": "Enviar", "en": "Send"},
   "bot.input.label": {"es": "Pregunta", "en": "Question"},
   "bot.input.placeholder": {
-    "es": "Ej.: ¿cómo me inscribo al Semillero?",
-    "en": "E.g.: how do I join the Semillero?"
+    "es": "Ej.: ¿cómo cargo el artículo de las Jornadas?",
+    "en": "E.g.: how do I upload the conference article?"
   },
   "bot.card.title": {"es": "Mesa de ayuda", "en": "Help desk"},
   "bot.card.body": {
-    "es": "Consultas frecuentes del portal: Semillero, aplicaciones IA, encuestas y contacto. El bot responde con lo que dice este sitio; no carga archivos ni envía mails.",
-    "en": "Frequent questions: Semillero, AI apps, surveys, and contact. The bot answers from this site; it does not upload files or send mail."
+    "es": "Lo más consultado: Jornadas de IA (inscripción, artículo, PPT, catálogo y agenda) y Aplicaciones IA. El bot responde con lo que dice este sitio; no carga archivos ni envía mails.",
+    "en": "Most asked: AI Conference (registration, article, PPT, catalogue, agenda) and AI apps. The bot answers from this site; it does not upload files or send mail."
   },
+  "bot.q.jornadas": {"es": "Flujo de las Jornadas", "en": "Conference flow"},
+  "bot.q.asistente": {"es": "Inscribirme como asistente", "en": "Register as attendee"},
+  "bot.q.expositor": {"es": "Inscribirme como expositor", "en": "Register as presenter"},
+  "bot.q.articulo": {"es": "Cargar artículo científico", "en": "Upload scientific article"},
+  "bot.q.ppt": {"es": "Cargar PowerPoint", "en": "Upload PowerPoint"},
+  "bot.q.catalogo": {"es": "Usar el catálogo", "en": "Use the catalogue"},
+  "bot.q.agenda": {"es": "Usar la agenda", "en": "Use the agenda"},
   "bot.q.semillero": {"es": "Semillero de IA", "en": "AI Semillero"},
   "bot.q.herramientas": {"es": "Aplicaciones IA", "en": "AI apps"},
   "bot.q.contacto": {"es": "Contacto", "en": "Contact"},
