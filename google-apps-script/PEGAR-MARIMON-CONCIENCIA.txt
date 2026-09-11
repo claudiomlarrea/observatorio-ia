@@ -16,8 +16,8 @@ Qué hacer (Chrome)
 2. Reemplazá el archivo JornadasPrograma.gs por el del repo
    (google-apps-script/JornadasPrograma.gs) → Guardar.
 
-3. Ejecutá una vez la función:
-     asegurarPonenciaMarimonConciencia_
+3. Ejecutá una vez la función (sin guión bajo al final; si no, no aparece en el menú):
+     asegurarPonenciaMarimonConciencia
    (autorizá si pide permisos). Debe anexar la 11.ª ponencia.
 
 4. Implementar → Nueva versión (web app pública), para que

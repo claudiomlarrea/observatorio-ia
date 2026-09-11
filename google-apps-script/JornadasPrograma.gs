@@ -1122,9 +1122,10 @@ function puntajeSimilitudTituloDistintivoPrograma_(a, b) {
 
 /**
  * Fuerza anexar Marimon/ConcienciaIA si está en Drive y falta en el programa.
- * Ejecutar una vez en el editor (Chrome): asegurarPonenciaMarimonConciencia_()
+ * Ejecutar una vez en el editor (Chrome): asegurarPonenciaMarimonConciencia
+ * (sin guión bajo final: Apps Script oculta las funciones *_ del menú Ejecutar).
  */
-function asegurarPonenciaMarimonConciencia_() {
+function asegurarPonenciaMarimonConciencia() {
   var arts = listarEntradas_(JORNADAS_ARTICULOS_FOLDER_ID, ARTICULOS_MIME_OK, "articulo");
   var ppts = listarEntradas_(
     JORNADAS_PRESENTACIONES_FOLDER_ID,
