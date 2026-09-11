@@ -45,7 +45,7 @@ function wirePrograma_() {
     pdfLink.href = livePdf;
     pdfLink.removeAttribute("download");
   }
-  var localUrl = "data/jornadas-programa-2026.json?v=9";
+  var localUrl = "data/jornadas-programa-2026.json?v=17";
   var remoteUrl = api ? api + "?action=programa" : "";
 
   function paint(data) {
@@ -62,27 +62,42 @@ function wirePrograma_() {
       "</div></li>";
   }
 
-  // 1) API en vivo (Drive → Apps Script). 2) JSON estático de respaldo.
-  var chain = remoteUrl
-    ? fetch(remoteUrl, { credentials: "omit", cache: "no-store" })
-        .then(function (r) {
-          if (!r.ok) throw new Error("HTTP " + r.status);
-          return r.json();
-        })
-        .then(function (data) {
-          if (!data || !data.items || !data.items.length) {
-            throw new Error("programa vacío");
-          }
-          paint(data);
-        })
-    : Promise.reject(new Error("sin api"));
-
-  chain.catch(function () {
-    return fetch(localUrl, { credentials: "omit" })
+  function fetchJson(url, ms) {
+    var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+    var timer =
+      ctrl && ms
+        ? setTimeout(function () {
+            try {
+              ctrl.abort();
+            } catch (e) {}
+          }, ms)
+        : null;
+    return fetch(url, {
+      credentials: "omit",
+      cache: "no-store",
+      signal: ctrl ? ctrl.signal : undefined,
+    })
       .then(function (r) {
         if (!r.ok) throw new Error("HTTP " + r.status);
         return r.json();
       })
+      .finally(function () {
+        if (timer) clearTimeout(timer);
+      });
+  }
+
+  // 1) API en vivo (Drive → Apps Script). 2) JSON estático de respaldo.
+  var chain = remoteUrl
+    ? fetchJson(remoteUrl, 10000).then(function (data) {
+        if (!data || !data.items || !data.items.length) {
+          throw new Error("programa vacío");
+        }
+        paint(data);
+      })
+    : Promise.reject(new Error("sin api"));
+
+  chain.catch(function () {
+    return fetchJson(localUrl, 8000)
       .then(paint)
       .catch(fail);
   });

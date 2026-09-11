@@ -86,17 +86,18 @@
       "fin": "15:35",
       "sala": "Ponencia",
       "tipo": "ponencia",
-      "titulo": "Encuesta alumnos Universidad Internacional de Cataluña",
+      "titulo": "Conciencia sobre la inteligencia artificial en el trabajo y continuidad de uso",
       "disertantes": [
-        "Frederic Marimon"
+        "Marimon",
+        "Arias-Valle"
       ],
       "moderadores": [],
-      "area": "",
+      "area": "Educación",
       "rol": "Expositor/a",
-      "articuloOk": null,
-      "pptOk": null,
+      "articuloOk": true,
+      "pptOk": true,
       "confirmado": false,
-      "notas": ""
+      "notas": "Incluido automáticamente desde Drive (provisorio)"
     },
     {
       "id": "j-ponencia-jos-la-malfa",

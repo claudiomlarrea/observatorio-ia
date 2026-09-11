@@ -1,0 +1,32 @@
+Marimon · ConcienciaIA → programa / catálogo (11 ponencias)
+============================================================
+
+Qué pasó
+--------
+Los archivos Educacion_UIC_Marimon_ConcienciaIA ya estaban en Drive
+(artículos + PPT), pero el sync manual no los anexaba: el título
+compartía “inteligencia artificial” / “uso” con José La Malfa y se
+trataba como duplicado.
+
+Qué hacer (Chrome)
+------------------
+1. Abrí el proyecto Apps Script:
+   https://script.google.com/home/projects/1xe9LML54wRlV7tdCKbQKdowfO6rflc1HHsx0AzHLQ10eKmzDTSPmJhai/edit
+
+2. Reemplazá el archivo JornadasPrograma.gs por el del repo
+   (google-apps-script/JornadasPrograma.gs) → Guardar.
+
+3. Ejecutá una vez la función:
+     asegurarPonenciaMarimonConciencia_
+   (autorizá si pide permisos). Debe anexar la 11.ª ponencia.
+
+4. Implementar → Nueva versión (web app pública), para que
+   ?action=programa / catálogo / cargas vean el cambio.
+
+5. Verificá:
+   …/exec?action=programa
+   (debe listar 11 ponencias, incluida Conciencia… Marimon, Arias-Valle)
+
+Sitio (GitHub Pages): ya actualiza el JSON de respaldo y TITULOS_CANON.
+URL: https://observatorio-ia.uccuyo.edu.ar/#jornadas-ia
+PDF en vivo: jornadas-programa-pdf.html

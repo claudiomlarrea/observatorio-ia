@@ -520,7 +520,7 @@ function fusionarCargasDuplicadasPrograma_(porClave) {
           normalizarClavePrograma_(a.personaDisplay) ===
             normalizarClavePrograma_(b.personaDisplay);
         var tituloCercano =
-          puntajeSimilitudTituloPrograma_(a.titulo, b.titulo) >= 2 ||
+          puntajeSimilitudTituloDistintivoPrograma_(a.titulo, b.titulo) >= 3 ||
           (a.articuloFileId && a.articuloFileId === b.articuloFileId) ||
           (a.pptFileId && a.pptFileId === b.pptFileId);
         if (!mismaPersona && !tituloCercano) continue;
@@ -744,7 +744,7 @@ function actualizarFlagsPorTituloEnItems_(items, row) {
   for (var i = 0; i < items.length; i++) {
     var it = items[i];
     if (String(it.tipo || "") !== "ponencia") continue;
-    if (puntajeSimilitudTituloPrograma_(row.titulo, it.titulo) < 3) continue;
+    if (puntajeSimilitudTituloDistintivoPrograma_(row.titulo, it.titulo) < 3) continue;
     aplicarCargaAItemPrograma_(it, row);
   }
 }
@@ -781,6 +781,18 @@ var JORNADAS_TITULO_DIVIDUO =
   "Del individuo al dividuo en el aula universitaria. La dividualidad como categoría pedagógico-didáctica para una práctica docente digital crítica ante la IA";
 
 var JORNADAS_TITULOS_CANON = [
+  {
+    id: "marimon_conciencia",
+    match:
+      /conciencia\s+sobre\s+la\s+inteligencia|continuidad\s+de\s+uso|marimon|encuesta\s+alumnos\s+universidad\s+internacional\s+de\s+catalu|educacion[_\s]*uic/i,
+    titulo:
+      "Conciencia sobre la inteligencia artificial en el trabajo y continuidad de uso",
+    persona: "Marimon, Arias-Valle",
+    area: "Educación",
+    clave: "marimon",
+    articuloOk: true,
+    pptOk: true
+  },
   {
     id: "uso_ia",
     match: /uso\s+de\s+(la\s+)?ia\s+en\s+estudiantes|uso\s+de\s+inteligencia\s+artificial\s+en\s+estudiantes|encuesta\s+alumnos\s+de\s+la\s+uc\s*cuyo/i,
@@ -946,6 +958,7 @@ function dedupeProgramaItemsInPlace_(items) {
       .replace(/\s+/g, " ")
       .trim();
     if (/^(jose\s+)?la\s+malfa$/.test(ck)) return "jose la malfa";
+    if (/marimon|arias[\s-]*valle|conciencia/.test(ck)) return "marimon";
     if (/garcia|garcía|quo\s*vadis|antropolog|antroplog/.test(ck)) return "garcia quo vadis";
     return ck;
   }
@@ -1006,7 +1019,12 @@ function normalizarItemsTitulosCanon_(items) {
       if (rule.id === "meretta" && !/meretta|contabilidad|pymes/i.test(blob)) {
         continue;
       }
-      if (rule.id === "uso_ia" && /internacional\s+de\s+catalu/i.test(blob)) {
+      if (
+        rule.id === "uso_ia" &&
+        /internacional\s+de\s+catalu|marimon|conciencia\s+sobre|arias[\s-]*valle|\buic\b/i.test(
+          blob
+        )
+      ) {
         continue;
       }
       if (
@@ -1063,9 +1081,59 @@ function yaEstaTituloEnPrograma_(items, titulo) {
     if (!other) continue;
     if (other === t) return true;
     if (/dividuo/.test(t) && /dividuo/.test(other)) return true;
-    if (puntajeSimilitudTituloPrograma_(titulo, items[i].titulo) >= 3) return true;
+    // Umbral alto + tokens distintivos: “inteligencia artificial” / “uso”
+    // no deben fusionar Marimon (ConcienciaIA) con La Malfa u otras.
+    if (puntajeSimilitudTituloDistintivoPrograma_(titulo, items[i].titulo) >= 3) {
+      return true;
+    }
   }
   return false;
+}
+
+/** Tokens demasiado comunes en este evento; no cuentan para “mismo título”. */
+function esTokenTituloGenericoPrograma_(tok) {
+  tok = String(tok || "").toLowerCase();
+  return /^(inteligencia|artificial|universidad|catolica|cuyo|educacion|educacion|estudiante|estudiantes|uso|sobre|para|desde|entre|como|ante|digital|modelo|sistema|herramienta|aplicada|aplicado|conocimiento|proceso|practica|docente|aula|ia|ppt|docx|pdf)$/i.test(
+    tok
+  );
+}
+
+function puntajeSimilitudTituloDistintivoPrograma_(a, b) {
+  var ta = normalizarClavePrograma_(a)
+    .split(/\s+/)
+    .filter(function (t) {
+      return t.length >= 4 && !esTokenTituloGenericoPrograma_(t);
+    });
+  var tb = normalizarClavePrograma_(b)
+    .split(/\s+/)
+    .filter(function (t) {
+      return t.length >= 4 && !esTokenTituloGenericoPrograma_(t);
+    });
+  if (!ta.length || !tb.length) return 0;
+  var set = {};
+  var i;
+  for (i = 0; i < tb.length; i++) set[tb[i]] = true;
+  var hit = 0;
+  for (i = 0; i < ta.length; i++) {
+    if (set[ta[i]]) hit++;
+  }
+  return hit;
+}
+
+/**
+ * Fuerza anexar Marimon/ConcienciaIA si está en Drive y falta en el programa.
+ * Ejecutar una vez en el editor (Chrome): asegurarPonenciaMarimonConciencia_()
+ */
+function asegurarPonenciaMarimonConciencia_() {
+  var arts = listarEntradas_(JORNADAS_ARTICULOS_FOLDER_ID, ARTICULOS_MIME_OK, "articulo");
+  var ppts = listarEntradas_(
+    JORNADAS_PRESENTACIONES_FOLDER_ID,
+    PRESENTACIONES_MIME_OK,
+    "presentacion"
+  );
+  var r = incorporarNuevasCargasEnProgramaManual_(arts, ppts);
+  var n = normalizarYPublicarTitulosCanon_();
+  return { incorporar: r, normalizar: n };
 }
 
 /** Quita .docx/.pdf y corrige “I Ay” / “abogacia” en ítems del programa. */

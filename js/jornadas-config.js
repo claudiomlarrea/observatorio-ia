@@ -24,12 +24,25 @@ window.JORNADAS_IA_2026 = {
   /**
    * Panel equipo: cruza artículo ↔ PowerPoint por ponencia.
    */
-  CARGAS_STATUS_URL: "jornadas-cargas.html?v=8",
+  CARGAS_STATUS_URL: "jornadas-cargas.html?v=9",
   /**
    * Títulos / autores canónicos (portada Word + PPT revisados).
    * pptOk: true si ya revisamos el PowerPoint correspondiente.
    */
   TITULOS_CANON: {
+    marimon_conciencia: {
+      match:
+        /conciencia\s+sobre\s+la\s+inteligencia|continuidad\s+de\s+uso|marimon|encuesta\s+alumnos\s+universidad\s+internacional\s+de\s+catalu|educacion[_\s]*uic/i,
+      titulo:
+        "Conciencia sobre la inteligencia artificial en el trabajo y continuidad de uso",
+      persona: "Marimon, Arias-Valle",
+      area: "Educación",
+      clave: "marimon",
+      articuloOk: true,
+      pptOk: true,
+      requirePersonaOrTitulo:
+        /marimon|arias[\s-]*valle|conciencia|catalu|uic|continuidad\s+de\s+uso/i,
+    },
     uso_ia: {
       match:
         /uso\s+de\s+(la\s+)?ia\s+en\s+estudiantes|uso\s+de\s+inteligencia\s+artificial\s+en\s+estudiantes|encuesta\s+alumnos\s+de\s+la\s+uc\s*cuyo/i,
@@ -40,7 +53,7 @@ window.JORNADAS_IA_2026 = {
       clave: "jose la malfa",
       articuloOk: true,
       pptOk: true,
-      /** No cruzar con la encuesta de Marimon (UIC). */
+      /** No cruzar con Marimon (UIC / ConcienciaIA). */
       requirePersonaOrTitulo: /la\s*malfa|uso\s+de|encuesta\s+alumnos\s+de\s+la\s+uc/i,
     },
     gemeph: {
@@ -149,7 +162,7 @@ window.JORNADAS_IA_2026 = {
    * Vista en vivo del programa (misma API que el listado). Imprimir → Guardar PDF.
    * El .pdf en assets/ es solo respaldo y puede quedar desfasado.
    */
-  PROGRAMA_PDF_URL: "jornadas-programa-pdf.html?v=8",
+  PROGRAMA_PDF_URL: "jornadas-programa-pdf.html?v=9",
   PROGRAMA_PDF_FALLBACK: "assets/jornadas/programa-jornadas-ia-2026.pdf?v=10",
   /**
    * Editor del programa (equipo). Implementación aparte:
@@ -162,7 +175,7 @@ window.JORNADAS_IA_2026 = {
    * El catálogo de PowerPoint quedó desactivado en la UI; el seguimiento
    * artículo↔PPT es jornadas-cargas.html. La carpeta Drive de PPT sigue activa.
    */
-  CATALOGO_ARTICULOS_PDF: "jornadas-catalogo.html?tipo=articulos&v=12",
+  CATALOGO_ARTICULOS_PDF: "jornadas-catalogo.html?tipo=articulos&v=13",
   CATALOGO_PRESENTACIONES_PDF: "",
   CATALOGO_ARTICULOS_PDF_FALLBACK:
     "assets/jornadas/catalogo-articulos-jornadas-ia-2026.pdf?v=13",
@@ -186,6 +199,7 @@ window.JORNADAS_fixProgramaItems = function (items) {
       .replace(/\s+/g, " ")
       .trim();
     if (/^(jose\s+)?la\s+malfa$/.test(ck)) return "jose la malfa";
+    if (/marimon|arias[\s-]*valle|conciencia/.test(ck)) return "marimon";
     if (/garcia|garcía|quo\s*vadis|antropolog|antroplog/.test(ck)) return "garcia quo vadis";
     return ck;
   }
@@ -228,10 +242,12 @@ window.JORNADAS_fixProgramaItems = function (items) {
         if (key === "giboin" && !/alerta|epidemiolog|giboin|veterinar/i.test(blob)) {
           continue;
         }
-        // Encuesta UIC (Marimon) no es Uso IA
+        // Marimon / UIC / ConcienciaIA no es Uso IA (La Malfa)
         if (
           key === "uso_ia" &&
-          /internacional\s+de\s+catalu/i.test(blob)
+          /internacional\s+de\s+catalu|marimon|conciencia\s+sobre|arias[\s-]*valle|\buic\b/i.test(
+            blob
+          )
         ) {
           continue;
         }
@@ -288,7 +304,12 @@ window.JORNADAS_fixAgendaSesiones = function (sesiones) {
         if (key === "meretta" && !/meretta|contabilidad|pymes/i.test(blob)) {
           continue;
         }
-        if (key === "uso_ia" && /internacional\s+de\s+catalu/i.test(blob)) {
+        if (
+          key === "uso_ia" &&
+          /internacional\s+de\s+catalu|marimon|conciencia\s+sobre|arias[\s-]*valle|\buic\b/i.test(
+            blob
+          )
+        ) {
           continue;
         }
         s.titulo = rule.titulo;
