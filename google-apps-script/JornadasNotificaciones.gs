@@ -400,7 +400,12 @@ function notificarNuevasCargasDriveJornadas_(arts, ppts) {
     var seeded = props.getProperty(JORNADAS_PROP_SEEDED) === "1";
     var recentCutoff = Date.now() - 3 * 24 * 60 * 60 * 1000;
 
+    // Si ya notificamos un fileId, marcar también su huella nombre/autor
+    // (así una copia nueva con otro ID no vuelve a avisar).
+    enriquecerPrevConHuellas_(prev, arts, ppts);
+
     var currentIds = {};
+    var fpsBatch = {};
     var nuevos = [];
     var i;
     for (i = 0; i < arts.length; i++) {
@@ -411,7 +416,8 @@ function notificarNuevasCargasDriveJornadas_(arts, ppts) {
         currentIds,
         seeded,
         recientesOk_(arts[i], recentCutoff),
-        nuevos
+        nuevos,
+        fpsBatch
       );
     }
     for (i = 0; i < ppts.length; i++) {
@@ -422,7 +428,8 @@ function notificarNuevasCargasDriveJornadas_(arts, ppts) {
         currentIds,
         seeded,
         recientesOk_(ppts[i], recentCutoff),
-        nuevos
+        nuevos,
+        fpsBatch
       );
     }
 
@@ -484,6 +491,13 @@ function notificarNuevasCargasDriveJornadas_(arts, ppts) {
     for (id in prev) {
       if (prev.hasOwnProperty(id)) next[id] = true;
     }
+    // Huellas nombre/autor: no volver a avisar copias con otro fileId
+    for (i = 0; i < arts.length; i++) {
+      marcarHuellaCarga_(next, arts[i], "artículo científico");
+    }
+    for (i = 0; i < ppts.length; i++) {
+      marcarHuellaCarga_(next, ppts[i], "presentación PowerPoint");
+    }
 
     props.setProperty(JORNADAS_PROP_SEEN, JSON.stringify(next));
     props.setProperty(JORNADAS_PROP_SEEDED, "1");
@@ -517,30 +531,91 @@ function recientesOk_(entry, recentCutoff) {
   }
 }
 
+function enriquecerPrevConHuellas_(prev, arts, ppts) {
+  prev = prev || {};
+  var i;
+  var it;
+  for (i = 0; i < (arts || []).length; i++) {
+    it = arts[i];
+    if (it && it.fileId && prev[String(it.fileId)]) {
+      marcarHuellaCarga_(prev, it, "artículo científico");
+    }
+  }
+  for (i = 0; i < (ppts || []).length; i++) {
+    it = ppts[i];
+    if (it && it.fileId && prev[String(it.fileId)]) {
+      marcarHuellaCarga_(prev, it, "presentación PowerPoint");
+    }
+  }
+}
+
 /**
  * Decide si un archivo debe generar mail.
  * currentIds: todos los ids actuales (para el set “visto”).
+ * No avisa si ya se notificó el mismo fileId O la misma huella
+ * (tipo + nombre de archivo + autor), aunque el ID sea otro (copias).
  */
-function collectEntrada_(entry, tipoLabel, prev, currentIds, seeded, isRecent, nuevos) {
+function collectEntrada_(entry, tipoLabel, prev, currentIds, seeded, isRecent, nuevos, fpsBatch) {
   if (!entry || !entry.fileId) return;
   var id = String(entry.fileId);
   currentIds[id] = true;
+  if (prev[id]) return; // ya notificado este ID
+
+  var fp = huellaCarga_(entry, tipoLabel);
+  var fpKey = fp ? "fp:" + fp : "";
+  fpsBatch = fpsBatch || {};
+  if (fpKey && (prev[fpKey] || fpsBatch[fpKey])) {
+    // Copia duplicada (mismo nombre/autor, otro fileId): silencio
+    return;
+  }
+
   var avisar = false;
-  if (prev[id]) return; // ya notificado
   if (!seeded) {
     avisar = !!isRecent; // primera vez: solo recientes
   } else {
-    avisar = true; // nuevo fileId
+    avisar = true; // nuevo fileId (y huella nueva)
   }
   if (!avisar) return;
+  if (fpKey) fpsBatch[fpKey] = true;
   nuevos.push({
     tipo: tipoLabel,
     title: entry.title || entry.fileName || id,
     author: entry.author || "",
     area: entry.area || "",
     fileName: entry.fileName || "",
-    fileId: id
+    fileId: id,
+    fp: fp
   });
+}
+
+function marcarHuellaCarga_(next, entry, tipoLabel) {
+  var fp = huellaCarga_(entry, tipoLabel);
+  if (fp) next["fp:" + fp] = true;
+}
+
+/**
+ * Huella estable para detectar reenvíos/copias:
+ * tipo + nombre de archivo (sin extensión ni «(1)») + autor.
+ */
+function huellaCarga_(entry, tipoLabel) {
+  if (!entry) return "";
+  var name = String(entry.fileName || entry.title || "");
+  name = name.replace(/\.(docx?|pptx?|pdf)$/i, "");
+  name = name.replace(/\s*\(\d+\)\s*$/g, ""); // Contabilidad… (1)
+  name = name.replace(/\s+/g, " ").trim();
+  var autor = String(entry.author || "");
+  var tipo =
+    String(tipoLabel || "").toLowerCase().indexOf("present") >= 0 ? "ppt" : "art";
+  var n =
+    typeof normalizarClavePar_ === "function"
+      ? normalizarClavePar_(name)
+      : name.toLowerCase();
+  var a =
+    typeof normalizarClavePar_ === "function"
+      ? normalizarClavePar_(autor)
+      : autor.toLowerCase();
+  if (!n && !a) return "";
+  return tipo + "|" + n + (a ? "|" + a : "");
 }
 
 function formIdAsistentes_() {

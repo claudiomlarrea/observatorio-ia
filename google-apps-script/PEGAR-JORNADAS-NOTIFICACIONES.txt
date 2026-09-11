@@ -25,6 +25,12 @@ Qué cubre
   4. Carpeta Drive PowerPoint
      https://drive.google.com/drive/folders/10Ma7p_Lo3tObfE0N_nXEgwqZogqQzXQE
 
+Duplicados
+----------
+  No vuelve a avisar si ya hubo mail por el mismo nombre de archivo + autor
+  (aunque el file ID de Drive sea otro). Pegá JornadasNotificaciones.gs
+  actualizado y Guardar (el trigger cada 5 min usa el código nuevo).
+
 
 Instalación (cuenta investigacion@uccuyo.edu.ar)
 ------------------------------------------------
