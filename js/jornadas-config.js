@@ -167,9 +167,10 @@ window.JORNADAS_IA_2026 = {
   /**
    * Editor del programa (equipo). Implementación aparte:
    * «Ejecutar como: Usuario que accede» + cuenta Google.
+   * AccountChooser prioriza investigacion@ (no hace falta cambiar a observatorioia@).
    */
   PROGRAMA_EDITOR_URL:
-    "https://script.google.com/macros/s/AKfycby-iPVY572kZOubTA_eFv0WRWCponjQde778ibv2daEYvIDdza6N6HFnyw-tDdmWSB9/exec?action=editar_programa",
+    "https://accounts.google.com/AccountChooser?Email=investigacion%40uccuyo.edu.ar&continue=https%3A%2F%2Fscript.google.com%2Fmacros%2Fs%2FAKfycby-iPVY572kZOubTA_eFv0WRWCponjQde778ibv2daEYvIDdza6N6HFnyw-tDdmWSB9%2Fexec%3Faction%3Deditar_programa",
   /**
    * Catálogo público = artículos (desde el programa).
    * El catálogo de PowerPoint quedó desactivado en la UI; el seguimiento

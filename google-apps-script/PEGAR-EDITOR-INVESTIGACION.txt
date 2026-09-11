@@ -1,0 +1,32 @@
+Editor programa — usar investigacion@ (sin cambiar de cuenta)
+==============================================================
+
+Qué cambió
+----------
+- investigacion@, observatorioia@ y asistente.inv@ quedan siempre
+  autorizados (núcleo del equipo).
+- El enlace «Editar programa (equipo)» abre el selector de Google
+  priorizando investigacion@uccuyo.edu.ar.
+- Funciones para ejecutar en Apps Script (menú ▶):
+    restaurarEditoresPrograma
+    diagnosticoEditorPrograma
+
+Qué pegar (Chrome)
+------------------
+1. Archivos del repo:
+   - JornadasProgramaEditor.gs
+   - JornadasProgramaEditor.html
+2. Guardar.
+3. Ejecutá ▶ restaurarEditoresPrograma (una vez).
+4. Implementar → Nueva versión
+   (deployment del EDITOR: «Usuario que accede» +
+    «Cualquier usuario de una cuenta de Google»).
+   No uses la implementación pública («Ejecutar como: Yo»).
+
+Probar
+------
+Con Chrome en investigacion@:
+  https://observatorio-ia.uccuyo.edu.ar/#jornadas-ia
+  → Editar programa (equipo)
+  → elegí investigacion@ si Google muestra el selector
+  → debería dejar editar / guardar sin pedir observatorioia@.

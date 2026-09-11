@@ -9,13 +9,17 @@
  *   Quién tiene acceso: Cualquier usuario de una cuenta de Google
  *   (Si está en «Ejecutar como: Yo», el correo llega vacío.)
  *
- * Lista blanca (podés ampliar con agregarEditorPrograma_("mail@…")):
- *   investigacion@uccuyo.edu.ar
+ * Lista blanca (podés ampliar con agregarEditorPrograma("mail@…")):
+ *   investigacion@uccuyo.edu.ar   ← preferida (dueña del proyecto)
  *   asistente.inv@uccuyo.edu.ar
  *   observatorioia@uccuyo.edu.ar
  *   claudio.larrea@hotmail.com
  *
+ * El núcleo investigacion@ / observatorioia@ / asistente.inv@ siempre
+ * está autorizado (no hace falta cambiar de cuenta en Chrome).
+ *
  * Abrir: …/exec?action=editar_programa
+ * (el sitio usa AccountChooser con Email=investigacion@…)
  */
 
 var JORNADAS_PROP_PROGRAMA_MANUAL = "jornadas_programa_manual";
@@ -58,6 +62,57 @@ function servirEditorProgramaHtml_() {
 
 /**
  * Agregar un correo a la lista blanca (ejecutar a mano en Apps Script).
+ * Ejemplo: agregarEditorPrograma("juan@uccuyo.edu.ar");
+ */
+function agregarEditorPrograma(email) {
+  return agregarEditorPrograma_(email);
+}
+
+/**
+ * Restaura / fusiona la lista blanca con el núcleo del equipo
+ * (incluye investigacion@ y observatorioia@). Ejecutar ▶ una vez.
+ */
+function restaurarEditoresPrograma() {
+  PropertiesService.getScriptProperties().deleteProperty(JORNADAS_PROP_EDITORES);
+  var list = cargarEditoresPrograma_();
+  return {
+    ok: true,
+    editores: list,
+    sesion: emailUsuarioEditor_() || "(sin correo detectado)",
+    autorizado: !!editorProgramaAutorizado_()
+  };
+}
+
+/** Diagnóstico: qué correo ve Apps Script con tu sesión actual. */
+function diagnosticoEditorPrograma() {
+  var active = "";
+  var effective = "";
+  try {
+    active = (Session.getActiveUser() && Session.getActiveUser().getEmail()) || "";
+  } catch (e1) {
+    active = "(error: " + e1 + ")";
+  }
+  try {
+    effective =
+      (Session.getEffectiveUser() && Session.getEffectiveUser().getEmail()) || "";
+  } catch (e2) {
+    effective = "(error: " + e2 + ")";
+  }
+  var email = emailUsuarioEditor_();
+  return {
+    ok: true,
+    activeUser: active,
+    effectiveUser: effective,
+    emailUsado: email || "(vacío)",
+    autorizado: !!editorProgramaAutorizado_(),
+    editores: cargarEditoresPrograma_(),
+    nota:
+      "Si emailUsado está vacío, la web app del editor debe estar en «Ejecutar como: Usuario que accede» + «Cualquier usuario de Google»."
+  };
+}
+
+/**
+ * Agregar un correo a la lista blanca (uso interno / alias con _).
  * Ejemplo: agregarEditorPrograma_("juan@uccuyo.edu.ar");
  */
 function agregarEditorPrograma_(email) {
@@ -191,19 +246,37 @@ function exigirEditorPrograma_() {
 function editorProgramaAutorizado_() {
   var email = emailUsuarioEditor_();
   if (!email) return false;
+  // Siempre permitir el núcleo del equipo (no depender solo de Script Properties).
+  if (esEditorProgramaNucleo_(email)) return true;
   var list = cargarEditoresPrograma_();
   return list.indexOf(email) >= 0;
 }
 
+/** Correos del equipo que siempre pueden editar (sin cambiar de cuenta). */
+function esEditorProgramaNucleo_(email) {
+  email = normalizarEmailEditor_(email);
+  if (!email) return false;
+  if (JORNADAS_EDITORES_DEFAULT.indexOf(email) >= 0) return true;
+  return /^(investigacion|asistente\.inv|observatorioia)@uccuyo\.edu\.ar$/.test(
+    email
+  );
+}
+
 function emailUsuarioEditor_() {
+  var candidates = [];
   try {
     var a = Session.getActiveUser() && Session.getActiveUser().getEmail();
-    if (a) return normalizarEmailEditor_(a);
+    if (a) candidates.push(a);
   } catch (ignore) {}
   try {
     var e = Session.getEffectiveUser() && Session.getEffectiveUser().getEmail();
-    if (e) return normalizarEmailEditor_(e);
+    if (e) candidates.push(e);
   } catch (ignore2) {}
+  var i;
+  for (i = 0; i < candidates.length; i++) {
+    var n = normalizarEmailEditor_(candidates[i]);
+    if (n) return n;
+  }
   return "";
 }
 

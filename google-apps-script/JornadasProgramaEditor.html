@@ -165,10 +165,10 @@
           </div>
           <p class="msg" id="status">Cargando…</p>
           <p class="msg" id="hint401" style="display:none;margin-top:0.35rem;color:var(--danger)">
-            Si ves error 401: cerrá otras cuentas Google, abrí el editor en una ventana nueva
-            (solo observatorioia@ o investigacion@) y volvé a autorizar
-            (Avanzado → Ir a OIA · Catálogos… → Permitir). No uses «Regenerar desde Drive»
-            si querés conservar el orden manual.
+            Si ves error 401: elegí la cuenta <strong>investigacion@uccuyo.edu.ar</strong>
+            (o observatorioia@) en el selector de Google, abrí de nuevo el editor y
+            autorizá (Avanzado → Ir a OIA · Catálogos… → Permitir). No uses
+            «Regenerar desde Drive» si querés conservar el orden manual.
           </p>
         </div>
         <div id="list"></div>
@@ -190,9 +190,8 @@
           if (hint) hint.style.display = "block";
           return (
             "NetworkError HTTP 401 (Google cortó la sesión del editor). " +
-            "Cerrá otras cuentas Google → abrí de nuevo el enlace del editor → " +
-            "si pide permisos: Avanzado → Ir a la app → Permitir. " +
-            "Mejor en ventana de incógnito solo con observatorioia@uccuyo.edu.ar."
+            "Volvé a abrir el enlace eligiendo investigacion@uccuyo.edu.ar " +
+            "(o observatorioia@). Si pide permisos: Avanzado → Ir a la app → Permitir."
           );
         }
         return s;
