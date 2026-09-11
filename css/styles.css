@@ -4287,21 +4287,27 @@ body.gallery-lightbox-open {
   gap: 0.45rem;
   padding: 0.55rem 0.95rem;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  background: var(--btn-3d-bg);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-bottom-color: rgba(8, 40, 28, 0.55);
+  background: var(--btn-3d-green-bg);
   color: #fff;
   font: inherit;
   font-weight: 700;
   font-size: 0.85rem;
   cursor: pointer;
-  box-shadow: var(--btn-3d-shadow);
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: var(--btn-3d-green-shadow);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
 }
 
 .mesa-ayuda-fab:hover {
-  background: var(--btn-3d-bg-hover);
+  background: var(--btn-3d-green-bg-hover);
   transform: translateY(-2px);
-  box-shadow: var(--btn-3d-shadow-hover);
+  box-shadow: var(--btn-3d-green-shadow-hover);
+}
+
+.mesa-ayuda-fab:active {
+  transform: translateY(2px);
+  box-shadow: var(--btn-3d-green-shadow-active);
 }
 
 body.mesa-ayuda-open .mesa-ayuda-fab,
