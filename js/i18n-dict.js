@@ -1947,5 +1947,23 @@ window.I18N_DICT = {
   "dyn.noticias.cta.boletin": {"es": "Ver boletín", "en": "View newsletter"},
   "dyn.noticias.cta.note": {"es": "Ver nota", "en": "View article"},
   "dyn.noticias.teamEntry": {"es": "Ingreso equipo · Cargar noticia", "en": "Team access · Post news"},
-  "dyn.noticias.teamHint": {"es": "(iniciá sesión en Google con un correo autorizado)", "en": "(sign in to Google with an authorized email)"}
+  "dyn.noticias.teamHint": {"es": "(iniciá sesión en Google con un correo autorizado)", "en": "(sign in to Google with an authorized email)"},
+  "bot.fab": {"es": "Mesa de ayuda", "en": "Help desk"},
+  "bot.panel.title": {"es": "Mesa de ayuda", "en": "Help desk"},
+  "bot.close": {"es": "Cerrar", "en": "Close"},
+  "bot.send": {"es": "Enviar", "en": "Send"},
+  "bot.input.label": {"es": "Pregunta", "en": "Question"},
+  "bot.input.placeholder": {
+    "es": "Ej.: ¿cómo me inscribo al Semillero?",
+    "en": "E.g.: how do I join the Semillero?"
+  },
+  "bot.card.title": {"es": "Mesa de ayuda", "en": "Help desk"},
+  "bot.card.body": {
+    "es": "Consultas frecuentes del portal: Semillero, aplicaciones IA, encuestas y contacto. El bot responde con lo que dice este sitio; no carga archivos ni envía mails.",
+    "en": "Frequent questions: Semillero, AI apps, surveys, and contact. The bot answers from this site; it does not upload files or send mail."
+  },
+  "bot.q.semillero": {"es": "Semillero de IA", "en": "AI Semillero"},
+  "bot.q.herramientas": {"es": "Aplicaciones IA", "en": "AI apps"},
+  "bot.q.contacto": {"es": "Contacto", "en": "Contact"},
+  "bot.q.observatorio": {"es": "Qué es el Observatorio", "en": "What is the Observatory"}
 };
