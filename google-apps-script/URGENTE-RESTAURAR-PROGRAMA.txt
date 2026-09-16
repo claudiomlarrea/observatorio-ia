@@ -1,0 +1,44 @@
+URGENTE — se “borraron” las 11 ponencias (API rota)
+====================================================
+
+Diagnóstico
+-----------
+La API pública responde:
+  ReferenceError: obtenerProgramaSitio_ is not defined
+
+Eso significa que en el proyecto Apps Script falta (o no está)
+el archivo JornadasPrograma.gs. Los datos NO se borraron del repo:
+el JSON de GitHub Pages y la app de agenda siguen con las 11.
+
+Qué hacer YA (Chrome · investigacion@)
+--------------------------------------
+1. Abrí el proyecto:
+   https://script.google.com/home/projects/1xe9LML54wRlV7tdCKbQKdowfO6rflc1HHsx0AzHLQ10eKmzDTSPmJhai/edit
+
+2. Asegurate de tener estos archivos pegados (completos):
+   - JornadasPrograma.gs
+   - JornadasProgramaEditor.gs
+   - JornadasCatalogos.gs   (Código.gs / doGet)
+   - RestaurarProgramaJornadas.gs   ← NUEVO (backup de las 11)
+
+3. Guardar.
+
+4. Ejecutá ▶ restaurarProgramaJornadas
+   (autorizá si pide). Debe devolver ok + 11 ítems.
+
+5. Implementar → Nueva versión en la web app PÚBLICA
+   (Ejecutar como: Yo · Cualquier usuario).
+
+6. Probá:
+   …/exec?action=programa
+   Debe listar las 11 ponencias (no “error”).
+
+Sitio
+-----
+Tras el push, catálogo/cargas/programa caen al JSON de respaldo
+si la API falla (ya no muestran “0 artículos” en blanco).
+
+Agenda
+------
+La app jornadas-ia-2026/ ya mostraba bien porque usa el JSON local
+cuando la API falla.

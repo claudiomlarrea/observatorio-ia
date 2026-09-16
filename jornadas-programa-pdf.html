@@ -142,7 +142,7 @@
     <main class="sheet" id="sheet">
       <p class="err">Cargando programa…</p>
     </main>
-    <script src="js/jornadas-config.js?v=36"></script>
+    <script src="js/jornadas-config.js?v=37"></script>
     <script>
       (function () {
         var TIPO = {
@@ -228,7 +228,7 @@
         var cfg = window.JORNADAS_IA_2026 || {};
         var api = String(cfg.CATALOGOS_API_URL || "").trim().replace(/\?.*$/, "");
         var remote = api ? api + "?action=programa" : "";
-        var local = "data/jornadas-programa-2026.json?v=18";
+        var local = "data/jornadas-programa-2026.json?v=19";
 
         function fetchJson(url, ms) {
           var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
@@ -259,11 +259,19 @@
           : Promise.reject(new Error("sin api"));
 
         chain
+          .then(function (data) {
+            if (!data || data.ok === false || !data.items || !data.items.length) {
+              throw new Error("vacío");
+            }
+            return data;
+          })
           .catch(function () {
-            return fetchJson(local, 8000);
+            return fetchJson(local, 8000).then(function (data) {
+              if (!data || !data.items || !data.items.length) throw new Error("sin respaldo");
+              return data;
+            });
           })
           .then(function (data) {
-            if (!data || !data.items || !data.items.length) throw new Error("vacío");
             paint(data);
           })
           .catch(function () {

@@ -306,9 +306,12 @@ function estadoSistemaJornadas_() {
  */
 function informePareoCargasJornadas_() {
   var site = null;
+  var errSite = "";
   try {
     site = obtenerProgramaSitio_();
-  } catch (ignore) {}
+  } catch (ignore) {
+    errSite = String(ignore);
+  }
   var items = [];
   var i;
   if (site && site.items) {
@@ -356,6 +359,17 @@ function informePareoCargasJornadas_() {
     if (items[i].estado === "falta_ppt") totales.faltaPpt++;
     if (items[i].estado === "falta_articulo") totales.faltaArticulo++;
     if (items[i].estado === "sin_archivos") totales.sinArchivos++;
+  }
+  if (!items.length) {
+    return {
+      ok: false,
+      error:
+        errSite ||
+        "Programa vacío o falta JornadasPrograma.gs (obtenerProgramaSitio_). Restaurá con restaurarProgramaJornadas.",
+      updatedAt: "",
+      totales: totales,
+      items: []
+    };
   }
   return {
     ok: true,

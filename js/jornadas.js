@@ -45,7 +45,7 @@ function wirePrograma_() {
     pdfLink.href = livePdf;
     pdfLink.removeAttribute("download");
   }
-  var localUrl = "data/jornadas-programa-2026.json?v=18";
+  var localUrl = "data/jornadas-programa-2026.json?v=19";
   var remoteUrl = api ? api + "?action=programa" : "";
 
   function paint(data) {
@@ -89,7 +89,7 @@ function wirePrograma_() {
   // 1) API en vivo (Drive → Apps Script). 2) JSON estático de respaldo.
   var chain = remoteUrl
     ? fetchJson(remoteUrl, 10000).then(function (data) {
-        if (!data || !data.items || !data.items.length) {
+        if (!data || data.ok === false || !data.items || !data.items.length) {
           throw new Error("programa vacío");
         }
         paint(data);
@@ -98,7 +98,10 @@ function wirePrograma_() {
 
   chain.catch(function () {
     return fetchJson(localUrl, 8000)
-      .then(paint)
+      .then(function (data) {
+        if (!data || !data.items || !data.items.length) throw new Error("sin respaldo");
+        paint(data);
+      })
       .catch(fail);
   });
 }

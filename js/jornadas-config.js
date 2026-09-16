@@ -24,7 +24,7 @@ window.JORNADAS_IA_2026 = {
   /**
    * Panel equipo: cruza artículo ↔ PowerPoint por ponencia.
    */
-  CARGAS_STATUS_URL: "jornadas-cargas.html?v=10",
+  CARGAS_STATUS_URL: "jornadas-cargas.html?v=11",
   /**
    * Títulos / autores canónicos (portada Word + PPT revisados).
    * pptOk: true si ya revisamos el PowerPoint correspondiente.
@@ -183,7 +183,7 @@ window.JORNADAS_IA_2026 = {
    * El catálogo de PowerPoint quedó desactivado en la UI; el seguimiento
    * artículo↔PPT es jornadas-cargas.html. La carpeta Drive de PPT sigue activa.
    */
-  CATALOGO_ARTICULOS_PDF: "jornadas-catalogo.html?tipo=articulos&v=13",
+  CATALOGO_ARTICULOS_PDF: "jornadas-catalogo.html?tipo=articulos&v=14",
   CATALOGO_PRESENTACIONES_PDF: "",
   CATALOGO_ARTICULOS_PDF_FALLBACK:
     "assets/jornadas/catalogo-articulos-jornadas-ia-2026.pdf?v=13",
