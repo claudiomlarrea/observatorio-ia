@@ -1,0 +1,30 @@
+Reordenar ponencias desde cargas (investigacion@ / asistente.inv@)
+=================================================================
+
+Qué hay de nuevo
+----------------
+En jornadas-cargas.html:
+  · Botones ↑ ↓ por fila (filtro «Todas»)
+  · «Guardar orden» → POST a la web app del EDITOR
+  · Enlaces al panel de orden (AccountChooser investigacion@ o asistente.inv@)
+
+No hace falta observatorioia@.
+
+Apps Script (pegar)
+-------------------
+1. JornadasCatalogos.gs   (doPost + action ordenar_programa + clave en pareo)
+2. JornadasProgramaEditor.gs  (servirOrdenarProgramaHtml_ + guardar orden)
+
+Guardar → Implementar → Nueva versión en la implementación del EDITOR:
+  Ejecutar como: Usuario que accede
+  Quién tiene acceso: Cualquier usuario de Google
+
+(La API pública puede actualizarse también, pero el POST de orden
+debe ir al deployment del EDITOR.)
+
+Probar
+------
+Chrome logueado con investigacion@ o asistente.inv@:
+  https://observatorio-ia.uccuyo.edu.ar/jornadas-cargas.html
+  ↑↓ → Guardar orden → debería decir «Orden guardado»
+  y el sitio / catálogo / agenda reflejan el nuevo orden.

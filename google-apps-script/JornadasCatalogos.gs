@@ -325,6 +325,7 @@ function informePareoCargasJornadas_() {
         titulo: String(it.titulo || "").trim(),
         persona: String(it.persona || "").trim(),
         area: String(it.area || "").trim(),
+        clave: String(it.clave || it.persona || it.titulo || "").trim(),
         orden: Number(it.orden) || 0,
         hora: String(it.hora || "").trim(),
         articuloOk: art,
@@ -511,6 +512,9 @@ function instalarTriggerCatalogosJornadas() {
 /**
  * Web app: ?action=catalogos | ?action=actualizar
  * Desplegar como aplicación web (ejecutar como yo; acceso: cualquiera).
+ *
+ * doPost: guardar orden de ponencias (usar la implementación del EDITOR:
+ * «Usuario que accede» + cuenta Google — investigacion@ / asistente.inv@).
  */
 function doGet(e) {
   e = e || {};
@@ -621,6 +625,22 @@ function doGet(e) {
     }
   }
 
+  if (
+    action === "ordenar_programa" ||
+    action === "ordenar" ||
+    action === "reordenar"
+  ) {
+    try {
+      return servirOrdenarProgramaHtml_();
+    } catch (errOr) {
+      return HtmlService.createHtmlOutput(
+        "<p>No se pudo abrir el panel de orden: " +
+          String(errOr) +
+          "</p><p>Pegá la versión actualizada de <code>JornadasProgramaEditor.gs</code>.</p>"
+      );
+    }
+  }
+
   if (action === "pdf" || action === "descargar") {
     try {
       return servirPdfCatalogo_(String(p.tipo || p.kind || "articulos"), String(p.id || ""));
@@ -710,6 +730,34 @@ function doGet(e) {
   } catch (err2) {
     return jsonOut_({ ok: false, error: String(err2) });
   }
+}
+
+/**
+ * Guardar orden desde jornadas-cargas.html (form POST).
+ * Debe pegarse en la implementación del EDITOR («Usuario que accede»).
+ */
+function doPost(e) {
+  e = e || {};
+  var p = (e.parameter || {});
+  var action = String(p.action || "").toLowerCase();
+  if (
+    action === "guardar_orden" ||
+    action === "guardar-orden" ||
+    action === "reordenar"
+  ) {
+    try {
+      return guardarOrdenProgramaPost_(e);
+    } catch (errPost) {
+      return HtmlService.createHtmlOutput(
+        "<p><strong>No se pudo guardar el orden.</strong></p><p>" +
+          String(errPost) +
+          "</p><p><a href=\"https://observatorio-ia.uccuyo.edu.ar/jornadas-cargas.html\">Volver a cargas</a></p>"
+      );
+    }
+  }
+  return HtmlService.createHtmlOutput(
+    "<p>Acción POST no reconocida.</p><p><a href=\"https://observatorio-ia.uccuyo.edu.ar/jornadas-cargas.html\">Volver</a></p>"
+  );
 }
 
 /**

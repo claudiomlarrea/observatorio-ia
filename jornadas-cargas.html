@@ -42,7 +42,7 @@
         font-size: 0.85rem;
       }
       main {
-        max-width: 52rem;
+        max-width: 56rem;
         margin: 1rem auto;
         padding: 0 1rem 2rem;
       }
@@ -81,7 +81,8 @@
         gap: 0.4rem;
         margin-bottom: 0.75rem;
       }
-      .filters button {
+      .filters button,
+      .order-bar button {
         appearance: none;
         border: 1px solid #ccc;
         background: #fff;
@@ -94,6 +95,34 @@
         border-color: var(--green);
         background: #e7f3ee;
         font-weight: 600;
+      }
+      .order-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: center;
+        margin-bottom: 0.75rem;
+        padding: 0.75rem;
+        background: #fff;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+      }
+      .order-bar .primary {
+        background: var(--green);
+        color: #fff;
+        border-color: var(--green);
+        font-weight: 600;
+        border-radius: 0.4rem;
+      }
+      .order-bar a {
+        color: var(--green);
+        font-size: 0.9rem;
+      }
+      .order-bar .hint {
+        flex: 1 1 12rem;
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin: 0;
       }
       table {
         width: 100%;
@@ -116,6 +145,20 @@
         letter-spacing: 0.04em;
         color: var(--muted);
         background: #fafafa;
+      }
+      .ord {
+        white-space: nowrap;
+        width: 1%;
+      }
+      .ord button {
+        appearance: none;
+        border: 1px solid #ccc;
+        background: #fff;
+        border-radius: 0.3rem;
+        padding: 0.2rem 0.45rem;
+        cursor: pointer;
+        font: inherit;
+        line-height: 1;
       }
       .mark {
         font-weight: 700;
@@ -140,6 +183,11 @@
       .folders a {
         color: var(--green);
       }
+      .dirty {
+        color: var(--warn);
+        font-weight: 600;
+        font-size: 0.85rem;
+      }
     </style>
   </head>
   <body>
@@ -156,6 +204,23 @@
       </p>
       <p class="help folders" id="folders"></p>
       <div class="summary" id="summary"></div>
+      <div class="order-bar" id="order-bar">
+        <button type="button" class="primary" id="btn-save-order">
+          Guardar orden
+        </button>
+        <a id="link-ordenar" href="#" target="_blank" rel="noopener"
+          >Panel orden (investigacion@)</a
+        >
+        <a id="link-ordenar-asist" href="#" target="_blank" rel="noopener"
+          >asistente.inv@</a
+        >
+        <p class="hint">
+          Con Chrome en <strong>investigacion@</strong> o
+          <strong>asistente.inv@</strong>: ↑↓ aquí y «Guardar orden». No hace falta
+          observatorioia@.
+          <span class="dirty" id="dirty" hidden> · Hay cambios sin guardar</span>
+        </p>
+      </div>
       <div class="filters" id="filters">
         <button type="button" data-f="all" class="is-on">Todas</button>
         <button type="button" data-f="faltapppt">Falta PowerPoint</button>
@@ -165,12 +230,23 @@
       </div>
       <div id="table-wrap"><p class="err">Cargando…</p></div>
       <p class="foot" id="meta"></p>
+      <form
+        id="form-orden"
+        method="POST"
+        action="#"
+        style="display: none"
+        target="_self"
+      >
+        <input type="hidden" name="action" value="guardar_orden" />
+        <input type="hidden" name="claves" id="input-claves" value="" />
+      </form>
     </main>
-    <script src="js/jornadas-config.js?v=35"></script>
+    <script src="js/jornadas-config.js?v=36"></script>
     <script>
       (function () {
         var filter = "all";
         var rows = [];
+        var dirty = false;
 
         function esc(s) {
           return String(s || "")
@@ -185,14 +261,33 @@
             : '<span class="mark no">No</span>';
         }
 
+        function setDirty(v) {
+          dirty = !!v;
+          var el = document.getElementById("dirty");
+          if (el) el.hidden = !dirty;
+        }
+
+        function moveRow(idx, delta) {
+          var j = idx + delta;
+          if (j < 0 || j >= rows.length) return;
+          var tmp = rows[idx];
+          rows[idx] = rows[j];
+          rows[j] = tmp;
+          setDirty(true);
+          paint();
+        }
+
         function paint() {
-          var list = rows.filter(function (r) {
-            if (filter === "faltapppt") return r.articuloOk && !r.pptOk;
-            if (filter === "faltaart") return r.pptOk && !r.articuloOk;
-            if (filter === "completo") return r.articuloOk && r.pptOk;
-            if (filter === "ninguno") return !r.articuloOk && !r.pptOk;
-            return true;
-          });
+          var list =
+            filter === "all"
+              ? rows
+              : rows.filter(function (r) {
+                  if (filter === "faltapppt") return r.articuloOk && !r.pptOk;
+                  if (filter === "faltaart") return r.pptOk && !r.articuloOk;
+                  if (filter === "completo") return r.articuloOk && r.pptOk;
+                  if (filter === "ninguno") return !r.articuloOk && !r.pptOk;
+                  return true;
+                });
 
           var nArt = rows.filter(function (r) {
             return r.articuloOk;
@@ -236,12 +331,28 @@
             return;
           }
 
+          var canOrder = filter === "all";
           var html =
-            "<table><thead><tr><th>Ponencia</th><th>Expositor/a</th><th>Área</th><th>Artículo</th><th>PowerPoint</th></tr></thead><tbody>";
+            "<table><thead><tr>" +
+            (canOrder ? "<th class=\"ord\">Orden</th>" : "") +
+            "<th>Ponencia</th><th>Expositor/a</th><th>Área</th><th>Artículo</th><th>PowerPoint</th></tr></thead><tbody>";
           for (var i = 0; i < list.length; i++) {
             var r = list[i];
+            var idx = rows.indexOf(r);
+            html += "<tr>";
+            if (canOrder) {
+              html +=
+                '<td class="ord">' +
+                '<button type="button" data-i="' +
+                idx +
+                '" data-d="-1" title="Subir">↑</button> ' +
+                '<button type="button" data-i="' +
+                idx +
+                '" data-d="1" title="Bajar">↓</button>' +
+                "</td>";
+            }
             html +=
-              "<tr><td>" +
+              "<td>" +
               esc(r.titulo) +
               "</td><td>" +
               esc(r.persona) +
@@ -268,6 +379,12 @@
           paint();
         });
 
+        document.getElementById("table-wrap").addEventListener("click", function (e) {
+          var btn = e.target.closest("button[data-i]");
+          if (!btn) return;
+          moveRow(Number(btn.getAttribute("data-i")), Number(btn.getAttribute("data-d")));
+        });
+
         var cfg = window.JORNADAS_IA_2026 || {};
         document.getElementById("folders").innerHTML =
           'Carpetas Drive (distintas): <a href="' +
@@ -275,6 +392,33 @@
           '" target="_blank" rel="noopener">Artículos científicos</a> · <a href="' +
           esc(cfg.PRESENTACION_FOLDER_URL) +
           '" target="_blank" rel="noopener">Presentaciones PowerPoint</a>';
+
+        var exec = String(cfg.PROGRAMA_EDITOR_EXEC || "").trim();
+        var form = document.getElementById("form-orden");
+        if (exec) form.action = exec;
+
+        var linkOrd = document.getElementById("link-ordenar");
+        var linkAsist = document.getElementById("link-ordenar-asist");
+        if (linkOrd && cfg.PROGRAMA_ORDENAR_URL) linkOrd.href = cfg.PROGRAMA_ORDENAR_URL;
+        if (linkAsist && cfg.PROGRAMA_ORDENAR_URL_ASISTENTE) {
+          linkAsist.href = cfg.PROGRAMA_ORDENAR_URL_ASISTENTE;
+        }
+
+        document.getElementById("btn-save-order").addEventListener("click", function () {
+          if (!exec) {
+            alert("Falta PROGRAMA_EDITOR_EXEC en la config.");
+            return;
+          }
+          if (filter !== "all") {
+            alert("Para guardar el orden, elegí el filtro «Todas».");
+            return;
+          }
+          var claves = rows.map(function (r) {
+            return String(r.clave || r.persona || r.titulo || "").trim();
+          });
+          document.getElementById("input-claves").value = JSON.stringify(claves);
+          form.submit();
+        });
 
         var api = String(cfg.CATALOGOS_API_URL || "").trim().replace(/\?.*$/, "");
         var local = "data/jornadas-programa-2026.json?v=18";
@@ -316,6 +460,7 @@
                   titulo: it.titulo,
                   persona: it.persona,
                   area: it.area,
+                  clave: it.clave || it.persona || it.titulo,
                   articuloOk: !!it.articuloOk,
                   pptOk: !!it.pptOk,
                 };
@@ -340,6 +485,11 @@
             if (typeof window.JORNADAS_fixProgramaItems === "function") {
               rows = window.JORNADAS_fixProgramaItems(rows);
             }
+            for (var i = 0; i < rows.length; i++) {
+              if (!rows[i].clave) {
+                rows[i].clave = rows[i].persona || rows[i].titulo || String(i);
+              }
+            }
             var when = data.updatedAt
               ? new Date(data.updatedAt).toLocaleString("es-AR")
               : "";
@@ -347,6 +497,7 @@
               "Actualizado: " +
               (when || "—") +
               " · Orden del programa · Fuente: programa + flags de Drive";
+            setDirty(false);
             paint();
           })
           .catch(function () {

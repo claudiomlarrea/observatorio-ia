@@ -533,3 +533,230 @@ function itemsASesionesAgenda_(items) {
   }
   return out;
 }
+
+/**
+ * Panel liviano: solo reordenar ponencias (para cargas / equipo).
+ * Abrir con la implementación EDITOR: ?action=ordenar_programa
+ */
+function servirOrdenarProgramaHtml_() {
+  var email = emailUsuarioEditor_() || "";
+  var autorizado = !!editorProgramaAutorizado_();
+  var cargasUrl = "https://observatorio-ia.uccuyo.edu.ar/jornadas-cargas.html";
+  if (!autorizado) {
+    return HtmlService.createHtmlOutput(
+      "<!doctype html><meta charset=utf-8><title>Ordenar programa</title>" +
+        "<body style=\"font:16px/1.4 system-ui;max-width:36rem;margin:2rem auto;padding:0 1rem\">" +
+        "<h1>No autorizado</h1>" +
+        "<p>Sesión: <code>" +
+        (email || "(sin correo — usá la web app «Usuario que accede»)") +
+        "</code></p>" +
+        "<p>Entrá con <strong>investigacion@uccuyo.edu.ar</strong> o " +
+        "<strong>asistente.inv@uccuyo.edu.ar</strong> (también vale observatorioia@).</p>" +
+        "<p><a href=\"" +
+        cargasUrl +
+        "\">Volver a cargas</a></p></body>"
+    ).setTitle("Ordenar programa · no autorizado");
+  }
+
+  var data = payloadEditorOk_();
+  var pons = [];
+  var items = (data && data.items) || [];
+  var i;
+  for (i = 0; i < items.length; i++) {
+    if (String(items[i].tipo || "") === "ponencia") pons.push(items[i]);
+  }
+
+  var rowsHtml = "";
+  for (i = 0; i < pons.length; i++) {
+    var it = pons[i];
+    var clave = String(it.clave || it.persona || it.titulo || i);
+    rowsHtml +=
+      "<li data-clave=\"" +
+      htmlEscaparEditor_(clave) +
+      "\"><span class=\"t\">" +
+      htmlEscaparEditor_(it.titulo) +
+      "</span><span class=\"p\">" +
+      htmlEscaparEditor_(it.persona) +
+      "</span>" +
+      "<span class=\"btns\">" +
+      "<button type=\"button\" data-move=\"-1\">↑</button>" +
+      "<button type=\"button\" data-move=\"1\">↓</button>" +
+      "</span></li>";
+  }
+
+  var html =
+    "<!doctype html><html><head><meta charset=utf-8>" +
+    "<meta name=viewport content=\"width=device-width,initial-scale=1\">" +
+    "<title>Ordenar ponencias · Jornadas IA</title>" +
+    "<style>" +
+    "body{font:15px/1.4 system-ui,sans-serif;margin:0;background:#f4f2ef;color:#1a1a1a}" +
+    "header{background:#064a38;color:#fff;padding:.85rem 1rem;display:flex;flex-wrap:wrap;gap:.5rem;justify-content:space-between;align-items:center}" +
+    "header a{color:#fff} main{max-width:40rem;margin:1rem auto;padding:0 1rem 2rem}" +
+    "ol{list-style:none;padding:0;margin:0} li{background:#fff;border-radius:.5rem;padding:.75rem;margin:0 0 .5rem;display:grid;grid-template-columns:1fr auto;gap:.35rem .75rem;box-shadow:0 1px 0 rgba(0,0,0,.06)}" +
+    ".t{font-weight:600;grid-column:1} .p{color:#555;font-size:.9rem;grid-column:1} .btns{grid-row:1/span 2;grid-column:2;display:flex;flex-direction:column;gap:.25rem}" +
+    "button{appearance:none;border:1px solid #ccc;background:#fff;border-radius:.35rem;padding:.35rem .55rem;cursor:pointer;font:inherit}" +
+    "button.primary{background:#064a38;color:#fff;border-color:#064a38;padding:.55rem 1rem;font-weight:600}" +
+    ".msg{margin:.75rem 0;min-height:1.2em}.ok{color:#0d6b4c}.err{color:#7a1f2b}" +
+    "</style></head><body>" +
+    "<header><strong>Reordenar ponencias</strong><span>" +
+    htmlEscaparEditor_(email) +
+    " · <a href=\"" +
+    cargasUrl +
+    "\">Volver a cargas</a></span></header>" +
+    "<main><p>Usá ↑ ↓ y después <strong>Guardar orden</strong>. Actualiza programa, catálogo y agenda.</p>" +
+    "<p class=\"msg\" id=\"status\"></p>" +
+    "<p><button type=\"button\" class=\"primary\" id=\"btnSave\">Guardar orden</button></p>" +
+    "<ol id=\"list\">" +
+    rowsHtml +
+    "</ol></main>" +
+    "<script>" +
+    "var list=document.getElementById('list');" +
+    "list.addEventListener('click',function(e){" +
+    "var btn=e.target.closest('button[data-move]');if(!btn)return;" +
+    "var li=btn.closest('li');var delta=Number(btn.getAttribute('data-move'));" +
+    "var items=[].slice.call(list.children);var idx=items.indexOf(li);var j=idx+delta;" +
+    "if(j<0||j>=items.length)return;" +
+    "if(delta<0)list.insertBefore(li,items[j]);else list.insertBefore(items[j],li);" +
+    "});" +
+    "document.getElementById('btnSave').onclick=function(){" +
+    "var status=document.getElementById('status');status.className='msg';status.textContent='Guardando…';" +
+    "var claves=[].map.call(list.children,function(li){return li.getAttribute('data-clave');});" +
+    "google.script.run.withSuccessHandler(function(res){" +
+    "if(!res||!res.ok){status.className='msg err';status.textContent=(res&&res.error)||'Error';return;}" +
+    "status.className='msg ok';status.textContent='Orden guardado. Ya podés volver a cargas o al sitio.';" +
+    "}).withFailureHandler(function(err){status.className='msg err';status.textContent=String(err);})" +
+    ".editorProgramaGuardarOrden(claves);" +
+    "};" +
+    "</script></body></html>";
+
+  return HtmlService.createHtmlOutput(html)
+    .setTitle("Ordenar ponencias · Jornadas IA")
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+function htmlEscaparEditor_(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+/** google.script.run — reordenar solo ponencias por lista de claves. */
+function editorProgramaGuardarOrden(claves) {
+  if (!editorProgramaAutorizado_()) {
+    return {
+      ok: false,
+      error: "No autorizado. Usá investigacion@ o asistente.inv@.",
+      email: emailUsuarioEditor_() || ""
+    };
+  }
+  try {
+    var published = reordenarProgramaPorClaves_(claves || []);
+    return {
+      ok: true,
+      email: emailUsuarioEditor_(),
+      updatedAt: published.updatedAt,
+      message: "Orden guardado"
+    };
+  } catch (err) {
+    return { ok: false, error: String(err) };
+  }
+}
+
+/** Form POST desde jornadas-cargas.html (campo claves = JSON array). */
+function guardarOrdenProgramaPost_(e) {
+  var p = (e && e.parameter) || {};
+  if (!editorProgramaAutorizado_()) {
+    return HtmlService.createHtmlOutput(
+      "<!doctype html><meta charset=utf-8><body style=\"font:16px system-ui;max-width:36rem;margin:2rem auto;padding:0 1rem\">" +
+        "<h1>No autorizado</h1>" +
+        "<p>Sesión: <code>" +
+        htmlEscaparEditor_(emailUsuarioEditor_() || "(vacía)") +
+        "</code></p>" +
+        "<p>Abrí el enlace estando logueado con <strong>investigacion@uccuyo.edu.ar</strong> " +
+        "o <strong>asistente.inv@uccuyo.edu.ar</strong>.</p>" +
+        "<p>La web app del editor debe ser «Ejecutar como: Usuario que accede».</p>" +
+        "<p><a href=\"https://observatorio-ia.uccuyo.edu.ar/jornadas-cargas.html\">Volver a cargas</a></p></body>"
+    );
+  }
+  var raw = String(p.claves || p.orden || "[]");
+  var claves = [];
+  try {
+    claves = JSON.parse(raw);
+  } catch (ignore) {
+    claves = String(raw)
+      .split(/\n|,/)
+      .map(function (s) {
+        return s.trim();
+      })
+      .filter(Boolean);
+  }
+  var published = reordenarProgramaPorClaves_(claves);
+  return HtmlService.createHtmlOutput(
+    "<!doctype html><meta charset=utf-8><body style=\"font:16px system-ui;max-width:36rem;margin:2rem auto;padding:0 1rem\">" +
+      "<h1>Orden guardado</h1>" +
+      "<p>Por <code>" +
+      htmlEscaparEditor_(emailUsuarioEditor_()) +
+      "</code> · " +
+      htmlEscaparEditor_(published.updatedAt || "") +
+      "</p>" +
+      "<p>Programa, catálogo y agenda ya usan este orden.</p>" +
+      "<p><a href=\"https://observatorio-ia.uccuyo.edu.ar/jornadas-cargas.html\">Volver a cargas</a> · " +
+      "<a href=\"https://observatorio-ia.uccuyo.edu.ar/#jornadas-ia\">Ver programa</a></p></body>"
+  );
+}
+
+function reordenarProgramaPorClaves_(clavesOrden) {
+  clavesOrden = clavesOrden || [];
+  var site =
+    typeof leerProgramaSitioCrudo_ === "function"
+      ? leerProgramaSitioCrudo_()
+      : null;
+  if (!site || !site.items) {
+    var raw = PropertiesService.getScriptProperties().getProperty(
+      typeof JORNADAS_PROP_PROGRAMA !== "undefined"
+        ? JORNADAS_PROP_PROGRAMA
+        : "jornadas_programa_site_json"
+    );
+    site = raw ? JSON.parse(raw) : { items: [] };
+  }
+  var fijos = [];
+  var pons = [];
+  var i;
+  for (i = 0; i < (site.items || []).length; i++) {
+    var it = site.items[i];
+    if (String(it.tipo || "") === "apertura" || String(it.tipo || "") === "indicaciones") {
+      fijos.push(it);
+    } else if (String(it.tipo || "") === "ponencia") {
+      pons.push(it);
+    }
+  }
+
+  function keyOf(it) {
+    return normalizarClavePrograma_(it.clave || it.persona || it.titulo || "");
+  }
+
+  var byKey = {};
+  for (i = 0; i < pons.length; i++) {
+    var k = keyOf(pons[i]);
+    if (k && !byKey[k]) byKey[k] = pons[i];
+  }
+
+  var ordered = [];
+  var seen = {};
+  for (i = 0; i < clavesOrden.length; i++) {
+    var ck = normalizarClavePrograma_(clavesOrden[i]);
+    if (!ck || seen[ck] || !byKey[ck]) continue;
+    ordered.push(byKey[ck]);
+    seen[ck] = true;
+  }
+  for (i = 0; i < pons.length; i++) {
+    var k2 = keyOf(pons[i]);
+    if (seen[k2]) continue;
+    ordered.push(pons[i]);
+    seen[k2] = true;
+  }
+
+  return publicarProgramaManualDesdeItems_(fijos.concat(ordered));
+}
