@@ -24,7 +24,7 @@ window.JORNADAS_IA_2026 = {
   /**
    * Panel equipo: cruza artículo ↔ PowerPoint por ponencia.
    */
-  CARGAS_STATUS_URL: "jornadas-cargas.html?v=11",
+  CARGAS_STATUS_URL: "jornadas-cargas.html?v=12",
   /**
    * Títulos / autores canónicos (portada Word + PPT revisados).
    * pptOk: true si ya revisamos el PowerPoint correspondiente.
@@ -148,6 +148,32 @@ window.JORNADAS_IA_2026 = {
       articuloOk: true,
       pptOk: true,
     },
+    aguirre_impresion3d: {
+      match:
+        /impresi[oó]n\s*3\s*d|impresion\s*3d|aguirre|cslr|san\s+luis\s+rey/i,
+      titulo:
+        "La integración de la Inteligencia Artificial en la Impresión 3D en entornos educativos",
+      persona: "Jesús Francisco Aguirre",
+      area: "Colegio secundario San Luis Rey",
+      clave: "aguirre",
+      articuloOk: true,
+      pptOk: true,
+      requirePersonaOrTitulo:
+        /aguirre|jfa|cslr|san\s+luis\s+rey|impresi[oó]n\s*3|entornos\s+educativos/i,
+    },
+    alvarez_cocreadora: {
+      match:
+        /co[\s-]*creadora\s+pedag|alvarez\s*delgado|san\s+buenaventura|oratoria\s+acad[eé]mica/i,
+      titulo:
+        'La IA como co-creadora pedagógica: Proyecto Trimestral para el fortalecimiento de la escritura, el diseño visual y la oratoria académica en el ISFD "San Buenaventura"',
+      persona: "Rita Elisabeth Alvarez Delgado",
+      area: 'ISFD "San Buenaventura"',
+      clave: "alvarez delgado",
+      articuloOk: true,
+      pptOk: true,
+      requirePersonaOrTitulo:
+        /alvarez|delgado|buenaventura|co[\s-]*creadora|oratoria|escritura/i,
+    },
   },
   /** @deprecated usar TITULOS_CANON.dividuo.titulo */
   TITULO_DIVIDUO:
@@ -183,7 +209,7 @@ window.JORNADAS_IA_2026 = {
    * El catálogo de PowerPoint quedó desactivado en la UI; el seguimiento
    * artículo↔PPT es jornadas-cargas.html. La carpeta Drive de PPT sigue activa.
    */
-  CATALOGO_ARTICULOS_PDF: "jornadas-catalogo.html?tipo=articulos&v=14",
+  CATALOGO_ARTICULOS_PDF: "jornadas-catalogo.html?tipo=articulos&v=15",
   CATALOGO_PRESENTACIONES_PDF: "",
   CATALOGO_ARTICULOS_PDF_FALLBACK:
     "assets/jornadas/catalogo-articulos-jornadas-ia-2026.pdf?v=13",
@@ -208,6 +234,9 @@ window.JORNADAS_fixProgramaItems = function (items) {
       .trim();
     if (/^(jose\s+)?la\s+malfa$/.test(ck)) return "jose la malfa";
     if (/marimon|arias[\s-]*valle|conciencia/.test(ck)) return "marimon";
+    if (/aguirre|jfa|san\s+luis\s+rey|cslr|impresi/.test(ck)) return "aguirre";
+    if (/alvarez|delgado|buenaventura|co[\s-]*creadora/.test(ck))
+      return "alvarez delgado";
     if (/garcia|garcía|quo\s*vadis|antropolog|antroplog/.test(ck)) return "garcia quo vadis";
     return ck;
   }

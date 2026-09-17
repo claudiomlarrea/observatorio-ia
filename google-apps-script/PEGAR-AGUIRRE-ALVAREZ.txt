@@ -1,0 +1,32 @@
+Aguirre (San Luis Rey) + Alvarez Delgado (ISFD San Buenaventura)
+================================================================
+
+Qué pasaba
+----------
+Ambos ya estaban en Drive (artículo + PPT) y anexados al programa, pero
+con título «Ponencia» y área mal parseada:
+  · JFAguirre / Cslr  → debía ser Colegio secundario San Luis Rey
+  · Alvarez Delgado   → ISFD “San Buenaventura”
+
+Canónicos
+---------
+1) Jesús Francisco Aguirre
+   Colegio secundario San Luis Rey
+   «La integración de la Inteligencia Artificial en la Impresión 3D
+    en entornos educativos»
+
+2) Rita Elisabeth Alvarez Delgado
+   ISFD “San Buenaventura”
+   «La IA como co-creadora pedagógica: Proyecto Trimestral… San Buenaventura»
+
+Apps Script (Chrome)
+--------------------
+1. Pegá JornadasPrograma.gs (+ RestaurarProgramaJornadas.gs opcional)
+2. Guardar
+3. Ejecutá ▶ corregirPonenciasAguirreAlvarez
+   (o restaurarProgramaJornadas)
+4. Implementar → Nueva versión (API pública)
+
+Sitio
+-----
+js/jornadas-config.js ya aplica los mismos títulos al cargar.

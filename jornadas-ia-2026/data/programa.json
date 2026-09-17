@@ -2,7 +2,7 @@
   "ok": true,
   "source": "manual",
   "editedBy": "",
-  "updatedAt": "2026-09-11T14:10:00.000Z",
+  "updatedAt": "2026-09-17T11:52:02.000Z",
   "meta": {
     "titulo": "1° Jornadas internas de Inteligencia Artificial — UCCuyo",
     "subtitulo": "Observatorio de Inteligencia Artificial",
@@ -282,6 +282,44 @@
       ],
       "moderadores": [],
       "area": "Cultura Religiosa y Pastoral",
+      "rol": "Expositor/a",
+      "articuloOk": true,
+      "pptOk": true,
+      "confirmado": false,
+      "notas": "Incluido automáticamente desde Drive (provisorio)"
+    },
+    {
+      "id": "j-ponencia-alvarez-delgado",
+      "dia": "2026-10-06",
+      "inicio": "17:15",
+      "fin": "17:25",
+      "sala": "Ponencia",
+      "tipo": "ponencia",
+      "titulo": "La IA como co-creadora pedagógica: Proyecto Trimestral para el fortalecimiento de la escritura, el diseño visual y la oratoria académica en el ISFD \"San Buenaventura\"",
+      "disertantes": [
+        "Rita Elisabeth Alvarez Delgado"
+      ],
+      "moderadores": [],
+      "area": "ISFD \"San Buenaventura\"",
+      "rol": "Expositor/a",
+      "articuloOk": true,
+      "pptOk": true,
+      "confirmado": false,
+      "notas": "Incluido automáticamente desde Drive (provisorio)"
+    },
+    {
+      "id": "j-ponencia-aguirre",
+      "dia": "2026-10-06",
+      "inicio": "17:25",
+      "fin": "17:35",
+      "sala": "Ponencia",
+      "tipo": "ponencia",
+      "titulo": "La integración de la Inteligencia Artificial en la Impresión 3D en entornos educativos",
+      "disertantes": [
+        "Jesús Francisco Aguirre"
+      ],
+      "moderadores": [],
+      "area": "Colegio secundario San Luis Rey",
       "rol": "Expositor/a",
       "articuloOk": true,
       "pptOk": true,

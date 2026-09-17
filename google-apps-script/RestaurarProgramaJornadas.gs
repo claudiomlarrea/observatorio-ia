@@ -1,9 +1,6 @@
 /**
- * URGENTE — restaurar las 11 ponencias si la API quedó vacía.
- * Pegá este archivo en el proyecto OIA · Catálogos Jornadas IA
- * (junto a JornadasPrograma.gs y JornadasProgramaEditor.gs).
- * Ejecutá ▶ restaurarProgramaJornadas  y después
- * Implementar → Nueva versión (API pública).
+ * Restaurar / republicar programa (incluye Aguirre + Alvarez Delgado).
+ * Ejecutar ▶ restaurarProgramaJornadas
  */
 
 function restaurarProgramaJornadas() {
@@ -14,8 +11,8 @@ function restaurarProgramaJornadas() {
   "ok": true,
   "source": "manual",
   "editedBy": "",
-  "updatedAt": "2026-09-11T14:10:00.000Z",
-  "version": "2026-09-11",
+  "updatedAt": "2026-09-17T11:52:02.000Z",
+  "version": "2026-09-17",
   "estado": "provisorio",
   "evento": {
     "titulo": "1° Jornadas internas de Inteligencia Artificial",
@@ -97,7 +94,7 @@ function restaurarProgramaJornadas() {
       "confirmado": false,
       "notas": "Incluido automáticamente desde Drive (provisorio)",
       "clave": "marimon",
-      "articuloFileId": "1JmwGAD6o5JhcwQ7IdTTRYMSINHY4DyZqX0I5D1-UPJg",
+      "articuloFileId": "1HCd4ePlPM16Df3MiEUv65WNUlXAibftj",
       "pptFileId": "155g4h4-XV0GZrrZVhrILQCL7-UU_HpaBIG75dJqPtME"
     },
     {
@@ -115,7 +112,7 @@ function restaurarProgramaJornadas() {
       "confirmado": false,
       "notas": "",
       "clave": "jose la malfa",
-      "articuloFileId": "1j4Vv7u3FGXkQdwtvKGpfC7qLQR3nfmjt",
+      "articuloFileId": "1LqgMGKJw-41yHnmyPStzOov9CHMTK0_n",
       "pptFileId": "1s3iMBrVDxMA9OXIsPzmi-7LoljY0elkh"
     },
     {
@@ -133,7 +130,7 @@ function restaurarProgramaJornadas() {
       "confirmado": false,
       "notas": "Incluido automáticamente desde Drive (provisorio)",
       "clave": "gil",
-      "articuloFileId": "1TLBL3UGGAMg5b8SZefUOwfXOuuo95iZi",
+      "articuloFileId": "1mL2OWo4343c8jay6LX5_SSfmwH4lOElX",
       "pptFileId": "1bQhv8PJaG2TcIymYxqNMGCDmQrOGFtJg"
     },
     {
@@ -205,7 +202,7 @@ function restaurarProgramaJornadas() {
       "confirmado": false,
       "notas": "Incluido automáticamente desde Drive (provisorio)",
       "clave": "meretta",
-      "articuloFileId": "1ae-oZEq6CpAzkScG9jdcHSIAp3NpY6nj",
+      "articuloFileId": "1EI-mK9FkxDyd-o2yvIHTXr1YQkBuGrGE",
       "pptFileId": "1ghABYdqaq-U3VwOGjQbUyM1me2jLvAOp"
     },
     {
@@ -223,7 +220,7 @@ function restaurarProgramaJornadas() {
       "confirmado": false,
       "notas": "",
       "clave": "martinez",
-      "articuloFileId": "1aLXbK6j3y-deb_sZm-W4VC2XPrtYlXBi",
+      "articuloFileId": "10q2peXsFAMF4d_0wXjC3MbSymUsORiUn",
       "pptFileId": "1Lmi3pghcZTkCVPw8cmxeg344K57kWnAW"
     },
     {
@@ -279,6 +276,42 @@ function restaurarProgramaJornadas() {
       "clave": "garcia quo vadis",
       "articuloFileId": "1DrtieQgKTmu0neBae0Reh315a9lNnZzk",
       "pptFileId": "1WzAKQG8zKf735Zrknt7O-k_xWJyN3MTc"
+    },
+    {
+      "orden": 15,
+      "hora": "17:15",
+      "horaFin": "17:25",
+      "tipo": "ponencia",
+      "titulo": "La IA como co-creadora pedagógica: Proyecto Trimestral para el fortalecimiento de la escritura, el diseño visual y la oratoria académica en el ISFD \"San Buenaventura\"",
+      "persona": "Rita Elisabeth Alvarez Delgado",
+      "rol": "Expositor/a",
+      "area": "ISFD \"San Buenaventura\"",
+      "sala": "Ponencia",
+      "articuloOk": true,
+      "pptOk": true,
+      "confirmado": false,
+      "notas": "Incluido automáticamente desde Drive (provisorio)",
+      "clave": "alvarez delgado",
+      "articuloFileId": "1VgaqIu9TPzvnaBLf_sJxIoRWXrEs2Cn8",
+      "pptFileId": "12d5ZONCU24OpeLpgam1I3o8gqiKOb0TR"
+    },
+    {
+      "orden": 16,
+      "hora": "17:25",
+      "horaFin": "17:35",
+      "tipo": "ponencia",
+      "titulo": "La integración de la Inteligencia Artificial en la Impresión 3D en entornos educativos",
+      "persona": "Jesús Francisco Aguirre",
+      "rol": "Expositor/a",
+      "area": "Colegio secundario San Luis Rey",
+      "sala": "Ponencia",
+      "articuloOk": true,
+      "pptOk": true,
+      "confirmado": false,
+      "notas": "Incluido automáticamente desde Drive (provisorio)",
+      "clave": "aguirre",
+      "articuloFileId": "1sFVz7cnjrD5uooUD6unVF9tKnzWekypw",
+      "pptFileId": "1SwO9HG--p7dxOhf0X4sHKoKRyYRuejps"
     }
   ]
 };
@@ -287,9 +320,14 @@ function restaurarProgramaJornadas() {
   var published = publicarProgramaManualDesdeItems_(items);
   return {
     ok: true,
-    message: "Programa restaurado (11 ponencias)",
+    message: "Programa restaurado (" + items.filter(function(it){return String(it.tipo||"")==="ponencia";}).length + " ponencias)",
     updatedAt: published.updatedAt,
     items: (published.items && published.items.length) || items.length
   };
+}
+
+/** Alias: aplica títulos canónicos Aguirre / Alvarez y republica. */
+function corregirPonenciasAguirreAlvarez() {
+  return normalizarYPublicarTitulosCanon_();
 }
 
