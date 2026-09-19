@@ -43,8 +43,6 @@
       formLink.removeAttribute("aria-disabled");
       formLink.removeAttribute("tabindex");
     }
-    var soon = document.querySelector(".encuestas-docentes-actions [data-i18n='sec.encuestas.docentes.btnProximamente']");
-    if (soon) soon.hidden = true;
     setBadge();
   }
 

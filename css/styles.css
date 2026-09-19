@@ -4201,6 +4201,11 @@ body.gallery-lightbox-open {
   pointer-events: none;
 }
 
+.encuestas-docentes-actions [hidden],
+.encuestas-docentes-actions .btn[hidden] {
+  display: none !important;
+}
+
 .encuestas-facts {
   list-style: none;
   margin: 0 0 1.1rem;
