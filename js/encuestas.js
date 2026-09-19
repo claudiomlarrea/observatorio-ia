@@ -22,6 +22,20 @@
     link.rel = "noopener noreferrer";
   }
 
+  function setBadge() {
+    var heading = document.getElementById("encuestas-docentes");
+    var card = heading && heading.closest(".encuestas-card");
+    var badge = card && card.querySelector(".encuestas-badge");
+    if (!badge || !publica) return;
+    badge.classList.remove("encuestas-badge--soon");
+    badge.setAttribute("data-i18n", "sec.encuestas.badge.abierta");
+    var txt =
+      window.I18N && typeof window.I18N.t === "function"
+        ? window.I18N.t("sec.encuestas.badge.abierta")
+        : "Abierta";
+    if (txt && txt !== "sec.encuestas.badge.abierta") badge.textContent = txt;
+  }
+
   if (publica) {
     wire(formLink, String(CFG.DOCENTES_FORM_URL || "").trim());
     if (formLink) {
@@ -31,6 +45,7 @@
     }
     var soon = document.querySelector(".encuestas-docentes-actions [data-i18n='sec.encuestas.docentes.btnProximamente']");
     if (soon) soon.hidden = true;
+    setBadge();
   }
 
   wire(exportLink, appsUrl(CFG.ACTION_EXPORT));
@@ -53,6 +68,7 @@
   }
 
   document.addEventListener("oia:langchange", function () {
+    if (publica) setBadge();
     if (!(estado && publica && CFG.DOCENTES_FORM_URL)) return;
     var note =
       window.I18N && typeof window.I18N.t === "function"

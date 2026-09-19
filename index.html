@@ -1058,7 +1058,7 @@
             </article>
 
             <article class="card encuestas-card" aria-labelledby="encuestas-docentes">
-              <p class="encuestas-badge encuestas-badge--soon" data-i18n="sec.encuestas.badge.laboratorio">En laboratorio</p>
+              <p class="encuestas-badge" data-i18n="sec.encuestas.badge.abierta">Abierta</p>
               <h3 id="encuestas-docentes" data-i18n="sec.encuestas.docentes.title">Encuesta a docentes</h3>
               <p data-i18n="sec.encuestas.docentes.body" data-i18n-html>
                 Desde el Observatorio de Inteligencia Artificial invitamos al cuerpo
@@ -1082,21 +1082,19 @@
                   <span data-i18n="sec.encuestas.docentes.steps.3.body">Informes PDF publicados por el equipo del Observatorio.</span>
                 </li>
               </ul>
-              <p class="encuestas-note" id="encuestas-docentes-estado" data-i18n="sec.encuestas.docentes.note" data-i18n-html>
-                La encuesta está en laboratorio y todavía no está abierta al público.
-                Cuando se publique, el formulario estará disponible aquí. Consultas:
+              <p class="encuestas-note" id="encuestas-docentes-estado" data-i18n="sec.encuestas.docentes.noteOpen" data-i18n-html>
+                La encuesta está abierta para docentes. El equipo del Observatorio puede descargar las respuestas y publicar informes desde los enlaces de abajo (inicio de sesión Google con correo autorizado). Consultas:
                 <a href="mailto:observatorioia@uccuyo.edu.ar" data-i18n="hero.email">observatorioia@uccuyo.edu.ar</a>.
               </p>
               <p class="tile-actions encuestas-docentes-actions">
                 <a
                   id="encuestas-docentes-form"
                   class="btn btn-primary"
-                  href="#"
-                  aria-disabled="true"
-                  tabindex="-1"
-                  hidden
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSd9UOXy4tMR3PJ79KnfQA_Sw0Rf-KfvdsOY0_Pq3IdWiorHqQ/viewform"
+                  target="_blank"
+                  rel="noopener noreferrer"
                    data-i18n="sec.encuestas.docentes.btnResponder">Responder encuesta a docentes</a>
-                <span class="btn btn-ghost" aria-disabled="true" data-i18n="sec.encuestas.docentes.btnProximamente">Responder encuesta (próximamente)</span>
+                <span class="btn btn-ghost" aria-disabled="true" hidden data-i18n="sec.encuestas.docentes.btnProximamente">Responder encuesta (próximamente)</span>
                 <a
                   class="btn btn-soft-green"
                   href="assets/flayer-encuesta-docentes-2026.pdf"
@@ -2162,8 +2160,8 @@
     <script src="js/observatorio-numeros-config.js?v=8" defer></script>
     <script src="js/observatorio-numeros.js?v=4" defer></script>
     <script src="js/video-open.js?v=2" defer></script>
-    <script src="js/encuestas-config.js?v=6" defer></script>
-    <script src="js/encuestas.js?v=7" defer></script>
+    <script src="js/encuestas-config.js?v=7" defer></script>
+    <script src="js/encuestas.js?v=8" defer></script>
     <script src="js/galeria-config.js?v=6" defer></script>
     <script src="js/galeria.js?v=7" defer></script>
     <script src="js/jornadas-config.js?v=38" defer></script>
