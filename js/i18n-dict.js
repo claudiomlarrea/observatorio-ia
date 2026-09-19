@@ -994,6 +994,10 @@ window.I18N_DICT = {
     "es": "Disponible",
     "en": "Available"
   },
+  "sec.encuestas.badge.noDisponible": {
+    "es": "No disponible",
+    "en": "Not available"
+  },
   "sec.encuestas.badge.abierta": {
     "es": "Abierta",
     "en": "Open"
